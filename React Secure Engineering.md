@@ -46,6 +46,7 @@ Note above mentioned protection only occurs when rendering user input’s data a
 function wso2(){
     Const input=”data:text/html,<script>alert(1)</script>”;
     Return (<iframe src={input}></iframe>);
+    }
 ```
 To avoid these unwanted malicious scripts execution, all untrusted user inputs data must be sanitized before put in to the html attribute.
 <br>
