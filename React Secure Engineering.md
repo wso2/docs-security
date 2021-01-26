@@ -190,7 +190,7 @@ import purify from “dompurify”;
 
 
 
-# Third Party Dependencies. 
+# Third Party Dependencies
 Before using any 3rd party npm packages or libraries on the wso2 products, highly recommended to ensure that the above mentioned vulnerable code components are not used in those dependencies. Also these 3rd party dependencies must not contain any known vulnerabilities. To detect vulnerabilities on 3rd party components can use tools like “nmp audit”[7].
 
 ` `[7] [https://docs.npmjs.com/cli/v6/commands/npm-audit](https://docs.npmjs.com/cli/v6/commands/npm-audit)
