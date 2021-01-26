@@ -67,10 +67,14 @@ Return (<iframe src="DOMPurify.sanitize(input)"></iframe>);
 # Url Handling
 Urls also can contain dynamic script via “javascript protocol urls”. So highly recommended to validate the URLs before using it. When using a validation to an url that should be checked whether that the link has http or https component to avoid javascript based script injection.[2]
 
+**Example Incorrect Usage:**
+```js
+// Classic XSS via anchor tag href attribute.
+<a href="javascript: alert(1)">Click me!</a>
+```
 
 **Example Correct Usage:**
 ```js
-class SafeURL extends Component {
  isSafe(dangerousURL, text) {
    const url = URL(dangerousURL, {})
    if (url.protocol === 'http:') return true
@@ -80,7 +84,7 @@ class SafeURL extends Component {
  }
 ```
 
-` `[2] [https://pragmaticwebsecurity.com/articles/spasecurity/react-xss-part1.html](https://pragmaticwebsecurity.com/articles/spasecurity/react-xss-part1.html) 
+` `[2] [https://medium.com/javascript-security/avoiding-xss-in-react-is-still-hard-d2b5c7ad9412](https://medium.com/javascript-security/avoiding-xss-in-react-is-still-hard-d2b5c7ad9412) 
 
 <br>
 
