@@ -16,7 +16,7 @@
 
 |**Version**|**Release Date**|**Contributors / Authors**|**Summary of Changes** |
 | :-: | :-: | :-: | :-: |
-|1.0|21th Jan 2021|Anshajanth|Initial version|
+|1.0|26th Jan 2021|Anshajanth|Initial version|
 <br>
 
 # Introduction
