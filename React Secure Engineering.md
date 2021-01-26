@@ -30,7 +30,7 @@ The purpose of this document is to increase the security awareness and make sure
 # Data Binding
 Untrusted user inputs must be handled by react’s default data binding with curly brackets. because react’s data binding feature has capability to neutralize the html tags by default. So malicious user’s input such as xss script won’t be executed on the client side.[1]
 
-Example Correct Usage:
+**Example Correct Usage:**
 ```js
 function Wso2(){
     Const input=”hello <img src=x onerror=alert(0)>”;
