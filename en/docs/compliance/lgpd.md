@@ -1,0 +1,1 @@
+# General Personal Data Protection Law (LGPD)
