@@ -1,7 +1,7 @@
 # WSO2 Security & Compliance Documentation
 ---
 
-To see the **latest released documentation** for the WSO2 Updates, go to: [https://security.docs.wso2.com/en/latest/](https://security.docs.wso2.com/en/latest/)
+To see the **latest released documentation** for the WSO2 Security & Compliance Documentation, go to: [https://security.docs.wso2.com/en/latest/](https://security.docs.wso2.com/en/latest/)
 
 ## Run the project locally
 
