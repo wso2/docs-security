@@ -60,7 +60,7 @@ $ pip install --upgrade pip
 
 ### Step 4 - Run MkDocs
 
-Follow the steps below to clone the Updates documentation GitHub repository and to run the site on your local server.
+Follow the steps below to clone the Security & Compliance documentation GitHub repository and to run the site on your local server.
 
 1. Fork the GitHub repository: `https://github.com/wso2/docs-security.git`
 2. Navigate to the place where you want to clone the repo.
@@ -102,7 +102,7 @@ Follow the steps below to clone the Updates documentation GitHub repository and 
     >
     >    `mkdocs serve --dirtyreload`
   
-5. Open the following URL on a new browser window to view the WSO2 Updates documentation site locally.
+5. Open the following URL on a new browser window to view the WSO2 Security & Compliance documentation site locally.
 
     [http://localhost:8000/](http://localhost:8000/)
 
