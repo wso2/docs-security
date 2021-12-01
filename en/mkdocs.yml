@@ -1,0 +1,137 @@
+# Copyright (c) 2021, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+#
+# WSO2 Inc. licenses this file to you under the Apache License,
+# Version 2.0 (the "License"); you may not use this file except
+# in compliance with the License.
+# You may obtain a copy of the License at
+#
+# http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing,
+# software distributed under the License is distributed on an
+# "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+# KIND, either express or implied. See the License for the
+# specific language governing permissions and limitations
+# under the License.
+
+# Project information
+site_name: WSO2 Security and Compliance Documentation
+site_description: Documentation for WSO2 Security and Compliance
+site_author: WSO2
+site_url: https://security.docs.wso2.com/en/latest/
+
+# Repository
+repo_name: wso2/docs-security
+repo_url: https://github.com/wso2/docs-security
+edit_uri: https://github.com/wso2/docs-security/edit/master/en/docs/
+
+# Copyright
+copyright: WSO2 Security and Compliance - Documentation
+
+# Configuration
+theme: material
+theme:
+  name: material
+  palette:
+    primary: deep-orange
+    accent: deep-orange
+  custom_dir: theme/material
+  logo: images/logo.svg
+  favicon: images/favicon.png
+  highlightjs: true
+  feature:
+    tabs: true
+  language: 'en'
+  
+# Navigation
+nav:
+    - 'Home': index.md
+    - Vulnerability Management :
+      - 'Vulnerability Reporting Guidelines': 'vuln-mgt/vulnerability-reporting-guidelines.md'
+      - 'Vulnerability Management Process': 'vuln-mgt/vulnerability-management-process.md'
+      - Reward and Acknowledgement Program:
+        - 'Reward and Acknowledgement Program': 'vuln-mgt/reward-and-acknowledgement-program.md'
+        - 'Acknowledgements': 'vuln-mgt/acknowledgements.md'
+      - CVE and Incident Clarifications:
+        - 'WSO2 Product CVE Clarifications': 'cves-and-incidents/wso2-product-cve-clarifications.md'
+        - 'CVE to WSO2 Security Advisory Mapping': 'cves-and-incidents/cve-to-wso2-security-advisory-mapping.md'
+        - 'Security Incident Clarifications': 'cves-and-incidents/security-incident-clarifications.md'
+    - Security Advisories:
+      - 2021:
+        - 'Example': 'security-advisories/2021/example.md'
+    - Product Security:
+      - 'Security Software Development Process': 'product-security/security-software-development-process.md'
+      - 'Security Guidelines for Production Deployment': 'product-security/security-guidelines-for-production-deployment.md'
+      - 'Docker Image Scanning Process': 'product-security/docker-image-scanning-process.md'
+      - 'Third-party Dependency Scanning Process': 'product-security/third-party-dependency-scanning-process.md'
+      - Compliance:
+        - 'OWASP Software Assurance Maturity Model (OWASP SAMM)': 'product-security/compliance/owasp-samm.md'
+        - 'OWASP Application Security Verification Standard (OWASP ASVS)': 'product-security/compliance/owasp-asvs.md'
+        - 'FIPS-140': 'product-security/compliance/fips-140.md'
+    #- Cloud Security:
+    - Secure Engineering Guidelines: 
+      - OWASP Top 10 - 2021:
+        - 'Example Section': 'secure-engineering/owasp-top-10/example.md'
+      - 'Threat Modeling Guidelines': 'secure-engineering/threat-modeling-guidelines.md'
+    - Compliance: 
+      - 'ISO/IEC 27001': 'compliance/iso27001.md'
+      - 'GDPR': 'compliance/gdpr.md'
+      - 'CCPA': 'compliance/ccpa.md'
+      - 'LGPD': 'compliance/lgpd.md'
+      - 'Policies': 'compliance/policies.md'
+    - Community:
+      - Webinars: 'community/webinars.md'
+    - FAQ:
+      - Example: 'faq/example.md'
+    - '': page-not-found.md
+     
+# Extensions
+markdown_extensions:
+  - markdown_include.include:
+      base_path: docs
+  - markdown.extensions.admonition
+  - markdown.extensions.codehilite:
+      linenums: true
+      use_pygments: false
+  - markdown.extensions.def_list
+  - markdown.extensions.footnotes
+  - markdown.extensions.meta
+  - markdown.extensions.toc:
+      permalink: true
+  - pymdownx.arithmatex
+  - pymdownx.betterem:
+      smart_enable: all
+  - pymdownx.caret
+  - pymdownx.critic
+  - pymdownx.details
+  - pymdownx.emoji:
+      emoji_generator: !!python/name:pymdownx.emoji.to_svg
+  - pymdownx.inlinehilite
+  - pymdownx.keys
+  - pymdownx.mark
+  - pymdownx.smartsymbols
+  - pymdownx.superfences
+  - pymdownx.tasklist:
+      custom_checkbox: true
+  - pymdownx.tilde
+    
+# Extra
+extra_css:
+  - assets/lib/highlightjs/default.min.css
+  - assets/css/theme.css
+  - assets/css/lightbox.css
+extra_javascript:
+  - assets/lib/highlightjs/highlight.min.js
+  - assets/js/theme.js
+  - assets/js/lightbox.js
+  - assets/lib/backtotop/js/util.js
+  - assets/lib/backtotop/js/main.js
+extra:
+  social:
+    - type: github
+      link: https://github.com/wso2
+    - type: twitter
+      link: https://twitter.com/wso2
+    - type: linkedin
+      link: https://www.linkedin.com/company/wso2
+  site_version: 1.0.0
