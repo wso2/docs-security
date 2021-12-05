@@ -100,8 +100,8 @@ var docSetLang = pageHeader.getAttribute('data-lang');
 var docSetUrl = window.location.origin + '/' + docSetLang;
 var request = new XMLHttpRequest();
 
-request.open('GET', docSetUrl +
-             'versions/assets/versions.json', true);
+// request.open('GET', docSetUrl +
+//              'versions/assets/versions.json', true);
 
 request.onload = function() {
   if (request.status >= 200 && request.status < 400) {
@@ -197,7 +197,13 @@ request.onerror = function() {
     console.error("There was a connection error of some sort");
 };
 
-request.send();
+
+this.send = function(){
+    if(this.init()){
+        request.send();
+    }
+}
+
 
 /*
  * Initialize distribution dropdown component

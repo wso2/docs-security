@@ -16,6 +16,10 @@
  * under the License.
  */
 
+html {
+    scroll-behavior: smooth;
+}
+
 .md-main > .md-main__inner > .md-content {
     -webkit-transition: margin 0.2s linear;
     -khtml-transition: margin 0.2s linear;
@@ -891,6 +895,10 @@ html .md-footer-meta.md-typeset a,
     color: rgba(0, 0, 0, .87);
 }
 
+.menuDescription {
+    justify-content: center;
+}
+
 .integratorDescription {
     text-align: center;
     margin-top: 2em;
@@ -1032,4 +1040,54 @@ html .md-footer-meta.md-typeset a,
     padding: 5px;
     line-height: 1;
     margin-top: 5px;
+}
+
+/*
+    Additional CSS
+*/
+
+.doc-version {
+    margin: .2rem 0 .2rem 0 !important; 
+    font-size: .7rem;
+}
+
+.add-caption {
+    font-size: .6rem;
+    text-align: center;
+    font-style: italic;
+    margin:0 0 30px 0 !important;
+}
+
+.md-typeset .task-list-control [type=checkbox]:checked+.task-list-indicator:before {
+    color: rgb(255 112 67);
+}
+
+/*
+    selection color
+*/
+::-moz-selection { background: #f47c20b6; }
+::selection { background: #f47c20b6; }
+
+.post-image {
+    box-shadow: 0 2px 2px 0 rgb(0 0 0 / 14%), 0 1px 5px 0 rgb(0 0 0 / 12%), 0 3px 1px -2px rgb(0 0 0 / 20%);
+    margin: auto;
+    display: block;
+}
+
+.md-button {
+    border: .1rem solid;
+    border-color: currentcolor;
+    border-radius: .2rem;
+    color: currentcolor;
+    cursor: pointer;
+    display: inline-block;
+    font-weight: 700;
+    padding: .625em 2em;
+    transition: color 125ms,background-color 125ms,border-color 125ms;
+}
+
+.md-button:is(:focus, :hover) {
+    background-color: #ff6f43b3;
+    border-color: #ff5643;
+    color: #fff !important;
 }
