@@ -1,0 +1,214 @@
+# Copyright (c) 2021, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+#
+# WSO2 Inc. licenses this file to you under the Apache License,
+# Version 2.0 (the "License"); you may not use this file except
+# in compliance with the License.
+# You may obtain a copy of the License at
+#
+# http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing,
+# software distributed under the License is distributed on an
+# "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+# KIND, either express or implied. See the License for the
+# specific language governing permissions and limitations
+# under the License.
+
+# Project information
+site_name: WSO2 Security and Compliance Documentation
+site_description: Documentation for WSO2 Security and Compliance
+site_author: WSO2
+site_url: https://security.docs.wso2.com/en/latest/
+# dev_addr: 0.0.0.0:8000
+
+# Repository
+repo_name: wso2/docs-security
+repo_url: https://github.com/wso2/docs-security
+edit_uri: https://github.com/wso2/docs-security/edit/master/en/docs/
+
+# Copyright
+copyright: WSO2 Security and Compliance - Documentation
+cp_timeframe: 2015-2021
+
+# Configuration
+theme:
+  name: material
+  palette:
+    primary: deep-orange
+    accent: deep-orange
+  custom_dir: theme/material
+  logo: images/logo.svg
+  favicon: images/favicon.png
+  highlightjs: true
+  feature:
+    tabs: true
+  language: 'en'
+  
+# Navigation
+nav:
+  - WSO2 Security and Compliance Documentation: 'index.md'
+  - Security Processes and Programs :
+    - Vulnerability Reporting Guidelines: 'vuln-mgt/vulnerability-reporting-guidelines.md'
+    - Vulnerability Management Process: 'vuln-mgt/vulnerability-management-process.md'
+    - Reward and Acknowledgement Program:
+      - Reward and Acknowledgement Program: 'vuln-mgt/reward-and-acknowledgement-program.md'
+      - Acknowledgements: 'vuln-mgt/acknowledgements.md'
+    - CVE and Incident Clarifications:
+      - WSO2 Product CVE Clarifications:
+        - '': 'cves-and-incidents/wso2-product-cve-clarifications.md'
+        - CVE-2019-6512: 'cves-and-incidents/cve-clarifications/CVE-2019-6512.md'
+        - CVE-2019-6513: 'cves-and-incidents/cve-clarifications/CVE-2019-6513.md'
+        - CVE-2019-6515: 'cves-and-incidents/cve-clarifications/CVE-2019-6515.md'
+        - CVE-2019-17571: 'cves-and-incidents/cve-clarifications/CVE-2019-17571.md'
+        - CVE-2020-1938: 'cves-and-incidents/cve-clarifications/CVE-2020-1938.md'
+        - CVE-2020-13226: 'cves-and-incidents/cve-clarifications/CVE-2020-13226.md'
+        - ZDI-CAN-13449: 'cves-and-incidents/cve-clarifications/ZDI-CAN-13449.md'
+      - CVE to WSO2 Security Advisory Mapping: 'cves-and-incidents/cve-to-wso2-security-advisory-mapping.md'
+      - Security Incident Clarifications:
+        - '': 'cves-and-incidents/security-incident-clarifications.md'
+        - 2020:
+          - '': 'cves-and-incidents/incident-clarifications/2020/overview.md'
+          - SolarWinds SUNBURST breach: 'cves-and-incidents/incident-clarifications/2020/solarwinds-sunburst-breach.md'
+        - 2021:
+          - '': 'cves-and-incidents/incident-clarifications/2021/overview.md'
+          - Codecov supply chain breach: 'cves-and-incidents/incident-clarifications/2021/codecov-supply-chain-breach.md'
+          - NPM packages coa and rc Compromised: 'cves-and-incidents/incident-clarifications/2021/npm-packages-coa-and-rc-compromised.md'
+          - NPM package UA-Parser-JS Compromised: 'cves-and-incidents/incident-clarifications/2021/npm-package-ua-parser-js-compromised.md'
+  - Security Advisories:
+    - Overview: 
+      - '': 'security-advisories/overview.md'
+      - 2016 Advisories: 
+        - '': 'security-advisories/2016/2016-advisories.md'
+        - WSO2-2016-0092: 'security-advisories/2016/WSO2-2016-0092.md'
+        - WSO2-2016-0095: 'security-advisories/2016/WSO2-2016-0095.md'
+        - WSO2-2016-0096: 'security-advisories/2016/WSO2-2016-0096.md'
+        - WSO2-2016-0098: 'security-advisories/2016/WSO2-2016-0098.md'
+        - WSO2-2016-0101: 'security-advisories/2016/WSO2-2016-0101.md'
+        - WSO2-2016-0104: 'security-advisories/2016/WSO2-2016-0104.md'
+        - WSO2-2016-0127: 'security-advisories/2016/WSO2-2016-0127.md'
+        - WSO2-2016-0135: 'security-advisories/2016/WSO2-2016-0135.md'
+        - WSO2-2016-0138: 'security-advisories/2016/WSO2-2016-0138.md'
+        - WSO2-2016-0140: 'security-advisories/2016/WSO2-2016-0140.md'
+        - WSO2-2016-0141: 'security-advisories/2016/WSO2-2016-0141.md'
+        - WSO2-2016-0150: 'security-advisories/2016/WSO2-2016-0150.md'
+        - WSO2-2016-0151: 'security-advisories/2016/WSO2-2016-0151.md'
+        - WSO2-2016-0156: 'security-advisories/2016/WSO2-2016-0156.md'
+        - WSO2-2016-0158: 'security-advisories/2016/WSO2-2016-0158.md'
+        - WSO2-2016-0159: 'security-advisories/2016/WSO2-2016-0159.md'
+        - WSO2-2016-0168: 'security-advisories/2016/WSO2-2016-0168.md'
+        - WSO2-2016-0169: 'security-advisories/2016/WSO2-2016-0169.md'
+        - WSO2-2016-0170: 'security-advisories/2016/WSO2-2016-0170.md'
+      - 2017 Advisories: 
+        - '': 'security-advisories/2017/2017-advisories.md'
+      - 2018 Advisories: 
+        - '': 'security-advisories/2018/2018-advisories.md'
+      - 2019 Advisories: 
+        - '': 'security-advisories/2019/2019-advisories.md'
+      - 2020 Advisories: 
+        - '': 'security-advisories/2020/2020-advisories.md'
+      - 2021 Advisories: 
+        - '': 'security-advisories/2021/2021-advisories.md'
+        - WSO2-2020-0716: 'security-advisories/2021/WSO2-2020-0716.md'
+        - WSO2-2020-0787: 'security-advisories/2021/WSO2-2020-0787.md'
+        - WSO2-2020-0803: 'security-advisories/2021/WSO2-2020-0803.md'
+        - WSO2-2020-0840: 'security-advisories/2021/WSO2-2020-0840.md'
+        - WSO2-2020-1106: 'security-advisories/2021/WSO2-2020-1106.md'
+        - WSO2-2020-1130: 'security-advisories/2021/WSO2-2020-1130.md'
+        - WSO2-2020-1132: 'security-advisories/2021/WSO2-2020-1132.md'
+        - WSO2-2020-1224: 'security-advisories/2021/WSO2-2020-1224.md'
+        - WSO2-2020-1225: 'security-advisories/2021/WSO2-2020-1225.md'
+        - WSO2-2020-1233: 'security-advisories/2021/WSO2-2020-1233.md'
+        - WSO2-2021-1238: 'security-advisories/2021/WSO2-2021-1238.md'
+        - WSO2-2021-1258: 'security-advisories/2021/WSO2-2021-1258.md'
+        - WSO2-2021-1260: 'security-advisories/2021/WSO2-2021-1260.md'
+        - WSO2-2021-1261: 'security-advisories/2021/WSO2-2021-1261.md'
+        - WSO2-2021-1289: 'security-advisories/2021/WSO2-2021-1289.md'
+        - WSO2-2021-1292: 'security-advisories/2021/WSO2-2021-1292.md'
+        - WSO2-2021-1314: 'security-advisories/2021/WSO2-2021-1314.md'
+        - WSO2-2021-1315: 'security-advisories/2021/WSO2-2021-1315.md'
+        - WSO2-2021-1347: 'security-advisories/2021/WSO2-2021-1347.md'
+        - WSO2-2021-1350: 'security-advisories/2021/WSO2-2021-1350.md'
+        - WSO2-2021-1357: 'security-advisories/2021/WSO2-2021-1357.md'
+        - WSO2-2021-1453: 'security-advisories/2021/WSO2-2021-1453.md'
+  - Product Security:
+    - Secure Software Development Process: 'product-security/secure-software-development-process.md'
+    - Security Guidelines for Production Deployment: 'product-security/security-guidelines-for-production-deployment.md'
+    - Docker Image Scanning Process: 'product-security/docker-image-scanning-process.md'
+    - Third-party Dependency Scanning Process: 'product-security/third-party-dependency-scanning-process.md'
+    - Compliance:
+      - OWASP Software Assurance Maturity Model (OWASP SAMM): 'product-security/compliance/owasp-samm.md'
+      - OWASP Application Security Verification Standard (OWASP ASVS): 'product-security/compliance/owasp-asvs.md'
+      - FIPS-140: 'product-security/compliance/fips-140.md'
+  #- Cloud Security:
+  - Secure Engineering Guidelines: 
+    - OWASP Top 10 - 2021:
+      - Example Section: 'secure-engineering/owasp-top-10/example.md'
+    - Threat Modeling Guidelines: 'secure-engineering/threat-modeling-guidelines.md'
+  - Compliance: 
+    - ISO/IEC 27001: 'compliance/iso27001.md'
+    - GDPR: 'compliance/gdpr.md'
+    - CCPA: 'compliance/ccpa.md'
+    - LGPD: 'compliance/lgpd.md'
+    - Policies: 'compliance/policies.md'
+  - Community:
+    - Webinars:
+      - '': 'community/webinars.md'
+      - 'Perfecting Security Governance: This Is How We Do It': 'community/webinars/perfecting-security-governance-this-is-how-we-do-it.md'
+  - FAQ:
+    - Example: 'faq/example.md'
+  - '': 'page-not-found.md'
+
+# Extensions
+markdown_extensions:
+  - markdown_include.include:
+      base_path: docs
+  - markdown.extensions.admonition
+  - markdown.extensions.codehilite:
+      linenums: true
+      use_pygments: false
+  - markdown.extensions.def_list
+  - markdown.extensions.footnotes
+  - markdown.extensions.meta
+  - markdown.extensions.toc:
+      permalink: true
+  - pymdownx.arithmatex
+  - pymdownx.betterem:
+      smart_enable: all
+  - pymdownx.caret
+  - pymdownx.critic
+  - pymdownx.details
+  - pymdownx.emoji:
+      emoji_generator: !!python/name:pymdownx.emoji.to_svg
+  - pymdownx.inlinehilite
+  - pymdownx.keys
+  - pymdownx.mark
+  - pymdownx.smartsymbols
+  - pymdownx.superfences
+  - pymdownx.tasklist:
+      custom_checkbox: true
+  - pymdownx.tilde
+  - attr_list
+  - pymdownx.emoji:
+      emoji_index: !!python/name:materialx.emoji.twemoji
+      emoji_generator: !!python/name:materialx.emoji.to_svg
+
+# Extra
+extra_css:
+  - assets/lib/highlightjs/default.min.css
+  - assets/css/theme.css
+  - assets/css/lightbox.css
+extra_javascript:
+  - assets/lib/highlightjs/highlight.min.js
+  - assets/js/theme.js
+  - assets/js/lightbox.js
+  - assets/lib/backtotop/js/util.js
+  - assets/lib/backtotop/js/main.js
+extra:
+  social:
+    - type: github
+      link: https://github.com/wso2
+    - type: twitter
+      link: https://twitter.com/wso2
+    - type: linkedin
+      link: https://www.linkedin.com/company/wso2
+  site_version: 1.0.0

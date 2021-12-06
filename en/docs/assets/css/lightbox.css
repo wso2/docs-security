@@ -1,0 +1,78 @@
+/* RESET RULES
+–––––––––––––––––––––––––––––––––––––––––––––––––– */
+:root {
+    --lightgray: #efefef;
+    --blue: steelblue;
+    --white: #fff;
+    --black: rgba(0, 0, 0, 0.8);
+    --bounceEasing: cubic-bezier(0.51, 0.92, 0.24, 1.15);
+}
+
+button {
+    cursor: pointer;
+    background: transparent;
+    border: none;
+    outline: none;
+    font-size: inherit;
+}
+
+
+/* MODAL
+–––––––––––––––––––––––––––––––––––––––––––––––––– */
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+    background: var(--black);
+    cursor: pointer;
+    visibility: hidden;
+    opacity: 0;
+    transition: all 0.35s ease-in;
+}
+
+.modal.is-visible {
+    visibility: visible;
+    opacity: 1;
+    z-index: 9;
+}
+
+.modal-dialog {
+    position: relative;
+    border-radius: 5px;
+    background: var(--white);
+    overflow: auto;
+    cursor: default;
+}
+
+.modal-dialog > * {
+    padding: 1rem;
+}
+
+.modal-header,
+.modal-footer {
+    background: var(--lightgray);
+}
+
+.modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.modal-header .close-modal {
+    font-size: 1.5rem;
+}
+
+.modal p + p {
+    margin-top: 1rem;
+}
+
+a.open-modal {
+    cursor: pointer;
+}
