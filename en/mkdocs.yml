@@ -100,8 +100,39 @@ nav:
         - WSO2-2016-0170: 'security-advisories/2016/WSO2-2016-0170.md'
       - 2017 Advisories: 
         - '': 'security-advisories/2017/2017-advisories.md'
+        - WSO2-2017-0177: 'security-advisories/2017/WSO2-2017-0177.md'
+        - WSO2-2017-0179: 'security-advisories/2017/WSO2-2017-0179.md'
+        - WSO2-2017-0182: 'security-advisories/2017/WSO2-2017-0182.md'
+        - WSO2-2017-0183: 'security-advisories/2017/WSO2-2017-0183.md'
+        - WSO2-2017-0184: 'security-advisories/2017/WSO2-2017-0184.md'
+        - WSO2-2017-0185: 'security-advisories/2017/WSO2-2017-0185.md'
+        - WSO2-2017-0186: 'security-advisories/2017/WSO2-2017-0186.md'
+        - WSO2-2017-0187: 'security-advisories/2017/WSO2-2017-0187.md'
+        - WSO2-2017-0188: 'security-advisories/2017/WSO2-2017-0188.md'
+        - WSO2-2017-0190: 'security-advisories/2017/WSO2-2017-0190.md'
+        - WSO2-2017-0197: 'security-advisories/2017/WSO2-2017-0197.md'
+        - WSO2-2017-0198: 'security-advisories/2017/WSO2-2017-0198.md'
+        - WSO2-2017-0203: 'security-advisories/2017/WSO2-2017-0203.md'
+        - WSO2-2017-0210: 'security-advisories/2017/WSO2-2017-0210.md'
+        - WSO2-2017-0212: 'security-advisories/2017/WSO2-2017-0212.md'
+        - WSO2-2017-0218: 'security-advisories/2017/WSO2-2017-0218.md'
+        - WSO2-2017-0223: 'security-advisories/2017/WSO2-2017-0223.md'
+        - WSO2-2017-0235: 'security-advisories/2017/WSO2-2017-0235.md'
+        - WSO2-2017-0254: 'security-advisories/2017/WSO2-2017-0254.md'
+        - WSO2-2017-0255: 'security-advisories/2017/WSO2-2017-0255.md'
+        - WSO2-2017-0257: 'security-advisories/2017/WSO2-2017-0257.md'
+        - WSO2-2017-0260: 'security-advisories/2017/WSO2-2017-0260.md'
+        - WSO2-2017-0261: 'security-advisories/2017/WSO2-2017-0261.md'
+        - WSO2-2017-0262: 'security-advisories/2017/WSO2-2017-0262.md'
+        - WSO2-2017-0263: 'security-advisories/2017/WSO2-2017-0263.md'
+        - WSO2-2017-0265: 'security-advisories/2017/WSO2-2017-0265.md'
+        - WSO2-2017-0266: 'security-advisories/2017/WSO2-2017-0266.md'
+        - WSO2-2017-0267: 'security-advisories/2017/WSO2-2017-0267.md'
+        - WSO2-2017-0289: 'security-advisories/2017/WSO2-2017-0289.md'
+        - WSO2-2017-0326: 'security-advisories/2017/WSO2-2017-0326.md'
       - 2018 Advisories: 
         - '': 'security-advisories/2018/2018-advisories.md'
+        - WSO2-2018-0462: 'security-advisories/2018/WSO2-2018-0462.md'
       - 2019 Advisories: 
         - '': 'security-advisories/2019/2019-advisories.md'
       - 2020 Advisories: 
@@ -184,10 +215,14 @@ markdown_extensions:
   - pymdownx.mark
   - pymdownx.smartsymbols
   - pymdownx.superfences
+  # - pymdownx.tabbed:
+  #     alternate_style: true
+  - pymdownx.snippets
   - pymdownx.tasklist:
       custom_checkbox: true
   - pymdownx.tilde
   - attr_list
+  - pymdownx.highlight
   - pymdownx.emoji:
       emoji_index: !!python/name:materialx.emoji.twemoji
       emoji_generator: !!python/name:materialx.emoji.to_svg
