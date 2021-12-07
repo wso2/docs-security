@@ -35,5 +35,6 @@ cvss: "{{cvss}}"
 
 Otherwise you may apply the relevant fixes to the product based on the public fix: {{pr_link}}
 
+
 !!! note
     If you are a WSO2 customer with Support Subscription, please use [WSO2 Updates](https://wso2.com/updates/) in order to apply the fix.
