@@ -5,9 +5,9 @@ category: cves-and-incidents
 
 # Codecov supply chain breach
 
-<p class="doc-version">WSO2 impacted: Yes</p>
-<p class="doc-version">Evidence of compromise: No</p>
-<p class="doc-version">Customers actions required: No</p>
+<p class="doc-info">WSO2 impacted: Yes</p>
+<p class="doc-info">Evidence of compromise: No</p>
+<p class="doc-info">Customers actions required: No</p>
 ---
 
 ### Reported Incident

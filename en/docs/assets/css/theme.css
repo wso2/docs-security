@@ -1046,7 +1046,7 @@ html .md-footer-meta.md-typeset a,
     Additional CSS
 */
 
-.doc-version {
+.doc-info {
     margin: .2rem 0 .2rem 0 !important; 
     font-size: .7rem;
 }

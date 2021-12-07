@@ -6,7 +6,7 @@ published: 24th Oct 2019
 
 # Perfecting Security Governance: This Is How We Do It
 
-<p class="doc-version">Date: 24th Oct 2019</p>
+<p class="doc-info">Date: 24th Oct 2019</p>
 ___
 
 Security is a top priority and an integral part of the software development process at WSO2. While we work proactively to secure WSO2 offerings, we have also set multiple verifications and enforcement points to ensure security at each phase of the software development lifecycle.
