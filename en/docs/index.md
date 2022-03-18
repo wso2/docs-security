@@ -112,7 +112,7 @@ Security is our top priority and we proactively look for ways to improve the sec
   </div>
 
   <div class="integratorDescription">
-    <a style="color: #222222;" href="secure-engineering/owasp-top-10/">
+    <a style="color: #222222;" href="secure-engineering/">
       <div>
         <div>
           <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
