@@ -5,9 +5,9 @@ category: cves-and-incidents
 
 # NPM packages coa and rc Compromised
 
-<p class="doc-version">WSO2 impacted: No</p>
-<p class="doc-version">Evidence of compromise: No</p>
-<p class="doc-version">Customers actions required: No</p>
+<p class="doc-info">WSO2 impacted: No</p>
+<p class="doc-info">Evidence of compromise: No</p>
+<p class="doc-info">Customers actions required: No</p>
 ---
 
 ### Reported Incident

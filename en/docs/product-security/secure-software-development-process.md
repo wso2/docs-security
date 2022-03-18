@@ -7,7 +7,7 @@ version: 2.2
 
 # Security Software Development Process
 
-<p class="doc-version">Version: 2.2 | Date: 19th  Mar 2020</p>
+<p class="doc-info">Version: 2.2 | Date: 19th  Mar 2020</p>
 ___
 
 

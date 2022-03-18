@@ -7,7 +7,7 @@ version: 2.1
 
 # Reward and Acknowledgement Program
 
-<p class="doc-version">Version: 2.1 | Date: 14th Sep 2021</p>
+<p class="doc-info">Version: 2.1 | Date: 14th Sep 2021</p>
 ___
 
 We have been recognizing the efforts of the security research community for helping us make WSO2 products safer. To honor all such external contributions, we maintain a reward and acknowledgement program for WSO2 owned software products. This document describes the various aspects of this program:

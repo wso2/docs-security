@@ -834,6 +834,14 @@ html .md-footer-meta.md-typeset a,
     padding-left: 75px;
 }
 
+.md-sidebar--secondary .md-nav--secondary > ul ul ul ul ul {
+    margin-left: -76px;
+}
+
+.md-sidebar--secondary .md-nav--secondary > ul ul ul ul ul > li {
+    padding-left: 90px;
+}
+
 .md-sidebar--secondary .md-nav--secondary {
     padding: 3px 0 0 10px;
 }
@@ -1046,7 +1054,7 @@ html .md-footer-meta.md-typeset a,
     Additional CSS
 */
 
-.doc-version {
+.doc-info {
     margin: .2rem 0 .2rem 0 !important; 
     font-size: .7rem;
 }
@@ -1090,4 +1098,15 @@ html .md-footer-meta.md-typeset a,
     background-color: #ff6f43b3;
     border-color: #ff5643;
     color: #fff !important;
+}
+
+
+.admonition.bug.error mark{
+    background-color: rgb(255 59 59 / 28%);
+    box-shadow: 0.25em 0 0 rgb(255 59 59 / 26%), -0.25em 0 0 rgb(255 59 59 / 26%);
+}
+
+.admonition.success.check.done mark{
+    background-color: rgb(102 255 59 / 28%);
+    box-shadow: 0.25em 0 0 rgb(102 255 59 / 26%), -0.25em 0 0 rgb(102 255 59 / 26%);
 }
