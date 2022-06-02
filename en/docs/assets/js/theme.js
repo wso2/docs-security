@@ -39,23 +39,6 @@
 var dropdowns = document.getElementsByClassName('md-tabs__dropdown-link');
 var dropdownItems = document.getElementsByClassName('mb-tabs__dropdown-item');
 
-window.onclick = function(evt) {
-    var openedDropDowns = document.getElementsByClassName('open');
-
-    if(evt.target.className === 'md-tabs__link md-tabs__dropdown-link localLink') {
-        return;
-    } else {
-        for (let i = 0; i < openedDropDowns.length; i++) {
-            let elem = openedDropDowns[i];
-            let classes = elem.className.split(' ');
-            let index = classes.indexOf('open');
-
-            classes.splice(index, 1);
-            elem.className = classes.join(' ');
-        }
-    }
-}
-
 function indexInParent(node) {
     var children = node.parentNode.childNodes;
     var num = 0;
@@ -87,13 +70,13 @@ for (var i = 0; i < dropdowns.length; i++) {
     };
 };
 
-/*
+/* 
  * Reading versions
  */
 var pageHeader = document.getElementById('page-header');
 var docSetLang = pageHeader.getAttribute('data-lang');
 
-(window.location.pathname.split('/')[1] !== docSetLang) ?
+(window.location.pathname.split('/')[1] !== docSetLang) ? 
     docSetLang = '' :
     docSetLang = docSetLang + '/';
 
@@ -109,14 +92,14 @@ request.onload = function() {
       var data = JSON.parse(request.responseText);
       var dropdown =  document.getElementById('version-select-dropdown');
       var checkVersionsPage = document.getElementById('current-version-stable');
-
-      /*
-       * Appending versions to the version selector dropdown
+      
+      /* 
+       * Appending versions to the version selector dropdown 
        */
       if (dropdown){
-          data.list.sort().forEach(function(key, index){
+          data.list.forEach(function(key, index){
               var versionData = data.all[key];
-
+              
               if(versionData) {
                   var liElem = document.createElement('li');
                   var docLinkType = data.all[key].doc.split(':')[0];
@@ -131,7 +114,7 @@ request.onload = function() {
                   }
 
                   liElem.className = 'md-tabs__item mb-tabs__dropdown';
-                  liElem.innerHTML =  '<a href="' + url + '" target="' +
+                  liElem.innerHTML =  '<a href="' + url + '" target="' + 
                       target + '">' + key + '</a>';
 
                   dropdown.insertBefore(liElem, dropdown.firstChild);
@@ -141,8 +124,8 @@ request.onload = function() {
           document.getElementById('show-all-versions-link')
               .setAttribute('href', docSetUrl + 'versions');
       }
-
-      /*
+      
+      /* 
        * Appending versions to the version tables in versions page
        */
       if (checkVersionsPage){
@@ -160,11 +143,11 @@ request.onload = function() {
                   previousVersions.push('<tr>' +
                     '<th>' + key + '</th>' +
                         '<td>' +
-                            '<a href="' + data.all[key].doc + '" target="' +
+                            '<a href="' + data.all[key].doc + '" target="' + 
                                 target + '">Documentation</a>' +
                         '</td>' +
                         '<td>' +
-                            '<a href="' + data.all[key].notes + '" target="' +
+                            '<a href="' + data.all[key].notes + '" target="' + 
                                 target + '">Release Notes</a>' +
                         '</td>' +
                     '</tr>');
@@ -172,22 +155,22 @@ request.onload = function() {
           });
 
           // Past releases update
-          document.getElementById('previous-versions').innerHTML =
+          document.getElementById('previous-versions').innerHTML = 
                   previousVersions.join(' ');
 
           // Current released version update
-          document.getElementById('current-version-number').innerHTML =
+          document.getElementById('current-version-number').innerHTML = 
                   data.current;
           document.getElementById('current-version-documentation-link')
                   .setAttribute('href', docSetUrl + data.all[data.current].doc);
           document.getElementById('current-version-release-notes-link')
                   .setAttribute('href', docSetUrl + data.all[data.current].notes);
-
+        
           // Pre-release version update
           document.getElementById('pre-release-version-documentation-link')
-              .setAttribute('href', docSetUrl + 'next/micro-integrator');
+              .setAttribute('href', docSetUrl + 'next/');
       }
-
+      
   } else {
       console.error("We reached our target server, but it returned an error");
   }
@@ -197,41 +180,14 @@ request.onerror = function() {
     console.error("There was a connection error of some sort");
 };
 
-
 this.send = function(){
     if(this.init()){
         request.send();
     }
 }
 
-
-/*
- * Initialize distribution dropdown component
- */
-
-var distributionDropdown =  document.getElementById('distribution-select-dropdown');
-
-const distributionURLList = [ 'micro-integrator','streaming-integrator' ];
-const introductionURL = ['/overview/introduction','/overview/overview'];
-
-if (distributionDropdown){
-    let count = 0;
-    distributionURLList.forEach(function(key){
-        var liElem = document.createElement('li');
-        var target = '_self';
-        var version = window.location.pathname.split('/')[2] + '/';
-        var url = docSetUrl + version + key + introductionURL[count];
-
-        liElem.className = 'md-tabs__item mb-tabs__dropdown';
-        liElem.innerHTML =  '<a href="' + url + '" target="' +
-            target + '">' + key.replace(/-/g, " ") + '</a>';
-        count++;
-        distributionDropdown.insertBefore(liElem, distributionDropdown.lastChild);
-    });
-}
-
-/*
- * Initialize highlightjs
+/* 
+ * Initialize highlightjs 
  */
 hljs.initHighlightingOnLoad();
 
@@ -290,7 +246,7 @@ for (var i = 0; i < observeeList.length; i++) {
 
         e.target.parentNode.classList.add('active');
     }
-};
+}
 
 function scrollerPosition(mutation) {
     var blurList = document.querySelectorAll(".md-sidebar__inner > .md-nav--secondary > ul li > .md-nav__link[data-md-state='blur']");
@@ -316,7 +272,7 @@ function scrollerPosition(mutation) {
             listElems[0].classList.add('active');
         }
     }
-};
+}
 
 function setActive(parentNode, i) {
     i = i || 0;
@@ -343,4 +299,11 @@ window.addEventListener('scroll', function() {
     } else {
         editIcon.classList.remove('active');
     }
+});
+
+/*
+* For clicks to land on the titles
+*/
+window.addEventListener("hashchange", function () {
+    window.scrollTo(window.scrollX, window.scrollY - 40, 'smooth');
 });

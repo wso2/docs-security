@@ -13,3 +13,5 @@ Following pages list the security advisories that we have released in each year.
 * [2019 Advisories](2019/2019-advisories.md)
 * [2020 Advisories](2020/2020-advisories.md)
 * [2021 Advisories](2021/2021-advisories.md)
+
+security-announce@wso2.org  mailing list is used to announce security vulnerabilities in WSO2 products and services. If you wish to subscribe to this mailing list, please send an email to <security-announce-request@wso2.org> with the header '**subscribe**'.
