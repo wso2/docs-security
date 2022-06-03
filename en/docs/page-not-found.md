@@ -1,9 +1,9 @@
 ---
-template: templates/no-nav.html
+template: templates/single-column.html
 ---
 
 <!--
- * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2019, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
  *
  * WSO2 Inc. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -20,7 +20,11 @@ template: templates/no-nav.html
  * under the License.
 -->
 
-## Page not found.
+## Page not found
 
-Sorry but the page you are looking for does not exist, has been removed, changed, or is temporarily unavailable.   
-For inquiries, please reach us at [security@wso2.com](mailto:security@wso2.com).
+
+Sorry, but the page you are looking for does not exist, has been removed, renamed, or is temporarily unavailable. 
+Try one of the navigation links above or use the search engine in the top right corner.
+
+Alternatively, you can also report an issue [here](https://github.com/wso2/docs-open-banking/issues). 
+

@@ -20,33 +20,17 @@
 
 {% block styles %}
   {{ super() }}
+  <link rel="stylesheet" type="text/css" href="{{ 'assets/lib/swagger/swagger-ui.css' | url }}" >
+  <link rel="stylesheet" href="{{ 'assets/css/theme-material.css' | url }}">
   <style>
     .md-main .md-content {
       margin-right: 0;
-      margin-left: 0;
     }
-    @media (min-width: 1220px) {
-      .md-main .md-sidebar.md-sidebar--primary {
-        width: 0;
-      }
-    }
+
     .md-main .md-sidebar.md-sidebar--secondary {
       width: 0;
     }
-    nav.md-tabs,
-    .md-header__distribution-select,
-    .md-search,
-    .md-header-nav__title .md-header-nav__topic:first-child:after,
-    .md-footer-nav__inner {
-      display: none;
-    }
-    @media only screen and (min-width: 76.25em) {
-      .md-main .md-main__inner {
-        padding-top: 2rem;
-      }
-    }
-    .md-typeset h1 {
-      margin: 0 0 1rem;
-    }
   </style>
+  <script src="{{ 'assets/lib/swagger/swagger-ui-bundle.js' | url }}"> </script>
+  <script src="{{ 'assets/lib/swagger/swagger-ui-standalone-preset.js' | url }}"> </script>
 {% endblock %}

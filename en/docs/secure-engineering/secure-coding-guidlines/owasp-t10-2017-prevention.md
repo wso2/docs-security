@@ -385,7 +385,7 @@ HTTP/1.1 200 OK
 #### Prevention Techniques
 With regards to WSO2 Carbon 4 based products, Apache Tomcat will handle this internally, by disallowing **carriage return** and **line feed** characters from the header names or values [18],[19].
 
-If HTTP response generation is done in any other component, or any other HTTP transport implementation, it should be reviewed and confirmed to have a mechanism similar to Tomcat 6 [18] and Tomcat 7 [19] that performs necessary filtering. If such mechanism is not present in transport implementation, a central filter should be used to read all the headers and do the necessary sanitization before passing the response to transport.
+If HTTP response generation is done in any other component, or any other HTTP transport implementation, it should be reviewed and confirmed to have a mechanism similar to Tomcat 6 <small>[18]</small> and Tomcat 7 <small>[19]</small> that performs necessary filtering. If such mechanism is not present in transport implementation, a central filter should be used to read all the headers and do the necessary sanitization before passing the responsez to transport.
 
 Sample filter implementation is available in WSO2 Carbon 4.4.x branch [20]. However, this filter is not in use, since Tomcat provides the necessary protection.
 
