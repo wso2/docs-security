@@ -1,10 +1,10 @@
 ---
-title: Security Advisory {{advisory-id}}
+title: Security Advisory "{{advisory-id}}"
 category: security-announcements
-published: {{date}}
-updated: {{date}}
-version: {{version}}
-severity: {{severity}}
+published: "{{date}}"
+updated: "{{date}}"
+version: "{{version}}"
+severity: "{{severity}}"
 cvss: "{{cvss}}"
 ---
 

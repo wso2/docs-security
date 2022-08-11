@@ -1,9 +1,9 @@
 ---
-title: {{incident_name}}}}
+title: "{{incident_name}}"
 category: security-announcements
-published: {{date}}
-updated: {{date}}
-version: {{version}}
+published: "{{date}}"
+updated: "{{date}}"
+version: "{{version}}"
 ---
 
 # {{incident_name}}
@@ -29,5 +29,4 @@ version: {{version}}
 
 
 ### References
-[^1]: [https://github.com/advisories/GHSA-73qr-pfmq-6rp8](https://github.com/advisories/GHSA-73qr-pfmq-6rp8)
-[^2]: [https://github.com/advisories/GHSA-g2q5-5433-rhrf](https://github.com/advisories/GHSA-g2q5-5433-rhrf)
+[^1]: [reference_1_link](reference_1_link)

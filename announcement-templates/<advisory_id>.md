@@ -1,9 +1,9 @@
 ---
-title: Security Advisory {{advisory_id}}
+title: "{{advisory_id}}"
 category: security-announcements
-published: {{date}}
-updated: {{date}}
-version: {{version}}
+published: "{{date}}"
+updated: "{{date}}"
+version: "{{version}}"
 ---
 
 # {{advisory_id}}
