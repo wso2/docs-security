@@ -76,7 +76,7 @@ template: templates/single-column.html
             <!-- end card -->
             <!-- start card -->
             <div class="card-wrapper">
-                <div class="card" onclick="location.href='secure-guidelines/';">
+                <div class="card" onclick="location.href='security-guidelines/';">
                     <div class="line"></div>
                     <div class="icon">
                         <i class="material-icons md-36">library_books</i>

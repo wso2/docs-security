@@ -16,7 +16,7 @@ Security is not an afterthought at WSO2. It's an integral part of each phase in 
 ![Placeholder](/assets/images/product-security/Secure Software Development Process - Overall-7.png){ .post-image }
 
 
-[WSO2 Secure Engineering Guidelines](/secure-guidelines/owasp-top-10/example/) provide the overall security guidance during design, development and code review phases. A group of security leads review designs of new features and also review the code to make sure that engineers are adhering to the guidelines set forth. Some security checks are further enforced when engineers commit the code to the WOS2 maintained code repositories. 
+[WSO2 Secure Engineering Guidelines](/security-guidelines/secure-coding-guidlines/introduction.md) provide the overall security guidance during design, development and code review phases. A group of security leads review designs of new features and also review the code to make sure that engineers are adhering to the guidelines set forth. Some security checks are further enforced when engineers commit the code to the WOS2 maintained code repositories. 
 
 Furthermore, before a product release, there are mandatory security scans that look at the security of the release candidate in different perspectives. All the security findings are securely stored into a centralized systems for future reference. 
 
@@ -55,7 +55,7 @@ The software architects and security leads of the respective product domains mus
 
 #### Developer Self-review
 
-Before any code review, all the engineers must do a self code review. During development tasks and also during the self-code reviews, it is essential to follow the guidelines set forth by [WSO2 Secure Engineering Guidelines](/secure-guidelines/owasp-top-10/example/).
+Before any code review, all the engineers must do a self code review. During development tasks and also during the self-code reviews, it is essential to follow the guidelines set forth by [WSO2 Secure Engineering Guidelines](/security-guidelines/secure-coding-guidlines/introduction.md).
 
 Find Security Bugs Spotbugs plugin is recommended to be used in development environments.
 
@@ -73,7 +73,7 @@ Relevant checks are further enforced by the GitHub pull-request template:
 
 Each new component must go through a set of code reviews. The participation of one or more security leads is a must for each code review. Once a code review is done, all the findings related to the security aspects must be resolved before merging the component into the code base. 
 
-[WSO2 Secure Engineering Guidelines](/secure-guidelines/owasp-top-10/example/) should be used as a guideline when reviewing the security aspect of the code. 
+[WSO2 Secure Engineering Guidelines](/security-guidelines/secure-coding-guidlines/introduction.md) should be used as a guideline when reviewing the security aspect of the code. 
 
 There are two types of vulnerabilities that are taken into consideration during a code review.
 

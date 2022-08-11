@@ -1,6 +1,6 @@
 ---
 title: Security Guidelines for Production Deployment
-category: product-security
+category: security-guidelines
 ---
 
 # Security Guidelines for Production Deployment

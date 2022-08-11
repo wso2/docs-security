@@ -1,6 +1,6 @@
 ---
 title: Secure Guidelines Overview
-category: secure-guidelines
+category: security-guidelines
 ---
 
 # Secure Guidelines Overview
