@@ -1,5 +1,5 @@
 ---
-title: Security Advisory "{{advisory-id}}"
+title: Security Advisory {{advisory-id}}
 category: security-announcements
 published: "{{date}}"
 updated: "{{date}}"
