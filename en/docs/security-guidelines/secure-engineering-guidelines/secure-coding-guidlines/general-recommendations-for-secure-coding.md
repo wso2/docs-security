@@ -365,7 +365,7 @@ Proper output sanitization should be applied, where output consists of user inpu
 #### Browser Level Protection
 Modern browsers have built-in XSS prevention mechanisms. However, certain browsers require explicitly enabling these mechanisms using special response headers. `X-XSS-Protection: 1; mode=block` header should be set in HTTP responses to make sure browser level protection is enabled in all supported browsers. 
 
-For additional details on HTTP security related headers, refer to [Security Related HTTP Headers](security-related-http-headers.md) section.
+For additional details on HTTP security related headers, refer to [Security Related HTTP Headers](/security-guidelines/secure-engineering-guidelines/security-related-http-headers.md) section.
 
 However, this is not a permanent or justifiable solution for XSS. Instead, browser level protection should only be considered as an additional protection mechanism. 
 
@@ -1639,7 +1639,7 @@ In addition to non-standard X-Frame-Options header, the standard frame-ancestors
 `org.apache.catalina.filters.HttpHeaderSecurityFilter` Servlet Filter should be used to add X-Frame-Options header to the HTTP response. 
 
 !!! tip hint important "WSO2 Document Reference"
-    Further information on required changes and recommended configuration for WSO2 products as well as production deployments are available at [Engineering Guidelines - Security Related HTTP Headers](security-related-http-headers.md).
+    Further information on required changes and recommended configuration for WSO2 products as well as production deployments are available at [Engineering Guidelines - Security Related HTTP Headers](/security-guidelines/secure-engineering-guidelines/security-related-http-headers.md).
 
 
 ## Cross-Origin Resource Sharing
@@ -1653,7 +1653,7 @@ A wildcard same-origin policy is appropriate when a page or API response is cons
 
 ## Security Related HTTP Headers
 There are HTTP response headers that can be used to configure the security controls enforced by browsers.
-WSO2 Document Reference: Further information on required changes and recommended configuration for WSO2 products as well as production deployments are available at [Engineering Guidelines - Security Related HTTP Headers](security-related-http-headers.md).
+WSO2 Document Reference: Further information on required changes and recommended configuration for WSO2 products as well as production deployments are available at [Engineering Guidelines - Security Related HTTP Headers](/security-guidelines/secure-engineering-guidelines/security-related-http-headers.md).
 
 
 ## Securing Cookies

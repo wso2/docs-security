@@ -20,6 +20,8 @@ version: 1.1
 
 
 ## Introduction
+This document summarizes the **Security Related HTTP Headers** which should be considered by WSO2 engineers while engineering WSO2 products, as well as applications used within the organization.
+
 
 ### Mandatory Headers
 Below list consists of standard and non-standard security related HTTP headers, that must be enabled in order to enhance security aspects of web applications:

@@ -54,20 +54,22 @@ nav:
       - 'Acknowledgements': 'security-processes-programs/acknowledgements.md'
   - 'Security Guidelines':
     - '': 'security-guidelines/index.md'
-    - 'Vulnerability Reporting Guidelines': 'security-guidelines/vulnerability-reporting-guidelines.md'
-    - 'WSO2 Secure Coding Guidelines': 
-      - 'Introduction': 'security-guidelines/secure-coding-guidlines/introduction.md'
-      - 'General Recommendations for Secure Coding': 'security-guidelines/secure-coding-guidlines/general-recommendations-for-secure-coding.md'
-      - 'OWASP Top 10 - 2017 Prevention': 'security-guidelines/secure-coding-guidlines/owasp-t10-2017-prevention.md'
-      - 'OWASP Top 10 - 2013 Prevention': 'security-guidelines/secure-coding-guidlines/owasp-t10-2013-prevention.md'
-      - 'OWASP Mobile Top 10 Prevention': 'security-guidelines/secure-coding-guidlines/owasp-mobile-t10-prevention.md'
-      - 'Security Related HTTP Headers': 'security-guidelines/secure-coding-guidlines/security-related-http-headers.md'
-      - 'OWASP CSRFGuard': 'security-guidelines/secure-coding-guidlines/owasp-csrf-guard.md'
-      - 'Tooling Recommendations for Secure Coding': 'security-guidelines/secure-coding-guidlines/tooling-recommendations-for-secure-coding.md'
-      - 'Static Code Analysis using FindSecurityBugs': 'security-guidelines/secure-coding-guidlines/static-code-analysis-using-findsecuritybugs.md'
-      - 'Dynamic Analysis with OWASP ZAP': 'security-guidelines/secure-coding-guidlines/dynamic-analysis-with-owasp-zap.md'
-      - 'External Dependency Analysis Analysis using OWASP Dependency Check': 'security-guidelines/secure-coding-guidlines/external-dependency-analysis-analysis-using-owasp-dependency-check.md'
+    - 'Secure Engineering Guidelines':
+      - '': 'security-guidelines/secure-engineering-guidelines/index.md'
+      - 'WSO2 Secure Coding Guidelines': 
+        - 'Introduction': 'security-guidelines/secure-engineering-guidelines/secure-coding-guidlines/introduction.md'
+        - 'General Recommendations for Secure Coding': 'security-guidelines/secure-engineering-guidelines/secure-coding-guidlines/general-recommendations-for-secure-coding.md'
+        - 'OWASP Top 10 - 2017 Prevention': 'security-guidelines/secure-engineering-guidelines/secure-coding-guidlines/owasp-t10-2017-prevention.md'
+        - 'OWASP Top 10 - 2013 Prevention': 'security-guidelines/secure-engineering-guidelines/secure-coding-guidlines/owasp-t10-2013-prevention.md'
+        - 'OWASP Mobile Top 10 Prevention': 'security-guidelines/secure-engineering-guidelines/secure-coding-guidlines/owasp-mobile-t10-prevention.md'
+        - 'Tooling Recommendations for Secure Coding': 'security-guidelines/secure-engineering-guidelines/secure-coding-guidlines/tooling-recommendations-for-secure-coding.md'
+      - 'Security Related HTTP Headers': 'security-guidelines/secure-engineering-guidelines/security-related-http-headers.md'
+      - 'OWASP CSRFGuard': 'security-guidelines/secure-engineering-guidelines/owasp-csrf-guard.md'
+      - 'Static Code Analysis using FindSecurityBugs': 'security-guidelines/secure-engineering-guidelines/static-code-analysis-using-findsecuritybugs.md'
+      - 'Dynamic Analysis with OWASP ZAP': 'security-guidelines/secure-engineering-guidelines/dynamic-analysis-with-owasp-zap.md'
+      - 'External Dependency Analysis Analysis using OWASP Dependency Check': 'security-guidelines/secure-engineering-guidelines/external-dependency-analysis-analysis-using-owasp-dependency-check.md'
     - 'Security Guidelines for Production Deployment': 'security-guidelines/security-guidelines-for-production-deployment.md'
+    - 'Vulnerability Reporting Guidelines': 'security-guidelines/vulnerability-reporting-guidelines.md'
   - 'Security Announcements':
     - '': 'security-announcements/index.md'
     - 'WSO2 Security Advisories': 

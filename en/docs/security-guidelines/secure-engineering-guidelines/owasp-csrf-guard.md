@@ -309,7 +309,7 @@ CSRFGuard configuration for Carbon console is available at */repository/conf/sec
 
 Product specific patterns used in previous implementation are available at [^5] for reference.
 
-Please refer to [Excluding URLs from CSRF Validation]() section for more details on adding exclusion patterns.
+Please refer to [Excluding URLs from CSRF Validation](#excluding-urls-from-csrf-validation) section for more details on adding exclusion patterns.
 
 
 ### Checklist Item 5
