@@ -51,12 +51,12 @@ nav:
     - 'Vulnerability Management Process': 'security-processes-programs/vulnerability-management-process.md'
     - 'Reward and Acknowledgement Program':
       - 'Reward and Acknowledgement Program': 'security-processes-programs/reward-and-acknowledgement-program.md'
-      - 'Acknowledgements': 'security-processes-programs/acknowledgements.md'
+      - 'Security Hall of Fame': 'security-processes-programs/hall-of-fame.md'
   - 'Security Guidelines':
     - '': 'security-guidelines/index.md'
     - 'Secure Engineering Guidelines':
       - '': 'security-guidelines/secure-engineering-guidelines/index.md'
-      - 'WSO2 Secure Coding Guidelines': 
+      - 'Secure Coding Guidelines': 
         - 'Introduction': 'security-guidelines/secure-engineering-guidelines/secure-coding-guidlines/introduction.md'
         - 'General Recommendations for Secure Coding': 'security-guidelines/secure-engineering-guidelines/secure-coding-guidlines/general-recommendations-for-secure-coding.md'
         - 'OWASP Top 10 - 2017 Prevention': 'security-guidelines/secure-engineering-guidelines/secure-coding-guidlines/owasp-t10-2017-prevention.md'
@@ -329,7 +329,7 @@ extra:
     - type: linkedin
       link: https://www.linkedin.com/company/wso2
   site_version: 1.0.0
-  cp_timeframe: 2015-2022
+  cp_timeframe: 2005-2022
   nav_list:
     - WSO2 Security and Compliance Documentation
     - Security Processes and Programs

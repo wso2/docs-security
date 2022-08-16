@@ -1,12 +1,12 @@
 ---
-title: WSO2 Secure Coding Guidelines
+title: Secure Coding Guidelines
 category: security-guidelines
 published: October 22, 2018
 updated: August 09, 2022
 version: 2.2
 ---
 
-# WSO2 Secure Coding Guidelines
+# Secure Coding Guidelines
 
 <p class="doc-info">Published: October 22, 2018</p>
 <p class="doc-info">Updated: August 09, 2022</p>

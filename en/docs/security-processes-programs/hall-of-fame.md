@@ -3,11 +3,13 @@ title: Acknowledgements
 category: security-processes-programs
 ---
 
-# Acknowledgements
+# Security Hall of Fame
 
 WSO2 is pleased to recognize the security researchers who have helped making WSO2 products and services safer by finding and responsibly reporting security vulnerabilities. Each name listed here, represents an individual or a company who has reported one or more security vulnerabilities in our products or services and worked with us to rectify the issue.
 
 However, please note that WSO2 maintained websites (including wso2.com) are currently not considered for proceeding with acknowledgement. Refer our [Security Reward and Acknowledgement Program](reward-and-acknowledgement-program.md) for knowing more on our security researcher community relationship.
+
+## WSO2 Products and Infrastructure
 
 ||
 | :-----------|
@@ -25,6 +27,7 @@ However, please note that WSO2 maintained websites (including wso2.com) are curr
 | [Bruno Monteiro](https://www.linkedin.com/in/bruno-monteiro-4b926413a) |
 | [Cameron Dawe (Spam404)](https://twitter.com/spam404online) |
 | [Daniel Kalinowski](https://llamasbytes.com/) |
+| [Dipendranath Tarafder](https://twitter.com/dip_tarafder) |
 | [Dienpv](#) |
 | [Evgeny Anihovsky](https://www.linkedin.com/in/evgeny-anihovsky-a1966456/) |
 | [Foysal Ahmed Fahim](https://twitter.com/foysal1197) |
@@ -76,5 +79,12 @@ However, please note that WSO2 maintained websites (including wso2.com) are curr
 | [Werner Schober (SEC Consult Vulnerability Lab)](#) |
 | [Wolfgang Ettlinger (SEC Consult Vulnerability Lab)](#) |
 | [Zakaria BRAHIMI](https://www.linkedin.com/in/zakaria-brahimi) |
+
+
+## Choreo
+
+||
+| :-----------|
+| [Dipak Kumar Das](https://twitter.com/d1pakdas) |
 
 We thank you for helping us keep WSO2 products and services safe !

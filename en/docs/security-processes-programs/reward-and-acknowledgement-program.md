@@ -81,7 +81,7 @@ To show our appreciation, we provide a reward and an acknowledgement to eligible
 
 We will do the following upon reporter's consent:
 
-1. Include the reporter's name in the security researcher Acknowledgements web page.
+1. Include the reporter's name in the [Security Hall of Fame](/security-processes-programs/hall-of-fame/) web page.
 2. Email a certificate of appreciation to the reporter.
 3. Provide one of the following prefered by the reporter: 
     1. Amazon gift voucher worth 50 USD (from: Amazon.com / Amazon.ca / Amazon.cn / Amazon.fr / Amazon.de / Amazon.in / Amazon.it / Amazon.co.jp / Amazon.co.uk / Amazon.es / Amazon.com.au)
