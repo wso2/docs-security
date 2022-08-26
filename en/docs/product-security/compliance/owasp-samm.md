@@ -1,1 +1,0 @@
-# OWASP Software Assurance Maturity Model (OWASP SAMM)
