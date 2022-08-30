@@ -329,7 +329,7 @@ extra:
     - type: linkedin
       link: https://www.linkedin.com/company/wso2
   site_version: 1.0.0
-  cp_timeframe: 2005-2022
+  cp_timeframe: 2015-2022
   nav_list:
     - WSO2 Security and Compliance Documentation
     - Security Processes and Programs
