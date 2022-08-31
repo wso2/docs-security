@@ -27,12 +27,12 @@ This document provides details of all necessary steps for using OWASP Dependency
 
 This is useful when you have the external dependencies (libraries/jar files) downloaded and put in a folder, where you can run the CLI tool against the folder for analyzing the libraries in it and generate the vulnerability assessment report. 
 
-![Placeholder](/assets/images/secure-coding-guidelines/dc-cli-01.png){ .post-image }
+![Placeholder]({{base_path}}/assets/images/secure-coding-guidelines/dc-cli-01.png){ .post-image }
 
 Download the CLI tool[^3] and extract the zip file. In the **bin** directory of the **dependency-check** tool, you can find the executable script **dependency-check.bat** file which is for running the tool on Windows operating system and the **dependency-check.sh** file which is for running on Linux. 
 If you just execute the script without providing any parameters, you can see the list of parameters that you need to provide for performing the vulnerability analysis and generating reports. 
 
-![Placeholder](/assets/images/secure-coding-guidelines/dc-cli-02.png){ .post-image }
+![Placeholder]({{base_path}}/assets/images/secure-coding-guidelines/dc-cli-02.png){ .post-image }
 
 Following are the basic parameters that are required when running a vulnerability analysis.
 
@@ -60,11 +60,11 @@ Following is the sample command to run for performing the vulnerability analysis
 
 When you run the OWASP Dependency Check for the very first time, it would download the known vulnerabilities from the National Vulnerability Database (NVD)[^6] and it would maintain these information in a local database. So, when running this for the very first time, it would take some time as it has to download all the vulnerability details.
 
-![Placeholder](/assets/images/secure-coding-guidelines/dc-cli-03.png){ .post-image }
+![Placeholder]({{base_path}}/assets/images/secure-coding-guidelines/dc-cli-03.png){ .post-image }
 
 By default the duration for syncing the local database and NVD is 4 hours. If you have run the Dependency Check within 4 hours, it will just use the data in the local database without trying to update the local database with NVD.
 
-![Placeholder](/assets/images/secure-coding-guidelines/dc-cli-04.png){ .post-image }
+![Placeholder]({{base_path}}/assets/images/secure-coding-guidelines/dc-cli-04.png){ .post-image }
 
 Once you run the Dependency Check against the folder where your project dependencies are, it would generate the vulnerability analysis report. 
 
@@ -169,17 +169,17 @@ This is an example suppression.xml file.
 ## Analyzing the Reports
 Below is an example on analyzing the vulnerability report.
 
-![Placeholder](/assets/images/secure-coding-guidelines/dc-cli-05.png){ .post-image }
+![Placeholder]({{base_path}}/assets/images/secure-coding-guidelines/dc-cli-05.png){ .post-image }
 
 Based on the analysis, we can see that the **commons-httpclient-3.1.jar**[^4] is having 3 known security vulnerabilities, but **httpclient-4.5.2.jar**[^5] is not having any reported security vulnerability. 
 
 Following are the 3 known security vulnerabilities reported against **commons-httpclient-3.1.jar**[^4]. 
 
-![Placeholder](/assets/images/secure-coding-guidelines/dc-cli-06.png){ .post-image }
+![Placeholder]({{base_path}}/assets/images/secure-coding-guidelines/dc-cli-06.png){ .post-image }
 
-![Placeholder](/assets/images/secure-coding-guidelines/dc-cli-07.png){ .post-image }
+![Placeholder]({{base_path}}/assets/images/secure-coding-guidelines/dc-cli-07.png){ .post-image }
 
-![Placeholder](/assets/images/secure-coding-guidelines/dc-cli-08.png){ .post-image }
+![Placeholder]({{base_path}}/assets/images/secure-coding-guidelines/dc-cli-08.png){ .post-image }
 
 A known security vulnerability would have a unique identification number (CVE)[^11] and a score (CVSS[^12], a scale from 0 to 10) and the severity. The severity is decided based on the CVSS score. The identification number follows the format "CVE-`<reported year>`-`sequence number`".
 
@@ -196,7 +196,7 @@ In such a situation, you might need to get a vulnerability analysis report for 3
 
 When you get the Dependency Check report, next to each vulnerability in the report, there is a button named **suppress**. If you want to hide that vulnerability from the report, click on this button and it will popup a message that contains some XML content. 
 
-![Placeholder](/assets/images/secure-coding-guidelines/dc-cli-09.png){ .post-image }
+![Placeholder]({{base_path}}/assets/images/secure-coding-guidelines/dc-cli-09.png){ .post-image }
 
 You can create an XML file with below content and put the XML content you got by clicking on the suppress button as child elements under the `<suppressions>` tag.
 
@@ -253,11 +253,11 @@ When you are using the Dependency Check Maven plugin, you can add the suppressio
 
 Then the report would show how many vulnerabilities are suppressed. 
 
-![Placeholder](/assets/images/secure-coding-guidelines/dc-cli-10.png){ .post-image }
+![Placeholder]({{base_path}}/assets/images/secure-coding-guidelines/dc-cli-10.png){ .post-image }
 
 Also the report would contain a new section called **Suppressed Vulnerabilities** and you can make this section hidden or visible in the report. 
 
-![Placeholder](/assets/images/secure-coding-guidelines/dc-cli-11.png){ .post-image }
+![Placeholder]({{base_path}}/assets/images/secure-coding-guidelines/dc-cli-11.png){ .post-image }
 
 
 ## Summary

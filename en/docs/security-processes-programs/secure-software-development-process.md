@@ -16,7 +16,7 @@ Security is not an afterthought at WSO2. It's an integral part of each phase in 
 ![Placeholder]({{base_path}}/assets/images/product-security/Secure Software Development Process - Overall-7.png){ .post-image }
 
 
-[WSO2 Secure Engineering Guidelines](/security-guidelines/secure-engineering-guidelines/) provide the overall security guidance during design, development and code review phases. A group of security leads review designs of new features and also review the code to make sure that engineers are adhering to the guidelines set forth. Some security checks are further enforced when engineers commit the code to the WOS2 maintained code repositories. 
+[WSO2 Secure Engineering Guidelines]({{base_path}}/security-guidelines/secure-engineering-guidelines/) provide the overall security guidance during design, development and code review phases. A group of security leads review designs of new features and also review the code to make sure that engineers are adhering to the guidelines set forth. Some security checks are further enforced when engineers commit the code to the WOS2 maintained code repositories. 
 
 Furthermore, before a product release, there are mandatory security scans that look at the security of the release candidate in different perspectives. All the security findings are securely stored into a centralized systems for future reference. 
 
