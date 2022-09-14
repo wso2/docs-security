@@ -338,7 +338,7 @@ extra:
       link: https://www.linkedin.com/company/wso2
   site_version: 1.0.0
   cp_timeframe: 2015-2022
-  base_path: ''
+  base_path: https://security.docs.wso2.com/en/latest/
   nav_list:
     - WSO2 Security and Compliance Documentation
     - Security Processes and Programs
