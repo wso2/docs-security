@@ -50,8 +50,8 @@ nav:
     - 'Secure Software Development Process': 'security-processes-programs/secure-software-development-process.md'
     - 'Vulnerability Management Process': 'security-processes-programs/vulnerability-management-process.md'
     - 'Reward and Acknowledgement Program':
-      - 'Reward and Acknowledgement Program': 'security-processes-programs/reward-and-acknowledgement-program.md'
-      - 'Security Hall of Fame': 'security-processes-programs/hall-of-fame.md'
+      - 'Reward and Acknowledgement Program': 'security-processes-programs/reward-and-acknowledgement-program/index.md'
+      - 'Security Hall of Fame': 'security-processes-programs/reward-and-acknowledgement-program/hall-of-fame.md'
   - 'Security Guidelines':
     - '': 'security-guidelines/index.md'
     - 'Secure Engineering Guidelines':
@@ -338,7 +338,7 @@ extra:
       link: https://www.linkedin.com/company/wso2
   site_version: 1.0.0
   cp_timeframe: 2015-2022
-  base_path: https://security.docs.wso2.com/en/latest/
+  base_path: ''
   nav_list:
     - WSO2 Security and Compliance Documentation
     - Security Processes and Programs

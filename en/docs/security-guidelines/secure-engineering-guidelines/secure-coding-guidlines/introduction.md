@@ -34,12 +34,12 @@ The purpose of this document is to increase the security awareness and make sure
 
 ## Organization of the Document
 
-[General Recommendations for Secure Coding](general-recommendations-for-secure-coding/) section of the document discusses different attacks or security threats that engineers must focus on while engineering a product or an application. Prevention techniques are discussed in generic form, and there are sections that discuss programming language specific prevention techniques.
+[General Recommendations for Secure Coding]({{base_path}}/security-guidelines/secure-engineering-guidelines/secure-coding-guidlines/general-recommendations-for-secure-coding/) section of the document discusses different attacks or security threats that engineers must focus on while engineering a product or an application. Prevention techniques are discussed in generic form, and there are sections that discuss programming language specific prevention techniques.
 
-[OWASP Top 10 - 2017 Prevention](owasp-t10-2017-prevention/) section of the document categorizes OWASP Top 10 2017 list of the most critical application security risks.
+[OWASP Top 10 - 2017 Prevention]({{base_path}}/security-guidelines/secure-engineering-guidelines/secure-coding-guidlines/owasp-t10-2017-prevention/) section of the document categorizes OWASP Top 10 2017 list of the most critical application security risks.
 
-[OWASP Top 10 - 2013 Prevention](owasp-t10-2013-prevention/) section of the document categorizes OWASP Top 10 2013 list of the most critical application security risks.
+[OWASP Top 10 - 2013 Prevention]({{base_path}}/security-guidelines/secure-engineering-guidelines/secure-coding-guidlines/owasp-t10-2013-prevention/) section of the document categorizes OWASP Top 10 2013 list of the most critical application security risks.
 
-[OWASP Mobile Top 10 Prevention](owasp-mobile-t10-prevention/) section of the document categorizes different attacks or security threats that engineers must focus on while engineering mobile applications. Prevention techniques are discussed in generic form, and there are sections that discuss mobile platform specific prevention techniques.
+[OWASP Mobile Top 10 Prevention]({{base_path}}/security-guidelines/secure-engineering-guidelines/secure-coding-guidlines/owasp-mobile-t10-prevention/) section of the document categorizes different attacks or security threats that engineers must focus on while engineering mobile applications. Prevention techniques are discussed in generic form, and there are sections that discuss mobile platform specific prevention techniques.
 
-[Tooling Recommendations for Secure Coding](tooling-recommendations-for-secure-coding/) section brings together all the documentations relevant to security related tooling used within WSO2, and recommendations relevant to usage of such tools in the engineering process.
+[Tooling Recommendations for Secure Coding]({{base_path}}/security-guidelines/secure-engineering-guidelines/secure-coding-guidlines/tooling-recommendations-for-secure-coding/) section brings together all the documentations relevant to security related tooling used within WSO2, and recommendations relevant to usage of such tools in the engineering process.

@@ -100,7 +100,7 @@ Following exceptions and rules apply in this program:
 
 
 ### Investigating and Reporting Bugs
-If you have found a vulnerability, please contact us via channels mentioned in [WSO2 Security Vulnerability Reporting Guidelines](/security-guidelines/vulnerability-reporting-guidelines/).
+If you have found a vulnerability, please contact us via channels mentioned in [WSO2 Security Vulnerability Reporting Guidelines]({base_path}}/security-guidelines/vulnerability-reporting-guidelines/).
 
 A good bug report should include the following information at a minimum:
 
