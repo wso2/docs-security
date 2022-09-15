@@ -16,7 +16,7 @@ version: 2.2
 ## Revision History
 
 | Version | Release Date | Contributors / Authors | Summary of Changes |
-| ------- | ------------ | ---------------------- |------------------- |
+| ------- | ------------ | ---------------------- | ------------------ |
 | 2.2     | Aug 09, 2022 | [Chathura Ranathunga](https://wso2.com/about/team/chathura-ranathunga/) | Changing the formatting and the structure of the document | 
 | 2.1     | Oct 22, 2018 | [Kasun Dharmadasa](https://wso2.com/about/team/kasun-dharmadasa/)  | Adding the Zip Slip Vulnerability prevention |
 | 2.0     | Sep 4, 2018  | [Mathuriga Thavarajah](https://wso2.com/about/team/mathuriga-thavarajah/), [Ayoma Wijethunga](https://wso2.com/about/team/ayoma-wijethunga) | Updating OWASP Top 10 list to OWASP Top 10 Application Security Risks - 2017 list |
@@ -34,12 +34,12 @@ The purpose of this document is to increase the security awareness and make sure
 
 ## Organization of the Document
 
-[General Recommendations for Secure Coding]({{base_path}}/security-guidelines/secure-engineering-guidelines/secure-coding-guidlines/general-recommendations-for-secure-coding/) section of the document discusses different attacks or security threats that engineers must focus on while engineering a product or an application. Prevention techniques are discussed in generic form, and there are sections that discuss programming language specific prevention techniques.
+[General Recommendations for Secure Coding]({{#base_path#}}/security-guidelines/secure-engineering-guidelines/secure-coding-guidlines/general-recommendations-for-secure-coding/) section of the document discusses different attacks or security threats that engineers must focus on while engineering a product or an application. Prevention techniques are discussed in generic form, and there are sections that discuss programming language specific prevention techniques.
 
-[OWASP Top 10 - 2017 Prevention]({{base_path}}/security-guidelines/secure-engineering-guidelines/secure-coding-guidlines/owasp-t10-2017-prevention/) section of the document categorizes OWASP Top 10 2017 list of the most critical application security risks.
+[OWASP Top 10 - 2017 Prevention]({{#base_path#}}/security-guidelines/secure-engineering-guidelines/secure-coding-guidlines/owasp-t10-2017-prevention/) section of the document categorizes OWASP Top 10 2017 list of the most critical application security risks.
 
-[OWASP Top 10 - 2013 Prevention]({{base_path}}/security-guidelines/secure-engineering-guidelines/secure-coding-guidlines/owasp-t10-2013-prevention/) section of the document categorizes OWASP Top 10 2013 list of the most critical application security risks.
+[OWASP Top 10 - 2013 Prevention]({{#base_path#}}/security-guidelines/secure-engineering-guidelines/secure-coding-guidlines/owasp-t10-2013-prevention/) section of the document categorizes OWASP Top 10 2013 list of the most critical application security risks.
 
-[OWASP Mobile Top 10 Prevention]({{base_path}}/security-guidelines/secure-engineering-guidelines/secure-coding-guidlines/owasp-mobile-t10-prevention/) section of the document categorizes different attacks or security threats that engineers must focus on while engineering mobile applications. Prevention techniques are discussed in generic form, and there are sections that discuss mobile platform specific prevention techniques.
+[OWASP Mobile Top 10 Prevention]({{#base_path#}}/security-guidelines/secure-engineering-guidelines/secure-coding-guidlines/owasp-mobile-t10-prevention/) section of the document categorizes different attacks or security threats that engineers must focus on while engineering mobile applications. Prevention techniques are discussed in generic form, and there are sections that discuss mobile platform specific prevention techniques.
 
-[Tooling Recommendations for Secure Coding]({{base_path}}/security-guidelines/secure-engineering-guidelines/secure-coding-guidlines/tooling-recommendations-for-secure-coding/) section brings together all the documentations relevant to security related tooling used within WSO2, and recommendations relevant to usage of such tools in the engineering process.
+[Tooling Recommendations for Secure Coding]({{#base_path#}}/security-guidelines/secure-engineering-guidelines/secure-coding-guidlines/tooling-recommendations-for-secure-coding/) section brings together all the documentations relevant to security related tooling used within WSO2, and recommendations relevant to usage of such tools in the engineering process.

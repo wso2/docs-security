@@ -13,10 +13,10 @@ ___
 
 Security is not an afterthought at WSO2. It's an integral part of each phase in the development life cycle. This makes sure security vulnerabilities are identified and mitigated as early as possible.
 
-![Placeholder]({{base_path}}/assets/images/product-security/Secure Software Development Process - Overall-7.png){ .post-image }
+![Placeholder]({{#base_path#}}/assets/images/product-security/Secure Software Development Process - Overall-7.png){ .post-image }
 
 
-[WSO2 Secure Engineering Guidelines]({{base_path}}/security-guidelines/secure-engineering-guidelines/) provide the overall security guidance during design, development and code review phases. A group of security leads review designs of new features and also review the code to make sure that engineers are adhering to the guidelines set forth. Some security checks are further enforced when engineers commit the code to the WOS2 maintained code repositories. 
+[WSO2 Secure Engineering Guidelines]({{#base_path#}}/security-guidelines/secure-engineering-guidelines/) provide the overall security guidance during design, development and code review phases. A group of security leads review designs of new features and also review the code to make sure that engineers are adhering to the guidelines set forth. Some security checks are further enforced when engineers commit the code to the WOS2 maintained code repositories. 
 
 Furthermore, before a product release, there are mandatory security scans that look at the security of the release candidate in different perspectives. All the security findings are securely stored into a centralized systems for future reference. 
 
@@ -61,12 +61,12 @@ Find Security Bugs Spotbugs plugin is recommended to be used in development envi
 
 Before sending any GItHub pull-requests (PR), developers must confirm the following workflow:
 
-![Placeholder]({{base_path}}/assets/images/product-security/Secure Software Development Process - Overall-5.png){ .post-image }
+![Placeholder]({{#base_path#}}/assets/images/product-security/Secure Software Development Process - Overall-5.png){ .post-image }
 <p class="add-caption">Figure 2: Developer workflow before creating a pull-request.</p>
 
 Relevant checks are further enforced by the GitHub pull-request template:
 
-![Placeholder]({{base_path}}/assets/images/product-security/pull-request-template.png){ .post-image }
+![Placeholder]({{#base_path#}}/assets/images/product-security/pull-request-template.png){ .post-image }
 
 
 #### Code Reviews
@@ -131,7 +131,7 @@ WSO2 uses [OWASP Dependency Track](https://owasp.org/www-project-dependency-trac
 
 #### Mandatory checks during releases
 
-![Placeholder]({{base_path}}/assets/images/product-security/release-process-sec-checks.png){ .post-image align=center }
+![Placeholder]({{#base_path#}}/assets/images/product-security/release-process-sec-checks.png){ .post-image align=center }
 
 To request a security scan (Veracode, Qualys or Dependency Track), product teams create a JIRA in the internal security JIRA project, attach the related product pack, and send an email notification to <security-leads-group@wso2.com>, with a reference to the corresponding JIRA. 
 
