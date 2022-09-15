@@ -6,7 +6,7 @@ published: 22nd October 2018
 
 # General Recommendations for Secure Coding
 
-<p class="doc-info">Published: 22nd October 2018</p>
+<p class="doc-info">Published: October 22, 2018</p>
 ---
 
 This section discusses different attacks or security threats that engineers must focus on while engineering a product or an application. Prevention techniques are discussed in generic form, and there are sections that discuss programming language specific prevention techniques.
@@ -365,7 +365,7 @@ Proper output sanitization should be applied, where output consists of user inpu
 #### Browser Level Protection
 Modern browsers have built-in XSS prevention mechanisms. However, certain browsers require explicitly enabling these mechanisms using special response headers. `X-XSS-Protection: 1; mode=block` header should be set in HTTP responses to make sure browser level protection is enabled in all supported browsers. 
 
-For additional details on HTTP security related headers, refer to [Security Related HTTP Headers](/security-guidelines/secure-engineering-guidelines/security-related-http-headers.md) section.
+For additional details on HTTP security related headers, refer to [Security Related HTTP Headers]({{#base_path#}}/security-guidelines/secure-engineering-guidelines/security-related-http-headers/) section.
 
 However, this is not a permanent or justifiable solution for XSS. Instead, browser level protection should only be considered as an additional protection mechanism. 
 
@@ -468,7 +468,7 @@ It is recommended to limit to pre-packaged FORMATTING sanitizer policy[^17]. How
 `org.apache.catalina.filters.HttpHeaderSecurityFilter` Servlet Filter should be used to add X-XSS-Protection header to the HTTP response. 
 
 !!! tip hint important "WSO2 Document Reference"
-    Further information on required changes and recommended configuration for WSO2 products as well as production deployments are available at [Engineering Guidelines - Security Related HTTP Headers]().
+    Further information on required changes and recommended configuration for WSO2 products as well as production deployments are available at [Engineering Guidelines - Security Related HTTP Headers]({{#base_path#}}/security-guidelines/secure-engineering-guidelines/security-related-http-headers/).
 
 
 ### JavaScript Specific Recommendations
@@ -572,7 +572,7 @@ HTML Purifier[^19] should be used to sanitize HTML content. Default HTML Purifie
 #### Browser Level Protection
 
 !!! tip hint important "WSO2 Document Reference"
-    Further information on required changes and recommended configuration for WSO2 products as well as production deployments are available at [Engineering Guidelines - Security Related HTTP Headers]().
+    Further information on required changes and recommended configuration for WSO2 products as well as production deployments are available at [Engineering Guidelines - Security Related HTTP Headers]({{#base_path#}}/security-guidelines/secure-engineering-guidelines/security-related-http-headers/).
 
 
 ## XML External Entity (XXE)
@@ -882,7 +882,7 @@ HTTP Public-Key-Pins Header (HPKP)
     In addition, HPKP header prevents attack patterns such as SSLSplit attack[^37].
 
     !!! tip hint important "WSO2 Document Reference"
-        Further information on required changes and recommended configuration for WSO2 products as well as production deployments are available at [Engineering Guidelines - Security Related HTTP Headers]().
+        Further information on required changes and recommended configuration for WSO2 products as well as production deployments are available at [Engineering Guidelines - Security Related HTTP Headers]({{#base_path#}}/security-guidelines/secure-engineering-guidelines/security-related-http-headers/).
 
 
 Avoiding predictable session token
@@ -1376,7 +1376,7 @@ Outdated components may have known vulnerabilities that are exploitable. Public 
 ### Introducing New External Dependencies
 When introducing new external dependency components, use the most up-to-date version of the component. 
 
-Selected the most up-to-date version should be scanned by using OWASP Dependency Check for known vulnerabilities by following [Engineering Guidelines - External Dependency Analysis using OWASP Dependency Check](). 
+Selected the most up-to-date version should be scanned by using OWASP Dependency Check for known vulnerabilities by following [Engineering Guidelines - External Dependency Analysis using OWASP Dependency Check]({{#base_path#}}/security-guidelines/secure-engineering-guidelines/external-dependency-analysis-analysis-using-owasp-dependency-check/). 
 
 External dependency, as well as all transitive dependencies getting added should be scanned using instructions from "OWASP Dependency Check CLI" section of the document.
 
@@ -1394,7 +1394,7 @@ If the most up-to-date version contains a known vulnerability, and if there is n
 
 
 ### Vulnerabilities in Current Dependencies 
-OWASP Dependency Check maven plugin should be integrated into the build process of latest product builds, by following [Engineering Guidelines - External Dependency Analysis using OWASP Dependency Check](). 
+OWASP Dependency Check maven plugin should be integrated into the build process of latest product builds, by following [Engineering Guidelines - External Dependency Analysis using OWASP Dependency Check]({{#base_path#}}/security-guidelines/secure-engineering-guidelines/external-dependency-analysis-analysis-using-owasp-dependency-check/). 
 
 !!! tip hint important "WSO2 Document Reference"
     Further information on required changes and code-level examples are available at "Engineering Guidelines - External Dependency Analysis using OWASP Dependency Check".
@@ -1415,7 +1415,7 @@ When it is identified that a security vulnerability has been identified for a pa
     3. If not, update the mail thread with the reasoning and request approval of the Security and Compliance (SC) Team to add relevant mitigation information into OWASP Dependency Check, suppression file relevant to the component.
 
     :   !!! danger error "Alert - Approval Required"
-            The Security and Compliance Team should review and merge pull-requests, adding any entries to a particular component's OWASP Dependency Check suppression file. During the review, mitigated reason, dependency source, and usage path will be reviewed. This is further explained in [Engineering Guidelines - OWASP Dependency Check]().
+            The Security and Compliance Team should review and merge pull-requests, adding any entries to a particular component's OWASP Dependency Check suppression file. During the review, mitigated reason, dependency source, and usage path will be reviewed. This is further explained in [Engineering Guidelines - OWASP Dependency Check]({{#base_path#}}/security-guidelines/secure-engineering-guidelines/external-dependency-analysis-analysis-using-owasp-dependency-check/).
 
 
 ## Insufficient logging and Monitoring
@@ -1490,7 +1490,7 @@ If an attacker creates a forged HTTP request with the intention of performing a 
 OWASP CSRFGuard is used to implement Synchronizer Token Pattern in WSO2 Carbon Kernel 4 (4.4.6+) products. OWASP CSRFGuard provides required classes to generate the per-session token and to do necessary validation on state-changing operations. Furthermore, it provides a JavaScript which is capable of dynamically adding CSRF Token as a hidden input and overriding XMLHttpRequest to include CSRF Token in AJAX requests.
 
 !!! tip hint important "WSO2 Document Reference"
-    Further information on required changes and code-level examples are available at [Engineering Guidelines - OWASP CSRF Guard]() document.
+    Further information on required changes and code-level examples are available at [Engineering Guidelines - OWASP CSRF Guard]({{#base_path#}}/security-guidelines/secure-engineering-guidelines/owasp-csrf-guard/) document.
 
 
 In summary, when integrating OWASP CSRFGuard with a product, it is required to do following changes:
@@ -1639,7 +1639,7 @@ In addition to non-standard X-Frame-Options header, the standard frame-ancestors
 `org.apache.catalina.filters.HttpHeaderSecurityFilter` Servlet Filter should be used to add X-Frame-Options header to the HTTP response. 
 
 !!! tip hint important "WSO2 Document Reference"
-    Further information on required changes and recommended configuration for WSO2 products as well as production deployments are available at [Engineering Guidelines - Security Related HTTP Headers](/security-guidelines/secure-engineering-guidelines/security-related-http-headers.md).
+    Further information on required changes and recommended configuration for WSO2 products as well as production deployments are available at [Engineering Guidelines - Security Related HTTP Headers]({{#base_path#}}/security-guidelines/secure-engineering-guidelines/security-related-http-headers/).
 
 
 ## Cross-Origin Resource Sharing
@@ -1653,7 +1653,7 @@ A wildcard same-origin policy is appropriate when a page or API response is cons
 
 ## Security Related HTTP Headers
 There are HTTP response headers that can be used to configure the security controls enforced by browsers.
-WSO2 Document Reference: Further information on required changes and recommended configuration for WSO2 products as well as production deployments are available at [Engineering Guidelines - Security Related HTTP Headers](/security-guidelines/secure-engineering-guidelines/security-related-http-headers.md).
+WSO2 Document Reference: Further information on required changes and recommended configuration for WSO2 products as well as production deployments are available at [Engineering Guidelines - Security Related HTTP Headers]({{#base_path#}}/security-guidelines/secure-engineering-guidelines/security-related-http-headers/).
 
 
 ## Securing Cookies
