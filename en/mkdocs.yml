@@ -277,6 +277,8 @@ nav:
       - '2020':
         - '': 'security-announcements/incident-clarifications/2020/index.md'
         - 'SolarWinds SUNBURST breach': 'security-announcements/incident-clarifications/2020/solarwinds-sunburst-breach.md'
+  - 'Report Vulnerabilities':
+      - '': 'report-vulnerabilities.md'
   - '404 - Not found': 'page-not-found.md'
 
 # Extensions
@@ -322,7 +324,7 @@ plugins:
       jinja_options:
         variable_start_string: '{{#'
         variable_end_string: '#}}'
-  
+
 # Extra
 extra_css:
   - assets/lib/highlightjs/default.min.css
@@ -349,3 +351,4 @@ extra:
     - Security Processes and Programs
     - Security Guidelines
     - Security Announcements
+    - Report Vulnerabilities
