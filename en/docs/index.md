@@ -11,7 +11,7 @@ template: templates/single-column.html
         <p>
         Security is our top priority and we proactively look for ways to improve the security of our products, services,
         and infrastructure. Our security program is transparent so you can be confident when using our products and 
-        services, and infrastructure for mission-critical projects. 
+        services and infrastructure for mission-critical projects. 
         </p>
         <p style="margin-bottom:5%">
         We welcome all contributions from our user community, developers, and security researchers to reinforce our 
@@ -30,7 +30,7 @@ template: templates/single-column.html
                     </div>
                     <div class="card-content">
                         <p class="title">Security Processes and Programs</p>
-                        <p class="hint">How we manage various aspects of security in WSO2 products</p>
+                        <p class="hint">Learn how we manage various aspects of security in WSO2 products</p>
                     </div>
                 </div>
             </div>
@@ -44,7 +44,7 @@ template: templates/single-column.html
                     </div>
                     <div class="card-content">
                         <p class="title">Security Guidelines</p>
-                        <p class="hint">How to enforce security-first development and deployment practices</p>
+                        <p class="hint">Learn how to enforce security-first development and deployment practices</p>
                     </div>
                 </div>
             </div>
