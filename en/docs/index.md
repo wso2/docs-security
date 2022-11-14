@@ -23,7 +23,7 @@ template: templates/single-column.html
         <div class="content">
             <!-- begin card -->
             <div class="card-wrapper">
-    			<div class="card" onclick="location.href='security-processes-programs/';">
+    			<div class="card" onclick="location.href='security-processes/';">
                     <div class="line"></div>
                     <div class="icon">
                         <i class="material-icons md-36">list</i>
@@ -65,14 +65,14 @@ template: templates/single-column.html
             <!-- end card -->
             <!-- begin card -->
             <div class="card-wrapper">
-                <div class="card" onclick="location.href='report-vulnerabilities';">
+                <div class="card" onclick="location.href='/security-vulnerabilities/reward-and-acknowledgement-program/';">
                     <div class="line"></div>
                     <div class="icon">
-                        <i class="material-icons md-36">flag_circle</i>
+                        <i class="material-icons md-36">military_tech</i>
                     </div>
                     <div class="card-content">
-                        <p class="title">Report Vulnerabilities</p>
-                        <p class="hint">Report security issues via our private and highly confidential security mailing lists</p>
+                        <p class="title">Rewards and Acknowledgements</p>
+                        <p class="hint">Report security issues via our private and highly confidential security mailing lists and get rewarded</p>
                     </div>
                 </div>
             </div>
