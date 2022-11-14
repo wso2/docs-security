@@ -8,11 +8,6 @@ version: 2.2
 
 # Secure Coding Guidelines
 
-<p class="doc-info">Published: October 22, 2018</p>
-<p class="doc-info">Updated: August 09, 2022</p>
-<p class="doc-info">Version: 2.2</p>
----
-
 ## Revision History
 
 | Version | Release Date | Contributors / Authors | Summary of Changes |

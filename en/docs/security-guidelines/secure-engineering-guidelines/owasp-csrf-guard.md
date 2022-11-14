@@ -6,9 +6,6 @@ version: 1.1
 ---
 
 # OWASP CSRFGuard
-<p class="doc-info">Published: October 22, 2018</p>
-<p class="doc-info">Version: 1.1</p>
----
 
 ## Revision History
 

@@ -6,9 +6,6 @@ published: October 22, 2018
 
 # Tooling Recommendations for Secure Coding
 
-<p class="doc-info">Published: October 22, 2018</p>
----
-
 ## Security Related Static Code Analysis 
 Find Security Bugs[^2], FindBugs plugin is the recommended tool for performing static security analysis.
 

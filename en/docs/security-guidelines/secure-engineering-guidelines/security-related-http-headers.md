@@ -7,10 +7,6 @@ version: 1.1
 
 # Security Related HTTP Headers
 
-<p class="doc-info">Published: October 22, 2018</p>
-<p class="doc-info">Version: 1.1</p>
----
-
 ## Revision History
 
 | Version | Release Date | Contributors / Authors | Summary of Changes |

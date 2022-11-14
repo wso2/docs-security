@@ -6,9 +6,6 @@ published: 22nd October 2018
 
 # General Recommendations for Secure Coding
 
-<p class="doc-info">Published: October 22, 2018</p>
----
-
 This section discusses different attacks or security threats that engineers must focus on while engineering a product or an application. Prevention techniques are discussed in generic form, and there are sections that discuss programming language specific prevention techniques.
 
 ## SQL Injection

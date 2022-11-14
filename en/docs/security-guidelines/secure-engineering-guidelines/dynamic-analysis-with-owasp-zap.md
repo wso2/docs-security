@@ -7,10 +7,6 @@ version: 1.2
 
 # Dynamic Analysis with OWASP ZAP
 
-<p class="doc-info">Published: October 22, 2017</p>
-<p class="doc-info">Version: 1.2</p>
----
-
 ## Revision History
 
 | Version | Release Date    | Contributors / Authosr | Summary of Changes  |

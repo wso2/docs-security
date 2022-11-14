@@ -6,9 +6,6 @@ published: October 22, 2018
 
 # OWASP Mobile Top 10 Prevention
 
-<p class="doc-info">Published: October 22, 2018</p>
----
-
 ## Introduction
 This section discusses OWASP Mobile Top 10 prevention techniques that should be followed by WSO2 engineers while engineering mobile applications.
 
