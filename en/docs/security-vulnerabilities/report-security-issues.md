@@ -5,9 +5,9 @@ category: security-vulnerabilities
 
 # Report Security Issues
 
-We welcome all contributions from our user community, developers, customers and security researchers to reinforce our 
-security. We strongly encourage you to report security issues to our private and highly confidential security mailing 
-lists mentioned below, before disclosing them in any forums, sites or other groups - public or private.  
+We welcome all contributions from our user community, developers, customers, and security researchers to reinforce the 
+security of our products and services. We strongly encourage you to report security issues to our private and highly confidential security mailing
+lists mentioned below before disclosing them in any forums, sites, or other groups - public or private.
 
 For more information, see [Vulnerability Reporting Guidelines](../security-guidelines/vulnerability-reporting-guidelines.md).
 
