@@ -274,12 +274,12 @@ nav:
       - '2020':
         - '': 'security-announcements/incident-clarifications/2020/index.md'
         - 'SolarWinds SUNBURST breach': 'security-announcements/incident-clarifications/2020/solarwinds-sunburst-breach.md'
-  - 'Security Vulnerabilities':
-    - '': 'security-vulnerabilities/index.md'
-    - 'Report Security Issues': 'security-vulnerabilities/report-security-issues.md'
+  - 'Security Reporting':
+    - '': 'security-reporting/index.md'
+    - 'Report Security Issues': 'security-reporting/report-security-issues.md'
     - 'Reward and Acknowledgement Program':
-      - 'Reward and Acknowledgement Program': 'security-vulnerabilities/reward-and-acknowledgement-program/index.md'
-      - 'Security Hall of Fame': 'security-vulnerabilities/reward-and-acknowledgement-program/hall-of-fame.md'
+      - 'Reward and Acknowledgement Program': 'security-reporting/reward-and-acknowledgement-program/index.md'
+      - 'Security Hall of Fame': 'security-reporting/reward-and-acknowledgement-program/hall-of-fame.md'
   - '404 - Not found': 'page-not-found.md'
 
 # Extensions
@@ -352,4 +352,4 @@ extra:
     - Security Processes
     - Security Guidelines
     - Security Announcements
-    - Security Vulnerabilities
+    - Security Reporting

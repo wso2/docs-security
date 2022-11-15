@@ -65,7 +65,7 @@ template: templates/single-column.html
             <!-- end card -->
             <!-- begin card -->
             <div class="card-wrapper">
-                <div class="card" onclick="location.href='/security-vulnerabilities/reward-and-acknowledgement-program/';">
+                <div class="card" onclick="location.href='/security-reporting/reward-and-acknowledgement-program/';">
                     <div class="line"></div>
                     <div class="icon">
                         <i class="material-icons md-36">military_tech</i>
