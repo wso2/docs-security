@@ -6,15 +6,8 @@ version: 1.2
 ---
 
 # Dynamic Analysis with OWASP ZAP
-
-## Revision History
-
-| Version | Release Date    | Contributors / Authosr | Summary of Changes  |
-|---------|-----------------|------------------------|---------------------|
-| 1.2     | April 25, 2017  | [Ayoma Wijethunga](http://wso2.com/about/team/ayoma-wijethunga)      | Formatting Changes  |
-| 1.1     | June 21, 2016   | [Prakhash Sivakumar](http://wso2.com/about/team/prakhash-sivakumar/)     | ZAP API Information |
-| 1.0     | June 04, 2016   | [Tharindu Edirisinghe](http://wso2.com/about/team/tharindu-edirisinghe)   | Initial version     |
-
+<p class="doc-info">Version: 1.2</p>
+___
 
 ## Introduction
 This document provides details of all necessary steps for configuring the OWASP Zed Attack Proxy (OWASP ZAP)[^1] tool for scanning WSO2 products in order to discover security threats. 

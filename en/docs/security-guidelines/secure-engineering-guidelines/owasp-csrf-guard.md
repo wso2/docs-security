@@ -6,14 +6,8 @@ version: 1.1
 ---
 
 # OWASP CSRFGuard
-
-## Revision History
-
-| Version | Release Date | Contributors / Authors | Summary of Changes |
-| ------- | ------------ | ---------------------- |------------------- |
-| 1.1     | April 07, 2017 | [Ayoma Wijethunga](https://wso2.com/about/team/ayoma-wijethunga/) | Formatting changes |
-| 1.0     | May 30, 2016 | [Ayoma Wijethunga](https://wso2.com/about/team/ayoma-wijethunga/) | Initial version |
-
+<p class="doc-info">Version: 1.1</p>
+___
 
 ## Introduction
 This document introduces OWASP CSRFGuard and further summarizes best practices and configuration recommendations for applications hosted on WSO2 platform. In addition, this document further explains configuration values that can be fine tuned to increase security, based on security requirements of the specific application.

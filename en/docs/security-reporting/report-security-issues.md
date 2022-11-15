@@ -1,6 +1,6 @@
 ---
 title: Report Security Issues
-category: security-vulnerabilities
+category: security-reporting
 ---
 
 # Report Security Issues

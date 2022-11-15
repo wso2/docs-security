@@ -1,6 +1,6 @@
 ---
 title: Security Hall of Fame
-category: security-vulnerabilities
+category: security-reporting
 ---
 
 # Security Hall of Fame

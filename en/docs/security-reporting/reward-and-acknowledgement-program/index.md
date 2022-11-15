@@ -1,6 +1,6 @@
 ---
 title: Reward and Acknowledgement Program
-category: security-vulnerabilities
+category: security-reporting
 published: 14th Sep 2021
 version: 2.1
 ---

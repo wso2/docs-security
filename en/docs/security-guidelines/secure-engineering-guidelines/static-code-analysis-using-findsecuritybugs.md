@@ -6,15 +6,8 @@ version: 1.2
 ---
 
 # Static Code Analysis using FindSecurityBugs
-
-## Revision History
-
-| Version | Release Date    | Contributors / Authosr | Summary of Changes  |
-|---------|-----------------|------------------------|---------------------|
-| 1.2     | April 25, 2017  | [Ayoma Wijethunga](http://wso2.com/about/team/ayoma-wijethunga)      | Formatting Changes  |
-| 1.1     | December 16, 2016   | [Prakhash Sivakumar](http://wso2.com/about/team/prakhash-sivakumar/)     | Minor wording correction |
-| 1.0     | June 28, 2016   | [Tharindu Edirisinghe](http://wso2.com/about/team/tharindu-edirisinghe)   | Initial version     |
-
+<p class="doc-info">Version: 1.2</p>
+___
 
 ## Introduction
 This document provides details of all necessary steps for configuring FindBugs[^1] and Find Security Bugs[^2] for scanning source code in order to discover security threats. 

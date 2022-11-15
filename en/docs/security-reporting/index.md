@@ -1,9 +1,9 @@
 ---
-title: Security Vulnerabilities
-category: security-vulnerabilities
+title: Security Reporting
+category: security-reporting
 ---
 
-# Security Vulnerabilities
+# Security Reporting
 
 This section explains how to [report security issues](report-security-issues.md) to WSO2 products and 
 [get rewarded](reward-and-acknowledgement-program/index.md) for your contributions. 

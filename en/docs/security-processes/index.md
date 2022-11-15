@@ -14,7 +14,7 @@ how we manage any product-vulnerabilities, and our responsible disclosure policy
   Also explains the various tools and practices that we followed when implementing and releasing products.
 * [Vulnerability Management Process](vulnerability-management-process.md): 
   How we manage vulnerabilities related to our products.
-* [Reward and Acknowledgement Program](../security-vulnerabilities/reward-and-acknowledgement-program/index.md): 
+* [Reward and Acknowledgement Program](../security-reporting/reward-and-acknowledgement-program/index.md): 
   How security researchers can disclose vulnerabilities or security issues to WSO2, and get rewarded and acknowledged.
-    * [Security Hall of Fame](../security-vulnerabilities/reward-and-acknowledgement-program/hall-of-fame.md): Researchers who have 
+    * [Security Hall of Fame](../security-reporting/reward-and-acknowledgement-program/hall-of-fame.md): Researchers who have 
       assisted us to identify vulnerabilities related to WSO2 Products and Systems links.
