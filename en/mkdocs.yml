@@ -67,7 +67,6 @@ nav:
       - 'Dynamic Analysis with OWASP ZAP': 'security-guidelines/secure-engineering-guidelines/dynamic-analysis-with-owasp-zap.md'
       - 'External Dependency Analysis Analysis using OWASP Dependency Check': 'security-guidelines/secure-engineering-guidelines/external-dependency-analysis-analysis-using-owasp-dependency-check.md'
     - 'Security Guidelines for Production Deployment': 'security-guidelines/security-guidelines-for-production-deployment.md'
-    - 'Vulnerability Reporting Guidelines': 'security-guidelines/vulnerability-reporting-guidelines.md'
   - 'Security Announcements':
     - '': 'security-announcements/index.md'
     - 'WSO2 Security Advisories': 
@@ -276,6 +275,7 @@ nav:
         - 'SolarWinds SUNBURST breach': 'security-announcements/incident-clarifications/2020/solarwinds-sunburst-breach.md'
   - 'Security Reporting':
     - '': 'security-reporting/index.md'
+    - 'Vulnerability Reporting Guidelines': 'security-reporting/vulnerability-reporting-guidelines.md'
     - 'Report Security Issues': 'security-reporting/report-security-issues.md'
     - 'Reward and Acknowledgement Program':
       - 'Reward and Acknowledgement Program': 'security-reporting/reward-and-acknowledgement-program/index.md'

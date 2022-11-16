@@ -9,7 +9,7 @@ WSO2 is pleased to recognize the security researchers who have helped in making 
 finding and responsibly reporting security vulnerabilities. Each name listed here represents an individual or a company 
 that has reported one or more security vulnerabilities in our products or services and worked with us to rectify the issue.
 
-However, please note that WSO2 maintained websites (including wso2.com) are currently not considered for proceeding 
+However, please note that WSO2-maintained websites (including wso2.com) are currently not considered for proceeding 
 with acknowledgement. Refer to our [Security Reward and Acknowledgement Program](index.md) to learn more about our 
 security researcher community relationship.
 
