@@ -21,3 +21,10 @@ For more information, see [Vulnerability Reporting Guidelines](vulnerability-rep
 | Security issues relevant to <a href="https://wso2.com/solutions/healthcare/" target="_blank" rel="noopener noreferrer" class=" externalLink">Open Healthcare</a> | <a href="mailto:healthcare-security@wso2.com" target="_blank" rel="noopener noreferrer" class=" externalLink">healthcare-security@wso2.com</a> | 987D 5905 4458 6364 B901 B13D 0AB1 AB05 A68A 1BBF <br> <a class="md-button externalLink" href="https://keys.openpgp.org/search?q=987D+5905+4458+6364+B901+B13D+0AB1+AB05+A68A+1BBF" target="_blank" rel="noopener noreferrer">PUBLIC KEY</a> |
 | Security issues relevant to <a href="https://ballerina.io/security-policy/" target="_blank" rel="noopener noreferrer" class=" externalLink">Ballerina</a>| <a href="mailto:security@ballerina.io" target="_blank" rel="noopener noreferrer" class=" externalLink">security@ballerina.io</a> | 0168 DA26 2989 0DB9 4ACD 8367 E683 061E 2F85 C381 <br> <a class="md-button externalLink" href="https://pgp.mit.edu/pks/lookup?search=security%40ballerina.io+&amp;op=index" target="_blank" rel="noopener noreferrer">PUBLIC KEY</a> |
 | Any other security issues relevant to WSO2 | <a href="mailto:security@wso2.com" target="_blank" rel="noopener noreferrer" class=" externalLink">security@wso2.com</a> | CB9B 0914 3E92 AE33 DFEA 5026 E251 CB08 CB61 38F2 <br> <a class="md-button externalLink" href="https://keys.openpgp.org/search?q=CB9B+0914+3E92+AE33+DFEA++5026+E251+CB08+CB61+38F2" target="_blank" rel="noopener noreferrer">PUBLIC KEY</a> |
+
+!!! warning
+    The above Security mailing lists are highly confidential internal mailing lists and are only visible to a selected 
+    group within WSO2. This includes the Security and Compliance Team members, Security Champions of product, service, 
+    and open source project teams, and people who hold leadership roles within WSO2. 
+
+    All the vulnerability reports are treated with the highest priority and confidentiality.
