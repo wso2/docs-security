@@ -1,4 +1,4 @@
-in---
+---
 title: Security Advisories
 summary: Overview of Security Advisories
 category: security-announcements
