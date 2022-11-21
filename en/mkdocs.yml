@@ -274,9 +274,8 @@ nav:
         - '': 'security-announcements/incident-clarifications/2020/index.md'
         - 'SolarWinds SUNBURST breach': 'security-announcements/incident-clarifications/2020/solarwinds-sunburst-breach.md'
   - 'Security Reporting':
-    - '': 'security-reporting/index.md'
-    - 'Vulnerability Reporting Guidelines': 'security-reporting/vulnerability-reporting-guidelines.md'
     - 'Report Security Issues': 'security-reporting/report-security-issues.md'
+    - 'Vulnerability Reporting Guidelines': 'security-reporting/vulnerability-reporting-guidelines.md'
     - 'Reward and Acknowledgement Program':
       - 'Reward and Acknowledgement Program': 'security-reporting/reward-and-acknowledgement-program/index.md'
       - 'Security Hall of Fame': 'security-reporting/reward-and-acknowledgement-program/hall-of-fame.md'

@@ -5,6 +5,9 @@ category: security-reporting
 
 # Report Security Issues
 
+This section explains how to report security issues in WSO2 products and 
+[get rewarded](reward-and-acknowledgement-program/index.md) for your contributions.
+
 We welcome all contributions from our user community, developers, customers, and security researchers to reinforce the 
 security of our products and services. We strongly encourage you to report security issues to our private and highly confidential security mailing
 lists mentioned below before disclosing them in any forums, sites, or other groups - public or private.
