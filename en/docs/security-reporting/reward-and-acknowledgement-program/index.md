@@ -1,14 +1,11 @@
 ---
 title: Reward and Acknowledgement Program
-category: security-processes-programs
+category: security-reporting
 published: 14th Sep 2021
 version: 2.1
 ---
 
 # Reward and Acknowledgement Program
-
-<p class="doc-info">Version: 2.1 | Date: 14th Sep 2021</p>
-___
 
 We have been recognizing the efforts of the security research community for helping us make WSO2 products safer. To honor all such external contributions, we maintain a reward and acknowledgement program for WSO2 owned software products. This document describes the various aspects of this program:
 
@@ -77,13 +74,13 @@ We review reported security issues case-by-case. Following are common issues tha
 To show our appreciation, we provide a reward and an acknowledgement to eligible reporters after the reported issues are fixed and announced to the WSO2 customers and the community users.
 
 !!! tip
-    Please refer to our [Vulnerability Management Process]({{#base_path#}}/security-processes-programs/vulnerability-management-process/) for more details about how we disclose security vulnerabilities.
+    See our [Vulnerability Management Process](../../security-processes/vulnerability-management-process.md) for more details about how we disclose security vulnerabilities.
 
 We will do the following upon reporter's consent:
 
-1. Include the reporter's name in the [Security Hall of Fame]({{#base_path#}}/security-processes-programs/reward-and-acknowledgement-program/hall-of-fame/) web page.
+1. Include the reporter's name in the [Security Hall of Fame](hall-of-fame.md) web page.
 2. Email a certificate of appreciation to the reporter.
-3. Provide one of the following prefered by the reporter: 
+3. Provide one of the following preferred by the reporter: 
     1. Amazon gift voucher worth 50 USD (from: Amazon.com / Amazon.ca / Amazon.cn / Amazon.fr / Amazon.de / Amazon.in / Amazon.it / Amazon.co.jp / Amazon.co.uk / Amazon.es / Amazon.com.au)
     2. PayPal transfer worth 50 USD.
 
@@ -100,7 +97,7 @@ Following exceptions and rules apply in this program:
 
 
 ### Investigating and Reporting Bugs
-If you have found a vulnerability, please contact us via channels mentioned in [WSO2 Security Vulnerability Reporting Guidelines]({{#base_path#}}/security-guidelines/vulnerability-reporting-guidelines/).
+If you have found a vulnerability, please contact us via channels mentioned in [WSO2 Security Vulnerability Reporting Guidelines](../vulnerability-reporting-guidelines.md).
 
 A good bug report should include the following information at a minimum:
 

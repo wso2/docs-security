@@ -1,15 +1,11 @@
 ---
-title: Security Software Development Process
-category: security-processes-programs
+title: Secure Software Development Process
+category: security-processes
 published: 19th Mar 2020
 version: 2.2
 ---
 
-# Security Software Development Process
-
-<p class="doc-info">Version: 2.2 | Date: 19th  Mar 2020</p>
-___
-
+# Secure Software Development Process (SDLC)
 
 Security is not an afterthought at WSO2. It's an integral part of each phase in the development life cycle. This makes sure security vulnerabilities are identified and mitigated as early as possible.
 

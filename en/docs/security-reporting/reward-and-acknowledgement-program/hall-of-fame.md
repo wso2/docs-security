@@ -1,13 +1,17 @@
 ---
 title: Security Hall of Fame
-category: security-processes-programs
+category: security-reporting
 ---
 
 # Security Hall of Fame
 
-WSO2 is pleased to recognize the security researchers who have helped making WSO2 products and services safer by finding and responsibly reporting security vulnerabilities. Each name listed here, represents an individual or a company who has reported one or more security vulnerabilities in our products or services and worked with us to rectify the issue.
+WSO2 is pleased to recognize the security researchers who have helped in making WSO2 products and services safer by 
+finding and responsibly reporting security vulnerabilities. Each name listed here represents an individual or a company 
+that has reported one or more security vulnerabilities in our products or services and worked with us to rectify the issue.
 
-However, please note that WSO2 maintained websites (including wso2.com) are currently not considered for proceeding with acknowledgement. Refer our [Security Reward and Acknowledgement Program]({{#base_path#}}/security-processes-programs/reward-and-acknowledgement-program/) for knowing more on our security researcher community relationship.
+However, please note that WSO2-maintained websites (including wso2.com) are currently not considered for proceeding 
+with acknowledgement. Refer to our [Security Reward and Acknowledgement Program](index.md) to learn more about our 
+security researcher community relationship.
 
 ## WSO2 Products and Infrastructure
 
@@ -87,4 +91,4 @@ However, please note that WSO2 maintained websites (including wso2.com) are curr
 | :-----------|
 | [Dipak Kumar Das](https://twitter.com/d1pakdas) |
 
-We thank you for helping us keep WSO2 products and services safe !
+We thank you for helping us keep WSO2 products and services safe!

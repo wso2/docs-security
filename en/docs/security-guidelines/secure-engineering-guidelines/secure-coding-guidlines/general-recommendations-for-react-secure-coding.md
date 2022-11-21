@@ -5,18 +5,8 @@ published: January 26, 2021
 ---
 
 # General Recommendations for React Secure Coding
-
-<p class="doc-info">Published: January 26, 2021</p>
-<p class="doc-info">Version: 1.0.0</p>
----
-
-## Revision History 
-
-
-| Version | Release Date | Contributors / Authors | Summary of Changes |
-| ------- | ------------ | ---------------------- | ------------------ |
-| 1.0.0   | January 26, 2021 | [Anshajanth Yoganathan](https://wso2.com/about/team/anshajanth-yoganathan/) | Initial version |
-
+<p class="doc-info">Version: 1.0</p>
+___
 
 ## Introduction
 This document summarizes the [WSO2 Secure Coding Guidelines]({{base_path}}/security-guidelines/secure-engineering-guidelines/secure-coding-guidlines/introduction/) that should be followed by WSO2 engineers while developing **React** based WSO2 products, as well as applications used within the organization. 

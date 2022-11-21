@@ -45,13 +45,10 @@ theme:
 # Navigation
 nav:
   - 'WSO2 Security and Compliance Documentation': 'index.md'
-  - 'Security Processes and Programs':
-    - '': 'security-processes-programs/index.md'
-    - 'Secure Software Development Process': 'security-processes-programs/secure-software-development-process.md'
-    - 'Vulnerability Management Process': 'security-processes-programs/vulnerability-management-process.md'
-    - 'Reward and Acknowledgement Program':
-      - 'Reward and Acknowledgement Program': 'security-processes-programs/reward-and-acknowledgement-program/index.md'
-      - 'Security Hall of Fame': 'security-processes-programs/reward-and-acknowledgement-program/hall-of-fame.md'
+  - 'Security Processes':
+    - '': 'security-processes/index.md'
+    - 'Secure Software Development Process': 'security-processes/secure-software-development-process.md'
+    - 'Vulnerability Management Process': 'security-processes/vulnerability-management-process.md'
   - 'Security Guidelines':
     - '': 'security-guidelines/index.md'
     - 'Secure Engineering Guidelines':
@@ -70,7 +67,6 @@ nav:
       - 'Dynamic Analysis with OWASP ZAP': 'security-guidelines/secure-engineering-guidelines/dynamic-analysis-with-owasp-zap.md'
       - 'External Dependency Analysis Analysis using OWASP Dependency Check': 'security-guidelines/secure-engineering-guidelines/external-dependency-analysis-analysis-using-owasp-dependency-check.md'
     - 'Security Guidelines for Production Deployment': 'security-guidelines/security-guidelines-for-production-deployment.md'
-    - 'Vulnerability Reporting Guidelines': 'security-guidelines/vulnerability-reporting-guidelines.md'
   - 'Security Announcements':
     - '': 'security-announcements/index.md'
     - 'WSO2 Security Advisories': 
@@ -277,6 +273,13 @@ nav:
       - '2020':
         - '': 'security-announcements/incident-clarifications/2020/index.md'
         - 'SolarWinds SUNBURST breach': 'security-announcements/incident-clarifications/2020/solarwinds-sunburst-breach.md'
+  - 'Security Reporting':
+    - '': 'security-reporting/index.md'
+    - 'Vulnerability Reporting Guidelines': 'security-reporting/vulnerability-reporting-guidelines.md'
+    - 'Report Security Issues': 'security-reporting/report-security-issues.md'
+    - 'Reward and Acknowledgement Program':
+      - 'Reward and Acknowledgement Program': 'security-reporting/reward-and-acknowledgement-program/index.md'
+      - 'Security Hall of Fame': 'security-reporting/reward-and-acknowledgement-program/hall-of-fame.md'
   - '404 - Not found': 'page-not-found.md'
 
 # Extensions
@@ -322,7 +325,7 @@ plugins:
       jinja_options:
         variable_start_string: '{{#'
         variable_end_string: '#}}'
-  
+
 # Extra
 extra_css:
   - assets/lib/highlightjs/default.min.css
@@ -346,6 +349,7 @@ extra:
   # base_path: ''                                             # base path dev
   nav_list:
     - WSO2 Security and Compliance Documentation
-    - Security Processes and Programs
+    - Security Processes
     - Security Guidelines
     - Security Announcements
+    - Security Reporting

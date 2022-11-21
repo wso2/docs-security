@@ -6,18 +6,8 @@ version: 1.1
 ---
 
 # External Dependency Analysis Analysis using OWASP Dependency Check
-
-<p class="doc-info">Published: October 22, 2017</p>
 <p class="doc-info">Version: 1.2</p>
----
-
-## Revision History
-
-| Version | Release Date    | Contributors / Authosr | Summary of Changes  |
-|---------|-----------------|------------------------|---------------------|
-| 1.1     | June 22, 2017   | [Nadeeshani Pathirennehelage](http://wso2.com/about/team/pathirennehelage-nadeeshani/)     | Running Maven plugin without POM file modification |
-| 1.0     | June 28, 2017   | [Tharindu Edirisinghe](http://wso2.com/about/team/tharindu-edirisinghe)   | Initial version     |
-
+___
 
 ## Introduction
 This document provides details of all necessary steps for using OWASP Dependency Check Command Line Client (CLI)[^1] tool and the Maven plugin[^2] for analyzing 3rd party dependencies used in projects for identifying known security vulnerabilities.

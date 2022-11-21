@@ -6,18 +6,8 @@ version: 1.1
 ---
 
 # Security Related HTTP Headers
-
-<p class="doc-info">Published: October 22, 2018</p>
 <p class="doc-info">Version: 1.1</p>
----
-
-## Revision History
-
-| Version | Release Date | Contributors / Authors | Summary of Changes |
-| ------- | ------------ | ---------------------- |------------------- |
-| 1.1     | April 07, 2017 | [Ayoma Wijethunga](https://wso2.com/about/team/ayoma-wijethunga/) | Formatting changes |
-| 1.0     | May 26, 2016 | [Ayoma Wijethunga](https://wso2.com/about/team/ayoma-wijethunga/) | Initial version |
-
+___
 
 ## Introduction
 This document summarizes the **Security Related HTTP Headers** which should be considered by WSO2 engineers while engineering WSO2 products, as well as applications used within the organization.
