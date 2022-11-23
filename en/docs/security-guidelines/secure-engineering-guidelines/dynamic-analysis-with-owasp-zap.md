@@ -146,7 +146,7 @@ Go to the **Http Sessions** tab. If there are already created sessions listed, y
 
 ![Placeholder](../../assets/images/secure-coding-guidelines/zap-20.png)
 
-Now while the ZAP proxy is tracing the traffic, go to the browser and log in to the site you need to scan. (When ZAP performs the scan, it will attack the URLs with the associated privileges of the user you logged in to). Once you log in, the session ID should be listed in the **HTTP Sessions** tab. Right-click the session and **Set as Active**. 
+Now, while the ZAP proxy is tracing the traffic, go to the browser and log in to the site you need to scan. Note that when ZAP performs the scan, it will attack the URLs with the associated privileges of the user you logged in as. Once you log in, the session ID should be listed in the **HTTP Sessions** tab. Right-click the session and click **Set as Active**. 
 
 ![Placeholder](../../assets/images/secure-coding-guidelines/zap-21.png)
 
