@@ -262,6 +262,8 @@ Following property can be enabled to invalidate the user session if an CSRF atta
 
 ## WSO2 Product Integration Checklist
 
+Follow this checklist when integrating WSO2 products with CSRFGuard.
+
 ### Checklist Item 1
 Make sure state changing actions are performed only with HTTP POST method, with an exception for the usage of PUT and DELETE methods in REST APIs. No state changing operation should happen through GET requests.
 
