@@ -72,7 +72,7 @@ Select the Mode of the scan as **Protected Mode**. With this, you can choose whi
 ### Excluding the Server Logout from Spider
 When we run the ZAP scan with an active user session, if ZAP executes the action to logout from the server in the middle of the scan, the actions that should be performed with a logged in user session would not be performed after that (because the active session is removed with the logout action ). In order to avoid that, we need to exclude the logout action from the Spider.
 
-For that, first, log in to the WSO2 Server and then log out so that the logout action is traced by ZAP. Then, find the **GET:logout_action.jsp** and right-click it and exclude it from Spider.
+For that, first, log in to the WSO2 server and then log out so that the logout action is traced by ZAP. Then, find the **GET:logout_action.jsp**, right-click, and exclude it from Spider.
 
 The logout action is listed under **<server_url\>** &rarr; **carbon** &rarr; **admin** in the Sites tree.
 
