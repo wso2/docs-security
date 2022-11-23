@@ -64,7 +64,7 @@ Now the WSO2 Server URL should be opened in the browser. Also, it should be list
 
 ![Placeholder](../../assets/images/secure-coding-guidelines/zap-07.png)
 
-Select the Mode of the scan as **Protected Mode**. With this, you can choose which sites to be used for attacking. *(For example, if you are trying out the Federated Authentication scenario with WSO2 Identity Server and Facebook, under the Sites in ZAP tool, the Facebook website also will be listed to be attacked. In the scope of scanning, external websites should be removed. With the Protected Mode, you have the capability to select the Sites that should be attacked by the ZAP tool)*
+Select the Mode of the scan as **Protected Mode**. With this, you can choose which sites to be used for attacking. *(For example, if you are trying out the Federated Authentication scenario with WSO2 Identity Server and Facebook, under the Sites in ZAP tool, the Facebook website also will be listed to be attacked. In the scope of scanning, external websites should be removed. With the Protected Mode, you able to select the sites that should be attacked by the ZAP tool)*
 
 
 ## Scanning Process
