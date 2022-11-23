@@ -22,7 +22,7 @@ In addition to that, the ZAP scan is a long-running process. Therefore, it is be
 
 
 ### Fine Tune ZAP Tool with Pre-Configured Policy 
-The ZAP tool should be fine-tuned before running a scan for obtaining better results. For this, you can download the WSO2 policy file for ZAP[^2] which contains the settings to fine-tune ZAP. 
+The ZAP tool should be fine-tuned before running a scan for obtaining better results. For this, you can download the WSO2 policy file for ZAP[^2], which contains the settings to fine-tune ZAP. 
 
 Go to **Analyze** &rarr; **Scan Policy** Manager in ZAP.
 
