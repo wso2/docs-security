@@ -102,7 +102,7 @@ Right-click the **Site** that should be included in the scan and select **Includ
 
 ![Placeholder](../../assets/images/secure-coding-guidelines/zap-11.png)
 
-Then it will show the **Session Properties** window with the regex for including the URL patterns in the scan. Provide a name for the context so that we can identify the site uniquely when we have multiple sites added as different contexts. (For example, when you are testing a product like WSO2 API Manager, the Management Console, API Store and API Publisher can be three major sites where you can add each as a different context)
+Then it will show the **Session Properties** window with the regex for including the URL patterns in the scan. Provide a name for the context so that we can identify the site uniquely when we have multiple sites added as different contexts. For example, when you are testing a product like WSO2 API Manager, the Management Console, API Store, and API Publisher can be three major sites where you can add each as a different context.
 
 ![Placeholder](../../assets/images/secure-coding-guidelines/zap-12.png)
 
