@@ -46,7 +46,7 @@ Go to **Tools** &rarr; **Options** &rarr; **Local Proxy** and set the hostname/I
 
 ![Placeholder](../../assets/images/secure-coding-guidelines/zap-04.png)
 
-Now the ZAP tool is ready to capture the traffic going through the above set port number. The next step is to configure the browser to send traffic through this port number so that the ZAP tool can trace them.
+Now the ZAP tool is ready to capture the traffic going through the port (set above). The next step is to configure the browser to send traffic through this port number so that the ZAP tool can trace them.
 
 In Firefox, go to **Edit** &rarr; **Preferences** and in the **Advanced** options, click **Settings** under the Network tab. 
 
