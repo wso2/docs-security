@@ -2,6 +2,7 @@
 title: General Recommendations for React Secure Coding
 category: security-guidelines
 published: January 26, 2021
+version: 1.0
 ---
 
 # General Recommendations for React Secure Coding
@@ -9,13 +10,13 @@ published: January 26, 2021
 ___
 
 ## Introduction
-This document summarizes the [WSO2 Secure Coding Guidelines]({{base_path}}/security-guidelines/secure-engineering-guidelines/secure-coding-guidlines/introduction/) that should be followed by WSO2 engineers while developing **React** based WSO2 products, as well as applications used within the organization. 
+This document summarizes the [WSO2 Secure Coding Guidelines](introduction.md) that should be followed by WSO2 engineers while developing **React** based WSO2 products, as well as applications used within the organization. 
 
-The purpose of this document is to increase the security awareness and make sure the products and the applications developed by WSO2 are inherently secure, by making sure security best practices are followed throughout the Software Development Life Cycle. 
+The purpose of this document is to increase security awareness and make sure the products and the applications developed by WSO2 are inherently secure, by making sure security best practices are followed throughout the Software Development Life Cycle. 
 
 
 ## Data Binding
-Untrusted user inputs must be handled by react's default data binding with curly brackets. because react’s data binding feature has capability to neutralize the html tags by default. So malicious user's input such as xss script will not be executed on the client side[^1].
+Untrusted user inputs must be handled by the default data binding of React curly brackets. As this binding feature of React can neutralize the HTML tags by default. So malicious user inputs such as the XSS script will not be executed on the client side[^1].
 
 !!! success check done "Example Correct Usage"
     ```js
@@ -24,7 +25,7 @@ Untrusted user inputs must be handled by react's default data binding with curly
       Return (<dev>{input}</dev>);}
     ```
 
-Note above mentioned protection only occurs when rendering user input's data as text content. Likewise this security measurement could be bypassable when rendering the untrusted user input as a html attribute.
+The above-mentioned protection only occurs when rendering user input data as text content. Likewise, this security measurement could be bypassed when rendering an untrusted user input as an HTML attribute.
 
 !!! bug error "Example Incorrect Usage"
     ```js
@@ -34,7 +35,7 @@ Note above mentioned protection only occurs when rendering user input's data as 
     }
     ```
 
-To avoid these unwanted malicious scripts execution, all untrusted user inputs data must be sanitized before put in to the html attribute.
+To avoid these unwanted malicious script execution, all untrusted user input data must be sanitized before they are rendered as HTML attributes.
 
 !!! success check done "Example Correct Usage"
     ```js
@@ -47,8 +48,8 @@ To avoid these unwanted malicious scripts execution, all untrusted user inputs d
     ```
 
 
-## Url Handling
-Urls also can contain dynamic script via "javascript protocol urls". So highly recommended to validate the URLs before using it. When using a validation to an url that should be checked whether that the link has http or https component to avoid javascript based script injection[^2].
+## URL Handling
+URLs can also contain dynamic scripts via `javascript protocol urls`. It is highly recommended to validate the URLs before using them. When validating a URL checked whether that link has HTTP or HTTPS components to avoid Javascript-based script injection[^2].
 
 !!! bug error "Example Incorrect Usage"
     ```js
@@ -69,7 +70,7 @@ Urls also can contain dynamic script via "javascript protocol urls". So highly r
 
 
 ## HTML Rendering
-It is possible to insert html tags directly into rendered DOM nodes using the DOM element's attribute called `dangerouslySetInnerHTML`. If any required situation to use the above mentioned attribute into the wso2 product components that must be contained properly sanitization[^3].
+It is possible to insert HTML tags directly into rendered DOM nodes using the `dangerouslySetInnerHTML` attribute of the DOM element. If required, use this attribute in the wso2 product and with must be contained properly with sanitization[^3].
 
 !!! bug error "Example Incorrect Usage"
     ```js
@@ -79,7 +80,7 @@ It is possible to insert html tags directly into rendered DOM nodes using the DO
     }
     ```
 
-To sanitize the input can use a sanitization library like `DOMPurify`[^4] on any values before placing them into the `dangerouslySetInnerHTML`.
+To sanitize the input, you can use a sanitization library like `DOMPurify`[^4] on any values before placing them into `dangerouslySetInnerHTML`.
 
 !!! success check done "Example Correct Usage"
     ```js
@@ -93,7 +94,7 @@ To sanitize the input can use a sanitization library like `DOMPurify`[^4] on any
 
 
 ## Direct DOM Access
-Accessing the DOM to insert the content into DOM nodes directly should be avoided. So it is highly recommended to apply a proper sanitization when `findDomNode()` and `createRef` to access rendered DOM elements directly to inject content via innerHTML and similar properties.
+Avoid accessing DOM to insert the content into DOM nodes directly. It is highly recommended to apply proper sanitization when `findDomNode()` and `createRef` access rendered DOM elements directly to inject content via innerHTML and similar properties.
 
 !!! bug error "Example Incorrect Usage"
     ```js
@@ -137,7 +138,7 @@ Accessing the DOM to insert the content into DOM nodes directly should be avoide
 ## Server Side Rendering
 
 ### JSON
-Sometimes when rendering the initial state in server side, that dangerously generates a document variable from a JSON string. This is risky because `JSON.stringify()` will blindly turn any data that you give it into a string (so long as it is valid JSON) which will be rerendered in the page. If fields that untrusted users edit and inject malicious scripts.
+Sometimes when rendering the initial state on the server side, that dangerously generates a document variable from a JSON string. This is risky because `JSON.stringify()` will blindly turn any data that you give it into a string (as long as it is a valid JSON), which will be re-rendered on the page. If fields that untrusted users edit and inject malicious scripts.
 
 !!! bug error "Example Incorrect Usage"
     ```js
@@ -146,7 +147,7 @@ Sometimes when rendering the initial state in server side, that dangerously gene
     </script>
     ```
 
-To fix this vulnerability when serializing state on the server to be sent to the client, it must be serialized in a way to sanitize the HTML tags. It is highly recommended to use a library like `serialize-javascript`[^5] to avoid unnecessary HTML tag renders[^6].
+To fix this vulnerability when serializing the state on the server to be sent to the client, it must be serialized in a way that sanitizes the HTML tags. It is highly recommended to use a library like `serialize-javascript`[^5] to avoid unnecessary HTML tag renders[^6].
 
 !!! success check done "Example Correct Usage"
     ```js
@@ -158,8 +159,8 @@ To fix this vulnerability when serializing state on the server to be sent to the
     ```
 
 
-## Third Party Dependencies
-Before using any 3rd party npm packages or libraries on the wso2 products, highly recommended to ensure that the above mentioned vulnerable code components are not used in those dependencies. Also these 3rd party dependencies must not contain any known vulnerabilities. To detect vulnerabilities on 3rd party components can use tools like `nmp audit`[^7].
+## Third-Party Dependencies
+Before using any third-party npm packages or libraries on WSO2 products, ensure that the above-mentioned vulnerable code components are not used in those dependencies. Also, these third-party dependencies must not contain any known vulnerabilities. To detect vulnerabilities in third-party components, use tools like `npm audit`[^7].
 
 
 ## References
