@@ -40,7 +40,7 @@ Since the policy file is imported correctly, you can use this later when you run
 
 
 ### Configuring ZAP Proxy to Trace Browser Traffic
-Rather than providing the URL of the WSO2 server and attacking the URL with ZAP, it is much more effective if we record the UI actions we do on the WSO2 server and let the ZAP tool capture the traffic which can then be used for performing attacks. 
+Rather than providing the URL of the WSO2 server and attacking the URL with ZAP, it is much more effective if we record the UI actions we do on the WSO2 server and let the ZAP tool capture the traffic that can then be used for performing attacks. 
 
 Go to **Tools** &rarr; **Options** &rarr; **Local Proxy** and set the hostname/IP address and the port number for the proxy. *(In this example, the port is set to 7777 which is selected randomly)*
 
