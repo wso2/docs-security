@@ -136,7 +136,7 @@ Go to **Tools** &rarr; **Options** and select the Global Exclude URL option. By 
 
 
 ### Creating the Logged in User Session
-When running the spider to crawl the site, we have to let ZAP discover the URLs that are accessible only by logged-in users as well. For that, we need to create a logged-in user session in ZAP, so that same as a logged-in user can browse the URLs in a web browser, ZAP will be able to crawl through those URLs. 
+When running the spider to crawl the site, we have to let ZAP discover the URLs that are accessible only by logged-in users as well. For that, we need to create a logged-in user session in ZAP, so that in the same way that a logged-in user can browse the URLs in a web browser, ZAP will be able to crawl through those URLs. 
 
 Click  **Show All Tabs** in the toolbox so that it will display all the tabs. 
 
