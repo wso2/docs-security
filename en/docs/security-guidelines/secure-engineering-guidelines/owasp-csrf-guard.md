@@ -10,27 +10,27 @@ version: 1.1
 ___
 
 ## Introduction
-This document introduces OWASP CSRFGuard and further summarizes best practices and configuration recommendations for applications hosted on WSO2 platform. In addition, this document further explains configuration values that can be fine tuned to increase security, based on security requirements of the specific application.
+This document introduces OWASP CSRFGuard and further summarizes best practices and configuration recommendations for applications hosted on the WSO2 platform. In addition, this document further explains configuration values that can be fine-tuned to increase security, based on security requirements of the specific application.
 
 OWASP CSRFGuard[^1] is an OWASP flagship project that provides synchronizer token pattern based CSRF protection in a comprehensive and customizable manner.
 
 CSRFGuard offers complete protection over CSRF scenarios by covering HTTP POST, HTTP GET as well as AJAX based requests.
 
-Forms based on HTTP POST and HTTP GET methods can be protected by injecting CSRF tokens into “action” of the form, or by embedding a token in a hidden field. In addition, HTTP GET requests sent as a result of resource inclusions and links can also be protected by appending the relevant token in the “href” or “src” attributes. Token inclusions can be done manually using the provided JSP tag library or by using a JavaScript based automated injection mechanism. AJAX requests are protected by injecting an additional header which contains CSRF token.
+Forms based on HTTP POST and HTTP GET methods can be protected by injecting CSRF tokens into the “action” of the form, or by embedding a token in a hidden field. In addition, HTTP GET requests sent as a result of resource inclusions and links can also be protected by appending the relevant token in the “href” or “src” attributes. Token inclusions can be done manually using the provided JSP tag library or by using a JavaScript based automated injection mechanism. AJAX requests are protected by injecting an additional header which contains CSRF token.
 
 
 ## Recommended Approach for WSO2 Products
-Any state changing actions should be performed with HTTP POST method, with exception for usage of PUT and DELETE methods in REST APIs.
+Any state changing actions should be performed with the HTTP POST method, with an exception for the usage of PUT and DELETE methods in REST APIs.
 
 CSRFGuard should not validate HTTP GET requests for CSRF protection. Token injection should be performed using JavaScript mechanism[^2]. Hidden input field injection should be the only injection operation performed by the CSRFGuard which will protect HTTP POST based forms. In addition, AJAX POST requests should be protected by sending the CSRF token in a header.
 
-CSRF token values should not be exposed in the URL. In situations where script injection can not be performed and built in AJAX protection does not suffice, product teams may decide to use JST tag library based manual inclusion[^3], after verifying with the Security and Compliance Team. 
+CSRF token values should not be exposed in the URL. In situations where script injection can not be performed and built-in AJAX protection does not suffice, product teams may decide to use JST tag library based manual inclusion[^3], after verifying with the Security and Compliance Team. 
 
 Product teams should append CSRF exclusion URLs exposed from the root context, relevant to the particular product, in `Owasp.CsrfGuard.Carbon.properties` by following the steps mentioned in section 6.
 
 
 ## Securing Web Applications
-Recommended web.xml changes:
+Recommended `web.xml` changes:
 
 ```xml
 <!-- OWASP CSRFGuard context listener used to read CSRF configuration -->
@@ -90,7 +90,7 @@ Include `JavaScriptServlet` in the HTML template of the application, so that `<h
 </html>
 ```
 
-Prepare and store per-application CSRF configuration file according to section 5 and 6 of the document. 
+Prepare and store per-application CSRF configuration files according to sections 5 and 6 of the document. 
 
 
 ## Securing Jaggery Applications
@@ -138,7 +138,7 @@ Recommended jaggery.conf changes:
 ],
 ```
 
-Include `JavaScriptServlet` in the HTML template of the application, so that `<head>` element of all pages that need to submit or make ajax requests to a protected URL should reference it as the first JavaScript inclusion.
+Include `JavaScriptServlet` in the HTML template of the application, so that the `<head>` element of all pages that need to submit or make ajax requests to a protected URL should reference it as the first JavaScript inclusion.
 
 ```html
 <html>
@@ -156,7 +156,7 @@ Include `JavaScriptServlet` in the HTML template of the application, so that `<h
 </html>
 ```
 
-Prepare and store per-application CSRF configuration file according to section 5 and 6 of the document. 
+Prepare and store per-application CSRF configuration files according to sections 5 and 6 of the document. 
 
 
 ## Recommended Default Configuration Changes
@@ -227,7 +227,7 @@ Web applications can include property keys with `org.owasp.csrfguard.unprotected
     ```
 
 !!! info "Note"
-    Please do not use additional “.” (period) symbols in unprotected URL alias which is followed by `org.owasp.csrfguard.unprotected.`
+    Do not use additional “.” (period) symbols in unprotected URL alias which is followed by `org.owasp.csrfguard.unprotected.`
 
 Example relevant to above note:
 
@@ -243,10 +243,10 @@ Example relevant to above note:
 
 
 ## Further Enhancing Security
-This section lists down configurations values that can be used to further enhance security or introduce additional restrictions. Changes to following configuration values should only be done based on customer request or justifiable application level requirement, since they will affect performance or user experience. 
+This section lists down configuration values that can be used to further enhance security or introduce additional restrictions. Changes to following configuration values should only be done based on customer request or justifiable application level requirements since they will affect performance or user experience. 
 
-Below property can be used to change the hashing algorithm used to generate CSRF token:
-org.owasp.csrfguard.PRNG=SHA1PRNG
+The property below can be used to change the hashing algorithm used to generate CSRF token:
+`org.owasp.csrfguard.PRNG=SHA1PRNG`
 
 
 Following property can be used to define the length of CSRF token:
@@ -262,8 +262,10 @@ Following property can be enabled to invalidate the user session if an CSRF atta
 
 ## WSO2 Product Integration Checklist
 
+Follow this checklist when integrating WSO2 products with CSRFGuard.
+
 ### Checklist Item 1
-Make sure state changing actions are performed only with HTTP POST method, with exception for usage of PUT and DELETE methods in REST APIs. No state changing operation should happen through GET requests.
+Make sure state changing actions are performed only with HTTP POST method, with an exception for the usage of PUT and DELETE methods in REST APIs. No state changing operation should happen through GET requests.
 
 
 ### Checklist Item 2
@@ -280,10 +282,10 @@ CSRFGuard configuration should be changed to allow unauthenticated sessions to p
 
 
 ### Checklist Item 3 (For WSO2 Carbon 4.4.6 / 4.4.7 / 4.4.8 based products only)
-CSRFGuard configuration location should be changed in web.xml to adapt into IBM JDK and DevStudio deployment environments. Default configuration location should be changed from */repository/conf/security/Owasp.CsrfGuard.Carbon.properties* to *repository/conf/security/Owasp.CsrfGuard.Carbon.properties*. This can be done using product distribution POM file by adding below rule in `tasks` section of `maven-antrun-plugin` (if any product completely replaces the web.xml file derived from carbon, product should add this change in their version of web.xml file) :
+CSRFGuard configuration location should be changed in `web.xml` to adapt to IBM JDK and DevStudio deployment environments. The default configuration location should be changed from */repository/conf/security/Owasp.CsrfGuard.Carbon.properties* to *repository/conf/security/Owasp.CsrfGuard.Carbon.properties*. This can be done using the product distribution POM file by adding the below rule in the `tasks` section of `maven-antrun-plugin` (if any product completely replaces the `web.xml` file derived from carbon, the product should add this change in their version of `web.xml`) :
 
 !!! info "Note"
-    This path correction should also be done in any web.xml files other than carbon web.xml, and also in *jaggery.conf* files, if a product contains such.
+    This path correction should also be done in any `web.xml` files other than carbon `web.xml`, and also in *jaggery.conf* files, if a product contains such.
 
 ```xml
 <!-- Update Owasp.CsrfGuard.properties file location to fix IBM JDK and DevStudio issue-->
@@ -296,21 +298,21 @@ CSRFGuard configuration location should be changed in web.xml to adapt into IBM 
 
 
 ### Checklist Item 4
-CSRFGuard configuration for Carbon console is available at */repository/conf/security/Owasp.CsrfGuard.Carbon.properties​​*. Product team should append product specific CSRF exclusions for "Carbon console" to configuration file, during "distribution" maven build.
+CSRFGuard configuration for the Carbon console is available at */repository/conf/security/Owasp.CsrfGuard.Carbon.properties​​*. The product team should append product-specific CSRF exclusions for "Carbon console" to configuration file, during "distribution" maven build.
 
-Product specific patterns used in previous implementation are available at [^5] for reference.
+Product specific patterns used in the previous implementation are available at [^5] for reference.
 
-Please refer to [Excluding URLs from CSRF Validation](#excluding-urls-from-csrf-validation) section for more details on adding exclusion patterns.
+Refer to [Excluding URLs from CSRF Validation](#excluding-urls-from-csrf-validation) section for more details on adding exclusion patterns.
 
 
 ### Checklist Item 5
-If a product contains Java web applications other than "Carbon console", make sure web.xml and template follows instructions in "Securing Web Applications" section. 
+If a product contains Java web applications other than "Carbon console", make sure `web.xml` and template follow instructions in "Securing Web Applications" section. 
 
 While preparing the CSRFGuard configuration file for the web application, you may duplicate */repository/conf/security/Owasp.CsrfGuard.Carbon.properties​​* and make application specific changes (if there are any). Thereafter, use `Owasp.CsrfGuard.Config` context parameter to point to the configuration file location.
 
 
 ### Checklist Item 6
-If the product contains Jaggery web applications, make sure jaggery.conf and template follows instructions in [Securing Jaggery Applications](#securing-jaggery-applications) section.
+If the product contains Jaggery web applications, make sure jaggery.conf and template follow the instructions in [Securing Jaggery Applications](#securing-jaggery-applications) section.
 
 While preparing the CSRFGuard configuration file for the Jaggery application, you may duplicate */repository/conf/security/Owasp.CsrfGuard.Carbon.properties​​* and make application specific changes (if there are any). Thereafter, use `Owasp.CsrfGuard.Config` context parameter to point to the configuration file location.
 
@@ -323,7 +325,7 @@ If any component made available within carbon context (root context) product con
 
 
 ### Checklist Item 8
-If  any component contains JavaScript logic that generates forms dynamically using `document.createElement('form')` and submits same to a CSRF protected URL, it is required to add CSRF token manually as a form element using taglib:
+If  any component contains JavaScript logic that generates forms dynamically using `document.createElement('form')` and submits the same to a CSRF-protected URL, it is required to add a CSRF token manually as a form element using taglib:
 
 * Add taglib to the jsp,
     ```java
@@ -340,7 +342,7 @@ If  any component contains JavaScript logic that generates forms dynamically usi
 
 
 ### Checklist Item 9
-If any AJAX POST request sent to a CSRF protected, relative path (path not starting with `http://` or `https://`) contains a colon (`:`) in the request URL,  CSRFGuard will fail to add `X-CSRF-Token` header. This will result in a CSRF error. As a fix, it is required to include the CSRF token manually as a header similar to following:
+If any AJAX POST request sent to a CSRF-protected, relative path (path not starting with `http://` or `https://`) contains a colon (`:`) in the request URL,  CSRFGuard will fail to add an `X-CSRF-Token` header. This will result in a CSRF error. As a fix, it is required to include the CSRF token manually as a header similar to the following:
 
 ```javascript
 jQuery.ajax({
@@ -360,9 +362,9 @@ jQuery.ajax({
 
 
 ### Checklist Item 10
-If an integration test submits data to a URL protected by CSRFGuard, test case should do following to prevent test failures:
+If an integration test submits data to a URL protected by CSRFGuard, the test case should do the following to prevent test failures:
 
-* Call configured JavaScriptServlet with HTTP header `FETCH-CSRF-TOKEN: 1` set to retrieve CSRF token for current session.
+* Call configured JavaScriptServlet with HTTP header `FETCH-CSRF-TOKEN: 1` set to retrieve CSRF token for the current session.
 
     !!! example
         **Request:**
@@ -377,7 +379,7 @@ If an integration test submits data to a URL protected by CSRFGuard, test case s
 
 
 ### Checklist Item 11
-For file uploads (multipart requests), the recommendation is to manually inject the CSRF token to action of the form (including requests made to /fileupload path). To do so, following steps need to be followed:
+For file uploads (multipart requests), the recommendation is to manually inject the CSRF token into the action of the form (including requests made to /fileupload path). To do so, the following steps need to be followed:
 
 * Add taglib to the jsp, 
     ```java

@@ -2,14 +2,17 @@
 title: General Recommendations for Secure Coding
 category: security-guidelines
 published: 22nd October 2018
+version: 2.0
 ---
 
 # General Recommendations for Secure Coding
+<p class="doc-info">Version: 2.0</p>
+___
 
-This section discusses different attacks or security threats that engineers must focus on while engineering a product or an application. Prevention techniques are discussed in generic form, and there are sections that discuss programming language specific prevention techniques.
+This section discusses different attacks or security threats that engineers must focus on while engineering a product or an application. Prevention techniques are discussed in generic form, and some sections discuss programming language-specific prevention techniques.
 
 ## SQL Injection
-A SQL injection attack consists of insertion or **injection** of a SQL query via the input data from the client to the application. A successful SQL injection exploit can read sensitive data from the database, modify database data (Insert/Update/Delete), execute administration operations on the database (such as shutdown the DBMS), recover the content of a given file present on the DBMS file system and in some cases issue commands to the operating system. SQL injection 
+A SQL injection attack consists of the insertion or **injection** of a SQL query via the input data from the client to the application. A successful SQL injection exploit can read sensitive data from the database, modify database data (Insert/Update/Delete), execute administration operations on the database (such as shutdown the DBMS), recover the content of a given file present on the DBMS file system and in some cases issue commands to the operating system. SQL injection 
 attacks are a type of injection attack, in which SQL commands are injected into data-plane input in order to effect the execution of predefined SQL commands[^1]. 
 
 Prevention Techniques
@@ -60,7 +63,7 @@ Use PreparedStatements to prevent SQL injections. The statement will be compiled
     // Catch block… 
     ```
 
-When processing dynamic query segments that cannot be set as PreparedStatement parameters (table names, column names, ordering information, offset details), validate user input against a whitelist. This approach avoids the risk of providing end user the ability to append anything uncontrolled to the SQL query.
+When processing dynamic query segments that cannot be set as PreparedStatement parameters (table names, column names, ordering information, offset details), validate user input against a whitelist. This approach avoids the risk of providing the end user with the ability to append anything uncontrolled to the SQL query.
 
 Example 1:
 
@@ -272,14 +275,14 @@ All user inputs that are getting directly appended to any LDAP queries should be
 
 
 ## OS Command Injection
-Command injection is an attack in which the goal is execution of arbitrary commands on the host operating system via a vulnerable application. Command injection attacks are possible when an application passes unsafe user supplied data (forms, cookies, HTTP headers etc.) to a system shell. In this attack, the attacker-supplied operating system commands are usually executed with the privileges of the vulnerable application. Command injection attacks are possible largely due to insufficient input validation[^10].
+Command injection is an attack in which the goal is the execution of arbitrary commands on the host operating system via a vulnerable application. Command injection attacks are possible when an application passes unsafe user supplied data (forms, cookies, HTTP headers etc.) to a system shell. In this attack, the attacker-supplied operating system commands are usually executed with the privileges of the vulnerable application. Command injection attacks are possible largely due to insufficient input validation[^10].
 
 
 ### Prevention Techniques
 Products or applications should not use user inputs in constructing OS commands. 
 
 !!! danger error "Alert - Approval Required"
-    If any component requires that, user input to be appended to an OS command or to be interpreted as OS command, the use-case, as well as controls in place to provide required protection, must be reviewed and approved by the Security and Compliance Team, before proceeding with the release of such component.
+    If any component requires that, user input be appended to an OS command or to be interpreted as an OS command, the use-case, as well as controls in place to provide the required protection, must be reviewed and approved by the Security and Compliance Team, before proceeding with the release of such component.
 
 
 ### Java Specific Recommendations
@@ -328,15 +331,15 @@ PHP applications should not use `exec` function[^11], `WScript.Shell`[^12] or an
 
 
 ## Cross-Site Scripting (XSS)
-Cross-Site Scripting allows an attacker to execute malicious code (scripts) against the web browser of the user. By leveraging this attack, an attacker could attempt to carry-out other forms of attacks such as stealing session cookies to perform [Session Hijacking](#session-hijacking) or stealing token values to conduct [CSRF Attacks](#csrf-attacks), launch a phishing attack etc[^13].
+Cross-Site Scripting allows an attacker to execute malicious code (scripts) against the web browser of the user. By leveraging this attack, an attacker could attempt to carry out other forms of attacks such as stealing session cookies to perform [Session Hijacking](#session-hijacking) or stealing token values to conduct [CSRF Attacks](#csrf-attacks), launch a phishing attack etc[^13].
 
 
 ### Prevention Techniques 
-There are three recommended best practices that need to be followed in order to prevent XSS threats:
+There are three best practices that are recommended to be followed in order to prevent XSS threats:
 
 
 #### Input validation.
-User inputs should be validated whenever possible and only characters that are relevant to the particular field should be accepted. Input validation should be done on the server-side to prevent any bypass attempts, even though additional front-end validation can be done to increase user experience.
+User inputs should be validated whenever possible and only characters that are relevant to the particular field should be accepted. Input validation should be done on the server side to prevent any bypass attempts, even though additional front-end validation can be done to increase user experience.
 
 However, in WSO2 Carbon 4 based products, input validation is given a lower priority and is only done in essential screens. Therefore, it is a must to use proper output encoding and output sanitization techniques.
 
@@ -362,7 +365,7 @@ Proper output sanitization should be applied, where output consists of user inpu
 #### Browser Level Protection
 Modern browsers have built-in XSS prevention mechanisms. However, certain browsers require explicitly enabling these mechanisms using special response headers. `X-XSS-Protection: 1; mode=block` header should be set in HTTP responses to make sure browser level protection is enabled in all supported browsers. 
 
-For additional details on HTTP security related headers, refer to [Security Related HTTP Headers]({{#base_path#}}/security-guidelines/secure-engineering-guidelines/security-related-http-headers/) section.
+For additional details on HTTP security related headers, refer to [Security Related HTTP Headers](../security-related-http-headers.md) section.
 
 However, this is not a permanent or justifiable solution for XSS. Instead, browser level protection should only be considered as an additional protection mechanism. 
 
@@ -436,12 +439,12 @@ Encode with URLs
 
 
 #### Output Sanitization 
-OWASP Java HTML Sanitizer[^16] should be used to perform output sanitization. OWASP Java HTML Sanitizer can be used to allow only a certain set of HTML elements in a user input. In addition, it is possible to define allowed attributes and properties of attributes, relevant to an enabled element.
+OWASP Java HTML Sanitizer[^16] should be used to perform output sanitization. OWASP Java HTML Sanitizer can be used to allow only a certain set of HTML elements in user input. In addition, it is possible to define allowed attributes and properties of attributes, relevant to an enabled element.
 
 It is recommended to limit to pre-packaged FORMATTING sanitizer policy[^17]. However, if users should be allowed to use images, tables or links, other pre-packaged sanitizer policies can be used. 
 
 !!! danger error "Alert - Approval Required"
-    If a custom policy or a custom rule is defined other than the pre-packaged sanitizer policies, custom policy should be reviewed and approved by the Security and Compliance (SC) Team. Therefore, before the release of components with custom sanitizer policies or rules, The SC Team should be notified, and use cases, as well as rules, should be reviewed.
+    If a custom policy or a custom rule is defined other than the pre-packaged sanitizer policies, the custom policy should be reviewed and approved by the Security and Compliance (SC) Team. Therefore, before the release of components with custom sanitizer policies or rules, The SC Team should be notified, and use cases, as well as rules, should be reviewed.
 
 !!! bug error "Example Incorrect Usage"
     ```java
@@ -462,10 +465,10 @@ It is recommended to limit to pre-packaged FORMATTING sanitizer policy[^17]. How
 
 
 #### Browser Level Protection
-`org.apache.catalina.filters.HttpHeaderSecurityFilter` Servlet Filter should be used to add X-XSS-Protection header to the HTTP response. 
+`org.apache.catalina.filters.HttpHeaderSecurityFilter` Servlet Filter should be used to add the X-XSS-Protection header to the HTTP response. 
 
 !!! tip hint important "WSO2 Document Reference"
-    Further information on required changes and recommended configuration for WSO2 products as well as production deployments are available at [Engineering Guidelines - Security Related HTTP Headers]({{#base_path#}}/security-guidelines/secure-engineering-guidelines/security-related-http-headers/).
+    Further information on required changes and recommended configuration for WSO2 products as well as production deployments are available at [Engineering Guidelines - Security Related HTTP Headers](../security-related-http-headers.md).
 
 
 ### JavaScript Specific Recommendations
@@ -525,9 +528,9 @@ If dynamic input is used to construct a HTML attribute double quote and single q
 ### PHP Specific Recommendations
 
 #### Output Encoding
-`htmlspecialchars` function[^18] should be used whenever user input is printed back into a response. Mentioned function converts special characters in the input to HTML entities. 
+`htmlspecialchars` function[^18] should be used whenever user input is printed back into a response. The mentioned function converts special characters in the input to HTML entities. 
 
-Use `ENT_QUOTES` flag to enable encoding both single and double quotes. 
+Use `ENT_QUOTES` flag to enable the encoding of both single and double quotes. 
 
 !!! bug error "Example Incorrect Usage"
     ```php
@@ -549,7 +552,7 @@ Use `ENT_QUOTES` flag to enable encoding both single and double quotes.
 HTML Purifier[^19] should be used to sanitize HTML content. Default HTML Purifier rules set is recommended. 
 
 !!! danger error "Alert - Approval Required"
-    If a custom policy or a custom rule is defined, other than the default sanitizer policy, custom policy should be reviewed and approved by the Security and Compliance (SC) Team. Therefore, before the release of a component with custom sanitizer policies or rules, the SC Team should be notified, and use cases, as well as rules, should be reviewed.
+    If a custom policy or a custom rule is defined, other than the default sanitizer policy, the custom policy should be reviewed and approved by the Security and Compliance (SC) Team. Therefore, before the release of a component with custom sanitizer policies or rules, the SC Team should be notified, and use cases, as well as rules, should be reviewed.
 
 !!! bug error "Example Incorrect Usage"
     ```php
@@ -569,7 +572,7 @@ HTML Purifier[^19] should be used to sanitize HTML content. Default HTML Purifie
 #### Browser Level Protection
 
 !!! tip hint important "WSO2 Document Reference"
-    Further information on required changes and recommended configuration for WSO2 products as well as production deployments are available at [Engineering Guidelines - Security Related HTTP Headers]({{#base_path#}}/security-guidelines/secure-engineering-guidelines/security-related-http-headers/).
+    Further information on required changes and recommended configuration for WSO2 products as well as production deployments are available at [Engineering Guidelines - Security Related HTTP Headers](../security-related-http-headers.md).
 
 
 ## XML External Entity (XXE)
@@ -577,17 +580,17 @@ An XML External Entity attack is a type of attack against an application that pa
 
 
 ### Java Specific Recommendations
-In order to resolve this issue, it is required to configure the XML parser correctly performing following actions.
+In order to resolve this issue, it is required to configure the XML parser correctly by performing the following actions:
 
 1. Enable the DocumentBuilderFactory namespace awareness
 2. Disable the DocumentBuilderFactory entity reference expansion
 3. Enable the DocumentBuilderFactory secure processing feature
 4. Disable the DocumentBuilderFactory “http://xml.org/sax/features/external-general-entities” feature
 5. Use a SecurityManager for the DocumentBuilderFactory
-6. Use a custom EntityResolver for the DocumentBuilder created using above DocumentBuilderFactory
+6. Use a custom EntityResolver for the DocumentBuilder created using the above DocumentBuilderFactory
 
 !!! danger error "Alert - Approval Required"
-    If any component requires, any of the recommended security flags not to be set in DocumentBuilderFactory, the use-case, as well as controls in place to provide required protection, must be reviewed and approved by the Security and Compliance Team, before proceeding with the release of such component.
+    If any component requires, any of the recommended security flags not to be set in DocumentBuilderFactory, the use-case, as well as controls in place to provide the required protection, must be reviewed and approved by the Security and Compliance Team, before proceeding with the release of such component.
 
 
 #### DocumentBuilderFactory (DOM Parser)
@@ -724,10 +727,10 @@ In order to resolve this issue, it is required to configure the XML parser corre
 
 
 ### PHP Specific Recommendations
-If libxml is used in XML processing, `libxml_disable_entity_loader` function[^21] must be used to protection against XXE attacks[^22][^23]. 
+If libxml is used in XML processing, `libxml_disable_entity_loader` function[^21] must be used to protect against XXE attacks[^22][^23]. 
 
 !!! danger error "Alert - Approval Required"
-    If any component requires, any of the recommended security flags not to be set in libxml, the use-case, as well as controls in place to provide required protection, must be reviewed and approved by the Security and Compliance Team, before proceeding with the release of such component.
+    If any component requires, any of the recommended security flags not to be set in libxml, the use-case, as well as controls in place to provide the required protection, must be reviewed and approved by the Security and Compliance Team, before proceeding with the release of such component.
 
 
 !!! bug error "Example Incorrect Usage"
@@ -819,7 +822,7 @@ If HTTP response generation is done in any other component, or any other HTTP tr
 Sample filter implementation is available in WSO2 Carbon 4.4.x branch[^30]. However, this filter is not in use, since Tomcat provides the necessary protection. 
 
 !!! danger error "Alert - Approval Required"
-    If any transport implementation or component that generates HTTP responses directly requires usage of a custom written filter that does the "carriage return" and "line feed" (CRLF) filtering, the logic performing filtering should be reviewed and approved by the Security and Compliance (SC) Team. The SC Team should be informed and approval should be obtained before releasing such components or a transport implementation.  
+    If any transport implementation or component that generates HTTP responses directly requires the usage of a custom-written filter that does the "carriage return" and "line feed" (CRLF) filtering, the logic performing filtering should be reviewed and approved by the Security and Compliance (SC) Team. The SC Team should be informed and approval should be obtained before releasing such components or a transport implementation.  
 
 
 ## Log Injection / Log Forging (CRLF Injection)
@@ -847,11 +850,11 @@ UUID in logs can be enabled by adding %K in log4j pattern and relevant configura
 ## Session Hijacking
 The Session Hijacking attack consists of the exploitation of the web session control mechanism, which is normally managed with a session token.
 
-Because HTTP communication uses different TCP connections, the web server needs a method to recognize every user’s connections. The most useful method depends on a token that the Web Server sends to the client browser after a successful client authentication. A session token is normally composed of a string of variable width and it could be used in different ways, like in the URL, in the header of the HTTP requisition as a cookie, in other parts of the header of the HTTP request, or yet in the body of the HTTP request. (In WSO2 products, session ID is maintained as a cookie and will be communicated between browser and the server through HTTP headers).
+Because HTTP communication uses different TCP connections, the web server needs a method to recognize every user’s connections. The most useful method depends on a token that the Web Server sends to the client browser after successful client authentication. A session token is normally composed of a string of variable width and it could be used in different ways, like in the URL, in the header of the HTTP requisition as a cookie, in other parts of the header of the HTTP request, or yet in the body of the HTTP request. (In WSO2 products, session ID is maintained as a cookie and will be communicated between the browser and the server through HTTP headers).
 
 The Session Hijacking attack compromises the session token by stealing or predicting a valid session token to gain unauthorized access to the Web Server[^33].
 
-The session token could be compromised in different ways; the most common methods controllable by application developer are:
+The session token could be compromised in different ways; the most common methods controllable by the application developer are:
 
 * Session Sniffing
 * Man-in-the-middle attack
@@ -866,7 +869,7 @@ The session token could be compromised in different ways; the most common method
 HTTP Strict-Transport-Security Header (HSTS)
 :   HTTP Strict Transport Security (HSTS) is an opt-in security enhancement that is specified by a web application through the use of a special response header. Once a supported browser receives this header, that browser will prevent any communications from being sent over HTTP, to the specified domain and will instead send all communications over HTTPS[^34]. 
 
-    HSTS header prevents sensitive information exposure over unencrypted channels by avoiding SSLStrip attacks [^35] and by preventing a victim from using HTTP links that correspond to a HTTPS-protected site, which could lead to session cookie exposure, if not configured properly.
+    HSTS header prevents sensitive information exposure over unencrypted channels by avoiding SSLStrip attacks [^35] and by preventing a victim from using HTTP links that correspond to an HTTPS-protected site, which could lead to session cookie exposure, if not configured properly.
 
     !!! tip hint important "WSO2 Document Reference"
         Further information on required changes and recommended configuration for WSO2 products as well as production deployments are available at [Engineering Guidelines - Security Related HTTP Headers]().
@@ -879,7 +882,7 @@ HTTP Public-Key-Pins Header (HPKP)
     In addition, HPKP header prevents attack patterns such as SSLSplit attack[^37].
 
     !!! tip hint important "WSO2 Document Reference"
-        Further information on required changes and recommended configuration for WSO2 products as well as production deployments are available at [Engineering Guidelines - Security Related HTTP Headers]({{#base_path#}}/security-guidelines/secure-engineering-guidelines/security-related-http-headers/).
+        Further information on required changes and recommended configuration for WSO2 products as well as production deployments are available at [Engineering Guidelines - Security Related HTTP Headers](../security-related-http-headers.md).
 
 
 Avoiding predictable session token
@@ -893,7 +896,7 @@ Cookie security
 
 
 ## Session Fixation
-Session Fixation is an attack that permits an attacker to hijack a valid user session (a type of a Session Hijacking attack). The attack explores a limitation in the way the web application manages the session ID, more specifically the vulnerable web application. When authenticating a user, it doesn’t assign a new session ID, making it possible to use an existing session ID. The attack consists of obtaining a valid session ID (e.g. by connecting to the application), inducing a user to authenticate himself with that session ID, and then hijacking the user-validated session by the knowledge of the used session ID. The attacker has to provide a legitimate Web application session ID and try to make the victim's browser use it[^38].
+Session Fixation is an attack that permits an attacker to hijack a valid user session (a type of Session Hijacking attack). The attack explores a limitation in the way the web application manages the session ID, more specifically the vulnerable web application. When authenticating a user, it doesn’t assign a new session ID, making it possible to use an existing session ID. The attack consists of obtaining a valid session ID (e.g. by connecting to the application), inducing a user to authenticate himself with that session ID, and then hijacking the user-validated session by the knowledge of the used session ID. The attacker has to provide a legitimate Web application session ID and try to make the victim's browser use it[^38].
 
 
 ### Prevention Techniques 
@@ -933,7 +936,7 @@ Invalidate the HttpSession and create a new session after authentication is comp
 
 
 #### User Logout Flow
-Invalidate the HttpSession, rather than just removing user specific attributes. 
+Invalidate the HttpSession, rather than just removing user-specific attributes. 
 
 !!! bug error "Example Incorrect Usage"
     ```java
@@ -1021,17 +1024,17 @@ Destroy current session using session_destroy function, rather than just removin
 ## Session Prediction
 Session prediction attack focuses on predicting session ID values that permit an attacker to bypass the authentication schema of an application. By analyzing and understanding the session ID generation process, an attacker can predict a valid session ID value and get access to the application.
 
-In the first step, the attacker needs to collect some valid session ID values that are used to identify authenticated users. Then, the attacker must understand the structure of the session ID, the information that is used to create it, and the encryption or hash algorithm used by the application to protect it. Some bad implementations use session IDs composed by username or other predictable information, like timestamp or client IP address. In the worst case, this information is used in the clear text or coded using some weak algorithm like base64 encoding.
+In the first step, the attacker needs to collect some valid session ID values that are used to identify authenticated users. Then, the attacker must understand the structure of the session ID, the information that is used to create it, and the encryption or hash algorithm used by the application to protect it. Some bad implementations use session IDs composed of usernames or other predictable information, like timestamps or client IP addresses. In the worst case, this information is used in clear text or coded using some weak algorithm like base64 encoding.
 
 In addition, the attacker can implement a brute force technique to generate and test different values of session ID until he successfully gets access to the application[^39].
 
 
 ### Prevention Techniques 
-Using a longer random number or string as the session key will reduce the risk that an attacker could simply guess a valid session key through trial and error or brute force attacks. Session identifiers should be at least 128 bits long to prevent brute-force session guessing attacks, according to OWASP recommendations[^40].
+Using a long random number or string as the session key will reduce the risk that an attacker could simply guess a valid session key through trial and error or brute force attacks. Session identifiers should be at least 128 bits long to prevent brute-force session guessing attacks, according to OWASP recommendations[^40].
 
 
 ### Java Specific Recommendations 
-WSO2 Carbon 4 based products can use the Apache Tomcat context.xml file to configure the session ID generation. Default session ID length is 16 bytes, which is exactly 128 bit. Therefore, WSO2 Carbon 4 based products match with the current recommendation. However, if the recommendations change and if any product needs to increase the session ID length, it is possible to use "SessionIdGenerator" element of context.xml file to make required changes as documented in Tomcat 7 "SessionIdGenerator Component" documentation[^41].
+WSO2 Carbon 4 based products can use the Apache Tomcat context.xml file to configure the session ID generation. The default session ID length is 16 bytes, which is exactly 128 bit. Therefore, WSO2 Carbon 4 based products match the current recommendation. However, if the recommendations change and if any product needs to increase the session ID length, it is possible to use the `SessionIdGenerator` element of the `context.xml` file to make the required changes as documented in Tomcat 7 "SessionIdGenerator Component" documentation[^41].
 
 
 ### PHP Specific Recommendations 
@@ -1074,7 +1077,7 @@ Even if a String object is no longer referenced and available for garbage collec
 
 This feature makes String objects unsuitable for storing security-sensitive information such as user passwords. It is essential to always collect and store security-sensitive information in a char array or a mutable data type instead[^44].
 
-Once operations that require password are executed, it is required to clear the values from the array elements, before moving the variable out of scope. 
+Once operations that require a password are executed, it is required to clear the values from the array elements, before moving the variable out of scope. 
 
 !!! bug error "Example Incorrect Usage"
     ```java
@@ -1123,7 +1126,7 @@ Once operations that require password are executed, it is required to clear the 
 ## Privacy Violation - Password AutoComplete
 Browsers will sometimes ask a user if they wish to remember the password that they just entered. The browser will then store the password, and automatically enter it whenever the same authentication form is visited. This is a convenience for the user[^45]. 
 
-Having the browser store passwords is not only a convenience for end-users, but also for an attacker. If an attacker can gain access to the victim's browser (e.g. through a Cross Site Scripting attack, or through a shared computer), then they can retrieve the stored passwords. It is not uncommon for browsers to store these passwords in an easily retrievable manner, but even if the browsers were to store the passwords encrypted and only retrievable through the use of a master password, an attacker could retrieve the password by visiting the target web application's authentication form, entering the victim's username, and letting the browser to enter the password[^45].
+Having the browser store passwords is not only a convenience for end users, but also for an attacker. If an attacker can gain access to the victim's browser (e.g. through a Cross Site Scripting attack, or through a shared computer), then they can retrieve the stored passwords. It is not uncommon for browsers to store these passwords in an easily retrievable manner, but even if the browsers were to store the passwords encrypted and only retrievable through the use of a master password, an attacker could retrieve the password by visiting the target web application's authentication form, entering the victim's username, and letting the browser to enter the password[^45].
 
 Due to associated security risks relevant to password auto complete, it is recommended to turn autocomplete off, for sensitive text fields. This includes password inputs. 
 
@@ -1138,26 +1141,26 @@ Due to associated security risks relevant to password auto complete, it is recom
     <input type="password" name="password" autocomplete="off"/>
     ```
 
-In order to support password managers and increase usability features of browsers, some modern browsers do not honor the autocomplete attribute. However, regardless of browser's behavior, it is advised to turn autocomplete off, to address security compliance related issues.
+In order to support password managers and increase the usability features of browsers, some modern browsers do not honor the autocomplete attribute. However, regardless of the behavior of the browser, it is advised to turn autocomplete off, to address security compliance related issues.
 
 
 ## Path Traversal
-A path traversal attack (also known as directory traversal) aims to access files and directories that are stored outside the web root folder. By manipulating variables that reference files with “dot-dot-slash (../)” sequences and its variations or by using absolute file paths, it may be possible to access arbitrary files and directories stored on file system including application source code or configuration and critical system files [^47].
+A path traversal attack (also known as directory traversal) aims to access files and directories that are stored outside the web root folder. By manipulating variables that reference files with “dot-dot-slash (../)” sequences and their variations or by using absolute file paths, it may be possible to access arbitrary files and directories stored on the file system including application source code or configuration and critical system files [^47].
 
 
 ### Prevention Techniques 
-Absolute paths should not be accepted from the end-user during any operation, apart from administrative configurations. 
+Absolute paths should not be accepted from by end user during any operation, apart from administrative configurations. 
 
 !!! danger error "Alert - Approval Required"
-    If any component requires that an absolute path must be accepted from the end-user (not in administrative configuration), the use-case, as well as recommended security manager rules that are in place to provide required protection, must be reviewed and approved by the Security and Compliance Team, before proceeding with the release of such component.
+    If any component requires that an absolute path must be accepted from the end user (not in administrative configuration), the use-case, as well as recommended security manager rules that are in place to provide the required protection, must be reviewed and approved by the Security and Compliance Team, before proceeding with the release of such component.
 
-The general recommendation is to avoid accepting paths or path fragments (used to build absolute or relative paths) from the end-user. 
+The general recommendation is to avoid accepting paths or path fragments (used to build absolute or relative paths) from the end user. 
 
 However, if any such requirement arises, it is necessary to follow language specific recommendations for validating the accepted path fragment. 
 
 
 ### Java Specific Recommendations
-Normalize [^48] the final path constructed and check if the normalized path is within the expected boundary. The purpose of this validation is to check if any malicious user has used ".." or other traversal techniques to move out of the expected base directory the action should be performed on.  
+Normalize [^48] the final path constructed and check if the normalized path is within the expected boundary. The purpose of this validation is to check if any malicious user has used ".." or other traversal techniques to move out of the expected base directory that the action should be performed on.  
 
 !!! bug error "Example Incorrect Usage"
     ```java
@@ -1218,7 +1221,7 @@ Normalize [^48] the final path constructed and check if the normalized path is w
 
 
 ### PHP Specific Recommendations
-Normalize the final path constructed and check if the normalized path is within the expected boundary. Purpose of this validation is to check if any malicious user has used ".." or other traversal techniques to move out of the expected base directory the action should be performed on.  
+Normalize the final path constructed and check if the normalized path is within the expected boundary. The purpose of this validation is to check if any malicious user has used ".." or other traversal techniques to move out of the expected base directory that the action should be performed on.  
 
 !!! success check done "Example Correct Usage[^50]"
     ```php
@@ -1245,7 +1248,7 @@ If the authentication check in sensitive request handlers is insufficient or non
 
 ### Prevention Techniques 
 * Make sure authentication checks are present for any restricted URLs.
-* Make sure user authorization (role-permission) is checked before allowing a user to execute any function. It is essential to make sure authorization checks are done, before processing any state-changing operation. 
+* Make sure user authorization (role permission) is checked before allowing a user to execute any function. It is essential to make sure authorization checks are done, before processing any state-changing operation. 
 * "login" permission should not be granted for any user that does not require access to Carbon Management Console (Carbon 4). (Example: API Manager - Store - Self-registered user).
 * The enforcement mechanism(s) should deny all access by default, requiring explicit grants to specific roles for access to every function.
 * If the function is involved in a workflow, check to make sure the conditions are in the proper state to allow access.
@@ -1261,7 +1264,7 @@ If a component is susceptible to attack due to an insecure configuration it woul
 ### Prevention Techniques 
 
 #### Product Documentation
-Product documentation should explain or reference to steps to be executed in order to perform required security hardening and production deployment guidelines should include security-related instructions. 
+Product documentation should explain or reference steps to be executed in order to perform required security hardening and production deployment guidelines should include security-related instructions. 
 
 All the default credentials, default certificates and security sensitive information such as ports being opened should be properly documented. 
 
@@ -1271,13 +1274,13 @@ All WSO2 deployments should follow security hardening guidelines and production 
 
 Production and staging environments should be configured identically. Configuration, as well as artifact deployment between these environments, should be automated and should follow a proper change management process to make sure no configuration changes are done in production environments without proper security evaluation.
 
-External components of the deployment such as the operation system and runtime environment should be updated regularly and must be updated when relevant "security updates" are released. 
+External components of the deployment such as the operating system and runtime environment should be updated regularly and must be updated when relevant "security updates" are released. 
 
 Default credentials, default certificates, and any security sensitive default values should not be used in production environments (as recommended in security hardening guidelines and production deployment guidelines). 
 
 
 ## Insecure Deserialization
-Deserialization is the process of creating an object from binary data or text data. It is an opposite process of serialization. When serialized data is in control of an attacker, insecure deserialization flaws can enable an attacker to cause remote code execution upon deserialization or create a malicious deserialized objects that can cause remote code execution and date tampering upon usage[^53].
+Deserialization is the process of creating an object from binary data or text data. It is the opposite process of serialization. When serialized data is in control of an attacker, insecure deserialization flaws can enable an attacker to cause remote code execution upon deserialization or create malicious deserialized objects that can cause remote code execution and data tampering upon usage[^53].
 
 
 ### Prevention Techniques
@@ -1292,7 +1295,7 @@ Use language-specific guidelines to enumerate safe methodologies for deserializi
 
 
 ### PHP Specific Recommendations
-Check the use of `unserialize()` and review how the external parameters are accepted.Use a safe, standard data interchange format such as JSON (via `json_decode()` and `json_encode()`) if you need to pass serialized data to the user. If you need to deserialize externally-stored data, consider using hash `hmac()` for data validation. Make sure data is not modified by anyone but you[^55].
+Check the use of `unserialize()` and review how the external parameters are accepted. Use a safe, standard data interchange format such as JSON (via `json_decode()` and `json_encode()`) if you need to pass serialized data to the user. If you need to deserialize externally-stored data, consider using hash `hmac()` for data validation. Make sure data is not modified by anyone but you[^55].
  
 
 ### JAVA Specific Recommendations
@@ -1333,7 +1336,7 @@ For a class that is defined as Serializable, the sensitive variables should be d
  
 
 #### Prevent Deserialization of Domain Objects
-If a Class is must implement Serializable only due to their hierarchy, in order to guarantee that the objects can’t be deserialized, readObject method should be declare with the final modifier[^54]. 
+If a class must implement Serializable only due to their hierarchy, in order to guarantee that the objects can’t be deserialized, readObject method should be declared with the final modifier[^54]. 
 
 !!! success check done "Example Recommended Usage"
     ```java
@@ -1373,50 +1376,50 @@ Outdated components may have known vulnerabilities that are exploitable. Public 
 ### Introducing New External Dependencies
 When introducing new external dependency components, use the most up-to-date version of the component. 
 
-Selected the most up-to-date version should be scanned by using OWASP Dependency Check for known vulnerabilities by following [Engineering Guidelines - External Dependency Analysis using OWASP Dependency Check]({{#base_path#}}/security-guidelines/secure-engineering-guidelines/external-dependency-analysis-analysis-using-owasp-dependency-check/). 
+Selected the most up-to-date version should be scanned using OWASP Dependency Check for known vulnerabilities by following [Engineering Guidelines - External Dependency Analysis using OWASP Dependency Check](../external-dependency-analysis-analysis-using-owasp-dependency-check.md). 
 
-External dependency, as well as all transitive dependencies getting added should be scanned using instructions from "OWASP Dependency Check CLI" section of the document.
+External dependency, as well as all transitive dependencies getting added, should be scanned using instructions from "OWASP Dependency Check CLI" section of the document.
 
 !!! tip hint important "WSO2 Document Reference"
     Further information on required changes and code-level examples are available at "Engineering Guidelines - External Dependency Analysis using OWASP Dependency Check".
 
-Generated report should be attached with the usual "Approval Request" and the approval request should be copied to Security Leads Group email. 
+The generated report should be attached with the usual "Approval Request" and the approval request should be copied to the Security Leads Group email. 
 
 If the most up-to-date version contains a known vulnerability, and if there is no active development happening, other alternatives should be considered, rather than using the vulnerable library.
 
 !!! danger error "Alert - Approval Required"
-    Any external dependency component approval request should include OWASP Dependency Check report (or else the Security and Compliance Team team will down vote the approval request). 
+    Any external dependency component approval request should include OWASP Dependency Check report (or else the Security and Compliance Team will downvote the approval request). 
 
-    Any external component with known vulnerability should not be introduced as a dependency. If there is any exceptional situation, the Security and Compliance (SC) Team should be informed and review should be conducted on the use-case, source code, known vulnerabilities and controls in place for mitigating the impact of the vulnerability in usage path. The SC Team's approval is required before introducing such dependency. 
+    Any external component with known vulnerability should not be introduced as a dependency. If there is any exceptional situation, the Security and Compliance (SC) Team should be informed and a review should be conducted on the use case, source code, known vulnerabilities and controls in place for mitigating the impact of the vulnerability in usage path. The SC Team's approval is required before introducing such dependency. 
 
 
 ### Vulnerabilities in Current Dependencies 
-OWASP Dependency Check maven plugin should be integrated into the build process of latest product builds, by following [Engineering Guidelines - External Dependency Analysis using OWASP Dependency Check]({{#base_path#}}/security-guidelines/secure-engineering-guidelines/external-dependency-analysis-analysis-using-owasp-dependency-check/). 
+OWASP Dependency Check maven plugin should be integrated into the build process of the latest product builds, by following [Engineering Guidelines - External Dependency Analysis using OWASP Dependency Check](../external-dependency-analysis-analysis-using-owasp-dependency-check.md). 
 
 !!! tip hint important "WSO2 Document Reference"
     Further information on required changes and code-level examples are available at "Engineering Guidelines - External Dependency Analysis using OWASP Dependency Check".
 
 Engineers can execute Dependency Check by calling the " dependency-check:check" maven goal, in the development environment. However, Jenkins will execute this task by default during the scheduled builds, to identify if any latest product build contains external dependencies with known security vulnerabilities.
 
-When it is identified that a security vulnerability has been identified for a particular external dependency, it is recommended to do following:
+When it is identified that a security vulnerability has been identified for a particular external dependency, it is recommended to do the following:
 
-1. Initiate relevant discussion at Security Group mailing list with subject "Dependency Vulnerability - [DependencyName] - [DependencyVersion] - [CVE]"
+1. Initiate relevant discussion at the Security Group mailing list with the subject "Dependency Vulnerability - [DependencyName] - [DependencyVersion] - [CVE]"
 2. Analyze the impact on the usage of WSO2, relevant to the particular dependency and identify if usage of WSO2 makes any product vulnerable.
 
     1. If yes, take necessary corrective actions to migrate to a higher version of the dependency with no known security vulnerabilities.
-    2. If yes, and no new version of the dependency exists, take necessary actions to nullify the impact of the vulnerability on usage of WSO2, by introducing additional validations or security checks.
+    2. If yes, and no new version of the dependency exists, take necessary actions to nullify the impact of the vulnerability on the usage of WSO2, by introducing additional validations or security checks.
 
     :   !!! danger error "Alert - Approval Required"
-            The Security and Complience Team should review any validations, additional security checks or additional security constraints added in order to nullify the impact of a known vulnerability in an external dependency when no newer version is available and no active development is happening. 
+            The Security and Compliance Team should review any validations, additional security checks or additional security constraints added in order to nullify the impact of a known vulnerability in an external dependency when no newer version is available and no active development is happening. 
 
-    3. If not, update the mail thread with the reasoning and request approval of the Security and Compliance (SC) Team to add relevant mitigation information into OWASP Dependency Check, suppression file relevant to the component.
+    3. If not, update the mail thread with the reasoning and request approval from the Security and Compliance (SC) Team to add relevant mitigation information into OWASP Dependency Check, suppression file relevant to the component.
 
     :   !!! danger error "Alert - Approval Required"
-            The Security and Compliance Team should review and merge pull-requests, adding any entries to a particular component's OWASP Dependency Check suppression file. During the review, mitigated reason, dependency source, and usage path will be reviewed. This is further explained in [Engineering Guidelines - OWASP Dependency Check]({{#base_path#}}/security-guidelines/secure-engineering-guidelines/external-dependency-analysis-analysis-using-owasp-dependency-check/).
+            The Security and Compliance Team should review and merge pull requests, adding any entries to a particular component's OWASP Dependency Check suppression file. During the review, mitigated reason, dependency source, and usage path will be reviewed. This is further explained in [Engineering Guidelines - OWASP Dependency Check](../external-dependency-analysis-analysis-using-owasp-dependency-check.md).
 
 
 ## Insufficient logging and Monitoring
-Insufficient logging and ineffective integration with security incident response systems allow attackers to pivot to other systems and maintain persistent threats for weeks or months before being detected. This leads attacker to tamper, extract or system data[^59]. 
+Insufficient logging and ineffective integration with security incident response systems allow attackers to pivot to other systems and maintain persistent threats for weeks or months before being detected. This leads attackers to tamper, extract or system data[^59]. 
 
 
 ### Prevention Techniques
@@ -1432,15 +1435,15 @@ Cross-Site Request Forgery (CSRF) is an attack that forces an end user to execut
 
 
 ### Prevention Techniques 
-There are multiple techniques usable for preventing CSRF attacks which are further documented at Cross-Site Request Forgery (CSRF) Prevention Cheat Sheet[^62]. 
+There are multiple techniques used for preventing CSRF attacks which are further documented in Cross-Site Request Forgery (CSRF) Prevention Cheat Sheet[^62]. 
 
 
 #### Synchronizer Token Pattern
 With Synchronizer Token Pattern, any state-changing operation requires a secure random token which is generally known as CSRF Token. CSRF Token is a unique large random string generated per user session, using a [secure pseudorandom number generator](#random-number-generation). 
 
-Once the user session is created, per-session CSRF Token should be added to the server session as well. Basically, the storage of CSRF Token happens in the server session. 
+Once the user session is created, per-session CSRF Token should be added to the server session as well. The storage of CSRF Token happens in the server session. 
 
-Generated CSRF Token should be added to all the forms, generating requests for state-changing operations, as a hidden input. The server should do additional validation and reject the request if the CSRF Token sent in the request does not match with the token available in the user session. In addition to forms, AJAX requests for state-changing operations should also include the CSRF Token. 
+Generated CSRF Token should be added to all the forms, generating requests for state-changing operations, as a hidden input. The server should do additional validation and reject the request if the CSRF Token sent in the request does not match the token available in the user session. In addition to forms, AJAX requests for state-changing operations should also include the CSRF Token. 
 
 Ultimately, the attacker will not be able to make a form submission to a protected application, since the attacker will need to know the per-session CSRF Token value in advance, to craft the attack vector. 
 
@@ -1465,15 +1468,15 @@ This pattern is further discussed in "Core J2EE Patterns"[^63].
 
 
 #### Double Submit Cookie
-The difference between "Double Submit Cookie" and "Synchronize Token Pattern" is that, "Synchronize Token Pattern" uses server session for storing CSRF Token, whereas "Double Submit Cookie" approach uses cookies to store the CSRF Token.
+The difference between "Double Submit Cookie" and "Synchronize Token Pattern" is that, "Synchronize Token Pattern" uses a server session for storing CSRF Token, whereas "Double Submit Cookie" approach uses cookies to store the CSRF Token.
 
 Upon user login, per-session CSRF token value should be generated and it should be sent to the browser as a cookie. The server may decide not to store the CSRF token value.
 
-When rendering HTML pages with forms, client side JavaScript should read the CSRF Token cookie value and inject the value in all forms. In addition, AJAX requests should be modified to send the same value with AJAX requests. 
+When rendering HTML pages with forms, client-side JavaScript should read the CSRF Token cookie value and inject the value in all forms. In addition, AJAX requests should be modified to send the same value with AJAX requests. 
 
-When an application sends an HTTP request for a state changing operation (over HTTP method other than GET), the server should compare the CSRF Token received over the request cookies, with the CSRF Token value received in request payload (query parameter/post data). If values are not matching, the request can be identified as a possible CSRF attack. 
+When an application sends an HTTP request for a state changing operation (over HTTP method other than GET), the server should compare the CSRF Token received over the request cookies, with the CSRF Token value received in the request payload (query parameter/post data). If values are not matching, the request can be identified as a possible CSRF attack. 
 
-If an attacker creates a forged HTTP request with the intention of performing a CSRF attack, the correct CSRF Token value will still be sent in the cookie, but he will not have required cross domain access to read the token value and inject the same into the HTML forms. 
+If an attacker creates a forged HTTP request to perform a CSRF attack, the correct CSRF Token value will still be sent in the cookie, but he will not have required cross-domain access to read the token value and inject the same into the HTML forms. 
 
 
 ### Java Specific Recommendations
@@ -1487,10 +1490,10 @@ If an attacker creates a forged HTTP request with the intention of performing a 
 OWASP CSRFGuard is used to implement Synchronizer Token Pattern in WSO2 Carbon Kernel 4 (4.4.6+) products. OWASP CSRFGuard provides required classes to generate the per-session token and to do necessary validation on state-changing operations. Furthermore, it provides a JavaScript which is capable of dynamically adding CSRF Token as a hidden input and overriding XMLHttpRequest to include CSRF Token in AJAX requests.
 
 !!! tip hint important "WSO2 Document Reference"
-    Further information on required changes and code-level examples are available at [Engineering Guidelines - OWASP CSRF Guard]({{#base_path#}}/security-guidelines/secure-engineering-guidelines/owasp-csrf-guard/) document.
+    Further information on required changes and code-level examples are available in [Engineering Guidelines - OWASP CSRF Guard](../owasp-csrf-guard.md) document.
 
 
-In summary, when integrating OWASP CSRFGuard with a product, it is required to do following changes:
+In summary, when integrating OWASP CSRFGuard with a product, it is required to do the following changes:
 
 * Make sure all the state-changing operations are performed using HTTP methods other than GET. **GET requests must not be used for state-changing operations**. 
 * In web.xml or jaggery.conf file, add `CsrfGuardServletContextListener`.
@@ -1509,7 +1512,7 @@ In summary, when integrating OWASP CSRFGuard with a product, it is required to d
 ## Server Side Request Forgery (SSRF)
 By providing URLs to unexpected hosts or ports, attackers can make it appear that the server is sending the request, possibly bypassing access controls such as firewalls that prevent the attackers from accessing the URLs directly. The server can be used as a proxy to conduct port scanning of hosts in internal networks, use other URLs such as that can access documents on the system (using `file://`), or use other protocols such as `gopher://` or `tftp://`, which may provide greater control over the contents of requests[^65].
 
-This is identified as a high severity attack because it allows an attacker to perform tasks which are usually prevented by the perimeter security devices such as firewalls. For example, an attacker would be able to appear to internal and external nodes as the vulnerable host and perform following:
+This is identified as a high severity attack because it allows an attacker to perform tasks which are usually prevented by the perimeter security devices such as firewalls. For example, an attacker would be able to appear to internal and external nodes as the vulnerable host and perform the following:
 
 * Scan a network segment which is behind a firewall by analyzing responses received from the vulnerable host.
 * Perform a service enumerate attack by enumerating through services that are running on a particular host.
@@ -1526,16 +1529,16 @@ Avoid accepting information used in internal requests such as following from the
 
 * URLs used in back channel operations (backend calls made, where WSO2 product acts as the client).
 * IP addresses used in internal or back channel operations. 
-* Unvalidated and unrestricted system paths used in internal file access.
+* Unvalidated and unrestricted system paths are used in internal file access.
 * Unvalidated XML payloads that are passed to XML parsers without [proper security attributes set](#xml-external-entity-xxe). 
 
 
 #### Perform Strict Error Handling
-Display minimum information on the client side in the event of an error or something unexpected occurs. For example, if content type validation failed, provide a generic error message such as “Invalid Data Retrieved”. Also, ensure that the error message is the same when the request fails in the backend and if invalid data is retrieved. This will make it hard to distinguish between open and closed ports or services.
+Display minimum information on the client side in the event of an error or something unexpected occurring. For example, if content type validation failed, provide a generic error message such as “Invalid Data Retrieved”. Also, ensure that the error message is the same when the request fails in the backend and if invalid data is retrieved. This will make it hard to distinguish between open and closed ports or services.
 
 
 #### Perform Strict Response Handling
-Validate responses received from the remote resource. If a certain content type is expected by the application, validate the received response at the server-side before displaying it on the client's side or processing it for the client.
+Validate responses received from the remote resource. If a certain content type is expected by the application, validate the received response on the server side before displaying it on the client's side or processing it for the client.
 
 
 ### Java Specific Recommendations 
@@ -1559,23 +1562,23 @@ Unvalidated redirects and forwards are possible when a web application accepts u
 
 
 ### Prevention Techniques 
-Absolute forward URLs or fragments of forward URLs should not be accepted from the end-user during any operation. This is advised since an attacker can use a less restricted resource with a malicious forward, to circumvent URL based security control in place and send requests to a restricted resource.
+Absolute forward URLs or fragments of forward URLs should not be accepted by the end user during any operation. This is advised since an attacker can use a less restricted resource with a malicious forward, to circumvent URL-based security control in place and send requests to a restricted resource.
 
 !!! danger error "Alert - Approval Required"
-    If any component requires that, an absolute forward URL must be accepted from the end-user by any means (as demonstrated in OWASP Cheat Sheet)[^70], the use-case, as well as controls in place to provide required protection, must be reviewed and approved by the Security and Compliance Team, before proceeding with the release of such components.
+    If any component requires that, an absolute forward URL must be accepted from the end user by any means (as demonstrated in OWASP Cheat Sheet)[^70], the use-case, as well as controls in place to provide the required protection, must be reviewed and approved by the Security and Compliance Team, before proceeding with the release of such components.
 
-Absolute redirect URLs should not be accepted from the end-user during any operation, apart from administrative configurations. 
+Absolute redirect URLs should not be accepted by the end user during any operation, apart from administrative configurations. 
 
 !!! danger error "Alert - Approval Required"
-    If any component requires that, an absolute redirect URL must be accepted from the end-user (not in administrative configuration), the use-case, as well as controls in place to provide required protection, must be reviewed and approved by the Security and Compliance Team, before proceeding with the release of such component.
+    If any component requires that, an absolute redirect URL must be accepted from the end user (not in administrative configuration), the use-case, as well as controls in place to provide the required protection, must be reviewed and approved by the Security and Compliance Team, before proceeding with the release of such component.
 
-The general recommendation is to avoid accepting redirect or forward URL fragments (used to build absolute or relative redirect/forward URLs) from the end-user. 
+The general recommendation is to avoid accepting redirect or forward URL fragments (used to build absolute or relative redirect/forward URLs) from the end user. 
 
 However, if there is such a requirement, it is necessary to follow language specific recommendations for validating the accepted URL fragment. 
 
 
 ### Java Specific Recommendations
-If an absolute URL is accepted from the end-user, it should be validated against a list of allowed redirect/ forward URLs. However, since this is the condition explained in **Approval Required** blocks above, the Security and Compliance Team should be informed on the use case and approval is required. 
+If an absolute URL is accepted by the end user, it should be validated against a list of allowed redirect/ forward URLs. However, since this is the condition explained in the **Approval Required** blocks above, the Security and Compliance Team should be informed on the use case and approval is required. 
 
 !!! bug error "Example Incorrect Usage"
     ```java
@@ -1593,7 +1596,7 @@ If an absolute URL is accepted from the end-user, it should be validated against
     response.sendRedirect(request.getParameter("url"));
     ```
 
-When a portion of the redirect or forward URL is expected from the user, it is a must to validate if the appended fragment contains only the expected type of a value.  
+When a portion of the redirect or forward URL is expected from the user, it is a must to validate if the appended fragment contains only the expected type of value.  
 
 !!! bug error "Example Incorrect Usage"
     ```java
@@ -1620,14 +1623,14 @@ Cross-Frame Scripting (XFS) is an attack that combines malicious JavaScript with
 ### Prevention Techniques 
 
 #### X-Frame-Options
-X-Frame-Options HTTP response header should be used to indicate that the browser should not allow rendering relevant responses in a `<frame>` or `<iframe>`. `X-Frame-Options: DENY` should be used in all the cases, except in situations where the product itself needs to frame a page exposed elsewhere in the same product. In a situation where the product itself needs to frame a page exposed elsewhere in the same product, "X-Frame-Options: SAMEORIGIN" can be used. 
+X-Frame-Options HTTP response header should be used to indicate that the browser should not allow rendering relevant responses in a `<frame>` or `<iframe>`. `X-Frame-Options: DENY` should be used in all cases, except in situations where the product itself needs to frame a page exposed elsewhere in the same product. In a situation where the product itself needs to frame a page exposed elsewhere in the same product, "X-Frame-Options: SAMEORIGIN" can be used. 
 
 
 #### Content-Security-Policy
-In addition to non-standard X-Frame-Options header, the standard frame-ancestors directive can be used in a Content-Security-Policy HTTP response header to indicate whether or not a browser should be allowed to render a page in a `<frame>` or `<iframe>`. `Content-Security-Policy: frame-ancestors 'none'` should be used in all cases, except in situations where the product itself needs to frame a page exposed elsewhere in the same product. In a situation where the product itself needs to frame a page exposed elsewhere in the same product, `Content-Security-Policy: frame-ancestors 'self'` can be used. 
+In addition to the non-standard X-Frame-Options header, the standard frame-ancestors directive can be used in a Content-Security-Policy HTTP response header to indicate whether or not a browser should be allowed to render a page in a `<frame>` or `<iframe>`. `Content-Security-Policy: frame-ancestors 'none'` should be used in all cases, except in situations where the product itself needs to frame a page exposed elsewhere in the same product. In a situation where the product itself needs to frame a page exposed elsewhere in the same product, `Content-Security-Policy: frame-ancestors 'self'` can be used. 
 
 !!! danger error "Alert - Approval Required"
-    If any component requires that, framing of the page should be allowed globally, the use-case, as well as controls in place to provide required protection, must be reviewed and approved by the Security and Compliance Team, before proceeding with the release of such component.
+    If any component requires that, framing of the page should be allowed globally, the use-case, as well as controls in place to provide the required protection, must be reviewed and approved by the Security and Compliance Team, before proceeding with the release of such component.
 
 
 ### Java Specific Recommendations 
@@ -1636,7 +1639,7 @@ In addition to non-standard X-Frame-Options header, the standard frame-ancestors
 `org.apache.catalina.filters.HttpHeaderSecurityFilter` Servlet Filter should be used to add X-Frame-Options header to the HTTP response. 
 
 !!! tip hint important "WSO2 Document Reference"
-    Further information on required changes and recommended configuration for WSO2 products as well as production deployments are available at [Engineering Guidelines - Security Related HTTP Headers]({{#base_path#}}/security-guidelines/secure-engineering-guidelines/security-related-http-headers/).
+    Further information on required changes and recommended configuration for WSO2 products as well as production deployments are available at [Engineering Guidelines - Security Related HTTP Headers](../security-related-http-headers.md).
 
 
 ## Cross-Origin Resource Sharing
@@ -1650,7 +1653,7 @@ A wildcard same-origin policy is appropriate when a page or API response is cons
 
 ## Security Related HTTP Headers
 There are HTTP response headers that can be used to configure the security controls enforced by browsers.
-WSO2 Document Reference: Further information on required changes and recommended configuration for WSO2 products as well as production deployments are available at [Engineering Guidelines - Security Related HTTP Headers]({{#base_path#}}/security-guidelines/secure-engineering-guidelines/security-related-http-headers/).
+WSO2 Document Reference: Further information on required changes and recommended configuration for WSO2 products as well as production deployments are available at [Engineering Guidelines - Security Related HTTP Headers](../security-related-http-headers.md).
 
 
 ## Securing Cookies
@@ -1686,14 +1689,14 @@ To prevent JavaScripts and other client-side scripts from accessing cookie value
 ### Summary of Recommendations
 All cookies containing sensitive information should:
 
-* Include "secure" attribute
-* Include "HttpOnly" attribute 
-* Include "path" attribute and the "path" attribute should contain accurate context information
-* Not include "expires" attribute (cookie should be a session cookie)
+* Include the `secure` attribute
+* Include the `HttpOnly` attribute 
+* Include the `path` attribute and the `path` attribute should contain accurate context information
+* Not include the `expires` attribute (cookie should be a session cookie)
 
 
 ## Random Number Generation
-When an undesirably low amount of entropy is available, Pseudo Random Number Generators are susceptible to suffer from insufficient entropy when they are initialized, because entropy data may not be available to them yet[^73]. This will leave patterns or clusters of values that are more likely to occur than others[^74].
+When an undesirably low amount of entropy is available, Pseudo Random Number Generators are susceptible to suffering from insufficient entropy when they are initialized, because entropy data may not be available to them yet[^73]. This will leave patterns or clusters of values that are more likely to occur than others[^74].
 
 
 ### Java Specific Recommendations

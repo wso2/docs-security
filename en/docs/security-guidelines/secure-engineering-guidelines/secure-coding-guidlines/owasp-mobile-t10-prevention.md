@@ -2,9 +2,12 @@
 title: OWASP Mobile Top 10 Prevention
 category: security-guidelines
 published: October 22, 2018
+version: 2.0
 ---
 
 # OWASP Mobile Top 10 Prevention
+<p class="doc-info">Version: 2.0</p>
+___
 
 ## Introduction
 This section discusses OWASP Mobile Top 10 prevention techniques that should be followed by WSO2 engineers while engineering mobile applications.
@@ -41,7 +44,7 @@ Set the android:exported attribute to false for the specific activity, service o
     ```
 
 !!! danger error "Alert - Approval Required"
-    If any component requires that, android:exported attribute to be set to true, the use-case, as well as controls in place to provide required protection, must be reviewed and approved by the Security and Compliance Team, before proceeding with the release of such component.
+    If any component requires that `android:exported` attribute to be set to true, the use-case, as well as controls in place to provide required protection, must be reviewed and approved by the Security and Compliance Team, before proceeding with the release of such component.
 
 
 Data received by public components should be treated as untrusted data and needs to be properly validated and sanitized before usage.
@@ -72,12 +75,12 @@ Data stored in the mobile device has a risk of being exposed to an outside attac
 
 * **Using external storage**
 
-    Files stored in the external storage has global read and write permissions. Therefore external storage should not be used to store any sensitive data. Also, input validations should be applied when using data from the external storage. 
+    Files stored in the external storage have global read and write permissions. Therefore external storage should not be used to store any sensitive data. Also, input validations should be applied when using data from external storage. 
 
-    It is not recommended to store executable files in the external storage. If the application requires loading executable files from external storage, make sure to sign and cryptographically verify the content before dynamic loading.
+    It is not recommended to store executable files in external storage. If the application requires loading executable files from external storage, make sure to sign and cryptographically verify the content before dynamic loading.
  
 * **Database Related Recommendations**
-    Using a third party encryption can withstand a threat to the native protection provided by the OS. The master key for the encryption should be randomly generated and encrypted using a passphrase from the user by the time the data is processed. Unencrypted master key or the passphrase should not be stored on the device.
+    Using a third-party encryption can withstand a threat to the native protection provided by the OS. The master key for the encryption should be randomly generated and encrypted using a passphrase from the user by the time the data is processed. Unencrypted master key or the passphrase should not be stored on the device.
 
     !!! example
         SQLCipher is an open source extension to SQLite that provides transparent 256-bit AES encryption of database files[^6].
@@ -103,14 +106,13 @@ The user dictionary in android saves the words entered by the user to be used fo
 
 
 ### Copy/Paste buffer caching
-When using copy and paste, the data is initially copied into a clipboard. Malicious applications have the ability to access this clipboard cache to extract sensitive data. Disable the copy or paste functionality for sensitive data fields to prevent these type of copy or paste buffer caching.
-
+When using copy and pasting, the data is initially copied into a clipboard. Malicious applications can access this clipboard cache to extract sensitive data. Disable the copy or paste functionality for sensitive data fields to prevent these types of copy or paste buffer caching.
 !!! example
-    Application should not allow users to copy or paste credit card details. 
+    The application should not allow users to copy or paste credit card details. 
 
 
 ### Logging
-Debug logs are used to identify flaws in the application. However, information provided by debug logs can be useful for an attacker to gather knowledge about the application. Therefore debug logs should be disabled in the production environment.  
+Debug logs are used to identify flaws in the application. However, the information provided by debug logs can be useful for an attacker to gather knowledge about the application. Therefore debug logs should be disabled in the production environment.  
 
 
 #### Android Specific Recommendations
@@ -122,7 +124,7 @@ HTML5 local storage can be used to store data within the browser between HTTP re
 
 
 #### Browser Cookie objects
-Cookies are used by servers to store data in the browser. Often session related data are stored inside cookies. Use Secure flag to indicate that only HTTPS requests are allowed to transfer cookies and HTTP Only flag to make cookies inaccessible to JavaScript's `Document.cookie` API. Make sure that both Secure and HTTP Only flags are set to cookies containing sensitive data.
+Cookies are used by servers to store data in the browser. Often session related data are stored inside cookies. Use the `Secure` flag to indicate that only HTTPS requests are allowed to transfer cookies and the HTTP Only flag to make cookies inaccessible to JavaScript's `Document.cookie` API. Make sure that both Secure and HTTP Only flags are set to cookies containing sensitive data.
 
 
 #### Analytics data sent to 3rd parties
@@ -156,11 +158,11 @@ The application can choose to avoid unencrypted HTTP traffic by using cleartextT
     ```
 
 ### Self Signed Certificates
-Usually, self-signed certificates are used in the development stage for the easiness of the developer. However, do not accept self-signed certificates in the production application as they allow an attacker to easily intercept the communication using his own self-signed certificate.
+Usually, self-signed certificates are used in the development stage for the easiness of the developer. However, do not accept self-signed certificates in the production application as they allow an attacker to easily intercept the communication using their own self-signed certificate.
  
 
 ### Certificate Pinning
-The application accepts all the certificates signed by trusted Certificate Authorities(CAs). If one of these trusted CA gets compromised and starts issuing fraudulent certificates, they will be accepted by the application. Certificate pinning can be used to store the certificate locally along with the domain name. This allows detecting fraudulent certificates as the application can compare previously stored certificates with the new one.
+The application accepts all the certificates signed by trusted Certificate Authorities(CAs). If one of these trusted CA gets compromised and starts issuing fraudulent certificates, they will be accepted by the application. Certificate pinning can be used to store the certificate locally along with the domain name. This allows the detection of fraudulent certificates as the application can compare previously stored certificates with the new ones.
  
 #### Android Specific Recommendations
 
@@ -185,7 +187,7 @@ The application accepts all the certificates signed by trusted Certificate Autho
 
  
 ### Hostname Verification
-Hostname verification is verifying whether the hostname of the server that the application is trying to connect is specified in the certificate presented by the server. It is important to have this verification as this will make sure that the server has presented the right certificate.
+Hostname verification is verifying whether the hostname of the server that the application is trying to connect to is specified in the certificate presented by the server. It is important to have this verification as this will make sure that the server has presented the right certificate.
 
 
 #### Android Specific Recommendations
@@ -216,21 +218,20 @@ This category captures notions of authenticating the end user or bad session man
 ### Prevention Techniques
 
 ### Local Authentication
-Local Authentication can be bypassed if the attacker has the ability to tamper the application. Therefore all the authentication checks should be performed by a backend server.
+Local Authentication can be bypassed if the attacker has the ability to tamper with the application. Therefore, all the authentication checks should be performed by a backend server.
 
 !!! danger error "Alert - Approval Required"
-    If any component requires implementing local authentication, the use-case, as well as controls in place to provide required protection, must be reviewed and approved by the Security and Compliance Team, before proceeding with the release of such component.
+    If any component requires implementing local authentication, the use-case, as well as controls in place to provide the required protection, must be reviewed and approved by the Security and Compliance Team, before proceeding with the release of such component.
 
 ### Password Policy
 Ensure that a strong password policy is enforced by the authentication server.  Use a similar strong password policy if the authentication is performed locally with the approval mentioned in the Local Authentication section.
 
 
 ### Device Identifiers
-Do not use device-specific identifiers for authentication. In an event of change of ownership of the phone, these IDs can expose previous owner’s data to the new owner.
-
+Do not use device-specific identifiers for authentication. In an event of a change of ownership of the phone, these IDs can expose the previous owner’s data to the new owner.
 
 ### Geo-Location
-Geo-location should not be used as an authentication mechanism as attackers can easily spoof the geo-location. If an application requires the use of geo-location, ensure that the application has implemented proper geo-location spoof detection mechanism to detect location anomalies.
+Geo-location should not be used as an authentication mechanism as attackers can easily spoof the geo-location. If an application requires the use of geo-location, ensure that the application has implemented a proper geo-location spoof detection mechanism to detect location anomalies.
 
 
 ### Token Revocation
@@ -238,7 +239,7 @@ In the event of a lost or stolen device, the application should have the ability
 
 
 ## M5 - Insufficient Cryptography
-The code applies cryptography to a sensitive information asset. However, cryptography is insufficient in some way. Note that anything and everything related to TLS or SSL goes in M3. Also, if the app fails to use cryptography at all when it should, that probably belongs in M2. This category is for issues where cryptography was attempted, but it wasn't done correctly.
+The code applies cryptography to a sensitive information asset. However, cryptography is insufficient in some ways. Note that anything and everything related to TLS or SSL goes in M3. Also, if the app fails to use cryptography at all when it should, that probably belongs in M2. This category is for issues where cryptography was attempted, but it wasn't done correctly.
  
 
 ### Prevention Techniques
@@ -248,7 +249,7 @@ Use a secure random number generator to generate strong keys that can withstand 
 
 
 #### Android Specific Recommendations
-Use the secure random number generator, `SecureRandom`[^11] to initialize any cryptographic keys generated by `KeyGenerator`[^12]. Use of a key that is not generated with a secure random number generator significantly weakens the strength of the algorithm and may allow offline attacks.
+Use the secure random number generator, `SecureRandom`[^11] to initialize any cryptographic keys generated by `KeyGenerator`[^12]. The use of a key that is not generated with a secure random number generator significantly weakens the strength of the algorithm and may allow offline attacks.
 
 
 ### Key Storage
@@ -264,7 +265,7 @@ Do not implement custom encryption algorithms. Use a proper algorithm that is wi
 
 
 #### Android Specific Recommendations
-Do not write custom protocols for implementing secure tunnels. Instead use  `HttpsURLConnection`[^14] or `SSLSocket`[^15]. If a custom protocol is needed, do not implement new algorithms. Instead, use existing cryptographic algorithms such as the implementations of AES and RSA provided in the `Cipher`[^16] class. 
+Do not write custom protocols for implementing secure tunnels. Instead, use  `HttpsURLConnection`[^14] or `SSLSocket`[^15]. If a custom protocol is needed, do not implement new algorithms. Instead, use existing cryptographic algorithms such as the implementations of AES and RSA provided in the `Cipher`[^16] class. 
 
 
 ### Deprecated Algorithms
@@ -283,7 +284,7 @@ This is a category to capture any failures in the authorization. It is distinct 
 ### Prevention Techniques
 
 ### Permissions
-Do not use roles and permission information coming from the mobile device for authorization. Backend code should independently verify that any incoming identifiers associated with a request (operands of a requested operation) that come along with the identifier match up and belong to the incoming identity. 
+Do not use roles and permission information coming from the mobile device for authorization. The back-end code should independently verify that any incoming identifiers associated with a request (operands of a requested operation) that come along with the identifier match up and belong to the incoming identity. 
 
 It is a must to request only the minimum number of permissions that your app requests, to reduce the risk of misusing permissions. In application documentation, it is required to mention the actual usage of each permission, so that users and security reviewers have access to this information. 
  
@@ -295,7 +296,7 @@ In Android, permissions are categorized into four protection levels[^17].
 
 * **`dangerous`**
 
-    A higher-risk permission that would give a requesting application access to private user data or control over the device that can negatively impact the user. Because this type of permission introduces potential risk, the system may not automatically grant it to the requesting application. For example, any dangerous permissions requested by an application may be displayed to the user and require confirmation before proceeding, or some other approach may be taken to avoid the user automatically allowing the use of such facilities.
+    A higher-risk permission would give a requesting application access to private user data or control over the device that can negatively impact the user. Because this type of permission introduces potential risk, the system may not automatically grant it to the requesting application. For example, any dangerous permissions requested by an application may be displayed to the user and require confirmation before proceeding, or some other approach may be taken to avoid the user automatically allowing the use of such facilities.
 
 * **`signature`**
 
@@ -303,7 +304,7 @@ In Android, permissions are categorized into four protection levels[^17].
 
 * **`signatureOrSystem`**
     
-    A permission that the system grants only to applications that are in the Android system image or that are signed with the same certificate as the application that declared the permission.The `signatureOrSystem` permission is used for certain special situations where multiple vendors have applications built into a system image and need to share specific features explicitly because they are being built together.
+    A permission that the system grants only to applications that are in the Android system image or that are signed with the same certificate as the application that declared the permission. The `signatureOrSystem` permission is used for certain special situations where multiple vendors have applications built into a system image and need to share specific features explicitly because they are being built together.
 
 
 When defining new permissions, use the dangerous protection level if the permission has the ability to access the stored data or affect the operation of other applications. Use the signature protection level if the permission has the ability to share data between applications signed with the same certificate.
@@ -312,13 +313,13 @@ When exposing data over Interprocess Communication(IPC), check the permissions o
  
 
 ### Proof Key for Code Exchange (PKCE)
-Using OAuth 2.0 authorization code grant type is susceptible to interception attacks. An attacker has the ability to intercept the authorization code received from the authorization endpoint via an unprotected communication such as inter-application communication within the client’s operating system. Proof Key for Code Exchange (PKCE)[^18] is used to mitigate this vulnerability. In PKCE,
+Using OAuth 2.0 authorization code grant type is susceptible to interception attacks. An attacker has the ability to intercept the authorization code received from the authorization endpoint via unprotected communication such as inter-application communication within the client’s operating system. Proof Key for Code Exchange (PKCE)[^18] is used to mitigate this vulnerability. In PKCE,
 
 * A unique cryptographic random key (code verifier) is created by the application with every authorization request. 
 * The code verifier is transformed into a code challenge and sent to the authorization server along with the transform method. 
 * The authorization server stores the code challenge and the transform method. 
-* During the request for an access token, the application has to send it’s generated code verifier to the authorization server. 
-* The server transforms the received code verifier with the stored transform method and compares with the previously stored code challenge.
+* During the request for an access token, the application has to send its generated code verifier to the authorization server. 
+* The server transforms the received code verifier with the stored transform method and compares it with the previously stored code challenge.
  
 
 ## M7-Poor Code Quality
@@ -337,12 +338,12 @@ When accessing a content provider, use parameterized query methods such as `quer
 If the content provider is serving files based on filename, make sure that path traversals are filtered out.
 
 
-### Third Party Libraries
-Applications rely heavily on third-party libraries. Making the application secure won’t be enough if the third party libraries contain vulnerabilities. Therefore, security auditing must thoroughly test third-party libraries for vulnerabilities.
+### third-party Libraries
+Applications rely heavily on third-party libraries. Making the application secure won’t be enough if the third-party libraries contain vulnerabilities. Therefore, security auditing must thoroughly test third-party libraries for vulnerabilities.
  
 
 ### Buffer Overflows
-Buffer overflows are not possible in Java. However, the application is susceptible to buffer overflows if it contains native code such as C or C++. To avoid buffer overflows, make sure that length of the incoming buffer data will not exceed the length of the target buffer.
+Buffer overflows are not possible in Java. However, the application is susceptible to buffer overflows if it contains native code such as C or C++. To avoid buffer overflows, make sure that the length of the incoming buffer data will not exceed the length of the target buffer.
 
 
 #### Android Specific Recommendations
@@ -351,7 +352,7 @@ Run Android Lint[^19] on the application code using Android SDK and correct any 
 
 ## M8 - Code Tampering
 This category covers binary patching, local resource modification, method hooking, method swizzling, and dynamic memory modification.
-Once the application is delivered to the mobile device, the code and data resources are resident there. An attacker can either directly modify the code, change the contents of memory dynamically, change or replace the system APIs that the application uses, or modify the application's data and resources. This can provide the attacker a direct method of subverting the intended use of the software for personal or monetary gain[^1].
+Once the application is delivered to the mobile device, the code and data resources are resident there. An attacker can either directly modify the code, change the contents of memory dynamically, change or replace the system APIs that the application uses, or modify the application's data and resources. This can provide the attacker with a direct method of subverting the intended use of the software for personal or monetary gain[^1].
  
 
 ### Prevention Techniques
@@ -359,8 +360,7 @@ Once the application is delivered to the mobile device, the code and data resour
 ### Tamper Detection 
 Use tamper detection techniques such as checksums or digital signatures to identify code tampering.
 
-In an event of code tampering use an appropriate mechanism such as wipe the user data or send a notification to the server to protect the sensitive data.
-
+In an event of code tampering, use an appropriate mechanism such as wiping the user data or sending a notification to the server to protect the sensitive data.
 
 ### Restricting Debuggers
 Prevent the operating system from permitting to attach a debugger to the application. This will increase the complexity of an attack[^20].
@@ -375,13 +375,13 @@ Strip the native binaries to increase the difficulty for an attacker to debug or
  
 
 ## M9 - Reverse Engineering
-This category includes analysis of the final core binary to determine its source code, libraries, algorithms, and other assets. Binary inspection tools give the attacker insight into the inner workings of the application. This may be used to exploit other nascent vulnerabilities in the application, as well as revealing information about back-end servers, cryptographic constants and ciphers, and intellectual property[^1].
+This category includes analysis of the final core binary to determine its source code, libraries, algorithms, and other assets. Binary inspection tools give the attacker insight into the inner workings of the application. This may be used to exploit other nascent vulnerabilities in the application, as well as reveal information about back-end servers, cryptographic constants and ciphers, and intellectual property[^1].
 
  
 ### Prevention Techniques
 
 ### Obfuscation
-Use an obfuscation tool to modify the code to become difficult to understand if the application gets decompiled.To measure the effectiveness of the obfuscator, use a deobfuscator.
+Use an obfuscation tool to modify the code to become difficult to understand if the application gets decompiled. To measure the effectiveness of the obfuscator, use a deobfuscator.
 
 !!! example
     Hex Rays and Hopper are popular deobfuscators that are used in reverse engineering applications. 
@@ -396,7 +396,7 @@ In an event of reverse engineering, the attacker might get hold of the source co
 
 
 #### Use C/C++ 
-Java is easier to decompile when compared to C/C++. Use C/C++ to write security sensitive sections of the code to make reverse engineering difficult for an attacker. 
+Java is easier to decompile when compared to C/C++. Use C/C++ to write security-sensitive sections of the code to make reverse engineering difficult for an attacker. 
 
 
 ## M10 - Extraneous Functionality
@@ -406,7 +406,7 @@ Often, developers include hidden backdoor functionality or other internal develo
 ### Prevention Techniques
 * Examine the app's configuration settings to discover any hidden switches.
 * Verify that all test code is not included in the final production build of the app.
-* Examine all API endpoints accessed by the mobile app to verify that these endpoints are well documented and publicly available.
+* Examine all API endpoints accessed by the mobile app to verify that these endpoints are well-documented and publicly available.
 * Examine all log statements to ensure nothing overly descriptive about the backend is being written to the logs[^22].
 
 
