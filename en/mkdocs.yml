@@ -65,7 +65,7 @@ nav:
       - 'OWASP CSRFGuard': 'security-guidelines/secure-engineering-guidelines/owasp-csrf-guard.md'
       - 'Static Code Analysis using FindSecurityBugs': 'security-guidelines/secure-engineering-guidelines/static-code-analysis-using-findsecuritybugs.md'
       - 'Dynamic Analysis with OWASP ZAP': 'security-guidelines/secure-engineering-guidelines/dynamic-analysis-with-owasp-zap.md'
-      - 'External Dependency Analysis Analysis using OWASP Dependency Check': 'security-guidelines/secure-engineering-guidelines/external-dependency-analysis-analysis-using-owasp-dependency-check.md'
+      - 'External Dependency Analysis using OWASP Dependency Check': 'security-guidelines/secure-engineering-guidelines/external-dependency-analysis-analysis-using-owasp-dependency-check.md'
     - 'Security Guidelines for Production Deployment': 'security-guidelines/security-guidelines-for-production-deployment.md'
   - 'Security Announcements':
     - '': 'security-announcements/index.md'
