@@ -18,7 +18,7 @@
 site_name: WSO2 Security and Compliance Documentation
 site_description: Documentation for WSO2 Security and Compliance
 site_author: WSO2
-site_url: https://security.docs.wso2.com/en/latest/
+site_url: http://127.0.0.1:8000/en/latest/
 
 # Repository
 repo_name: wso2/docs-security
@@ -301,6 +301,10 @@ markdown_extensions:
   - pymdownx.emoji:
       emoji_index: !!python/name:materialx.emoji.twemoji
       emoji_generator: !!python/name:materialx.emoji.to_svg
+
+# plugins
+plugins:
+  - search
 
 # Extra
 extra_css:
