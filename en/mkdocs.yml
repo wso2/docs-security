@@ -318,16 +318,6 @@ markdown_extensions:
       emoji_index: !!python/name:materialx.emoji.twemoji
       emoji_generator: !!python/name:materialx.emoji.to_svg
 
-<<<<<<< HEAD
-=======
-plugins:
-  - search
-  - markdownextradata:
-      jinja_options:
-        variable_start_string: '{{#'
-        variable_end_string: '#}}'
-
->>>>>>> 99ee7456054ac4eacd118b34d8bc5eb81b3a9da3
 # Extra
 extra_css:
   - assets/lib/highlightjs/default.min.css
