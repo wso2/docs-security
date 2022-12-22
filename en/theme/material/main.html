@@ -19,41 +19,19 @@
 
 {% extends "base.html" %}
 
+{% block site_meta %}
+  <meta charset="utf-8"/>
+  <meta name="docsearch:language" content="en" />
+  <meta name="docsearch:version" content="3.0.0" />
+{% endblock %}
+
 {% block styles %}
   {{ super() }}
   <link rel="stylesheet" href="{{ 'assets/fonts/font-awesome.css' | url }}">
   <link rel="icon" href="{{ config.theme.favicon | url}}">
 {% endblock %}
 
-{% block scripts %}
-      <script src="{{ 'assets/javascripts/application.162298c2.js' | url }}"></script>
-      {% if lang.t("search.language") != "en" %}
-        {% set languages = lang.t("search.language").split(",") %}
-        {% if languages | length and languages[0] != "" %}
-          {% set path = "assets/javascripts/lunr/" %}
-          <script src="{{ (path ~ 'lunr.stemmer.support.js') | url }}"></script>
-          {% for language in languages | map("trim") %}
-            {% if language != "en" %}
-              {% if language == "jp" %}
-                <script src="{{ (path ~ 'tinyseg.js') | url }}"></script>
-              {% endif %}
-              {% if language in ("da", "de", "du", "es", "fi", "fr", "hu", "it", "jp", "no", "pt", "ro", "ru", "sv", "tr") %}
-                <script src="{{ (path ~ 'lunr.' ~ language ~ '.js') | url }}"></script>
-              {% endif %}
-            {% endif %}
-          {% endfor %}
-          {% if languages | length > 1 %}
-            <script src="{{ (path ~ 'lunr.multi.js') | url }}"></script>
-          {% endif %}
-        {% endif %}
-      {% endif %}
-      <script>app.initialize({version:"{{ mkdocs_version }}",url:{base:"{{ base_url }}"}})</script>
-      {% for path in config["extra_javascript"] %}
-        <script src="{{ path | url }}"></script>
-      {% endfor %}
-    {% endblock %}
-
-    {% block analytics %}
+{% block analytics %}
 <!-- Global site tag (gtag.js) - Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=UA-103065-9"></script>
 <script>
