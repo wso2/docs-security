@@ -1,1 +1,0 @@
-# OWASP Application Security Verification Standard (OWASP ASVS)

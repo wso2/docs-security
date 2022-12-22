@@ -1,1 +1,0 @@
-# Docker Image Scanning Process
