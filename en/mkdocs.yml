@@ -321,6 +321,10 @@ markdown_extensions:
 # Plugin
 plugins:
   - search
+  - markdownextradata:
+      jinja_options:
+        variable_start_string: '{{#'
+        variable_end_string: '#}}'
 
 # Extra
 extra_css:
