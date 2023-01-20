@@ -270,6 +270,7 @@ nav:
         - 'Codecov supply chain breach': 'security-announcements/incident-clarifications/2021/codecov-supply-chain-breach.md'
         - 'NPM packages coa and rc Compromised': 'security-announcements/incident-clarifications/2021/npm-packages-coa-and-rc-compromised.md'
         - 'NPM package UA-Parser-JS Compromised': 'security-announcements/incident-clarifications/2021/npm-package-ua-parser-js-compromised.md'
+        - 'Log4j2 zero-day vulnerability (CVE-2021-44228 / CVE-2021-45046 / CVE-2021-45105)': 'security-announcements/incident-clarifications/2021/log4j2-zero-day-vulnerability_CVE-2021-44228_CVE-2021-45046_CVE-2021-45105.md'
       - '2020':
         - '': 'security-announcements/incident-clarifications/2020/index.md'
         - 'SolarWinds SUNBURST breach': 'security-announcements/incident-clarifications/2020/solarwinds-sunburst-breach.md'
