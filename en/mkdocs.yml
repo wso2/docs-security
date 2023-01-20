@@ -322,6 +322,10 @@ markdown_extensions:
 # Plugin
 plugins:
   - search
+  - mkdocs-simple-hooks:
+      enabled: !ENV [ENABLE_MKDOCS_SIMPLE_HOOKS, False]
+      hooks:
+        on_page_content: "docs.hooks:index_html"
   - markdownextradata:
       jinja_options:
         variable_start_string: '{{#'
