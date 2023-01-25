@@ -23,6 +23,20 @@ template: templates/single-column.html
         <div class="content">
             <!-- begin card -->
             <div class="card-wrapper">
+    			<div class="card" onclick="location.href='security-reporting/report-security-issues/';">
+                    <div class="line"></div>
+                    <div class="icon">
+                        <i class="material-icons md-36">security</i>
+                    </div>
+                    <div class="card-content">
+                        <p class="title">Security Reporting</p>
+                        <p class="hint">Learn how to report security issues in WSO2 products and get rewarded for your contributions.</p>
+                    </div>
+                </div>
+            </div>
+            <!-- end card -->
+            <!-- begin card -->
+            <div class="card-wrapper">
     			<div class="card" onclick="location.href='security-processes/';">
                     <div class="line"></div>
                     <div class="icon">
@@ -65,7 +79,7 @@ template: templates/single-column.html
             <!-- end card -->
             <!-- begin card -->
             <div class="card-wrapper">
-                <div class="card" onclick="location.href='/security-reporting/reward-and-acknowledgement-program/';">
+                <div class="card" onclick="location.href='security-reporting/reward-and-acknowledgement-program/';">
                     <div class="line"></div>
                     <div class="icon">
                         <i class="material-icons md-36">military_tech</i>
