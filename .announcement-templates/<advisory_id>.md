@@ -8,9 +8,8 @@ version: "{{version}}"
 
 # {{advisory_id}}
 
-<p class="doc-info">Published: {{date}}</p>
-<p class="doc-info">Updated: {{date}}</p>
-<p class="doc-info">Version: {{version}}</p>
+<p class="doc-info">WSO2 Products impacted: no</p>
+<p class="doc-info">Customers actions required: no</p>
 ---
 
 ### REPORTED VULNERABILITY

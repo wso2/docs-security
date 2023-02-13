@@ -266,13 +266,25 @@ nav:
     - 'CVE to WSO2 Security Advisory Mapping': 'security-announcements/cve-to-wso2-security-advisory-mapping.md'
     - 'CVE Justifications':
       - '': 'security-announcements/cve-justifications/index.md'
-      - 'CVE-2019-6512': 'security-announcements/cve-justifications/CVE-2019-6512.md'
-      - 'CVE-2019-6513': 'security-announcements/cve-justifications/CVE-2019-6513.md'
-      - 'CVE-2019-6515': 'security-announcements/cve-justifications/CVE-2019-6515.md'
-      - 'CVE-2019-17571': 'security-announcements/cve-justifications/CVE-2019-17571.md'
-      - 'CVE-2020-1938': 'security-announcements/cve-justifications/CVE-2020-1938.md'
-      - 'CVE-2020-13226': 'security-announcements/cve-justifications/CVE-2020-13226.md'
-      - 'ZDI-CAN-13449': 'security-announcements/cve-justifications/ZDI-CAN-13449.md'
+      - '2022':
+        - '': 'security-announcements/cve-justifications/2022/index.md'
+        - 'CVE-2021-42392': 'security-announcements/cve-justifications/2022/CVE-2021-42392.md'
+        - 'CVE-2022-22965': 'security-announcements/cve-justifications/2022/CVE-2022-22965.md'
+        - 'CVE-2022-42889': 'security-announcements/cve-justifications/2022/CVE-2022-42889.md'
+        - 'CVE-2022-3602 and CVE-2022-3786': 'security-announcements/cve-justifications/2022/CVE-2022-3602 and CVE-2022-3786.md'
+      - '2021':
+        - '': 'security-announcements/cve-justifications/2021/index.md'
+        - 'ZDI-CAN-13449': 'security-announcements/cve-justifications/ZDI-CAN-13449.md'
+      - '2020':
+        - '': 'security-announcements/cve-justifications/2020/index.md'
+        - 'CVE-2019-6513': 'security-announcements/cve-justifications/CVE-2019-6513.md'
+        - 'CVE-2019-17571': 'security-announcements/cve-justifications/CVE-2019-17571.md'
+        - 'CVE-2020-1938': 'security-announcements/cve-justifications/CVE-2020-1938.md'
+        - 'CVE-2020-13226': 'security-announcements/cve-justifications/CVE-2020-13226.md'
+      - '2019':
+        - '': 'security-announcements/cve-justifications/2019/index.md'
+        - 'CVE-2019-6512': 'security-announcements/cve-justifications/CVE-2019-6512.md'
+        - 'CVE-2019-6515': 'security-announcements/cve-justifications/CVE-2019-6515.md'
     - 'Incident Clarifications':
       - '': 'security-announcements/incident-clarifications/index.md'
       - '2021':
