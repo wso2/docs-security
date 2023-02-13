@@ -83,14 +83,20 @@ nav:
         - 'WSO2-2021-1509': 'security-announcements/security-advisories/2022/WSO2-2021-1509.md'
         - 'WSO2-2021-1524': 'security-announcements/security-advisories/2022/WSO2-2021-1524.md'
         - 'WSO2-2021-1530': 'security-announcements/security-advisories/2022/WSO2-2021-1530.md'
+        - 'WSO2-2021-1531': 'security-announcements/security-advisories/2022/WSO2-2021-1531.md'
         - 'WSO2-2021-1573': 'security-announcements/security-advisories/2022/WSO2-2021-1573.md'
         - 'WSO2-2021-1574': 'security-announcements/security-advisories/2022/WSO2-2021-1574.md'
+        - 'WSO2-2021-1592': 'security-announcements/security-advisories/2022/WSO2-2021-1592.md'
         - 'WSO2-2021-1603': 'security-announcements/security-advisories/2022/WSO2-2021-1603.md'
         - 'WSO2-2021-1605': 'security-announcements/security-advisories/2022/WSO2-2021-1605.md'
         - 'WSO2-2021-1646': 'security-announcements/security-advisories/2022/WSO2-2021-1646.md'
         - 'WSO2-2021-1720': 'security-announcements/security-advisories/2022/WSO2-2021-1720.md'
         - 'WSO2-2021-1738': 'security-announcements/security-advisories/2022/WSO2-2021-1738.md'
+        - 'WSO2-2022-1476': 'security-announcements/security-advisories/2022/WSO2-2022-1476.md'
+        - 'WSO2-2022-1698': 'security-announcements/security-advisories/2022/WSO2-2022-1698.md'
+        - 'WSO2-2022-1745': 'security-announcements/security-advisories/2022/WSO2-2022-1745.md'
         - 'WSO2-2022-1849': 'security-announcements/security-advisories/2022/WSO2-2022-1849.md'
+        - 'WSO2-2022-1923': 'security-announcements/security-advisories/2022/WSO2-2022-1923.md'
       - '2021 Advisories': 
         - '': 'security-announcements/security-advisories/2021/2021-advisories.md'
         - 'WSO2-2020-0751': 'security-announcements/security-advisories/2021/WSO2-2020-0751.md'
@@ -345,7 +351,7 @@ extra:
     - type: linkedin
       link: https://www.linkedin.com/company/wso2
   site_version: 1.0.0
-  cp_timeframe: 2015-2022
+  cp_timeframe: 2015-2023
   base_path: 'https://security.docs.wso2.com/en/latest/'    # base path prod
   # base_path: ''                                             # base path dev
   nav_list:
