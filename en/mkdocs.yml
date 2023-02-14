@@ -71,6 +71,10 @@ nav:
     - '': 'security-announcements/index.md'
     - 'WSO2 Security Advisories': 
       - '': 'security-announcements/security-advisories/index.md'
+      - '2023 Advisories':
+        - '': 'security-announcements/security-advisories/2023/2023-advisories.md'
+        - 'WSO2-2022-1821': 'security-announcements/security-advisories/2023/WSO2-2022-1821.md'
+        - 'WSO2-2022-1910': 'security-announcements/security-advisories/2023/WSO2-2022-1910.md'
       - '2022 Advisories':
         - '': 'security-announcements/security-advisories/2022/2022-advisories.md'
         - 'WSO2-2021-1259': 'security-announcements/security-advisories/2022/WSO2-2021-1259.md'
@@ -83,14 +87,20 @@ nav:
         - 'WSO2-2021-1509': 'security-announcements/security-advisories/2022/WSO2-2021-1509.md'
         - 'WSO2-2021-1524': 'security-announcements/security-advisories/2022/WSO2-2021-1524.md'
         - 'WSO2-2021-1530': 'security-announcements/security-advisories/2022/WSO2-2021-1530.md'
+        - 'WSO2-2021-1531': 'security-announcements/security-advisories/2022/WSO2-2021-1531.md'
         - 'WSO2-2021-1573': 'security-announcements/security-advisories/2022/WSO2-2021-1573.md'
         - 'WSO2-2021-1574': 'security-announcements/security-advisories/2022/WSO2-2021-1574.md'
+        - 'WSO2-2021-1592': 'security-announcements/security-advisories/2022/WSO2-2021-1592.md'
         - 'WSO2-2021-1603': 'security-announcements/security-advisories/2022/WSO2-2021-1603.md'
         - 'WSO2-2021-1605': 'security-announcements/security-advisories/2022/WSO2-2021-1605.md'
         - 'WSO2-2021-1646': 'security-announcements/security-advisories/2022/WSO2-2021-1646.md'
         - 'WSO2-2021-1720': 'security-announcements/security-advisories/2022/WSO2-2021-1720.md'
         - 'WSO2-2021-1738': 'security-announcements/security-advisories/2022/WSO2-2021-1738.md'
+        - 'WSO2-2022-1476': 'security-announcements/security-advisories/2022/WSO2-2022-1476.md'
+        - 'WSO2-2022-1698': 'security-announcements/security-advisories/2022/WSO2-2022-1698.md'
+        - 'WSO2-2022-1745': 'security-announcements/security-advisories/2022/WSO2-2022-1745.md'
         - 'WSO2-2022-1849': 'security-announcements/security-advisories/2022/WSO2-2022-1849.md'
+        - 'WSO2-2022-1923': 'security-announcements/security-advisories/2022/WSO2-2022-1923.md'
       - '2021 Advisories': 
         - '': 'security-announcements/security-advisories/2021/2021-advisories.md'
         - 'WSO2-2020-0751': 'security-announcements/security-advisories/2021/WSO2-2020-0751.md'
@@ -256,13 +266,26 @@ nav:
     - 'CVE to WSO2 Security Advisory Mapping': 'security-announcements/cve-to-wso2-security-advisory-mapping.md'
     - 'CVE Justifications':
       - '': 'security-announcements/cve-justifications/index.md'
-      - 'CVE-2019-6512': 'security-announcements/cve-justifications/CVE-2019-6512.md'
-      - 'CVE-2019-6513': 'security-announcements/cve-justifications/CVE-2019-6513.md'
-      - 'CVE-2019-6515': 'security-announcements/cve-justifications/CVE-2019-6515.md'
-      - 'CVE-2019-17571': 'security-announcements/cve-justifications/CVE-2019-17571.md'
-      - 'CVE-2020-1938': 'security-announcements/cve-justifications/CVE-2020-1938.md'
-      - 'CVE-2020-13226': 'security-announcements/cve-justifications/CVE-2020-13226.md'
-      - 'ZDI-CAN-13449': 'security-announcements/cve-justifications/ZDI-CAN-13449.md'
+      - '2022':
+        - '': 'security-announcements/cve-justifications/2022/index.md'
+        - 'CVE-2021-42392': 'security-announcements/cve-justifications/2022/CVE-2021-42392.md'
+        - 'CVE-2022-22965': 'security-announcements/cve-justifications/2022/CVE-2022-22965.md'
+        - 'CVE-2022-42889': 'security-announcements/cve-justifications/2022/CVE-2022-42889.md'
+        - 'CVE-2022-3602 and CVE-2022-3786': 'security-announcements/cve-justifications/2022/CVE-2022-3602 and CVE-2022-3786.md'
+        - 'log4j v1 vulnerabilities (CVE-2022-23302 CVE-2022-23305 CVE-2022-23307)': 'security-announcements/cve-justifications/2022/log4j v1 vulnerabilities (CVE-2022-23302 CVE-2022-23305 CVE-2022-23307).md'
+      - '2021':
+        - '': 'security-announcements/cve-justifications/2021/index.md'
+        - 'ZDI-CAN-13449': 'security-announcements/cve-justifications/2021/ZDI-CAN-13449.md'
+      - '2020':
+        - '': 'security-announcements/cve-justifications/2020/index.md'
+        - 'CVE-2019-6513': 'security-announcements/cve-justifications/2020/CVE-2019-6513.md'
+        - 'CVE-2019-17571': 'security-announcements/cve-justifications/2020/CVE-2019-17571.md'
+        - 'CVE-2020-1938': 'security-announcements/cve-justifications/2020/CVE-2020-1938.md'
+        - 'CVE-2020-13226': 'security-announcements/cve-justifications/2020/CVE-2020-13226.md'
+      - '2019':
+        - '': 'security-announcements/cve-justifications/2019/index.md'
+        - 'CVE-2019-6512': 'security-announcements/cve-justifications/2019/CVE-2019-6512.md'
+        - 'CVE-2019-6515': 'security-announcements/cve-justifications/2019/CVE-2019-6515.md'
     - 'Incident Clarifications':
       - '': 'security-announcements/incident-clarifications/index.md'
       - '2021':
@@ -271,6 +294,7 @@ nav:
         - 'NPM packages coa and rc Compromised': 'security-announcements/incident-clarifications/2021/npm-packages-coa-and-rc-compromised.md'
         - 'NPM package UA-Parser-JS Compromised': 'security-announcements/incident-clarifications/2021/npm-package-ua-parser-js-compromised.md'
         - 'Log4j2 zero-day vulnerability (CVE-2021-44228 / CVE-2021-45046 / CVE-2021-45105)': 'security-announcements/incident-clarifications/2021/log4j2-zero-day-vulnerability_CVE-2021-44228_CVE-2021-45046_CVE-2021-45105.md'
+        - 'CVE-2021-4104': 'security-announcements/incident-clarifications/2021/CVE-2021-4104.md'
       - '2020':
         - '': 'security-announcements/incident-clarifications/2020/index.md'
         - 'SolarWinds SUNBURST breach': 'security-announcements/incident-clarifications/2020/solarwinds-sunburst-breach.md'
@@ -345,7 +369,7 @@ extra:
     - type: linkedin
       link: https://www.linkedin.com/company/wso2
   site_version: 1.0.0
-  cp_timeframe: 2015-2022
+  cp_timeframe: 2015-2023
   base_path: 'https://security.docs.wso2.com/en/latest/'    # base path prod
   # base_path: ''                                             # base path dev
   nav_list:
