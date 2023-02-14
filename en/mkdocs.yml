@@ -272,19 +272,20 @@ nav:
         - 'CVE-2022-22965': 'security-announcements/cve-justifications/2022/CVE-2022-22965.md'
         - 'CVE-2022-42889': 'security-announcements/cve-justifications/2022/CVE-2022-42889.md'
         - 'CVE-2022-3602 and CVE-2022-3786': 'security-announcements/cve-justifications/2022/CVE-2022-3602 and CVE-2022-3786.md'
+        - 'log4j v1 vulnerabilities (CVE-2022-23302 CVE-2022-23305 CVE-2022-23307)': 'security-announcements/cve-justifications/2022/log4j v1 vulnerabilities (CVE-2022-23302 CVE-2022-23305 CVE-2022-23307).md'
       - '2021':
         - '': 'security-announcements/cve-justifications/2021/index.md'
-        - 'ZDI-CAN-13449': 'security-announcements/cve-justifications/ZDI-CAN-13449.md'
+        - 'ZDI-CAN-13449': 'security-announcements/cve-justifications/2021/ZDI-CAN-13449.md'
       - '2020':
         - '': 'security-announcements/cve-justifications/2020/index.md'
-        - 'CVE-2019-6513': 'security-announcements/cve-justifications/CVE-2019-6513.md'
-        - 'CVE-2019-17571': 'security-announcements/cve-justifications/CVE-2019-17571.md'
-        - 'CVE-2020-1938': 'security-announcements/cve-justifications/CVE-2020-1938.md'
-        - 'CVE-2020-13226': 'security-announcements/cve-justifications/CVE-2020-13226.md'
+        - 'CVE-2019-6513': 'security-announcements/cve-justifications/2020/CVE-2019-6513.md'
+        - 'CVE-2019-17571': 'security-announcements/cve-justifications/2020/CVE-2019-17571.md'
+        - 'CVE-2020-1938': 'security-announcements/cve-justifications/2020/CVE-2020-1938.md'
+        - 'CVE-2020-13226': 'security-announcements/cve-justifications/2020/CVE-2020-13226.md'
       - '2019':
         - '': 'security-announcements/cve-justifications/2019/index.md'
-        - 'CVE-2019-6512': 'security-announcements/cve-justifications/CVE-2019-6512.md'
-        - 'CVE-2019-6515': 'security-announcements/cve-justifications/CVE-2019-6515.md'
+        - 'CVE-2019-6512': 'security-announcements/cve-justifications/2019/CVE-2019-6512.md'
+        - 'CVE-2019-6515': 'security-announcements/cve-justifications/2019/CVE-2019-6515.md'
     - 'Incident Clarifications':
       - '': 'security-announcements/incident-clarifications/index.md'
       - '2021':
@@ -293,6 +294,7 @@ nav:
         - 'NPM packages coa and rc Compromised': 'security-announcements/incident-clarifications/2021/npm-packages-coa-and-rc-compromised.md'
         - 'NPM package UA-Parser-JS Compromised': 'security-announcements/incident-clarifications/2021/npm-package-ua-parser-js-compromised.md'
         - 'Log4j2 zero-day vulnerability (CVE-2021-44228 / CVE-2021-45046 / CVE-2021-45105)': 'security-announcements/incident-clarifications/2021/log4j2-zero-day-vulnerability_CVE-2021-44228_CVE-2021-45046_CVE-2021-45105.md'
+        - 'CVE-2021-4104': 'security-announcements/incident-clarifications/2021/CVE-2021-4104.md'
       - '2020':
         - '': 'security-announcements/incident-clarifications/2020/index.md'
         - 'SolarWinds SUNBURST breach': 'security-announcements/incident-clarifications/2020/solarwinds-sunburst-breach.md'
