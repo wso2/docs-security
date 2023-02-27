@@ -48,6 +48,7 @@ security researcher community relationship.
 | [Juba Baghdad](https://twitter.com/jubabaghdad) |
 | [Julien Oury--Nogues](https://fr.linkedin.com/in/julien-oury-nogues-a23186115/en) |
 | [Krzysztof Przybylski](#) |
+| [kuteminh11](#) |
 | [Lukasz Juszczyk](#) |
 | [Manuel Alejandro Fernández Casado (Equipo M45)](https://es.linkedin.com/in/malejandrofc) |
 | [Mariani Francesco](#) |
@@ -66,7 +67,7 @@ security researcher community relationship.
 | [Pradipta Das](https://www.facebook.com/dasprodipto) |
 | [Prial Islam](https://0xprial.com/) |
 | [Pubudu Priyashan Iddamalgoda (Team Hawk Security)](https://www.facebook.com/pubudu.priyashan.1) |
-| [Quentin Biguenet](#)] |
+| [Quentin Biguenet](#) |
 | [Raki Ben Hamouda](https://www.linkedin.com/in/rakibha) |
 | [Rodrigo Duarte Favarini Silva](https://www.linkedin.com/in/rodrigofavarini/) |
 | [Simon Gerst](https://github.com/intrigus-lgtm)  |
