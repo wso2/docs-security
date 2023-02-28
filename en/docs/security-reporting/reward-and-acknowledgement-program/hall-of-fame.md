@@ -13,7 +13,18 @@ However, please note that WSO2-maintained websites (including wso2.com) are curr
 with acknowledgement. Refer to our [Security Reward and Acknowledgement Program](index.md) to learn more about our 
 security researcher community relationship.
 
-## WSO2 Products and Infrastructure
+## 2023
+
+### WSO2 Products and Infrastructure
+
+||
+| :-----------|
+| [kuteminh11](#) |
+
+
+## Prior to 2023
+
+### WSO2 Products and Infrastructure
 
 ||
 | :-----------|
@@ -48,7 +59,6 @@ security researcher community relationship.
 | [Juba Baghdad](https://twitter.com/jubabaghdad) |
 | [Julien Oury--Nogues](https://fr.linkedin.com/in/julien-oury-nogues-a23186115/en) |
 | [Krzysztof Przybylski](#) |
-| [kuteminh11](#) |
 | [Lukasz Juszczyk](#) |
 | [Manuel Alejandro Fernández Casado (Equipo M45)](https://es.linkedin.com/in/malejandrofc) |
 | [Mariani Francesco](#) |
@@ -86,7 +96,7 @@ security researcher community relationship.
 | [Zakaria BRAHIMI](https://www.linkedin.com/in/zakaria-brahimi) |
 
 
-## Choreo
+### Choreo
 
 ||
 | :-----------|
