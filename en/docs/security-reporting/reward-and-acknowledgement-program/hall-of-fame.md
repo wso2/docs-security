@@ -20,6 +20,8 @@ security researcher community relationship.
 ||
 | :-----------|
 | [kuteminh11](#) |
+| Orange Tsai (@orange_8361) from DEVCORE Research Team |
+| Rick Roane |
 
 
 ## Prior to 2023
