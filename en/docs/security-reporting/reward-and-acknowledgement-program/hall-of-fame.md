@@ -13,7 +13,20 @@ However, please note that WSO2-maintained websites (including wso2.com) are curr
 with acknowledgement. Refer to our [Security Reward and Acknowledgement Program](index.md) to learn more about our 
 security researcher community relationship.
 
-## WSO2 Products and Infrastructure
+## 2023
+
+### WSO2 Products and Infrastructure
+
+||
+| :-----------|
+| [kuteminh11](#) |
+| Orange Tsai (@orange_8361) from DEVCORE Research Team |
+| Rick Roane |
+
+
+## Prior to 2023
+
+### WSO2 Products and Infrastructure
 
 ||
 | :-----------|
@@ -66,7 +79,7 @@ security researcher community relationship.
 | [Pradipta Das](https://www.facebook.com/dasprodipto) |
 | [Prial Islam](https://0xprial.com/) |
 | [Pubudu Priyashan Iddamalgoda (Team Hawk Security)](https://www.facebook.com/pubudu.priyashan.1) |
-| [Quentin Biguenet](#)] |
+| [Quentin Biguenet](#) |
 | [Raki Ben Hamouda](https://www.linkedin.com/in/rakibha) |
 | [Rodrigo Duarte Favarini Silva](https://www.linkedin.com/in/rodrigofavarini/) |
 | [Simon Gerst](https://github.com/intrigus-lgtm)  |
@@ -85,7 +98,7 @@ security researcher community relationship.
 | [Zakaria BRAHIMI](https://www.linkedin.com/in/zakaria-brahimi) |
 
 
-## Choreo
+### Choreo
 
 ||
 | :-----------|
