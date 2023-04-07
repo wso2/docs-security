@@ -11,3 +11,4 @@ category: security-announcements
 * [WSO2-2022-2019]({{#base_path#}}/security-announcements/security-advisories/2023/WSO2-2022-2019)
 * [WSO2-2022-2043]({{#base_path#}}/security-announcements/security-advisories/2023/WSO2-2022-2043)
 * [WSO2-2022-2357]({{#base_path#}}/security-announcements/security-advisories/2023/WSO2-2022-2357)
+* [WSO2-2023-2617]({{#base_path#}}/security-announcements/security-advisories/2023/WSO2-2023-2617)
