@@ -25,11 +25,14 @@ This includes the following:
 * [WSO2 API Manager](https://wso2.com/api-management/)
 * [WSO2 Identity Server](https://wso2.com/identity-and-access-management)
 * [WSO2 Enterprise Integrator](https://wso2.com/integration)
+* [Ballerina](https://ballerina.io/) (limited to the scope mentioned in [https://ballerina.io/security-policy/](https://ballerina.io/security-policy/))
+* [Choreo](https://wso2.com/choreo/)
+* [Asgardeo](https://wso2.com/asgardeo/)
 
 Out of the above-listed products, only the [latest released version](http://wso2.com/products/carbon/release-matrix/) of each product is included in the scope of this program. In addition to that, the release date of the product version should be within 3 years from the date of the report.
 
 !!! info
-    Other than Choreo, Asgardeo and any other live deployment of a WSO2 product, a website (such as wso2.com) or any other hosting owned by WSO2, would not be included in the scope of this program.
+    Any other live deployment of a WSO2 product, or a website (e.g. wso2.com) would not be included in the scope of this program.
 
 
 ### Qualifying Vulnerabilities
