@@ -29,7 +29,7 @@ template: templates/single-column.html
                         <i class="material-icons md-36">military_tech</i>
                     </div>
                     <div class="card-content">
-                        <p class="title">Security Reporting and Reward Prgram</p>
+                        <p class="title">Security Reporting and Reward Program</p>
                         <p class="hint">Report security issues via our private and highly confidential security mailing lists and get rewarded.</p>
                     </div>
                 </div>
