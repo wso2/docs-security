@@ -22,8 +22,6 @@ We recognize the importance of adopting secure development practices to reduce t
 
 By integrating security into each stage of our SDLC, we strive to guarantee that software products and solutions are designed with security as a priority from the beginning. This approach helps minimize the chances of vulnerabilities and other security issues that may be identified later in the development process or after deployment. The ultimate outcome is a more secure software product capable of mitigating potential security risks and defending against cyber threats.
 
-![Cloud Software Development Process - stages](../assets/images/cloud-security-process/cloud-software-development-process-stages.png)
-
 
 ## Design and Architecture
 The Secure Design and Architecture phase is the most crucial step in implementing security, as it takes place before any code is written. Detecting design flaws and potential risks at this stage can minimize vulnerabilities and save a considerable amount of effort. The risks identified during this phase encompass insecure data flows, susceptibilities in the selected framework and programming language, prevalent risks, unsound design choices, and defective business logic.
