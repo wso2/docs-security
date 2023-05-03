@@ -14,3 +14,4 @@ manage any product vulnerabilities, and our responsible disclosure policy.
   This section further explains the various tools and practices we follow when implementing and releasing products.
 * [Vulnerability Management Process](vulnerability-management-process.md): 
   How we manage vulnerabilities in WSO2 products and services.
+* [Cloud Security Process](cloud-security-process.md): Document outlines the secure design patterns and security measures WSO2 have implemented to protect the Cloud against various threats. The process aligns with "*The Six Pillars of DevSecOps: Pragmatic Implementatio*" by Cloud Security Alliance.
