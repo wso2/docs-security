@@ -45,13 +45,11 @@ theme:
 # Navigation
 nav:
   - 'WSO2 Security and Compliance Documentation': 'index.md'
-  - 'Security Processes and Programs':
-    - '': 'security-processes-programs/index.md'
-    - 'Secure Software Development Process': 'security-processes-programs/secure-software-development-process.md'
-    - 'Vulnerability Management Process': 'security-processes-programs/vulnerability-management-process.md'
-    - 'Reward and Acknowledgement Program':
-      - 'Reward and Acknowledgement Program': 'security-processes-programs/reward-and-acknowledgement-program/index.md'
-      - 'Security Hall of Fame': 'security-processes-programs/reward-and-acknowledgement-program/hall-of-fame.md'
+  - 'Security Processes':
+    - '': 'security-processes/index.md'
+    - 'Secure Software Development Process': 'security-processes/secure-software-development-process.md'
+    - 'Vulnerability Management Process': 'security-processes/vulnerability-management-process.md'
+    - 'Cloud Security Process': 'security-processes/cloud-security-process.md'
   - 'Security Guidelines':
     - '': 'security-guidelines/index.md'
     - 'Secure Engineering Guidelines':
@@ -59,6 +57,7 @@ nav:
       - 'Secure Coding Guidelines': 
         - 'Introduction': 'security-guidelines/secure-engineering-guidelines/secure-coding-guidlines/introduction.md'
         - 'General Recommendations for Secure Coding': 'security-guidelines/secure-engineering-guidelines/secure-coding-guidlines/general-recommendations-for-secure-coding.md'
+        - 'General Recommendations for React Secure Coding': 'security-guidelines/secure-engineering-guidelines/secure-coding-guidlines/general-recommendations-for-react-secure-coding.md'
         - 'OWASP Top 10 - 2017 Prevention': 'security-guidelines/secure-engineering-guidelines/secure-coding-guidlines/owasp-t10-2017-prevention.md'
         - 'OWASP Top 10 - 2013 Prevention': 'security-guidelines/secure-engineering-guidelines/secure-coding-guidlines/owasp-t10-2013-prevention.md'
         - 'OWASP Mobile Top 10 Prevention': 'security-guidelines/secure-engineering-guidelines/secure-coding-guidlines/owasp-mobile-t10-prevention.md'
@@ -67,16 +66,22 @@ nav:
       - 'OWASP CSRFGuard': 'security-guidelines/secure-engineering-guidelines/owasp-csrf-guard.md'
       - 'Static Code Analysis using FindSecurityBugs': 'security-guidelines/secure-engineering-guidelines/static-code-analysis-using-findsecuritybugs.md'
       - 'Dynamic Analysis with OWASP ZAP': 'security-guidelines/secure-engineering-guidelines/dynamic-analysis-with-owasp-zap.md'
-      - 'External Dependency Analysis Analysis using OWASP Dependency Check': 'security-guidelines/secure-engineering-guidelines/external-dependency-analysis-analysis-using-owasp-dependency-check.md'
+      - 'External Dependency Analysis using OWASP Dependency Check': 'security-guidelines/secure-engineering-guidelines/external-dependency-analysis-analysis-using-owasp-dependency-check.md'
     - 'Security Guidelines for Production Deployment': 'security-guidelines/security-guidelines-for-production-deployment.md'
-    - 'Vulnerability Reporting Guidelines': 'security-guidelines/vulnerability-reporting-guidelines.md'
   - 'Security Announcements':
     - '': 'security-announcements/index.md'
     - 'WSO2 Security Advisories': 
       - '': 'security-announcements/security-advisories/index.md'
       - '2023 Advisories':
+        - '': 'security-announcements/security-advisories/2023/2023-advisories.md'
         - 'WSO2-2022-2177': 'security-announcements/security-advisories/2023/WSO2-2022-2177.md'
         - 'WSO2-2022-2182': 'security-announcements/security-advisories/2023/WSO2-2022-2182.md'
+        - 'WSO2-2022-1821': 'security-announcements/security-advisories/2023/WSO2-2022-1821.md'
+        - 'WSO2-2022-1910': 'security-announcements/security-advisories/2023/WSO2-2022-1910.md'
+        - 'WSO2-2022-2019': 'security-announcements/security-advisories/2023/WSO2-2022-2019.md'
+        - 'WSO2-2022-2043': 'security-announcements/security-advisories/2023/WSO2-2022-2043.md'
+        - 'WSO2-2022-2357': 'security-announcements/security-advisories/2023/WSO2-2022-2357.md'
+        - 'WSO2-2023-2617': 'security-announcements/security-advisories/2023/WSO2-2023-2617.md'
       - '2022 Advisories':
         - '': 'security-announcements/security-advisories/2022/2022-advisories.md'
         - 'WSO2-2021-1259': 'security-announcements/security-advisories/2022/WSO2-2021-1259.md'
@@ -89,14 +94,20 @@ nav:
         - 'WSO2-2021-1509': 'security-announcements/security-advisories/2022/WSO2-2021-1509.md'
         - 'WSO2-2021-1524': 'security-announcements/security-advisories/2022/WSO2-2021-1524.md'
         - 'WSO2-2021-1530': 'security-announcements/security-advisories/2022/WSO2-2021-1530.md'
+        - 'WSO2-2021-1531': 'security-announcements/security-advisories/2022/WSO2-2021-1531.md'
         - 'WSO2-2021-1573': 'security-announcements/security-advisories/2022/WSO2-2021-1573.md'
         - 'WSO2-2021-1574': 'security-announcements/security-advisories/2022/WSO2-2021-1574.md'
+        - 'WSO2-2021-1592': 'security-announcements/security-advisories/2022/WSO2-2021-1592.md'
         - 'WSO2-2021-1603': 'security-announcements/security-advisories/2022/WSO2-2021-1603.md'
         - 'WSO2-2021-1605': 'security-announcements/security-advisories/2022/WSO2-2021-1605.md'
         - 'WSO2-2021-1646': 'security-announcements/security-advisories/2022/WSO2-2021-1646.md'
         - 'WSO2-2021-1720': 'security-announcements/security-advisories/2022/WSO2-2021-1720.md'
         - 'WSO2-2021-1738': 'security-announcements/security-advisories/2022/WSO2-2021-1738.md'
+        - 'WSO2-2022-1476': 'security-announcements/security-advisories/2022/WSO2-2022-1476.md'
+        - 'WSO2-2022-1698': 'security-announcements/security-advisories/2022/WSO2-2022-1698.md'
+        - 'WSO2-2022-1745': 'security-announcements/security-advisories/2022/WSO2-2022-1745.md'
         - 'WSO2-2022-1849': 'security-announcements/security-advisories/2022/WSO2-2022-1849.md'
+        - 'WSO2-2022-1923': 'security-announcements/security-advisories/2022/WSO2-2022-1923.md'
       - '2021 Advisories': 
         - '': 'security-announcements/security-advisories/2021/2021-advisories.md'
         - 'WSO2-2020-0751': 'security-announcements/security-advisories/2021/WSO2-2020-0751.md'
@@ -262,13 +273,26 @@ nav:
     - 'CVE to WSO2 Security Advisory Mapping': 'security-announcements/cve-to-wso2-security-advisory-mapping.md'
     - 'CVE Justifications':
       - '': 'security-announcements/cve-justifications/index.md'
-      - 'CVE-2019-6512': 'security-announcements/cve-justifications/CVE-2019-6512.md'
-      - 'CVE-2019-6513': 'security-announcements/cve-justifications/CVE-2019-6513.md'
-      - 'CVE-2019-6515': 'security-announcements/cve-justifications/CVE-2019-6515.md'
-      - 'CVE-2019-17571': 'security-announcements/cve-justifications/CVE-2019-17571.md'
-      - 'CVE-2020-1938': 'security-announcements/cve-justifications/CVE-2020-1938.md'
-      - 'CVE-2020-13226': 'security-announcements/cve-justifications/CVE-2020-13226.md'
-      - 'ZDI-CAN-13449': 'security-announcements/cve-justifications/ZDI-CAN-13449.md'
+      - '2022':
+        - '': 'security-announcements/cve-justifications/2022/index.md'
+        - 'CVE-2021-42392': 'security-announcements/cve-justifications/2022/CVE-2021-42392.md'
+        - 'CVE-2022-22965': 'security-announcements/cve-justifications/2022/CVE-2022-22965.md'
+        - 'CVE-2022-42889': 'security-announcements/cve-justifications/2022/CVE-2022-42889.md'
+        - 'CVE-2022-3602 and CVE-2022-3786': 'security-announcements/cve-justifications/2022/CVE-2022-3602 and CVE-2022-3786.md'
+        - 'log4j v1 vulnerabilities (CVE-2022-23302 CVE-2022-23305 CVE-2022-23307)': 'security-announcements/cve-justifications/2022/log4j v1 vulnerabilities (CVE-2022-23302 CVE-2022-23305 CVE-2022-23307).md'
+      - '2021':
+        - '': 'security-announcements/cve-justifications/2021/index.md'
+        - 'ZDI-CAN-13449': 'security-announcements/cve-justifications/2021/ZDI-CAN-13449.md'
+      - '2020':
+        - '': 'security-announcements/cve-justifications/2020/index.md'
+        - 'CVE-2019-6513': 'security-announcements/cve-justifications/2020/CVE-2019-6513.md'
+        - 'CVE-2019-17571': 'security-announcements/cve-justifications/2020/CVE-2019-17571.md'
+        - 'CVE-2020-1938': 'security-announcements/cve-justifications/2020/CVE-2020-1938.md'
+        - 'CVE-2020-13226': 'security-announcements/cve-justifications/2020/CVE-2020-13226.md'
+      - '2019':
+        - '': 'security-announcements/cve-justifications/2019/index.md'
+        - 'CVE-2019-6512': 'security-announcements/cve-justifications/2019/CVE-2019-6512.md'
+        - 'CVE-2019-6515': 'security-announcements/cve-justifications/2019/CVE-2019-6515.md'
     - 'Incident Clarifications':
       - '': 'security-announcements/incident-clarifications/index.md'
       - '2021':
@@ -276,9 +300,17 @@ nav:
         - 'Codecov supply chain breach': 'security-announcements/incident-clarifications/2021/codecov-supply-chain-breach.md'
         - 'NPM packages coa and rc Compromised': 'security-announcements/incident-clarifications/2021/npm-packages-coa-and-rc-compromised.md'
         - 'NPM package UA-Parser-JS Compromised': 'security-announcements/incident-clarifications/2021/npm-package-ua-parser-js-compromised.md'
+        - 'Log4j2 zero-day vulnerability (CVE-2021-44228 / CVE-2021-45046 / CVE-2021-45105)': 'security-announcements/incident-clarifications/2021/log4j2-zero-day-vulnerability_CVE-2021-44228_CVE-2021-45046_CVE-2021-45105.md'
+        - 'CVE-2021-4104': 'security-announcements/incident-clarifications/2021/CVE-2021-4104.md'
       - '2020':
         - '': 'security-announcements/incident-clarifications/2020/index.md'
         - 'SolarWinds SUNBURST breach': 'security-announcements/incident-clarifications/2020/solarwinds-sunburst-breach.md'
+  - 'Security Reporting':
+    - 'Report Security Issues': 'security-reporting/report-security-issues.md'
+    - 'Vulnerability Reporting Guidelines': 'security-reporting/vulnerability-reporting-guidelines.md'
+    - 'Reward and Acknowledgement Program':
+      - 'Reward and Acknowledgement Program': 'security-reporting/reward-and-acknowledgement-program/index.md'
+      - 'Security Hall of Fame': 'security-reporting/reward-and-acknowledgement-program/hall-of-fame.md'
   - '404 - Not found': 'page-not-found.md'
 
 # Extensions
@@ -318,13 +350,14 @@ markdown_extensions:
       emoji_index: !!python/name:materialx.emoji.twemoji
       emoji_generator: !!python/name:materialx.emoji.to_svg
 
+# Plugin
 plugins:
   - search
   - markdownextradata:
       jinja_options:
         variable_start_string: '{{#'
         variable_end_string: '#}}'
-  
+
 # Extra
 extra_css:
   - assets/lib/highlightjs/default.min.css
@@ -343,11 +376,12 @@ extra:
     - type: linkedin
       link: https://www.linkedin.com/company/wso2
   site_version: 1.0.0
-  cp_timeframe: 2015-2022
-  base_path: 'https://security.docs.wso2.com/en/latest/'    # base path prod
+  cp_timeframe: 2015-2023
+  base_path: 'https://security.docs.wso2.com/en/latest'    # base path prod
   # base_path: ''                                             # base path dev
   nav_list:
     - WSO2 Security and Compliance Documentation
-    - Security Processes and Programs
+    - Security Processes
     - Security Guidelines
     - Security Announcements
+    - Security Reporting

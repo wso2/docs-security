@@ -25,7 +25,7 @@ Thereby confirming that WSO2 or WSO2 customers are not impacted by the said vuln
 
 
 ### Security Controls against supply chain attacks
-* All the PRs will be reviewed and Merged. During this process if there were any sensitive data on the PRs those will be removed.
+* All the PRs will be reviewed and Merged. During this process, if there were any sensitive data on the PRs those will be removed.
 * All packages/ artifacts will undergo both Static and Dynamic application testing phases prior to production releases.
 
 

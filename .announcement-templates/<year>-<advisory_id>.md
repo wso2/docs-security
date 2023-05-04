@@ -37,14 +37,14 @@ cvss: "{{cvss}}"
 ### SOLUTION
 If the latest version of the affected WSO2 product is not mentioned under the affected product list, you may migrate to the latest version to receive security fixes.
 
-Otherwise you may apply the relevant fixes to the product based on the public fix(s):
+Otherwise, you may apply the relevant fixes to the product based on the public fix(s):
 
 * {{pr_link_1}}
 * {{pr_link_2}}
 
 
 !!! info todo
-    **If you are a WSO2 customer with Support Subscription, please use [WSO2 Updates](https://wso2.com/updates/) in order to apply the fix.**
+    **If you are a WSO2 customer with a support subscription, use [WSO2 Updates](https://wso2.com/updates/) in order to apply the fix.**
 
 
 ### CREDITS

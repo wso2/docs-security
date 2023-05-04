@@ -6,48 +6,38 @@ version: 1.1
 ---
 
 # Security Related HTTP Headers
-
-<p class="doc-info">Published: October 22, 2018</p>
 <p class="doc-info">Version: 1.1</p>
----
-
-## Revision History
-
-| Version | Release Date | Contributors / Authors | Summary of Changes |
-| ------- | ------------ | ---------------------- |------------------- |
-| 1.1     | April 07, 2017 | [Ayoma Wijethunga](https://wso2.com/about/team/ayoma-wijethunga/) | Formatting changes |
-| 1.0     | May 26, 2016 | [Ayoma Wijethunga](https://wso2.com/about/team/ayoma-wijethunga/) | Initial version |
-
+___
 
 ## Introduction
 This document summarizes the **Security Related HTTP Headers** which should be considered by WSO2 engineers while engineering WSO2 products, as well as applications used within the organization.
 
 
 ### Mandatory Headers
-Below list consists of standard and non-standard security related HTTP headers, that must be enabled in order to enhance security aspects of web applications:
+The below list consists of standard and non-standard security-related HTTP headers, that must be enabled in order to enhance the security aspects of web applications:
 
 !!! info ""
     `X-XSS-Protection: 1; mode=block`: Enables reflected XSS protection in supported web browsers[^1].
 
-    `X-Content-Type-Options: nosniff`: Disable mime sniffing, which can result reflected or stored XSS in certain browsers[^2].
+    `X-Content-Type-Options: nosniff`: Disable mime sniffing, which can result in reflected or stored XSS in certain browsers[^2].
 
 
 ### Configurable Headers
-In addition, following security headers should be configured according to requirement of the application and they can be customized based on URL pattern: 
+In addition, the following security headers should be configured according to the requirement of the application and they can be customized based on URL pattern: 
 
 !!! info ""
-    `X-Frame-Options: DENY`: Disable embedding web application in iframes or frames[^3].
+    `X-Frame-Options: DENY`: Disable embedding web applications in iframes or frames[^3].
 
-    `X-Frame-Options: SAMEORIGIN`: Allow embedding web application in iframes or frames, only within same origin[^3].
+    `X-Frame-Options: SAMEORIGIN`: Allow embedding web applications in iframes or frames, only within the same origin[^3].
 
 
-### Production Recommandations
-Production or staging deployments (with CA signed certificates) should enable following headers for additional security:
+### Production Recommendations
+Production or staging deployments (with CA signed certificates) should enable the following headers for additional security:
 
 !!! info ""
-    `Strict-Transport-Security: max-age=15768000; includeSubDomains`: Prevent any communication over HTTP, since the time last response was received with the aforementioned header, up-to duration defined in max-age[^4].
+    `Strict-Transport-Security: max-age=15768000; includeSubDomains`: Prevent any communication over HTTP, since the time the last response was received with the aforementioned header, up-to duration defined in max-age[^4].
 
-Security headers that need to be set with external filter (based on customer and security needs) or that should be incorporated into Tomcat filter in future release includes following: 
+Security headers that need to be set with an external filter (based on customer and security needs) or that should be incorporated into the Tomcat filter in future release includes the following: 
 
 !!! info ""
     `Public-Key-Pins: pin-sha256="<sha256>"; pin-sha256="<sha256>"; max-age=15768000; includeSubDomains`: Instructs the web client to associate a specific cryptographic public key with a certain web server to prevent MITM attacks with forged certificates[^5].
@@ -97,7 +87,7 @@ Recommended web.xml filter mapping for production environments is as follows:
 
 
 ### Customized Configuration
-It is possible to use filter mappings to cater product level customizations required. For example in order to enable `X-Frame-Options` only for particular URLs,  below configuration can be used:
+It is possible to use filter mappings to cater to product level customizations required. For example in order to enable `X-Frame-Options` only for particular URLs,  below configuration can be used:
 
 ```xml
 <filter>
@@ -181,11 +171,11 @@ If an application requires enabling `SAMEORIGIN` framing only for a particular U
 </filter-mapping>
 ```
 
-Further details on configuration is available at Tomcat official documentation on `HTTP_Header_Security_Filter`[^8] and relevant source files[^9].
+Further details on configuration are available at the Tomcat official documentation on `HTTP_Header_Security_Filter`[^8] and relevant source files[^9].
 
 
 ## Securing Jaggery Applications
-It is required to upgrade Jaggery version to 0.12.6 or later. 
+It is required to upgrade the Jaggery version to 0.12.6 or later. 
 
 
 ### Recommended Default Configuration
@@ -229,7 +219,7 @@ Recommended jaggery.conf filter mapping for production environments is as follow
 
 
 ### Customized Configuration
-It is possible to use filter mappings to cater product level customizations required. For example in order to enable `X-Frame-Options` only for particular URLs, below configuration can be used:
+It is possible to use filter mappings to cater to product-level customizations required. For example, to enable X-Frame-Options only for particular URLs, the below configuration can be used:
 
 ```json
 "filters":[
@@ -297,8 +287,7 @@ If an application requires enabling SAMEORIGIN framing only for a particular URL
 ],
 ```
 
-Further details on configuration is available at Tomcat official documentation on `HTTP_Header_Security_Filter`[^8] and relevant source files[^9].
-
+Further details on configuration are available at the Tomcat official documentation on HTTP_Header_Security_Filter8 and relevant source files9.
 
 ## References
 [^1]: [https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-XSS-Protection](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-XSS-Protection)

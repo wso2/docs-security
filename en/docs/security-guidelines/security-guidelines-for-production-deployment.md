@@ -5,7 +5,12 @@ category: security-guidelines
 
 # Security Guidelines for Production Deployment
 
-Following guidelines illustate on how to setup WSO2 products in a secure manner for production grade environments. Please refer to the following documentation related to the product and version that you use:
+When configuring WSO2 products securely in production-grade settings, there are guidelines to be followed.
+Refer to the listed documentation for each product based on the version that you use:
+
+!!! note
+    If you are using a WSO2 product or a version that is not in this list,
+    refer to the common [Security Guidelines for Production Deployment](https://docs.wso2.com/display/ADMIN44x/Security+Guidelines+for+Production+Deployment).
 
 * WSO2 API Manager
     - [APIM-4.1.0 (latest)](https://apim.docs.wso2.com/en/latest/install-and-setup/setup/deployment-best-practices/security-guidelines-for-production-deployment/)
@@ -21,5 +26,3 @@ Following guidelines illustate on how to setup WSO2 products in a secure manner 
     - [IS-5.11.0 (latest)](https://is.docs.wso2.com/en/latest/administer/security-guidelines-for-production-deployment/)
     - [IS-5.10.0](https://is.docs.wso2.com/en/5.10.0/administer/security-guidelines-for-production-deployment/)
     - [IS-5.9.0](https://is.docs.wso2.com/en/5.9.0/administer/security-guidelines-for-production-deployment/)
-
-If you are using a WSO2 product or a version which is not listed in above, you may refer to the common [Security Guidelines for Production Deployment](https://docs.wso2.com/display/ADMIN44x/Security+Guidelines+for+Production+Deployment).

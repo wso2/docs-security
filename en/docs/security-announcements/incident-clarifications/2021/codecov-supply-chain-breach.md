@@ -24,7 +24,7 @@ There was no evidence of compromise was detected, and we don’t expect any impa
 
 ### Security Controls against supply chain attacks
 * We have not integrated sensitive private repositories with code coverage tools.
-* All the PRs will be reviewed and Merged. During this process if there were any sensitive data on the PRs those will be removed.
+* All the PRs will be reviewed and Merged. During this process, if there were any sensitive data on the PRs those will be removed.
 * All packages/ artifacts will undergo both Static and Dynamic application testing phases prior to production releases.
 
 
