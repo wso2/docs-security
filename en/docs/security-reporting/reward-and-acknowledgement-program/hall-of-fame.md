@@ -96,7 +96,7 @@ security researcher community relationship.
 | [Soner Soydinc](#) |
 | [Suyog Palav](https://medium.com/@suyogpalav/) |
 | [Tawfik Bakache](https://twitter.com/di_0_zx) |
-| [Trần Như Minh]() |Trần Như Minh
+| [Trần Như Minh]() |
 | [Trình. Mai Công](https://www.linkedin.com/in/trinh-mai-cong-94b4b0209/) |
 | [Tom O'Neill](https://www.linkedin.com/in/the-tom-oneill) |
 | [Valentin Giraud ( OKIOK )](https://www.linkedin.com/in/valentin-giraud-762ab8ba/) |
