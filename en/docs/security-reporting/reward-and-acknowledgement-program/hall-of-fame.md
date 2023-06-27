@@ -30,11 +30,13 @@ security researcher community relationship.
 
 ||
 | :-----------|
+| [Abdennour Chakifi](https://twitter.com/dazaii111) |
 | [Abin Joseph](https://www.facebook.com/hacker.abin1337) |
 | [Abdulrahman Nour](https://twitter.com/aboodnour) ([redforce.io](https://redforce.io/)) |
 | [Adesh Nandkishor Kolte](https://twitter.com/AdeshKolte) |
 | [Ali Yavuz Çukur](https://www.linkedin.com/in/ali-yavuz-%C3%A7ukur-44789418a) |
-| [amnotacat](https://hackerone.com/amnotacat) |
+| [Amnotacat](https://hackerone.com/amnotacat) |
+| [Amit Khandebharad](https://www.linkedin.com/in/amit-khandebharad-15a5651b7/) |
 | [Anders Norlander (Mitang AB)](https://mitang.se/) |
 | [Ahmed Aboul-Ela](https://twitter.com/aboul3la) |
 | [Akalanka Ekanayake](https://www.facebook.com/ceo.akalanka) |
@@ -42,10 +44,14 @@ security researcher community relationship.
 | [Bharat](https://www.linkedin.com/in/mr-noob-9812a6172) |
 | [Bawantha Chandula (Team Hawk Security)](https://www.linkedin.com/in/bawanthachandula) |
 | [Bruno Monteiro](https://www.linkedin.com/in/bruno-monteiro-4b926413a) |
+| [Bibek Sapkota](https://m.me/Sar00n) |
+| [Burhanuddin sabun](https://twitter.com/B19R8A14?t=ziw19FeMOKrKVsuUXpvL0A&s=09) |
 | [Cameron Dawe (Spam404)](https://twitter.com/spam404online) |
+| [Đậu Hoàng Tài)](	https://twitter.com/taidh) |
 | [Daniel Kalinowski](https://llamasbytes.com/) |
 | [Dipendranath Tarafder](https://twitter.com/dip_tarafder) |
 | [Dienpv](#) |
+| [Digant Prajapati](#) |
 | [Evgeny Anihovsky](https://www.linkedin.com/in/evgeny-anihovsky-a1966456/) |
 | [Foysal Ahmed Fahim](https://twitter.com/foysal1197) |
 | [f6x](https://hackerone.com/f6x) |
@@ -90,7 +96,9 @@ security researcher community relationship.
 | [Soner Soydinc](#) |
 | [Suyog Palav](https://medium.com/@suyogpalav/) |
 | [Tawfik Bakache](https://twitter.com/di_0_zx) |
+| [Trần Như Minh]() |
 | [Trình. Mai Công](https://www.linkedin.com/in/trinh-mai-cong-94b4b0209/) |
+| [Tom O'Neill](https://www.linkedin.com/in/the-tom-oneill) |
 | [Valentin Giraud ( OKIOK )](https://www.linkedin.com/in/valentin-giraud-762ab8ba/) |
 | [Vijayakumar Muniraj](https://www.linkedin.com/in/vijaykumarmuniraj) ([Cyber Security Research Labs](https://cybersecurityworks.com/)) |
 | [Werner Schober (SEC Consult Vulnerability Lab)](#) |
