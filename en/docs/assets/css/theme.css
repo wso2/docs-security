@@ -943,7 +943,7 @@ border-left: 4px solid transparent;
 	width: 100%;
 	display: flex;
 	padding: 10px;
-	max-width: 400px;
+	max-width: 440px;
 }
 
 .card:hover {
@@ -1016,7 +1016,7 @@ border-left: 4px solid transparent;
 }
 
 .md-typeset .hint {
-    margin: 5px 0;
+    margin: 5px 5px;
 }
 
 .card .text {
