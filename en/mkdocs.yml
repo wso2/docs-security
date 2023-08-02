@@ -74,6 +74,9 @@ nav:
       - '': 'security-announcements/security-advisories/index.md'
       - '2023 Advisories':
         - '': 'security-announcements/security-advisories/2023/2023-advisories.md'
+        - 'WSO2-2021-1318': 'security-announcements/security-advisories/2023/WSO2-2021-1318.md'
+        - 'WSO2-2022-2055': 'security-announcements/security-advisories/2023/WSO2-2022-2055.md'
+        - 'WSO2-2022-2062': 'security-announcements/security-advisories/2023/WSO2-2022-2062.md'
         - 'WSO2-2022-1821': 'security-announcements/security-advisories/2023/WSO2-2022-1821.md'
         - 'WSO2-2022-1910': 'security-announcements/security-advisories/2023/WSO2-2022-1910.md'
         - 'WSO2-2022-2019': 'security-announcements/security-advisories/2023/WSO2-2022-2019.md'
