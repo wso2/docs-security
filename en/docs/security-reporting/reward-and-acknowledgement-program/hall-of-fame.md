@@ -90,11 +90,13 @@ security researcher community relationship.
 | [Rodrigo Duarte Favarini Silva](https://www.linkedin.com/in/rodrigofavarini/) |
 | [Simon Gerst](https://github.com/intrigus-lgtm)  |
 | [Sajibe Kanti](https://twitter.com/Sajibekantibd) |
+| [Shailendra Singh Sachan](https://www.linkedin.com/in/shailendra-singh-sachan-b8205b184)
 | [Samir Hadji](https://twitter.com/dz_samir)  |
 | [Samitha Madhusanka](https://www.linkedin.com/in/madhusanka-athapaththu-b4b936ab/) |
 | [Sathish Kumar Balakrishnan](http://sathish.co.in/) ([Cyber Security Works Pvt Ltd](http://cybersecurityworks.com/)) |
 | [Soner Soydinc](#) |
 | [Suyog Palav](https://medium.com/@suyogpalav/) |
+| [Suraj Theekshana](https://www.linkedin.com/in/suraj-theekshana-10171023a/)
 | [Tawfik Bakache](https://twitter.com/di_0_zx) |
 | [Trần Như Minh]() |
 | [Trình. Mai Công](https://www.linkedin.com/in/trinh-mai-cong-94b4b0209/) |
