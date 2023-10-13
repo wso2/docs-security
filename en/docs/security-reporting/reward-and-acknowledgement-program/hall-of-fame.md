@@ -22,6 +22,7 @@ security researcher community relationship.
 | [kuteminh11](#) |
 | Orange Tsai (@orange_8361) from DEVCORE Research Team |
 | Rick Roane |
+| [Adam Kues - Security Researcher at Assetnote](https://assetnote.io) |
 
 
 ## Prior to 2023
@@ -33,7 +34,7 @@ security researcher community relationship.
 | [Abdennour Chakifi](https://twitter.com/dazaii111) |
 | [Abin Joseph](https://www.facebook.com/hacker.abin1337) |
 | [Abdulrahman Nour](https://twitter.com/aboodnour) ([redforce.io](https://redforce.io/)) |
-| [Adesh Nandkishor Kolte](https://twitter.com/AdeshKolte) |
+| [Avinash Jain](https://www.linkedin.com/in/avinash-jain-54524678/) |
 | [Ali Yavuz Çukur](https://www.linkedin.com/in/ali-yavuz-%C3%A7ukur-44789418a) |
 | [Amnotacat](https://hackerone.com/amnotacat) |
 | [Amit Khandebharad](https://www.linkedin.com/in/amit-khandebharad-15a5651b7/) |
