@@ -19,10 +19,14 @@ security researcher community relationship.
 
 ||
 | :-----------|
+| [Adam Kues - Security Researcher at Assetnote](https://assetnote.io) |
+| [Avinash Jain](https://www.linkedin.com/in/avinash-jain-54524678/) |
 | [kuteminh11](#) |
 | Orange Tsai (@orange_8361) from DEVCORE Research Team |
 | Rick Roane |
-| [Adam Kues - Security Researcher at Assetnote](https://assetnote.io) |
+| [Shailendra Singh Sachan](https://www.linkedin.com/in/shailendra-singh-sachan-b8205b184) |
+| [Suraj Theekshana](https://www.linkedin.com/in/suraj-theekshana-10171023a/) |
+
 
 
 ## Prior to 2023
@@ -34,7 +38,6 @@ security researcher community relationship.
 | [Abdennour Chakifi](https://twitter.com/dazaii111) |
 | [Abin Joseph](https://www.facebook.com/hacker.abin1337) |
 | [Abdulrahman Nour](https://twitter.com/aboodnour) ([redforce.io](https://redforce.io/)) |
-| [Avinash Jain](https://www.linkedin.com/in/avinash-jain-54524678/) |
 | [Ali Yavuz Çukur](https://www.linkedin.com/in/ali-yavuz-%C3%A7ukur-44789418a) |
 | [Amnotacat](https://hackerone.com/amnotacat) |
 | [Amit Khandebharad](https://www.linkedin.com/in/amit-khandebharad-15a5651b7/) |
@@ -91,13 +94,11 @@ security researcher community relationship.
 | [Rodrigo Duarte Favarini Silva](https://www.linkedin.com/in/rodrigofavarini/) |
 | [Simon Gerst](https://github.com/intrigus-lgtm)  |
 | [Sajibe Kanti](https://twitter.com/Sajibekantibd) |
-| [Shailendra Singh Sachan](https://www.linkedin.com/in/shailendra-singh-sachan-b8205b184)
 | [Samir Hadji](https://twitter.com/dz_samir)  |
 | [Samitha Madhusanka](https://www.linkedin.com/in/madhusanka-athapaththu-b4b936ab/) |
 | [Sathish Kumar Balakrishnan](http://sathish.co.in/) ([Cyber Security Works Pvt Ltd](http://cybersecurityworks.com/)) |
 | [Soner Soydinc](#) |
 | [Suyog Palav](https://medium.com/@suyogpalav/) |
-| [Suraj Theekshana](https://www.linkedin.com/in/suraj-theekshana-10171023a/)
 | [Tawfik Bakache](https://twitter.com/di_0_zx) |
 | [Trần Như Minh]() |
 | [Trình. Mai Công](https://www.linkedin.com/in/trinh-mai-cong-94b4b0209/) |
