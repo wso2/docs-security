@@ -22,7 +22,6 @@ security researcher community relationship.
 | [Adam Kues - Security Researcher at Assetnote](https://assetnote.io)                     |
 | [Avinash Jain](https://www.linkedin.com/in/avinash-jain-54524678/)                       |
 | [kuteminh11](#)                                                                          |
-| Orange Tsai (@orange_8361) from DEVCORE Research Team                                    |
 | Rick Roane                                                                               |
 | [Shailendra Singh Sachan](https://www.linkedin.com/in/shailendra-singh-sachan-b8205b184) |
 | [Suraj Theekshana](https://www.linkedin.com/in/suraj-theekshana-10171023a/)              |
@@ -82,6 +81,7 @@ security researcher community relationship.
 | [Mehedi Hasan Remon](http://twitter.com/mehedi1194)                                                                                    |
 | [Mohammed Adel](https://www.facebook.com/xXalreshyxX)                                                                                  |
 | [Nghĩa Vũ Trung](https://www.linkedin.com/in/nghia-vu-trung-45a144171/)                                                                |
+| Orange Tsai (@orange_8361) from DEVCORE Research Team                                                                                  |
 | [Osanda Malith Jayathissa](https://twitter.com/OsandaMalith)                                                                           |
 | [Pace Hitech](http://pacehitech.com/)                                                                                                  |
 | [Paweł Gocyla](#)                                                                                                                      |
