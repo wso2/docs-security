@@ -8,6 +8,7 @@ category: security-announcements
 
 Following pages list the security advisories that we have released in each year. For information regarding the vulnerability management process that we follow, refer WSO2 Security Vulnerability Management Process page.
 
+* [2024 Advisories]({{#base_path#}}/security-announcements/security-advisories/2024/2024-advisories/)
 * [2023 Advisories]({{#base_path#}}/security-announcements/security-advisories/2023/2023-advisories/)
 * [2022 Advisories]({{#base_path#}}/security-announcements/security-advisories/2022/2022-advisories/)
 * [2021 Advisories]({{#base_path#}}/security-announcements/security-advisories/2021/2021-advisories/)
