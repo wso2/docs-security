@@ -13,6 +13,17 @@ However, please note that WSO2-maintained websites (including wso2.com) are curr
 with acknowledgement. Refer to our [Security Reward and Acknowledgement Program](index.md) to learn more about our 
 security researcher community relationship.
 
+## 2024
+
+### WSO2 Products and Infrastructure
+
+|                                                                                          |
+| :--------------------------------------------------------------------------------------- |
+| [Pavel Richtarik](https://www.linkedin.com/in/pavel-richtarik-0b524974/)                     |
+| [Siebene@](https://twitter.com/Siebene7)                       |
+
+
+
 ## 2023
 
 ### WSO2 Products and Infrastructure
