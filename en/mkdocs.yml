@@ -54,7 +54,7 @@ nav:
     - '': 'security-guidelines/index.md'
     - 'Secure Engineering Guidelines':
       - '': 'security-guidelines/secure-engineering-guidelines/index.md'
-      - 'Secure Coding Guidelines': 
+      - 'Secure Coding Guidelines':
         - 'Introduction': 'security-guidelines/secure-engineering-guidelines/secure-coding-guidlines/introduction.md'
         - 'General Recommendations for Secure Coding': 'security-guidelines/secure-engineering-guidelines/secure-coding-guidlines/general-recommendations-for-secure-coding.md'
         - 'General Recommendations for React Secure Coding': 'security-guidelines/secure-engineering-guidelines/secure-coding-guidlines/general-recommendations-for-react-secure-coding.md'
@@ -70,7 +70,7 @@ nav:
     - 'Security Guidelines for Production Deployment': 'security-guidelines/security-guidelines-for-production-deployment.md'
   - 'Security Announcements':
     - '': 'security-announcements/index.md'
-    - 'WSO2 Security Advisories': 
+    - 'WSO2 Security Advisories':
       - '': 'security-announcements/security-advisories/index.md'
       - '2023 Advisories':
         - '': 'security-announcements/security-advisories/2023/2023-advisories.md'
@@ -115,7 +115,7 @@ nav:
         - 'WSO2-2022-1745': 'security-announcements/security-advisories/2022/WSO2-2022-1745.md'
         - 'WSO2-2022-1849': 'security-announcements/security-advisories/2022/WSO2-2022-1849.md'
         - 'WSO2-2022-1923': 'security-announcements/security-advisories/2022/WSO2-2022-1923.md'
-      - '2021 Advisories': 
+      - '2021 Advisories':
         - '': 'security-announcements/security-advisories/2021/2021-advisories.md'
         - 'WSO2-2020-0751': 'security-announcements/security-advisories/2021/WSO2-2020-0751.md'
         - 'WSO2-2020-0752': 'security-announcements/security-advisories/2021/WSO2-2020-0752.md'
@@ -150,7 +150,7 @@ nav:
         - 'WSO2-2021-1497': 'security-announcements/security-advisories/2021/WSO2-2021-1497.md'
         - 'WSO2-2021-1411': 'security-announcements/security-advisories/2021/WSO2-2021-1411.md'
         - 'WSO2-2021-1699': 'security-announcements/security-advisories/2021/WSO2-2021-1699.md'
-      - '2020 Advisories': 
+      - '2020 Advisories':
         - '': 'security-announcements/security-advisories/2020/2020-advisories.md'
         - 'WSO2-2019-0661': 'security-announcements/security-advisories/2020/WSO2-2019-0661.md'
         - 'WSO2-2018-0537': 'security-announcements/security-advisories/2020/WSO2-2018-0537.md'
@@ -192,7 +192,7 @@ nav:
         - 'WSO2-2020-0781': 'security-announcements/security-advisories/2020/WSO2-2020-0781.md'
         - 'WSO2-2020-0843': 'security-announcements/security-advisories/2020/WSO2-2020-0843.md'
         - 'WSO2-2020-0864': 'security-announcements/security-advisories/2020/WSO2-2020-0864.md'
-      - '2019 Advisories': 
+      - '2019 Advisories':
         - '': 'security-announcements/security-advisories/2019/2019-advisories.md'
         - 'WSO2-2019-0432': 'security-announcements/security-advisories/2019/WSO2-2019-0432.md'
         - 'WSO2-2019-0486': 'security-announcements/security-advisories/2019/WSO2-2019-0486.md'
@@ -221,10 +221,10 @@ nav:
         - 'WSO2-2019-0655': 'security-announcements/security-advisories/2019/WSO2-2019-0655.md'
         - 'WSO2-2019-0656': 'security-announcements/security-advisories/2019/WSO2-2019-0656.md'
         - 'WSO2-2019-0658': 'security-announcements/security-advisories/2019/WSO2-2019-0658.md'
-      - '2018 Advisories': 
+      - '2018 Advisories':
         - '': 'security-announcements/security-advisories/2018/2018-advisories.md'
         - 'WSO2-2018-0462': 'security-announcements/security-advisories/2018/WSO2-2018-0462.md'
-      - '2017 Advisories': 
+      - '2017 Advisories':
         - '': 'security-announcements/security-advisories/2017/2017-advisories.md'
         - 'WSO2-2017-0177': 'security-announcements/security-advisories/2017/WSO2-2017-0177.md'
         - 'WSO2-2017-0179': 'security-announcements/security-advisories/2017/WSO2-2017-0179.md'
@@ -256,7 +256,7 @@ nav:
         - 'WSO2-2017-0267': 'security-announcements/security-advisories/2017/WSO2-2017-0267.md'
         - 'WSO2-2017-0289': 'security-announcements/security-advisories/2017/WSO2-2017-0289.md'
         - 'WSO2-2017-0326': 'security-announcements/security-advisories/2017/WSO2-2017-0326.md'
-      - '2016 Advisories': 
+      - '2016 Advisories':
         - '': 'security-announcements/security-advisories/2016/2016-advisories.md'
         - 'WSO2-2016-0092': 'security-announcements/security-advisories/2016/WSO2-2016-0092.md'
         - 'WSO2-2016-0095': 'security-announcements/security-advisories/2016/WSO2-2016-0095.md'
@@ -318,6 +318,7 @@ nav:
     - 'Reward and Acknowledgement Program':
       - 'Reward and Acknowledgement Program': 'security-reporting/reward-and-acknowledgement-program/index.md'
       - 'Security Hall of Fame': 'security-reporting/reward-and-acknowledgement-program/hall-of-fame.md'
+    - 'Reporting Service Abuse or Malicious Content': 'security-reporting/abuse-report.md'
   - '404 - Not found': 'page-not-found.md'
 
 # Extensions
