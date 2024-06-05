@@ -12,35 +12,28 @@ If you observe any abusive activity within the listed domains, promptly report i
 
 ### Choreo Domains
 
-- [choreo.dev](http://choreo.dev/)
-
-- [choreoapps.dev](http://choreoapps.dev/)
-
-- [choreoapis.dev](http://choreoapis.dev/)
-
-- [choreoapis.io](http://choreoapis.io/)
+- choreo.dev
+- choreoapps.dev
+- choreoapis.dev
+- choreoapis.io
 
 
 ### Asgardeo Domains
 
-- [asgardeo.dev](http://asgardeo.dev/)
-
-- [asgardeo.io](http://asgardeo.io/)
+- asgardeo.dev
+- asgardeo.io
 
 
 ### Ballerina Domains
 
-- [ballerina.io](http://ballerina.io/)
-
-- [ballerina.org](http://ballerina.org/)
+- ballerina.io
+- ballerina.org
 
 
 ### WSO2 Domains
 
-- [wso2.com](http://wso2.com/)
-
-- [wso2.org](http://wso2.org/)
-
+- wso2.com
+- wso2.org
 - wso2con.com
 
 
