@@ -74,6 +74,11 @@ nav:
       - '': 'security-announcements/security-advisories/index.md'
       - '2024 Advisories':
         - '': 'security-announcements/security-advisories/2024/2024-advisories.md'
+        - 'WSO2-2022-1920': 'security-announcements/security-advisories/2024/WSO2-2022-1920.md'
+        - 'WSO2-2023-2589': 'security-announcements/security-advisories/2024/WSO2-2023-2589.md'
+        - 'WSO2-2023-2827': 'security-announcements/security-advisories/2024/WSO2-2023-2827.md'
+        - 'WSO2-2023-2864': 'security-announcements/security-advisories/2024/WSO2-2023-2864.md'
+        - 'CVE-2024-0392': 'security-announcements/security-advisories/2024/CVE-2024-0392.md'
         - 'WSO2-2022-1754': 'security-announcements/security-advisories/2024/WSO2-2022-1754.md'
         - 'WSO2-2022-1988': 'security-announcements/security-advisories/2024/WSO2-2022-1988.md'
         - 'WSO2-2022-2049': 'security-announcements/security-advisories/2024/WSO2-2022-2049.md'
