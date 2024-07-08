@@ -25,7 +25,7 @@ Refer to the listed documentation for each product based on the version that you
     - [EI-7.0.0](https://ei.docs.wso2.com/en/7.0.0/micro-integrator/setup/deployment/deployment_checklist/)
 
 * WSO2 Identity Server
-    - [IS-6.1.0 (latest)](https://is.docs.wso2.com/en/latest/deploy/security/security-guidelines-for-production-deployment/)
+    - [IS-7.0.0 (latest)](https://is.docs.wso2.com/en/latest/deploy/security/security-guidelines-for-production-deployment/)
     - [IS-6.1.0](https://is.docs.wso2.com/en/6.1.0/deploy/security/security-guidelines-for-production-deployment/)
     - [IS-6.0.0](https://is.docs.wso2.com/en/6.0.0/administer/security-guidelines-for-production-deployment/)
     - [IS-5.11.0](https://is.docs.wso2.com/en/5.11.0/administer/security-guidelines-for-production-deployment/)
