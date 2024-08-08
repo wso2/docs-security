@@ -17,10 +17,11 @@ security researcher community relationship.
 
 ### WSO2 Products and Infrastructure
 
-|                                                                                          |
-| :--------------------------------------------------------------------------------------- |
-| [Pavel Richtarik](https://www.linkedin.com/in/pavel-richtarik-0b524974/)                 |
-| [Siebene@](https://twitter.com/Siebene7)                                                 |
+|                                                                                                          |
+| :--------------------------------------------------------------------------------------------------------|
+| [Pavel Richtarik](https://www.linkedin.com/in/pavel-richtarik-0b524974/)                                 |
+| [Siebene@](https://twitter.com/Siebene7)
+| [Toqa Hassib - Cyber Security Consultant at Inovasys](https://www.linkedin.com/in/toqa-hassib-621a971b9) |
 
 
 
@@ -124,8 +125,9 @@ security researcher community relationship.
 
 ### Choreo
 
-|                                                 |
-| :---------------------------------------------- |
-| [Dipak Kumar Das](https://twitter.com/d1pakdas) |
+|                                                                               |
+| :-----------------------------------------------------------------------------|
+| [Dipak Kumar Das](https://twitter.com/d1pakdas)                               |
+| [Suraj Theekshana](https://www.linkedin.com/in/suraj-theekshana-10171023a/)   |
 
 We thank you for helping us keep WSO2 products and services safe!
