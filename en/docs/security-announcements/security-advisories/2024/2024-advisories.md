@@ -6,7 +6,7 @@ category: security-announcements
 
 # 2024 Security Advisories
 
-* [CVE-2024-0392]({{#base_path#}}/security-announcements/security-advisories/2024/CVE-2024-0392)
+* [WSO2-2023-2987]({{#base_path#}}/security-announcements/security-advisories/2024/WSO2-2023-2987)
 * [WSO2-2023-2864]({{#base_path#}}/security-announcements/security-advisories/2024/WSO2-2023-2864)
 * [WSO2-2023-2827]({{#base_path#}}/security-announcements/security-advisories/2024/WSO2-2023-2827)
 * [WSO2-2023-2617]({{#base_path#}}/security-announcements/security-advisories/2024/WSO2-2023-2617)
