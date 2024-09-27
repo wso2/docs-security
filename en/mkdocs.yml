@@ -74,6 +74,11 @@ nav:
       - '': 'security-announcements/security-advisories/index.md'
       - '2024 Advisories':
         - '': 'security-announcements/security-advisories/2024/2024-advisories.md'
+        - 'WSO2-2023-2987': 'security-announcements/security-advisories/2024/WSO2-2023-2987.md'
+        - 'WSO2-2022-1920': 'security-announcements/security-advisories/2024/WSO2-2022-1920.md'
+        - 'WSO2-2023-2589': 'security-announcements/security-advisories/2024/WSO2-2023-2589.md'
+        - 'WSO2-2023-2827': 'security-announcements/security-advisories/2024/WSO2-2023-2827.md'
+        - 'WSO2-2023-2864': 'security-announcements/security-advisories/2024/WSO2-2023-2864.md'
         - 'WSO2-2022-1754': 'security-announcements/security-advisories/2024/WSO2-2022-1754.md'
         - 'WSO2-2022-1988': 'security-announcements/security-advisories/2024/WSO2-2022-1988.md'
         - 'WSO2-2022-2049': 'security-announcements/security-advisories/2024/WSO2-2022-2049.md'
@@ -85,6 +90,7 @@ nav:
         - 'WSO2-2023-2308': 'security-announcements/security-advisories/2024/WSO2-2023-2308.md'
         - 'WSO2-2023-2577': 'security-announcements/security-advisories/2024/WSO2-2023-2577.md'
         - 'WSO2-2023-2626': 'security-announcements/security-advisories/2024/WSO2-2023-2626.md'
+        - 'WSO2-2023-2617': 'security-announcements/security-advisories/2024/WSO2-2023-2617.md'
         - 'WSO2-2023-2831': 'security-announcements/security-advisories/2024/WSO2-2023-2831.md'
         - 'WSO2-2023-2935': 'security-announcements/security-advisories/2024/WSO2-2023-2935.md'
         - 'WSO2-2023-2938': 'security-announcements/security-advisories/2024/WSO2-2023-2938.md'
@@ -297,6 +303,9 @@ nav:
     - 'CVE to WSO2 Security Advisory Mapping': 'security-announcements/cve-to-wso2-security-advisory-mapping.md'
     - 'CVE Justifications':
       - '': 'security-announcements/cve-justifications/index.md'
+      - '2024':
+        - '': 'security-announcements/cve-justifications/2024/index.md'
+        - 'CVE-2022-45868': 'security-announcements/cve-justifications/2024/CVE-2022-45868.md'
       - '2022':
         - '': 'security-announcements/cve-justifications/2022/index.md'
         - 'CVE-2021-42392': 'security-announcements/cve-justifications/2022/CVE-2021-42392.md'
