@@ -2,7 +2,7 @@
 title: General Recommendations for React Secure Coding
 category: security-guidelines
 published: January 26, 2021
-version: 1.0
+version: 2.0
 ---
 
 # General Recommendations for React Secure Coding
@@ -94,7 +94,7 @@ To sanitize the input, you can use a sanitization library like `DOMPurify`[^4] o
 
 
 ## Direct DOM Access
-Avoid accessing DOM to insert the content into DOM nodes directly. It is highly recommended to apply proper sanitization when `findDomNode()` and `createRef` access rendered DOM elements directly to inject content via innerHTML and similar properties.
+Instead of directly accessing DOM nodes to insert content, it's strongly advised to use proper sanitization when `findDomNode()` and `createRef` are used to access rendered DOM elements for injecting content via innerHTML and similar properties."
 
 !!! bug error "Example Incorrect Usage"
     ```js
@@ -134,11 +134,31 @@ Avoid accessing DOM to insert the content into DOM nodes directly. It is highly 
     }
     ```
 
+!!! Important
+    **All user inputs should be validated or sanitized before rendering on the client side.**
+
+## Markdown
+It is highly recommended to use the react-markdown [^7] NPM package when working with Markdown elements, as it natively provides protection against client-side attacks such as cross-site scripting. Additionally, it is essential to use react-markdown with the skipHtml flag enabled. If you have a requirement to use HTML tags with react-markdown, please contact the security team.
+
+!!! Important
+    If you want to use a plugin with the react-markdown package, it is essential to follow the necessary precautionary measures based on the instructions provided by the plugin. This is crucial because the plugin might handle HTML and script elements in an insecure manner.
+
+!!! Example
+    Plugins such as remarkPlugins and rehypePlugins do not provide protection against client-side scripting and injection attacks. Therefore, if you plan to use these plugins, it is crucial to also use DOMPurify[^4], rehype-sanitize[^8], or a similar sanitization mechanism that offers protection against the aforementioned vulnerabilities. These libraries also allow you to define your own schema of what is and isn’t allowed.
+
+
+## NPM Packages
+Before onboarding or using any NPM packages, it is essential to complete the following checklists:
+ 
+* **Avoid insecure handling of HTML and Script elements:** It is recommended to avoid using NPM packages that default to handling HTML and Script elements in an insecure manner. This information is typically available in the NPM package's documentation, as illustrated in the rehype [^9] example.
+* **Implement sanitization mechanisms:** It is necessary to use a sanitization mechanism [^4] [^8] alongside NPM packages if they handle HTML and Script elements in an unsafe manner by default.
+* **Check for vulnerabilities:** Ensure that the packages do not contain any known vulnerabilities. Tools like npm audit[^10] can be used to identify vulnerabilities in third-party components.
+* **Initiate the dependency onboarding process:** This step applies specifically to new NPM packages that you plan to incorporate into your project.
 
 ## Server Side Rendering
 
 ### JSON
-Sometimes when rendering the initial state on the server side, that dangerously generates a document variable from a JSON string. This is risky because `JSON.stringify()` will blindly turn any data that you give it into a string (as long as it is a valid JSON), which will be re-rendered on the page. If fields that untrusted users edit and inject malicious scripts.
+Sometimes, when rendering the initial state on the server side, there's a risk in directly generating a `document` variable from a JSON string. This approach is risky because `JSON.stringify()` will convert any data into a string format, assuming it's valid JSON, which can then be re-rendered on the page. This could potentially include fields edited by untrusted users, allowing them to inject malicious scripts.
 
 !!! bug error "Example Incorrect Usage"
     ```js
@@ -158,11 +178,6 @@ To fix this vulnerability when serializing the state on the server to be sent to
     </script>
     ```
 
-
-## Third-Party Dependencies
-Before using any third-party npm packages or libraries on WSO2 products, ensure that the above-mentioned vulnerable code components are not used in those dependencies. Also, these third-party dependencies must not contain any known vulnerabilities. To detect vulnerabilities in third-party components, use tools like `npm audit`[^7].
-
-
 ## References
 [^1]: [https://pragmaticwebsecurity.com/articles/spasecurity/react-xss-part1.html](https://pragmaticwebsecurity.com/articles/spasecurity/react-xss-part1.html)
 [^2]: [https://medium.com/javascript-security/avoiding-xss-in-react-is-still-hard-d2b5c7ad9412](https://medium.com/javascript-security/avoiding-xss-in-react-is-still-hard-d2b5c7ad9412)
@@ -170,4 +185,7 @@ Before using any third-party npm packages or libraries on WSO2 products, ensure 
 [^4]: [https://github.com/cure53/DOMPurify](https://github.com/cure53/DOMPurify)
 [^5]: [https://www.npmjs.com/package/serialize-javascript](https://www.npmjs.com/package/serialize-javascript)
 [^6]: [https://www.veracode.com/blog/secure-development/3-security-pitfalls-every-react-developer-should-know](https://www.veracode.com/blog/secure-development/3-security-pitfalls-every-react-developer-should-know)
-[^7]: [https://docs.npmjs.com/cli/v6/commands/npm-audit](https://docs.npmjs.com/cli/v6/commands/npm-audit)
+[^7]: [https://www.npmjs.com/package/react-markdown#security](https://www.npmjs.com/package/react-markdown#security)
+[^8]: [https://github.com/rehypejs/rehype-sanitize](https://github.com/rehypejs/rehype-sanitize)
+[^9]: [https://www.npmjs.com/package/rehype#security](https://www.npmjs.com/package/rehype#security)
+[^10]: [https://docs.npmjs.com/cli/v6/commands/npm-audit](https://docs.npmjs.com/cli/v6/commands/npm-audit)
