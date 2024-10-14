@@ -307,6 +307,8 @@ nav:
       - '2024':
         - '': 'security-announcements/cve-justifications/2024/index.md'
         - 'CVE-2022-45868': 'security-announcements/cve-justifications/2024/CVE-2022-45868.md'
+        - 'CVE-2021-23463': 'security-announcements/cve-justifications/2024/CVE-2021-23463.md'
+        - 'CVE-2022-23221': 'security-announcements/cve-justifications/2024/CVE-2022-23221.md'
       - '2022':
         - '': 'security-announcements/cve-justifications/2022/index.md'
         - 'CVE-2021-42392': 'security-announcements/cve-justifications/2022/CVE-2021-42392.md'
