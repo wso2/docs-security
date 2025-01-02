@@ -1,7 +1,7 @@
 ---
 title: Security Incident Notification Process for SaaS
 category: security-processes
-published: 2nd Jan 2024
+published: 2nd Jan 2025
 version: 1.0
 ---
 
