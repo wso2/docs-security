@@ -50,6 +50,7 @@ nav:
     - 'Secure Software Development Process': 'security-processes/secure-software-development-process.md'
     - 'Vulnerability Management Process': 'security-processes/vulnerability-management-process.md'
     - 'Cloud Security Process': 'security-processes/cloud-security-process.md'
+    - 'Security Incident Notification Process for SaaS': 'security-processes/saas-incident-notification-process.md'
   - 'Security Guidelines':
     - '': 'security-guidelines/index.md'
     - 'Secure Engineering Guidelines':
