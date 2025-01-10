@@ -29,7 +29,7 @@ For each category of incident, notifications will follow a structured process in
 
 Timely and comprehensive communication of any security announcements will be sent to subscribers.
 
-## Free-tier User Notification Process
+## Free Subscriber Notification Process
 
 While we ensure the security of our free-tier users, notifications regarding security incidents will only be sent when their applications are directly impacted.
 
