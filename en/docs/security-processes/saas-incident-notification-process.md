@@ -25,7 +25,7 @@ For each category of incident, notifications will follow a structured process in
 | **Critical**   | 48 Hours                    | 24 Hours                 |
 | **High**       | 72 Hours                    | 48 Hours                 |
 | **Medium**     | 7 Business Days             | 7 Business Days          |
-| **Low**        | No scheduled notifications  |                          |
+| **Low**        | Decided on a case by case basis  |  Decided on a case by case basis |
 
 Timely and comprehensive communication of any security announcements will be sent to customers.
 
