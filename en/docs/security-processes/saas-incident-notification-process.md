@@ -27,7 +27,7 @@ For each category of incident, notifications will follow a structured process in
 | **Medium**     | 7 Business Days             | 7 Business Days          |
 | **Low**        | Decided on a case by case basis  |  Decided on a case by case basis |
 
-Timely and comprehensive communication of any security announcements will be sent to subscriber.
+Timely and comprehensive communication of any security announcements will be sent to subscribers.
 
 ## Free-tier User Notification Process
 
