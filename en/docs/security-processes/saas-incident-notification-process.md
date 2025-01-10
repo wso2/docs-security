@@ -16,7 +16,7 @@ Security incidents will be classified into the following categories:
 - **Confirmed Compromise:** Incidents involving confirmed breaches where customer data (customer data may include personal data, customer-specific configurations, logs with any customer information, or other customer confidential data) has been compromised.
 - **Potential Compromise:** Incidents which may expose customer data or impact operations, but no breach has been identified.
 
-## Paid Customer Notification Process
+## Paid Subscriber Notification Process
 
 For each category of incident, notifications will follow a structured process involving initial alerts, periodic updates, and incident resolution messages from the point of impact confirmation.
 
