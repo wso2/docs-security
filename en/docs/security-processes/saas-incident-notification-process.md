@@ -9,7 +9,6 @@ version: 1.0
 
 Security incident notifications will be categorized based on the severity of the incident, ensuring timely and accurate communication while maintaining transparency. This approach enables impacted customers to take required actions.
 
-
 ## Paid Subscriber Notification Process
 
 We will notify customers of any confirmed incident impact within 48 hours of determining that impact.
