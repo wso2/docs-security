@@ -16,6 +16,7 @@ Timely and comprehensive communication of any security announcements will be sen
 
 ## Free Subscriber Notification Process
 Free subscribers will be notified on a case-by-case basis upon the determination of WSO2.
+
 ## Public Announcement Process
 
 For incidents that affect free-tier users but do not require individual customer action, a public announcement will be made after the necessary fixes have been applied.
