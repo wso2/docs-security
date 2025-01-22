@@ -18,15 +18,7 @@ Security incidents will be classified into the following categories:
 
 ## Paid Subscriber Notification Process
 
-For each category of incident, notifications will follow a structured process involving initial alerts, periodic updates, and incident resolution messages from the point of impact confirmation.
-
-| Severity Level | Initial Notification Timing | Target Update Frequency |
-|----------------|-----------------------------|--------------------------|
-| **Critical**   | 48 Hours                    | 24 Hours                 |
-| **High**       | 72 Hours                    | 48 Hours                 |
-| **Medium**     | 7 Business Days             | 7 Business Days          |
-| **Low**        | Decided on a case by case basis  |  Decided on a case by case basis |
-
+We will notify customers of any confirmed incident impact within 48 hours of determining that impact.
 Timely and comprehensive communication of any security announcements will be sent to subscribers.
 
 ## Free Subscriber Notification Process
