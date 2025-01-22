@@ -16,11 +16,7 @@ We will notify customers of any confirmed incident impact within 48 hours of det
 Timely and comprehensive communication of any security announcements will be sent to subscribers.
 
 ## Free Subscriber Notification Process
-
-While we ensure the security of our free-tier users, notifications regarding security incidents will only be sent when their applications are directly impacted.
-
-- Free-tier users will receive email notifications of security incidents before they are publicly disclosed, allowing paid customers a required buffer period to take necessary actions.
-
+Free subscribers will be notified on a case-by-case basis upon the determination of WSO2.
 ## Public Announcement Process
 
 For incidents that affect free-tier users but do not require individual customer action, a public announcement will be made after the necessary fixes have been applied.
