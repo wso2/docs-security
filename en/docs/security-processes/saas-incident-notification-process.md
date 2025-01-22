@@ -9,12 +9,6 @@ version: 1.0
 
 Security incident notifications will be categorized based on the severity of the incident, ensuring timely and accurate communication while maintaining transparency. This approach enables impacted customers to take required actions.
 
-## Security Incident Classification
-
-Security incidents will be classified into the following categories:
-
-- **Confirmed Compromise:** Incidents involving confirmed breaches where customer data (customer data may include personal data, customer-specific configurations, logs with any customer information, or other customer confidential data) has been compromised.
-- **Potential Compromise:** Incidents which may expose customer data or impact operations, but no breach has been identified.
 
 ## Paid Subscriber Notification Process
 
