@@ -13,7 +13,8 @@ Refer to the listed documentation for each product based on the version that you
     refer to the common [Security Guidelines for Production Deployment](https://docs.wso2.com/display/ADMIN44x/Security+Guidelines+for+Production+Deployment).
 
 * WSO2 API Manager
-    - [APIM-4.3.0 (latest)](https://apim.docs.wso2.com/en/latest/install-and-setup/setup/deployment-best-practices/security-guidelines-for-production-deployment/)
+    - [APIM-4.4.0 (latest)](https://apim.docs.wso2.com/en/latest/install-and-setup/setup/deployment-best-practices/security-guidelines-for-production-deployment/)
+    - [APIM-4.3.0](https://apim.docs.wso2.com/en/4.3.0/install-and-setup/setup/deployment-best-practices/security-guidelines-for-production-deployment/)
     - [APIM-4.2.0](https://apim.docs.wso2.com/en/4.2.0/install-and-setup/setup/deployment-best-practices/security-guidelines-for-production-deployment/)
     - [APIM-4.1.0](https://apim.docs.wso2.com/en/4.1.0/install-and-setup/setup/deployment-best-practices/security-guidelines-for-production-deployment/)
     - [APIM-4.0.0](https://apim.docs.wso2.com/en/4.0.0/install-and-setup/setup/deployment-best-practices/security-guidelines-for-production-deployment/)
