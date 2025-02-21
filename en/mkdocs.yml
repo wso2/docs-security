@@ -322,6 +322,9 @@ nav:
     - 'CVE to WSO2 Security Advisory Mapping': 'security-announcements/cve-to-wso2-security-advisory-mapping.md'
     - 'CVE Justifications':
       - '': 'security-announcements/cve-justifications/index.md'
+      - '2025':
+        - '': 'security-announcements/cve-justifications/2025/index.md'
+        - 'CVE-2023-52428': 'security-announcements/cve-justifications/2025/CVE-2023-52428.md'
       - '2024':
         - '': 'security-announcements/cve-justifications/2024/index.md'
         - 'CVE-2022-29464': 'security-announcements/cve-justifications/2024/CVE-2022-29464.md'
