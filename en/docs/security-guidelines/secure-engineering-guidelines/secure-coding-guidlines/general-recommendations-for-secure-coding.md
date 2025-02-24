@@ -2,11 +2,11 @@
 title: General Recommendations for Secure Coding
 category: security-guidelines
 published: 22nd October 2018
-version: 2.0
+version: 2.1
 ---
 
 # General Recommendations for Secure Coding
-<p class="doc-info">Version: 2.0</p>
+<p class="doc-info">Version: 2.1</p>
 ___
 
 This section discusses different attacks or security threats that engineers must focus on while engineering a product or an application. Prevention techniques are discussed in generic form, and some sections discuss programming language-specific prevention techniques.
@@ -1753,6 +1753,81 @@ Avoid usage of java.util.Random class for security sensitive operations and use 
     }
     ```
 
+## Unrestricted File Upload
+Unrestricted file upload vulnerabilities[^75] occur when a web server or application permits users to upload files to the filesystem without adequately validating critical file attributes such as name, type, content, or size. Failure to enforce proper validation mechanisms[^76] can lead to severe security risks, including unauthorized file execution and system compromise.
+
+### Potential Risks:
+* Overwriting Critical Files:
+Attackers may exploit insufficient validation by uploading files with the same name as existing critical files, potentially overwriting them and disrupting application functionality or compromising system integrity.
+
+* Arbitrary File Placement:
+If the server is also susceptible to directory traversal attacks, malicious users can upload files to unintended directories. This could lead to the placement of malicious scripts or executables in sensitive areas of the filesystem.
+
+* Backdoor Installation:
+In scenarios where server-side code execution is possible, attackers could upload malicious scripts (e.g., web shells) to establish persistent access or backdoors, thereby gaining unauthorized control over the server.
+
+### Java Specific Recommendations
+
+* File Type Validation:
+Allow only specific file types and perform server-side validation using whitelisting techniques. Avoid relying solely on client-side checks.
+
+* Filename Sanitization:
+Normalize and sanitize filenames to prevent overwriting critical files. Implement unique naming conventions for uploaded files.
+
+* Content Inspection:
+Inspect file content to ensure it matches the expected file type and format. Reject files that fail validation checks.
+
+* Directory Restrictions:
+Store uploaded files outside the webroot whenever possible. Apply strict access controls to prevent unauthorized file execution.
+
+* Size Limitation:
+Enforce file size limits to prevent denial-of-service (DoS) conditions due to large file uploads.
+
+* Access Controls and Permissions:
+Assign the minimum required permissions to uploaded files and ensure that executable permissions are not granted unless explicitly necessary.
+
+* Comprehensive Logging and Monitoring:
+Log all file upload activities and monitor them for signs of suspicious behavior.
+
+!!! success check done "Example Correct Usage"
+    ```java
+        private static final String[] ALLOWED_FILE_EXTENSIONS = new String[]{".xml"};
+
+    protected void checkServiceFileExtensionValidity(String fileExtension,String[] allowedExtensions)
+        throws FileUploadException {
+        boolean isExtensionValid = false;
+        StringBuffer allowedExtensionsStr = new StringBuffer();
+        for (String allowedExtension : allowedExtensions) {
+            allowedExtensionsStr.append(allowedExtension).append(",");
+            if (fileExtension.endsWith(allowedExtension)) {
+                isExtensionValid = true;
+                break;
+            }
+        }
+        if (!isExtensionValid) {
+            throw new FileUploadException(" Illegal file type." + " Allowed file extensions are " + allowedExtensionsStr);
+        }
+    }
+    ```
+
+!!! success check done "Example Correct Usage"
+    ```java
+        public static boolean checkMetaData(File f, String getContentType) {
+            try (InputStream is = new FileInputStream(f)) {
+                ContentHandler contenthandler = new BodyContentHandler();
+                Metadata metadata = new Metadata();
+                metadata.set(Metadata.RESOURCE_NAME_KEY, f.getName());
+                Parser parser = new AutoDetectParser();
+                    try {
+                    parser.parse(is, contenthandler, metadata, new ParseContext());
+                    } catch (SAXException | TikaException e) {
+                    return false;}
+                if (metadata.get(Metadata.CONTENT_TYPE).equalsIgnoreCase(getContentType)) 
+                {
+                return true;} else {return false;}
+    } }
+    ```
+
 
 ## References
 [^1]: [https://www.owasp.org/index.php/SQL_Injection](https://www.owasp.org/index.php/SQL_Injection)
@@ -1829,4 +1904,5 @@ Avoid usage of java.util.Random class for security sensitive operations and use 
 [^72]: [https://www.owasp.org/index.php/Cross_Frame_Scripting](https://www.owasp.org/index.php/Cross_Frame_Scripting)
 [^73]: [https://www.owasp.org/index.php/Insufficient_Entropy](https://www.owasp.org/index.php/Insufficient_Entropy)
 [^74]: [https://cwe.mitre.org/data/definitions/331.html](https://cwe.mitre.org/data/definitions/331.html)
-
+[^75]: [https://owasp.org/www-community/vulnerabilities/Unrestricted_File_Upload](https://owasp.org/www-community/vulnerabilities/Unrestricted_File_Upload)
+[^76]: [https://cheatsheetseries.owasp.org/cheatsheets/File_Upload_Cheat_Sheet.html](https://cheatsheetseries.owasp.org/cheatsheets/File_Upload_Cheat_Sheet.html)
