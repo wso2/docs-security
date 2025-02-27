@@ -118,7 +118,7 @@ New security vulnerabilities related to third-party dependencies may get identif
 - [JFrog Xray](https://jfrog.com/xray/) for scanning product container images
 - [Trivy](https://trivy.dev/) for scanning container images in cloud pipelines
 
-The [National Vulnerability Database (NVD)](https://nvd.nist.gov/vuln) and other proprietary databases maintained by the mentioned scanner vendors are queried for third-party dependency issues and alerts will be generated if a new issue has been identified. Updating the dependency is required. When updating the dependency is not an option due to any major complications a [CVE Justification](../security-announcements/cve-justifications/index.md) should be published explaining why the relevant vulnerability does not negatively affect security of the products. Such justification should explain the complications related to the update process requiring such justification to be published.
+The [National Vulnerability Database (NVD)](https://nvd.nist.gov/vuln) and other proprietary databases maintained by the mentioned scanner vendors are queried for third-party dependency issues and alerts will be generated if a new issue has been identified. Updating the dependency is required. When updating the dependency is not an option due to any major complications a [CVE Justification](../security-announcements/cve-justifications/index.md) should be published explaining why the relevant vulnerability does not affect security of the products. Such justification should explain the complications related to the update process requiring such justification to be published.
 
 #### Mandatory checks during releases
 
