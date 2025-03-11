@@ -47,6 +47,8 @@ If applying the fix or update is not feasible, migrate to the latest unaffected 
 
 #### Support Subscription Holders
 
+Update your product to the specified update level—or a higher update level—to apply the fix.
+
 !!! info todo
     **WSO2 Support Subscription Holders may use [WSO2 Updates](https://wso2.com/updates/) in order to apply the fix.**
 
