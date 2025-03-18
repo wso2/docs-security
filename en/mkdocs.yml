@@ -69,6 +69,8 @@ nav:
       - 'Dynamic Analysis with OWASP ZAP': 'security-guidelines/secure-engineering-guidelines/dynamic-analysis-with-owasp-zap.md'
       - 'External Dependency Analysis using OWASP Dependency Check': 'security-guidelines/secure-engineering-guidelines/external-dependency-analysis-analysis-using-owasp-dependency-check.md'
     - 'Security Guidelines for Production Deployment': 'security-guidelines/security-guidelines-for-production-deployment.md'
+  - 'Public Artifact': 'public-artifacts/index.md'
+  - 'WSO2-2024-3561/CVE-2024-6914': 'public-artifacts/WSO2-2024-3561_temporary_mitigation.zip'
   - 'Security Announcements':
     - '': 'security-announcements/index.md'
     - 'WSO2 Security Advisories':
