@@ -22,26 +22,27 @@
 | Vultr* | To host WSO2 public cloud services | Public cloud subscriber data, including end-user profiles. | Global | DPA has been executed.|
 | GitHub* | Source code and workflow management | Public cloud subscriber GitHub user profiles. | Global | [GitHub DPA](https://github.com/customer-terms/github-data-protection-agreement)|
 
-\* Processed when opting for data planes or services offered by these optional CSPs.
+\* Processed when opting for data planes or services offered by these infrastructure service subprocessors.
 
 ## Asgardeo subprocessors
 
 | Subprocessor | Purpose of processing | Categories of Data Subjects | Location | Transfer Mechanism |
 |--------------|----------------------|----------------------------|----------|-------------------|
-| VirusTotal | To protect WSO2 systems and services against malware and bad actors. | Any request to WSO2 websites and public cloud services that are flagged by the security monitoring solutions in place for anomalies or suspicious or malicious. | USA | [VirusTotal DPA](https://virustotal.com) |
 | Wallarm, Inc. | To protect WSO2 cloud services from bad actors. | Those who have interacted with WSO2 public cloud services. | USA and EU | DPA has been executed. |
 | Google Inc (Google reCAPTCHA) | To protect logins and forms from bots | Those who log in to Asgardeo. | USA | [Google Cloud DPA](https://google.com) |
+| VirusTotal | To protect WSO2 systems and services against malware and bad actors. | Any request to WSO2 websites and public cloud services that are flagged by the security monitoring solutions in place for anomalies or suspicious or malicious. | USA | [VirusTotal DPA](https://virustotal.com) |
 
 ## Choreo Subprocessors
 
 | Subprocessor | Purpose of processing | Categories of Data Subjects | Location | Transfer Mechanism |
 |--------------|----------------------|----------------------------|----------|-------------------|
+| Aiven | For providing database as a service for choreo subscribers. | Those who consume Choreo database as a service. | USA and EU | [Aiven DPA](https://aiven.io) |
+| Amplitude | For the performance and analytics purposes of Choreo. | Those who have interacted with Choreo Console. | USA and EU | [Amplitude DPA](https://amplitude.com) |
 | VirusTotal | To protect WSO2 systems and services against malware and bad actors. | Any request to WSO2 websites and services that are flagged by the security monitoring solutions in place for anomalies or suspicious or malicious. | USA | [VirusTotal DPA](https://virustotal.com) |
 | Wallarm, Inc. | To protect WSO2 cloud services from bad actors. | Those who have interacted with WSO2 public cloud services. | USA and EU | DPA has been executed. |
 | Google Inc (Google reCAPTCHA) | To protect logins and forms from bots | Those who log in to Asgardeo. | USA | [Google Cloud DPA](https://google.com) |
 | MongoDB, Inc. | To host cloud metadata. | Those who publish APIs on Choreo. | USA | [MongoDB DPA](https://www.mongodb.com) |
-| Aiven | For provide database as a service for choreo subscribers. | Those who consume Choreo database as a service. | USA and EU | [Aiven DPA](https://aiven.io) |
-| Amplitude | For the performance and analytics purposes of Choreo. | Those who have interacted with Choreo Console. | USA and EU | [Amplitude DPA](https://amplitude.com) |
+
 
 ## WSO2 Subprocessors
 
