@@ -20,6 +20,7 @@
 | AWS* | To host WSO2 public cloud services | Public cloud subscriber data, including end-user profiles. | Global | [AWS DPA](https://aws.com) |
 | Google Cloud Platform* | To host WSO2 public cloud services | Public cloud subscriber data, including end-user profiles. | Global | [Google Cloud DPA](https://google.com) |
 | Vultr* | To host WSO2 public cloud services | Public cloud subscriber data, including end-user profiles. | Global | DPA has been executed.|
+| GitHub | Source code and workflow management | Public cloud subscriber GitHub user profiles. | Global | [GitHub DPA](https://github.com/customer-terms/github-data-protection-agreement)|
 
 \* Processed when opting for data planes or services offered by these optional CSPs.
 
@@ -28,7 +29,7 @@
 | Subprocessor | Purpose of processing | Categories of Data Subjects | Location | Transfer Mechanism |
 |--------------|----------------------|----------------------------|----------|-------------------|
 | VirusTotal | To protect WSO2 systems and services against malware and bad actors. | Any request to WSO2 websites and public cloud services that are flagged by the security monitoring solutions in place for anomalies or suspicious or malicious. | USA | [VirusTotal DPA](https://virustotal.com) |
-| Wallarm, Inc. | To protect WSO2 cloud services from bad actors. | Those who have interacted with WSO2 public cloud services. | USA and EU | DPA has been executed |
+| Wallarm, Inc. | To protect WSO2 cloud services from bad actors. | Those who have interacted with WSO2 public cloud services. | USA and EU | DPA has been executed. |
 | Google Inc (Google reCAPTCHA) | To protect logins and forms from bots | Those who log in to Asgardeo. | USA | [Google Cloud DPA](https://google.com) |
 
 ## Choreo Subprocessors
