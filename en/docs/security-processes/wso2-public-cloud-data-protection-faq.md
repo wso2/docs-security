@@ -18,7 +18,7 @@ The workloads of Choreo subscribers are deployed on data planes.
 The Choreo cloud data plane is the default data plane for Choreo. It is available in the US and EU regions and fully managed by WSO2.
 
 ### Choreo Private Data Plane (PDP)
-Choreo subscribers can deploy their workloads on a private data plane, which provides enhanced isolation and control over subscriber workloads. WSO2 can manage private data planes on either WSO2-owned or subscriber-owned Cloud Service Provider subscriptions such as Azure, AWS, GCP, Vultr, etc. Subscribers can choose between Standard and Premium PDP configurations, each providing different levels of security and management models tailored to meet isolation and security requirements. For more details, please refer to the PDP Security section.
+Choreo subscribers can deploy their workloads on a private data plane, which provides enhanced isolation and control over subscriber workloads. WSO2 can manage private data planes on either WSO2-owned or subscriber-owned Cloud Service Provider subscriptions such as Azure, AWS, GCP, Vultr, etc. Subscribers can choose between Standard and Premium PDP configurations, each providing different levels of security and management models tailored to meet isolation and security requirements. For more details, please refer to the [PDP Security](#) section.
 
 ### WSO2 Billing and Subscription Portal
 The billing and subscription portal allows cloud subscribers to choose their preferred subscription options and view their usage.
@@ -152,7 +152,7 @@ Both the data controller and the data processor need to have a Data Processing A
   * Choreo also simplifies creating databases, caches, and message brokers for user applications on Azure, AWS, GCP, Vultr, and DigitalOcean, with deployment options in the US and EU if they prefer to use application dependencies created through Choreo instead of connecting to their existing resources.
 
 ### Is subscriber data transferred around the world?
-WSO2 would not transfer data outside of the region where the data is residing. The WSO2 team would have limited access to deployment data; please refer to the Data Access section.
+WSO2 would not transfer data outside of the region where the data is residing. The WSO2 team would have limited access to deployment data; please refer to the [Data Access](#) section.
 
 ### What is the legal basis for WSO2 cross-border data transfers?
 WSO2 operates globally and may transfer, store, access, or process subscribers' data across its affiliates and authorized subprocessors to provide the purchased services.
@@ -207,8 +207,8 @@ Secrets are encrypted using cloud service provider-managed keys and securely sto
 
 ### Are application service users stored securely?
 Choreo ensures that application service users are stored and managed securely by leveraging trusted and industry-standard identity providers.
-* **User Authentication**: Choreo primarily authenticates users through well-established social logins, such as Google, GitHub, and Microsoft, ensuring the security of user credentials. Additionally, Choreo supports [Enterprise ID logins](#), allowing seamless integration with your organization's identity provider for Single Sign-On (SSO). This means the complexity of password management is handled by the chosen identity provider, not Choreo itself, minimizing security risks.
-* **API Consumer Authentication and Authorization**: Choreo uses [Asgardeo as the default external identity provider](#) (IDP), which can be used to securely manage end-user identities. If you prefer to use an external IDP like [Azure Active Directory](#), Choreo allows flexible integration, ensuring that user management and authentication are securely handled by the respective external IDP.
+* **User Authentication**: Choreo primarily authenticates users through well-established social logins, such as Google, GitHub, and Microsoft, ensuring the security of user credentials. Additionally, Choreo supports [Enterprise ID logins](https://wso2.com/choreo/docs/administer/configure-enterprise-login/), allowing seamless integration with your organization's identity provider for Single Sign-On (SSO). This means the complexity of password management is handled by the chosen identity provider, not Choreo itself, minimizing security risks.
+* **API Consumer Authentication and Authorization**: Choreo uses [Asgardeo as the default external identity provider](https://wso2.com/choreo/docs/authentication-and-authorization/secure-api-access-with-asgardeo/) (IDP), which can be used to securely manage end-user identities. If you prefer to use an external IDP like [Azure Active Directory](https://wso2.com/choreo/docs/authentication-and-authorization/secure-api-access-with-azure-ad/), Choreo allows flexible integration, ensuring that user management and authentication are securely handled by the respective external IDP.
 * **User Tokens**: The Choreo Console stores the tokens in the browser's session storage and uses them to authenticate the user with the backend services. Choreo CLI persists the tokens in an encrypted file in the local machine's file system. The key to decrypt the tokens is stored in the system's Keychain. The Choreo VSCode Extension uses the Choreo CLI to manage the tokens and invoke backend services.
 
 By utilizing these secure, trusted identity providers and protocols, Choreo guarantees that user data is securely managed, reducing the risk of unauthorized access.
@@ -216,10 +216,10 @@ By utilizing these secure, trusted identity providers and protocols, Choreo guar
 ### Data Isolation
 Choreo's Data Plane system components operate independently, relying only on the Choreo Control Plane for control instructions and user workload configuration. Once user workloads receive traffic, the Control Plane connection is no longer required, ensuring that the data plane's core functions remain isolated and unaffected by external dependencies.
 
-Within the Data Plane, workloads are organized into [projects](#) following a [cell-based architecture](#). This structure allows subscribers to control the visibility of their endpoints, deciding whether they are exposed to the public, accessible to other projects, or kept private within the project. This level of control reinforces service isolation by clearly delineating which services interact and how they are exposed.
+Within the Data Plane, workloads are organized into [projects](https://wso2.com/choreo/docs/choreo-concepts/project/#project) following a [cell-based architecture](https://github.com/wso2/reference-architecture/blob/master/reference-architecture-cell-based.md). This structure allows subscribers to control the visibility of their endpoints, deciding whether they are exposed to the public, accessible to other projects, or kept private within the project. This level of control reinforces service isolation by clearly delineating which services interact and how they are exposed.
 
 ### System Availability
-Uptime SLAs, along with exclusions and Service Credit plans, are detailed in the [Choreo Support Policy](#).
+Uptime SLAs, along with exclusions and Service Credit plans, are detailed in the [Choreo Support Policy](https://wso2.com/choreo/support-policy).
 
 ## Data Backups
 
@@ -246,11 +246,11 @@ Uptime SLAs, along with exclusions and Service Credit plans, are detailed in the
     * OpenSearch performs daily backups of logs to AWS S3 Standard buckets, which are designed to be availability zone-redundant.
     * The Redis Cluster performs data backups every 6 hours and is stored in AWS S3, Vultr Object Storage (S3-compatible), and Azure Blob Storage, with plans to include Google Cloud Storage (GCS) in GCP.
   * For User Applications:
-    * [Choreo-Managed Postgres](#)
+    * [Choreo-Managed Postgres](https://wso2.com/choreo/docs/manage-databases-and-caches/choreo-managed-postgresql-databases/)
       * Choreo runs full backups daily to automatically back up Choreo-managed PostgreSQL databases and copies the write-ahead logs (WAL) at 5-minute intervals or for every new file generated.
-    * [Choreo-Managed MySQL](#)
+    * [Choreo-Managed MySQL](https://wso2.com/choreo/docs/manage-databases-and-caches/choreo-managed-mysql-databases/)
       * Choreo runs full backups daily to automatically back up Choreo-managed MySQL databases and record binary logs continuously.
-    * [Choreo-Managed Cache](#)
+    * [Choreo-Managed Cache](https://wso2.com/choreo/docs/manage-databases-and-caches/choreo-managed-caches/)
       * Choreo runs full backups daily to automatically backup Choreo-Managed Caches and has write-ahead logs (WAL) copied at 5-minute intervals or for every new file generated.
 
 ### How long is backed-up data kept?
@@ -270,9 +270,9 @@ Uptime SLAs, along with exclusions and Service Credit plans, are detailed in the
     * Redis Cluster
       * Daily backups - 2 days
   * For User Applications:
-    * Choreo-Managed [Postgres](#) and [MySQL](#)
+    * Choreo-Managed [Postgres](https://wso2.com/choreo/docs/manage-databases-and-caches/choreo-managed-postgresql-databases/) and [MySQL](https://wso2.com/choreo/docs/manage-databases-and-caches/choreo-managed-mysql-databases/)
       * The frequency of backups and retention varies according to plan: Hobbyist offers single disaster recovery backups, while Startup, Business, and Premium provide 2, 14, and 30 days of point-in-time recovery (PITR), respectively.
-    * [Choreo-Managed Cache](#)
+    * [Choreo-Managed Cache](https://wso2.com/choreo/docs/manage-databases-and-caches/choreo-managed-caches/)
       * The frequency of backups and retentions varies by plan: Hobbyist offers a single disaster recovery backup, while Startup, Business, and Premium provide backups every 12 hours for up to 1, 3, and 13 days, respectively.
 
 ### Are backups encrypted?
@@ -304,7 +304,7 @@ In a security incident or data breach, if we discover that our subscribers are i
 Yes, subscribers can perform penetration tests with prior approval for their paid subscriptions. Subscribers have to bear the cost incurred and follow data clean-up procedures. The penetration tests must ensure that any identified security vulnerabilities are informed and that data is not disclosed or disrupted by other subscribers (e.g., tests related to DDoS and DoS mitigation techniques).
 
 ### What should subscribers do if they discover a vulnerability?
-Subscribers can report security vulnerabilities or threats using the support portal or email channels listed on the [Report Security Issues](#) page.
+Subscribers can report security vulnerabilities or threats using the support portal or email channels listed on the [Report Security Issues](https://security.docs.wso2.com/en/latest/security-reporting/report-security-issues/) page.
 
 ### Internal Audits
 The WSO2 security and compliance team performs periodic internal audits on WSO2 public clouds based on predefined baseline standard checklists. These checklists are updated periodically to ensure they reflect the latest technological advancements. The reports of these audits are shared with senior management to identify and execute the necessary corrective actions.
@@ -321,16 +321,16 @@ WSO2 does not permit its subscribers to perform their audits on public clouds as
 WSO2 has successfully obtained the SOC 2® Type 2 report for Security, Confidentiality, and Availability Trust Service Criteria with HITRUST CSF mapping for our Public Cloud service offerings, Asgardeo (US and EU deployments) & Choreo (Choreo Control Plane and Cloud Data Planes excluding Private Data Planes which needs to be certified separately upon subscriber's requirement). We intend to continue operating the control environment and plan to undergo SOC 2® audits annually.
 
 ### Are WSO2 public clouds GDPR compliant?
-WSO2 is compliant with the requirements of GDPR.
+WSO2 public clouds are aligned with the requirements of GDPR.
 
 ### Are WSO2 public clouds CCPA compliant?
-WSO2 is compliant with the requirements of CCPA.
+WSO2 public clouds are aligned with the requirements of CCPA.
 
 ### Are WSO2 public clouds ISO/IEC 27001:2013 certified?
-WSO2 public clouds are not ISO/IEC 27001:2013 certified. However, the WSO2 digital operations team manages WSO2's corporate infrastructure, and cloud access is ISO/IEC 27001:2013 certified. We completed the ISO Surveillance and Upgrade Audit in December 2024 and have been recommended for continuation and an upgrade to the ISO/IEC 27001:2022 version.
+WSO2 has obtained the ISO/IEC 27001:2013 certification (2022 version upgrade audit completed) for the Digital Operations function, which oversees the access management of WSO2 internal infrastructure and the overall management of endpoints. However, ISO control domains such as Organisation of Information Security, Human Resource Security, Asset Management, Access Control, Physical & Environmental Security, Operations Security, Communications Security, Supplier Relationships, Information Security Incident Management, Information Security Aspects of Business Continuity Management, and compliance with legal and contractual requirements are applied across the organization.
 
 ### Are WSO2 public clouds PCI DSS certified?
-Choreo Public Cloud offering (Control Plane and Cloud Data Plane) is certified by PCI DSS v4.0 Level 1.
+Choreo Control Plane and Cloud Data Plane are certified by PCI DSS v4.0 Level 1.
 
 ### Are WSO2 public clouds HIPAA compliant?
 WSO2 public clouds are not HIPAA compliant. However, our SOC 2 report includes applicable HITRUST CSF control mapping.
@@ -341,7 +341,7 @@ WSO2 public clouds are not HIPAA compliant. However, our SOC 2 report includes a
 WSO2 does not subcontract services related to WSO2 public clouds.
 
 ### Do WSO2 public clouds use subprocessors?
-WSO2 leverages subcontractors who provide us with specific services in our [Public Cloud Subprocessor List](#).
+WSO2 leverages subcontractors who provide us with specific services in our [Public Cloud Subprocessor List](https://wso2.cachefly.net/wso2/sites/all/trust/wso2-public-cloud-subprocessor-list.pdf).
 
 ### Does WSO2 perform vendor security risk assessments (VSRAs)?
 A team composed of IT, security, legal, HR, and finance would vet all suppliers, subcontractors, service providers, and vendors to ensure that external entities meet WSO2 standards. During the evaluation process, we would leverage vendors' security certifications, attestations, and security responses.
@@ -366,7 +366,7 @@ A team composed of IT, security, legal, HR, and finance would vet all suppliers,
 * General queries can be raised at
   * Asgardeo:
     * Email: asgardeo-help@wso2.com
-    * Discord: https://discord.com/invite/Xa5VubmThw, channel: #help-asgardeo
+    * Discord: https://discord.com/invite/wso2, channel: #help-asgardeo
   * Choreo:
     * https://wso2.com/choreo/customer-support/
 * Security issues or vulnerabilities can be raised at
