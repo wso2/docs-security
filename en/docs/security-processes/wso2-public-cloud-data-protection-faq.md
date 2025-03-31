@@ -155,7 +155,7 @@ Both the data controller and the data processor need to have a Data Processing A
 WSO2 would not transfer data outside of the region where the data is residing. The WSO2 team would have limited access to deployment data; please refer to the Data Access section.
 
 ### What is the legal basis for WSO2 cross-border data transfers?
-WSO2 operates globally and may transfer, store, access, or process subscriber's personal data across its affiliates and authorized sub-processors to provide the purchased services.
+WSO2 operates globally and may transfer, store, access, or process subscribers' data across its affiliates and authorized subprocessors to provide the purchased services.
 
 For transfers of personal data originating from the EU, WSO2 relies on valid legal mechanisms, including adequacy decisions or the EU Standard Contractual Clauses (2021). WSO2 ensures that all cross-border data transfers from the EU comply with GDPR requirements.
 
@@ -192,7 +192,7 @@ We offer Standard and Premium Private Data Planes (PDPs), each designed with var
 ### Data Encryption
 
 #### What options are available for subscribers to encrypt their data?
-Choreo provides robust encryption mechanisms for system components in the data planes, leveraging cloud service provider (CSP) and cloud-native technologies to ensure the security of subscriber's data. This built-in encryption offers seamless protection for system-level components.
+Choreo provides robust encryption mechanisms for system components in the data planes, leveraging cloud service provider (CSP) and cloud-native technologies to ensure the security of the subscriber's data. This built-in encryption offers seamless protection for system-level components.
 
 Additionally, application developers have the flexibility to implement their own encryption mechanisms to safeguard their business data. This allows developers to tailor security solutions to meet specific organizational or regulatory requirements, ensuring maximum control over data protection strategies.
 
@@ -203,13 +203,13 @@ WSO2 encrypts data in transit by leveraging TLS 1.2. Furthermore, all CDP and PD
 WSO2 ensures data at rest is encrypted using cloud service provider (CSP) technologies, including disk and database encryption. These mechanisms typically utilize AES-256 encryption to provide robust security.
 
 #### How are Secrets encrypted?
-Secrets are encrypted using cloud service provider (CSP) managed keys and securely stored in key management services, such as Key Vaults. These services ensure robust encryption, centralized management, and controlled access to sensitive data.
+Secrets are encrypted using cloud service provider-managed keys and securely stored in key management services, such as Key Vaults. These services ensure robust encryption, centralized management, and controlled access to sensitive data.
 
 ### Are application service users stored securely?
 Choreo ensures that application service users are stored and managed securely by leveraging trusted and industry-standard identity providers.
 * **User Authentication**: Choreo primarily authenticates users through well-established social logins, such as Google, GitHub, and Microsoft, ensuring the security of user credentials. Additionally, Choreo supports [Enterprise ID logins](#), allowing seamless integration with your organization's identity provider for Single Sign-On (SSO). This means the complexity of password management is handled by the chosen identity provider, not Choreo itself, minimizing security risks.
 * **API Consumer Authentication and Authorization**: Choreo uses [Asgardeo as the default external identity provider](#) (IDP), which can be used to securely manage end-user identities. If you prefer to use an external IDP like [Azure Active Directory](#), Choreo allows flexible integration, ensuring that user management and authentication are securely handled by the respective external IDP.
-* **User Tokens**: The Choreo Console stores the tokens in the browser's session storage and uses them to authenticate the user with the backend services. Choreo CLI persists the tokens in an encrypted file in the local machine's file system. The key to decrypt the tokens is stored in the system's Keychain. Choreo VSCode Extension uses the Choreo CLI to manage the tokens and invoke backend services.
+* **User Tokens**: The Choreo Console stores the tokens in the browser's session storage and uses them to authenticate the user with the backend services. Choreo CLI persists the tokens in an encrypted file in the local machine's file system. The key to decrypt the tokens is stored in the system's Keychain. The Choreo VSCode Extension uses the Choreo CLI to manage the tokens and invoke backend services.
 
 By utilizing these secure, trusted identity providers and protocols, Choreo guarantees that user data is securely managed, reducing the risk of unauthorized access.
 
@@ -296,7 +296,7 @@ SOC monitoring is an add-on for Premium PDPs and Private Clouds; it does not mon
 ## Incident Response
 
 ### Would you notify subscribers in the event of a data breach or security incident?
-In a security incident or data breach, if we discover that our subscribers are impacted, we would notify the affected subscribers immediately, not exceeding 48 hours.
+In a security incident or data breach, if we discover that our subscribers are impacted, we will notify the affected subscribers immediately, not exceeding 48 hours.
 
 ## Audits
 
@@ -318,7 +318,7 @@ WSO2 does not permit its subscribers to perform their audits on public clouds as
 ## Compliance
 
 ### Are WSO2 public clouds SOC 2 compliant?
-WSO2 has successfully obtained the SOC 2® Type 2 report for Security, Confidentiality & Processing Integrity Trust Service Criteria with HITRUST CSF mapping for our Public Cloud service offerings, Asgardeo (US and EU deployments) & Choreo (Choreo Control Plane and Cloud Data Planes excluding Private Data Planes which needs to be certified separately upon subscriber's requirement). We intend to continue operating the control environment and plan to undergo SOC 2® audits annually.
+WSO2 has successfully obtained the SOC 2® Type 2 report for Security, Confidentiality, and Availability Trust Service Criteria with HITRUST CSF mapping for our Public Cloud service offerings, Asgardeo (US and EU deployments) & Choreo (Choreo Control Plane and Cloud Data Planes excluding Private Data Planes which needs to be certified separately upon subscriber's requirement). We intend to continue operating the control environment and plan to undergo SOC 2® audits annually.
 
 ### Are WSO2 public clouds GDPR compliant?
 WSO2 is compliant with the requirements of GDPR.
@@ -381,3 +381,4 @@ A team composed of IT, security, legal, HR, and finance would vet all suppliers,
 | 2023-02-22   | Initial release |
 | 2023-10-17   | Updates:<br>- Asgardeo and Choreo EU deployments.<br>- Asgardeo and Choreo data classifications.<br>- Public cloud compliances. |
 | 2025-01-09   | Updates:<br>- Backup and data retention frequencies<br>- New public cloud sub-processor list<br>- Compliance statement updates |
+
