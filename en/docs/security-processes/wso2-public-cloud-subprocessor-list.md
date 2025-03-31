@@ -1,16 +1,16 @@
 # WSO2 Public Cloud Subprocessor List
 
 ## Data WSO2 collects from its Public Cloud subscribers.
-* Please refer to the **"Data Classification"** section of our WSO2 public cloud data protection FAQ(https://wso2.cachefly.net/wso2/sites/all/trust/wso2-public-cloud-data-protection-faq.pdf).
+* Please refer to the **"Data Classification"** section of our [WSO2 public cloud data protection FAQ](https://wso2.cachefly.net/wso2/sites/all/trust/wso2-public-cloud-data-protection-faq.pdf).
 
 ## Data Location
-* Please refer to the **"Data Residency"** section of our WSO2 public cloud data protection FAQ(https://wso2.cachefly.net/wso2/sites/all/trust/wso2-public-cloud-data-protection-faq.pdf).
+* Please refer to the **"Data Residency"** section of our [WSO2 public cloud data protection FAQ](https://wso2.cachefly.net/wso2/sites/all/trust/wso2-public-cloud-data-protection-faq.pdf).
 
 ## Data Access
-* Please refer to the **"Data Access"** section of our WSO2 public cloud data protection FAQ(https://wso2.cachefly.net/wso2/sites/all/trust/wso2-public-cloud-data-protection-faq.pdf).
+* Please refer to the **"Data Access"** section of our [WSO2 public cloud data protection FAQ](https://wso2.cachefly.net/wso2/sites/all/trust/wso2-public-cloud-data-protection-faq.pdf).
 
 ## Data Retention
-* Please refer to the **"Termination of Subscription"** section of our WSO2 public cloud data protection FAQ(https://wso2.cachefly.net/wso2/sites/all/trust/wso2-public-cloud-data-protection-faq.pdf).
+* Please refer to the **"Termination of Subscription"** section of our [WSO2 public cloud data protection FAQ](https://wso2.cachefly.net/wso2/sites/all/trust/wso2-public-cloud-data-protection-faq.pdf).
 
 ## Infrastructure service subprocessors
 
