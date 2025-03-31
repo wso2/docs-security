@@ -20,7 +20,7 @@
 | AWS* | To host WSO2 public cloud services | Public cloud subscriber data, including end-user profiles. | Global | [AWS DPA](https://aws.com) |
 | Google Cloud Platform* | To host WSO2 public cloud services | Public cloud subscriber data, including end-user profiles. | Global | [Google Cloud DPA](https://google.com) |
 | Vultr* | To host WSO2 public cloud services | Public cloud subscriber data, including end-user profiles. | Global | DPA has been executed.|
-| GitHub | Source code and workflow management | Public cloud subscriber GitHub user profiles. | Global | [GitHub DPA](https://github.com/customer-terms/github-data-protection-agreement)|
+| GitHub* | Source code and workflow management | Public cloud subscriber GitHub user profiles. | Global | [GitHub DPA](https://github.com/customer-terms/github-data-protection-agreement)|
 
 \* Processed when opting for data planes or services offered by these optional CSPs.
 
