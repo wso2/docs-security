@@ -2,31 +2,31 @@
 
 The WSO2 public cloud includes the following elements:
 
-## Asgardeo
+### Asgardeo
 Asgardeo provides a SaaS-based identity and access management (IAM) solution for managing user identities.
 
-## Choreo
+### Choreo
 Choreo is a SaaS application development suite designed to accelerate the creation of digital experiences. Companies can build, deploy, monitor, and manage cloud-native applications to increase developer productivity and focus on innovation.
 
-## Choreo Control Plane (CP)
+### Choreo Control Plane (CP)
 Organizations can use the Choreo control plane components to define, create, observe, and manage APIs, integrations, applications, and cloud-native workloads. These workloads can be deployed to the cloud data plane or private data plane.
 
-## Choreo Data Planes (DP)
+### Choreo Data Planes (DP)
 The workloads of Choreo subscribers are deployed on data planes.
 
-## Choreo Cloud Data Plane (CDP)
+### Choreo Cloud Data Plane (CDP)
 The Choreo cloud data plane is the default data plane for Choreo. It is available in the US and EU regions and fully managed by WSO2.
 
-## Choreo Private Data Plane (PDP)
+### Choreo Private Data Plane (PDP)
 Choreo subscribers can deploy their workloads on a private data plane, which provides enhanced isolation and control over subscriber workloads. WSO2 can manage private data planes on either WSO2-owned or subscriber-owned Cloud Service Provider subscriptions such as Azure, AWS, GCP, Vultr, etc. Subscribers can choose between Standard and Premium PDP configurations, each providing different levels of security and management models tailored to meet isolation and security requirements. For more details, please refer to the PDP Security section.
 
-## WSO2 Billing and Subscription Portal
+### WSO2 Billing and Subscription Portal
 The billing and subscription portal allows cloud subscribers to choose their preferred subscription options and view their usage.
 
-## Payment gateway (Stripe)
+### Payment gateway (Stripe)
 WSO2 public clouds utilize Stripe, a PCI-DSS-certified payment gateway provider. Subscribers enter their payment and billing information directly on Stripe when they are subscribing to paid plans.
 
-## Support Portal (ServiceNow)
+### Support Portal (ServiceNow)
 WSO2 subscribers can raise support tickets through ServiceNow, our ticketing system.
 
 ## Data Classification
@@ -71,11 +71,11 @@ WSO2 subscribers can raise support tickets through ServiceNow, our ticketing sys
 | Log data - audit and security | Confidential | US and EU regional cloud security subscription - Azure | Legitimate interest |
 | Support cases | Confidential | ServiceNow* | To provide support |
 
-\* Third-party service providers (sub-processors). See the sub-processor list [here](#).
+\* Third-party service providers (sub-processors). See the sub-processor list [here](https://wso2.cachefly.net/wso2/sites/all/trust/wso2-public-cloud-subprocessor-list.pdf).
 
 ## Data Protection
 
-**Data subject** is someone who can be identified from personal data. The data subject's rights will be addressed in the relevant data protection laws and regulations, such as the right to be deleted, informed, data portability, and object data processing, and not to be subject to profiling and automated decision-making.
+**Data subject** is someone who can be identified from personal data. The data subject's rights will be addressed in the relevant data protection laws and regulations, such as the right to be deleted, informed, data portability, object data processing, and not to be subject to profiling and automated decision-making.
 
 **Data controller** is the legal entity or person that decides the purposes and means of processing personal data. The Data controller must comply with respective data protection laws and regulations and comply with data subject requests.
 
@@ -110,29 +110,29 @@ Both the data controller and the data processor need to have a Data Processing A
 * Ensuring that sub-processors adhere to all data protection requirements and standards.
 * Ensuring that WSO2 has adopted appropriate safeguards and adequate levels of protection for cross-border data transfers.
 * Notifying the Data controller if WSO2:
-  * receives requests from the subscriber's administrators and developers exercising their GDPR rights.
-  * receives requests from any supervisory authorities (unless prohibited by law).
-  * receives requests from any law enforcement authorities.
+  * receive requests from the subscriber's administrators and developers exercising their GDPR rights.
+  * receive requests from any supervisory authorities (unless prohibited by law).
+  * receive requests from any law enforcement authorities.
   * becomes aware of a confirmed security breach.
-  * changes to privacy policies, terms, security statements, data protection agreements, processors, or sub-processors.
+  * changes to privacy policies, terms, security statements, data protection agreements, processors, or subprocessors.
 
 ## Subscriber's Role in Protecting Data
 
 **The subscriber, as the Data controller, will be responsible for:**
 * Complying with relevant data protection laws and regulations as applicable to the subscriber.
 * As between WSO2 and the subscriber, the subscriber will always remain in control of the data added by the subscriber or its users to the platform.
-* Ensure subscribers' integrations with third-party applications are secure and in accordance with data protection requirements.
+* Ensuring that any applications, websites, APIs, components, and integrations subscribers develop, deploy, or host on WSO2 Public Clouds are securely designed, developed, and managed in accordance with the subscriber's organizational security policies and best practices.
 * Adhering to relevant security best practices as per WSO2 product documentation.
-* Inform WSO2 of any data subject requests from subscribers' administrators and developers so that WSO2 can support the subscriber in processing the request. The subscribers can submit a request [form](#) or contact the data protection officer at dpo@wso2.com.
+* Inform WSO2 of any data subject requests from subscribers' administrators and developers so that WSO2 can support the subscriber in processing the request. The subscribers can submit a request [form](https://wso2.com/data-privacy-protection-request/) or contact the data protection officer at dpo@wso2.com.
 * Informing WSO2 of any vulnerabilities or security issues related to the platform.
-* Complying with WSO2 public cloud Terms of Use.
+* Complying with applicable WSO2 Public Cloud Terms of Use.
 
 ## Data Residency
 
 ### Where is the subscriber data stored?
 * **Asgardeo**
   * Asgardeo organization administrator profiles and associated data would be stored in Asgardeo US deployment.
-  * Asgardeo end user profiles and associated data would be stored in the region where the deployment is provisioned (US or EU).
+  * Asgardeo end-user profiles and associated data would be stored in the region where the deployment is provisioned (US or EU).
 * **Choreo**
   * Choreo uses Asgardeo as its default identity provider.
     * Hence, both user profiles and associated data would be stored in Asgardeo US deployment.
@@ -146,10 +146,10 @@ Both the data controller and the data processor need to have a Data Processing A
 
 ### Can subscribers govern where their data is hosted?
 * **Asgardeo**
-  * Asgardeo subscribers can select US or EU data centers to store user data while provisioning the Asgardeo organization. However, the Asgardeo organization administrator profile data would be residing in the Asgardeo US deployment. For more details, please refer to "Data residency in Asgardeo."
+  * Asgardeo subscribers can select US or EU data centers to store user data while provisioning the Asgardeo organization. However, the Asgardeo organization administrator profile data would be residing in the Asgardeo US deployment. For more details, please refer to "[Data residency in Asgardeo](https://wso2.com/asgardeo/docs/references/data-residency-in-asgardeo/)."
 * **Choreo**
   * Choreo subscribers can host their workloads on the Choreo cloud data plane (US and EU) or private data planes in a region and a cloud or a data center of their preference. However, Choreo control plane data would reside in the US.
-  * Choreo also simplifies creating databases, caches, and message brokers for user applications on GCP, AWS, Azure, and DigitalOcean, with deployment options in the US, EU, and Australia if they prefer to use application dependencies created through Choreo instead of connecting to their existing resources.
+  * Choreo also simplifies creating databases, caches, and message brokers for user applications on Azure, AWS, GCP, Vultr, and DigitalOcean, with deployment options in the US and EU if they prefer to use application dependencies created through Choreo instead of connecting to their existing resources.
 
 ### Is subscriber data transferred around the world?
 WSO2 would not transfer data outside of the region where the data is residing. The WSO2 team would have limited access to deployment data; please refer to the Data Access section.
@@ -184,10 +184,10 @@ Following are the locations where our teams are residing:
 ## Technical and Organizational Controls
 
 ### Cloud Security
-Please refer to our [cloud security process](#) for detailed information on incorporating security into public clouds.
+Please refer to our [cloud security process](https://security.docs.wso2.com/en/latest/security-processes/cloud-security-process/) for detailed information on incorporating security into public clouds.
 
 ### PDP Security
-We offer Standard and Premium Private Data Planes (PDPs), each designed with varying levels of security to balance cost and protection. If you are interested in using a PDP, please ensure you select the appropriate tier and add-ons that meet your specific requirements. For detailed information, please refer to the documentation on [Private Data Plane Security Levels](#) and [Private Data Plane Management Models](#).
+We offer Standard and Premium Private Data Planes (PDPs), each designed with varying levels of security to balance cost and protection. If you are interested in using a PDP, please ensure you select the appropriate tier and add-ons that meet your specific requirements. For detailed information, please refer to the documentation on [Private Data Plane Security Levels](https://wso2.com/choreo/docs/references/private-data-plane-security-levels/) and [Private Data Plane Management Models](https://wso2.com/choreo/docs/references/private-data-plane-management-models/).
 
 ### Data Encryption
 
