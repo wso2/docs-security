@@ -19,10 +19,10 @@ security researcher community relationship.
 
 |                                                                     |
 | :------------------------------------------------------------------ |
+| [Deepanshu Devaliya](https://linkedin.com/in/deepanshu-devaliya369) |
 | **devme4f**                                                         |
 | [Keyur Maheta](https://www.linkedin.com/in/keyur-maheta-342720256/) |
 | **Viral Maniar**                                                    |
-| [Deepanshu Devaliya](https://linkedin.com/in/deepanshu-devaliya369) |
 
 ## 2024
 
