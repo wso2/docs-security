@@ -13,6 +13,17 @@ However, please note that WSO2-maintained websites (including wso2.com) are curr
 with acknowledgement. Refer to our [Security Reward and Acknowledgement Program](index.md) to learn more about our 
 security researcher community relationship.
 
+## 2025
+
+### WSO2 Products and Infrastructure
+
+|                                                                     |
+| :------------------------------------------------------------------ |
+| [Deepanshu Devaliya](https://linkedin.com/in/deepanshu-devaliya369) |
+| **devme4f**                                                         |
+| [Keyur Maheta](https://www.linkedin.com/in/keyur-maheta-342720256/) |
+| **Viral Maniar**                                                    |
+
 ## 2024
 
 ### WSO2 Products and Infrastructure
@@ -22,7 +33,7 @@ security researcher community relationship.
 | [Pavel Richtarik](https://www.linkedin.com/in/pavel-richtarik-0b524974/)                                 |
 | [Siebene@](https://twitter.com/Siebene7)
 | [Toqa Hassib - Cyber Security Consultant at Inovasys](https://www.linkedin.com/in/toqa-hassib-621a971b9) |
-| **[Anonymous working with Trend Micro Zero Day Initiative]                                               |
+| **Anonymous working with Trend Micro Zero Day Initiative**                                               |
 
 
 
@@ -64,6 +75,7 @@ security researcher community relationship.
 | [Bibek Sapkota](https://m.me/Sar00n)                                                                                                   |
 | [Burhanuddin sabun](https://twitter.com/B19R8A14?t=ziw19FeMOKrKVsuUXpvL0A&s=09)                                                        |
 | [Cameron Dawe (Spam404)](https://twitter.com/spam404online)                                                                            |
+| [crnkovic]()                                                                                                                           |
 | [Đậu Hoàng Tài)](	https://twitter.com/taidh)                                                                                           |
 | [Daniel Kalinowski](https://llamasbytes.com/)                                                                                          |
 | [Dipendranath Tarafder](https://twitter.com/dip_tarafder)                                                                              |
