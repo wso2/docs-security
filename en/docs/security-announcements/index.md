@@ -5,7 +5,7 @@ category: security-announcements
 
 # Security Announcements Overview
 
-This section contains the WSO2 Security Announcements, which belong to fthe ollowing categories:  
+This section contains the WSO2 Security Announcements, which belong to the following categories:  
 
 * [WSO2 Security Advisories]({{#base_path#}}/security-announcements/security-advisories/): List of WSO2 Security Advisories that we have released in each year for wso2 products. 
 * [CVE to WSO2 Security Advisory Mapping]({{#base_path#}}/security-announcements/cve-to-wso2-security-advisory-mapping/): There are CVEs assigned to some WSO2 Security Advisories. This contains the mapping table for WSO2 Security Advisories to each CVE.
