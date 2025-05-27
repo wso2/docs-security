@@ -51,6 +51,7 @@ nav:
     - 'Vulnerability Management Process': 'security-processes/vulnerability-management-process.md'
     - 'Cloud Security Process': 'security-processes/cloud-security-process.md'
     - 'Security Incident Notification Process for SaaS': 'security-processes/saas-incident-notification-process.md'
+    - 'Public Cloud Data Protection FAQ': 'security-processes/wso2-public-cloud-data-protection-faq.md'
   - 'Security Guidelines':
     - '': 'security-guidelines/index.md'
     - 'Secure Engineering Guidelines':

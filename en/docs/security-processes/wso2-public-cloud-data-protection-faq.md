@@ -18,7 +18,7 @@ The workloads of Choreo subscribers are deployed on data planes.
 The Choreo cloud data plane is the default data plane for Choreo. It is available in the US and EU regions and fully managed by WSO2.
 
 ### Choreo Private Data Plane (PDP)
-Choreo subscribers can deploy their workloads on a private data plane, which provides enhanced isolation and control over subscriber workloads. WSO2 can manage private data planes on either WSO2-owned or subscriber-owned Cloud Service Provider subscriptions such as Azure, AWS, GCP, Vultr, etc. Subscribers can choose between Standard and Premium PDP configurations, each providing different levels of security and management models tailored to meet isolation and security requirements. For more details, please refer to the [PDP Security](#) section.
+Choreo subscribers can deploy their workloads on a private data plane, which provides enhanced isolation and control over subscriber workloads. WSO2 can manage private data planes on either WSO2-owned or subscriber-owned Cloud Service Provider subscriptions such as Azure, AWS, GCP, Vultr, etc. Subscribers can choose between Standard and Premium PDP configurations, each providing different levels of security and management models tailored to meet isolation and security requirements. For more details, please refer to the [PDP Security](#pdp-security) section.
 
 ### WSO2 Billing and Subscription Portal
 The billing and subscription portal allows cloud subscribers to choose their preferred subscription options and view their usage.
@@ -54,12 +54,12 @@ WSO2 subscribers can raise support tickets through ServiceNow, our ticketing sys
 |-------------|---------------|-----------|---------|
 | Organization Administrator profiles and related data | Restricted | Asgardeo US deployment or in External IDP, which the subscriber integrates. | User management |
 | End user profiles and associated data | Restricted | Asgardeo regional deployments or in External IDP, which the subscriber integrates. | User management |
-| User roles/scopes | Restricted | Choreo control plane | Privilege management |
-| Secrets (keys/tokens/certificates) | Restricted | Key management services (Key vaults) | For integrations and to facilitate service |
-| Choreo component data | Confidential | Choreo control plane | To facilitate service |
-| Observability data | Confidential | Choreo data plane | To facilitate service |
-| Log and event data - Choreo user applications | Confidential | Choreo data plane | To facilitate service |
-| Log data (audit and CI/CD) | Confidential | Choreo control plane | To enable service and legitimate interest (audit logs) |
+| User roles/scopes | Restricted | Choreo CP | Privilege management |
+| Secrets (keys/tokens/certificates) | Restricted | Choreo DP - Key management services (Key vaults) | For integrations and to facilitate service |
+| Choreo component data | Confidential | Choreo CP | To facilitate service |
+| Observability data | Confidential | Choreo DP | To facilitate service |
+| Log and event data - Choreo user applications | Confidential | Choreo DP | To facilitate service |
+| Log data (audit and CI/CD) | Confidential | Choreo CP | To enable service and legitimate interest (audit logs) |
 | Business data used by Choreo user applications | Confidential | On the cloud services and region selected by the subscriber | To facilitate application storage needs such as databases, caches, and message brokers. |
 
 ## WSO2 public cloud common services
@@ -68,8 +68,8 @@ WSO2 subscribers can raise support tickets through ServiceNow, our ticketing sys
 |-------------|---------------|-----------|---------|
 | Billing information | Restricted | Stripe* / billing module | Billing |
 | Credit card data | Restricted | Stripe* | Billing |
-| Log data - audit and security | Confidential | US and EU regional cloud security subscription - Azure | Legitimate interest |
 | Support cases | Confidential | ServiceNow* | To provide support |
+| Organizational Contact information | Confidential | WSO2 Subprocessors  | For subscription and ancillary services |
 
 \* Third-party service providers (sub-processors). See the sub-processor list [here](https://wso2.cachefly.net/wso2/sites/all/trust/wso2-public-cloud-subprocessor-list.pdf).
 
@@ -122,7 +122,7 @@ Both the data controller and the data processor need to have a Data Processing A
 * Complying with relevant data protection laws and regulations as applicable to the subscriber.
 * As between WSO2 and the subscriber, the subscriber will always remain in control of the data added by the subscriber or its users to the platform.
 * Ensuring that any applications, websites, APIs, components, and integrations subscribers develop, deploy, or host on WSO2 Public Clouds are securely designed, developed, and managed in accordance with the subscriber's organizational security policies and best practices.
-* Adhering to relevant security best practices as per WSO2 product documentation.
+* Adhering to relevant security best practices as per WSO2 product documentation or of the relevant information technology being used.
 * Inform WSO2 of any data subject requests from subscribers' administrators and developers so that WSO2 can support the subscriber in processing the request. The subscribers can submit a request [form](https://wso2.com/data-privacy-protection-request/) or contact the data protection officer at dpo@wso2.com.
 * Informing WSO2 of any vulnerabilities or security issues related to the platform.
 * Complying with applicable WSO2 Public Cloud Terms of Use.
@@ -134,13 +134,14 @@ Both the data controller and the data processor need to have a Data Processing A
   * Asgardeo organization administrator profiles and associated data would be stored in Asgardeo US deployment.
   * Asgardeo end-user profiles and associated data would be stored in the region where the deployment is provisioned (US or EU).
 * **Choreo**
-  * Choreo uses Asgardeo as its default identity provider.
-    * Hence, both user profiles and associated data would be stored in Asgardeo US deployment.
-  * If a subscriber wants to use their existing external IDP, the administrator and end-user profiles and associated data will remain within that IDP.
-  * Choreo's control plane stores specific component data in US deployment.
+  * Choreo uses Asgardeo as its default identity provider. Therefore, both user profiles and associated data would be stored in Asgardeo US deployment by default.
+  * If a subscriber wants to store their end user data in Asgardeo EU deployment, they would have to first provision a Asgardeo tenant in EU region and then connect it with the Choreo which would ensure that the end user data would be stored in EU region.
+  * If a subscriber wants to use their existing external IDP, the administrator and end-user profiles and associated data will remain within that external IDP.
+  * Choreo's control plane stores specific component data in the same region where the control plane would resides at (US or EU).
   * Choreo applications and associated data would reside in the region where the data plane would reside.
     * Choreo cloud data plane - US - Azure
     * Choreo cloud data plane - EU - Azure
+    * Choreo cloud data plane - EU - AWS
     * Choreo private data plane - subscriber's preferred data center region (AWS, Azure, GCP, OnPrem)
 * WSO2 public cloud's billing and support portals are hosted in the US.
 
@@ -152,10 +153,10 @@ Both the data controller and the data processor need to have a Data Processing A
   * Choreo also simplifies creating databases, caches, and message brokers for user applications on Azure, AWS, GCP, Vultr, and DigitalOcean, with deployment options in the US and EU if they prefer to use application dependencies created through Choreo instead of connecting to their existing resources.
 
 ### Is subscriber data transferred around the world?
-WSO2 would not transfer data outside of the region where the data is residing. The WSO2 team would have limited access to deployment data; please refer to the [Data Access](#) section.
+WSO2 would not transfer data outside of the region where the data is residing. The WSO2 team would have limited access to deployment data; please refer to the [Data Access](#data-access) section.
 
 ### What is the legal basis for WSO2 cross-border data transfers?
-WSO2 operates globally and may transfer, store, access, or process subscribers' data across its affiliates and authorized subprocessors to provide the purchased services.
+WSO2 operates globally and may transfer, store, access, or process subscribers' data across its affiliates and authorized subprocessors to provide the subscription and ancillary services.
 
 For transfers of personal data originating from the EU, WSO2 relies on valid legal mechanisms, including adequacy decisions or the EU Standard Contractual Clauses (2021). WSO2 ensures that all cross-border data transfers from the EU comply with GDPR requirements.
 
@@ -168,7 +169,7 @@ This data will be accessed exclusively by WSO2 employees and the authorized subp
 ### Who has access to subscriber data?
 * The Site Reliability Engineering (SRE) team would have access to the public cloud deployments to perform maintenance, administration, troubleshooting, and support. Only the SRE team is granted access to the deployments and their data. Other teams would need to go through service requests and change requests to gain deployment-related data access if required.
 * The Customer Reliability Engineering (CRE) team, which would interact with subscribers to support queries and issues, would have access to subscriber information on our support ticketing system and log data.
-* The security team would have access to log data to monitor and respond to security events and incidents.
+* The Security Operations Center (SOC) and security team would have access to log data to monitor and respond to security events and incidents.
 * WSO2 account managers would have access to the support ticketing system and CRM for account management.
 
 ### How do WSO2 employees access the cloud infrastructure?
@@ -219,7 +220,9 @@ Choreo's Data Plane system components operate independently, relying only on the
 Within the Data Plane, workloads are organized into [projects](https://wso2.com/choreo/docs/choreo-concepts/project/#project) following a [cell-based architecture](https://github.com/wso2/reference-architecture/blob/master/reference-architecture-cell-based.md). This structure allows subscribers to control the visibility of their endpoints, deciding whether they are exposed to the public, accessible to other projects, or kept private within the project. This level of control reinforces service isolation by clearly delineating which services interact and how they are exposed.
 
 ### System Availability
-Uptime SLAs, along with exclusions and Service Credit plans, are detailed in the [Choreo Support Policy](https://wso2.com/choreo/support-policy).
+Uptime SLAs, along with exclusions and Service Credit plans, are detailed in the [Choreo Support Policy](https://wso2.com/choreo/support-policy) and [Asgardeo Support Policy](https://wso2.com/asgardeo/support-policy/). 
+
+Platfrom uptim can bee seen from [Choreo status page](https://status.choreo.dev/) and [Asgardeo status Page](https://status.asgardeo.io/).
 
 ## Data Backups
 
@@ -276,7 +279,7 @@ Uptime SLAs, along with exclusions and Service Credit plans, are detailed in the
       * The frequency of backups and retentions varies by plan: Hobbyist offers a single disaster recovery backup, while Startup, Business, and Premium provide backups every 12 hours for up to 1, 3, and 13 days, respectively.
 
 ### Are backups encrypted?
-Backups are encrypted with CSP-managed keys.
+Backups are encrypted with cloud service provider managed keys.
 
 ### Can subscribers restore data if they need to?
 Soft delete is not supported, but where applicable, mandatory user confirmation is required before triggering the delete action. Backups and restorations are operational procedures that are not exposed to subscribers.
@@ -287,11 +290,12 @@ Soft delete is not supported, but where applicable, mandatory user confirmation 
 * Security logs are retained online for 90 days and archived for 1 year.
 * Asgardeo logs are retained online for 30 days and archived for 1 year.
 * Choreo logs are retained online for 30 days and archived for 1 year.
+* Choreo Audit logs are retained online for 365 days and archived for 1 year.
 
 ### Are you monitoring the cloud platform?
 Our security operations center (SOC) continuously monitors, detects, analyzes, and responds to cyber threats related to the Choreo Control Plane, Choreo Cloud Data Plane, and Asgardeo Deployments.
 
-SOC monitoring is an add-on for Premium PDPs and Private Clouds; it does not monitor standard PDPs.
+SOC monitoring is an add-on for Premium PDPs and Private Clouds; SOC does not monitor standard PDPs.
 
 ## Incident Response
 
@@ -299,7 +303,6 @@ SOC monitoring is an add-on for Premium PDPs and Private Clouds; it does not mon
 In a security incident or data breach, if we discover that our subscribers are impacted, we will notify the affected subscribers immediately, not exceeding 48 hours.
 
 ## Audits
-
 ### Can subscribers perform penetration tests?
 Yes, subscribers can perform penetration tests with prior approval for their paid subscriptions. Subscribers have to bear the cost incurred and follow data clean-up procedures. The penetration tests must ensure that any identified security vulnerabilities are informed and that data is not disclosed or disrupted by other subscribers (e.g., tests related to DDoS and DoS mitigation techniques).
 
@@ -327,7 +330,7 @@ WSO2 public clouds are aligned with the requirements of GDPR.
 WSO2 public clouds are aligned with the requirements of CCPA.
 
 ### Are WSO2 public clouds ISO/IEC 27001:2013 certified?
-WSO2 has obtained the ISO/IEC 27001:2013 certification (2022 version upgrade audit completed) for the Digital Operations function, which oversees the access management of WSO2 internal infrastructure and the overall management of endpoints. However, ISO control domains such as Organisation of Information Security, Human Resource Security, Asset Management, Access Control, Physical & Environmental Security, Operations Security, Communications Security, Supplier Relationships, Information Security Incident Management, Information Security Aspects of Business Continuity Management, and compliance with legal and contractual requirements are applied across the organization.
+WSO2 has obtained the ISO/IEC 27001:2013 certification (2022 version upgrade audit completed) for the Digital Operations function, which oversees the access management of WSO2 internal infrastructure and the overall management of endpoints. ISO control domains such as Organisation of Information Security, Human Resource Security, Asset Management, Access Control, Physical & Environmental Security, Operations Security, Communications Security, Supplier Relationships, Information Security Incident Management, Information Security Aspects of Business Continuity Management, and compliance with legal and contractual requirements are applied across the organization.
 
 ### Are WSO2 public clouds PCI DSS certified?
 Choreo Control Plane and Cloud Data Plane are certified by PCI DSS v4.0 Level 1.
@@ -381,4 +384,5 @@ A team composed of IT, security, legal, HR, and finance would vet all suppliers,
 | 2023-02-22   | Initial release |
 | 2023-10-17   | Updates:<br>- Asgardeo and Choreo EU deployments.<br>- Asgardeo and Choreo data classifications.<br>- Public cloud compliances. |
 | 2025-01-09   | Updates:<br>- Backup and data retention frequencies<br>- New public cloud sub-processor list<br>- Compliance statement updates |
+| 2025-05-27   | Convert to markdown format|
 
