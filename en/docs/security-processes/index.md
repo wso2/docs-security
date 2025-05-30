@@ -16,4 +16,3 @@ manage any product vulnerabilities, and our responsible disclosure policy.
   How we manage vulnerabilities in WSO2 products and services.
 * [Cloud Security Process](cloud-security-process.md): Document outlines the secure design patterns and security measures WSO2 have implemented to protect the Cloud against various threats. The process aligns with "*The Six Pillars of DevSecOps: Pragmatic Implementatio*" by Cloud Security Alliance.
 * [Security Incident Notification Process for SaaS](saas-incident-notification-process.md): Document outlines the process of notifying customers of security incidents relevant to WSO2 SaaS offerings.
-* [Public Cloud Data Protection FAQ](wso2-public-cloud-data-protection-faq.md): Document outlines responses to frequently asked questions about WSO2 Public Cloud Security and Data Protection.
