@@ -19,10 +19,10 @@ security researcher community relationship.
 
 |                                                                     |
 | :------------------------------------------------------------------ |
+| [Deepanshu Devaliya](https://linkedin.com/in/deepanshu-devaliya369) |
 | **devme4f**                                                         |
 | [Keyur Maheta](https://www.linkedin.com/in/keyur-maheta-342720256/) |
 | **Viral Maniar**                                                    |
-
 
 ## 2024
 
@@ -75,6 +75,7 @@ security researcher community relationship.
 | [Bibek Sapkota](https://m.me/Sar00n)                                                                                                   |
 | [Burhanuddin sabun](https://twitter.com/B19R8A14?t=ziw19FeMOKrKVsuUXpvL0A&s=09)                                                        |
 | [Cameron Dawe (Spam404)](https://twitter.com/spam404online)                                                                            |
+| [crnkovic]()                                                                                                                           |
 | [Đậu Hoàng Tài)](	https://twitter.com/taidh)                                                                                           |
 | [Daniel Kalinowski](https://llamasbytes.com/)                                                                                          |
 | [Dipendranath Tarafder](https://twitter.com/dip_tarafder)                                                                              |

@@ -91,13 +91,12 @@ nav:
         - 'WSO2-2024-3436': 'security-announcements/security-advisories/2025/WSO2-2024-3436.md'
         - 'WSO2-2024-3606': 'security-announcements/security-advisories/2025/WSO2-2024-3606.md'
         - 'WSO2-2025-3857': 'security-announcements/security-advisories/2025/WSO2-2025-3857.md'
+        - 'WSO2-2025-3993': 'security-announcements/security-advisories/2025/WSO2-2025-3993.md'
         - 'WSO2-2024-3490': 'security-announcements/security-advisories/2025/WSO2-2024-3490.md'
         - 'WSO2-2025-3302': 'security-announcements/security-advisories/2025/WSO2-2025-3302.md'
         - 'WSO2-2025-3902': 'security-announcements/security-advisories/2025/WSO2-2025-3902.md'
         - 'WSO2-2025-3864': 'security-announcements/security-advisories/2025/WSO2-2025-3864.md'
         - 'WSO2-2024-3149': 'security-announcements/security-advisories/2025/WSO2-2024-3149.md'
-
-        
       - '2024 Advisories':
         - '': 'security-announcements/security-advisories/2024/2024-advisories.md'
         - 'WSO2-2023-2987': 'security-announcements/security-advisories/2024/WSO2-2023-2987.md'
@@ -349,9 +348,11 @@ nav:
       - '': 'security-announcements/cve-justifications/index.md'
       - '2025':
         - '': 'security-announcements/cve-justifications/2025/index.md'
+        - 'CVE-2016-1000027': 'security-announcements/cve-justifications/2025/CVE-2016-1000027.md'
         - 'CVE-2017-15708': 'security-announcements/cve-justifications/2025/CVE-2017-15708.md'
         - 'CVE-2023-52428': 'security-announcements/cve-justifications/2025/CVE-2023-52428.md'
         - 'CVE-2024-6763': 'security-announcements/cve-justifications/2025/CVE-2024-6763.md'
+        - 'CVE-2025-47889': 'security-announcements/cve-justifications/2025/CVE-2025-47889.md'
       - '2024':
         - '': 'security-announcements/cve-justifications/2024/index.md'
         - 'CVE-2022-29464': 'security-announcements/cve-justifications/2024/CVE-2022-29464.md'
