@@ -17,14 +17,15 @@ security researcher community relationship.
 
 ### WSO2 Products and Infrastructure
 
-|                                                                     |
-| :------------------------------------------------------------------ |
+|                                                                           |
+| :------------------------------------------------------------------------ |
 | [Abdelkarim Haji](https://www.linkedin.com/in/abdelkarim-haji-4aa84b313/) |
-| [Deepanshu Devaliya](https://linkedin.com/in/deepanshu-devaliya369) |
-| **devme4f**                                                         |
-| [Keyur Maheta](https://www.linkedin.com/in/keyur-maheta-342720256/) |
-| [Rohan Hotkar](https://www.linkedin.com/in/rohanhotkar/)            |
-| **Viral Maniar**                                                    |
+| [Deepanshu Devaliya](https://linkedin.com/in/deepanshu-devaliya369)       |
+| **devme4f**                                                               |
+| [Keyur Maheta](https://www.linkedin.com/in/keyur-maheta-342720256/)       |
+| [Rohan Hotkar](https://www.linkedin.com/in/rohanhotkar/)                  |
+| **Viral Maniar**                                                          |
+| **CyberMavi**                                                             |
 
 ## 2024
 
