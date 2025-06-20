@@ -354,6 +354,7 @@ nav:
         - 'CVE-2024-6763': 'security-announcements/cve-justifications/2025/CVE-2024-6763.md'
         - 'CVE-2025-47889': 'security-announcements/cve-justifications/2025/CVE-2025-47889.md'
         - 'CVE-2021-42646': 'security-announcements/cve-justifications/2025/CVE-2021-42646.md'
+        - 'CVE-2025-22874': 'security-announcements/cve-justifications/2025/CVE-2025-22874.md'
       - '2024':
         - '': 'security-announcements/cve-justifications/2024/index.md'
         - 'CVE-2022-29464': 'security-announcements/cve-justifications/2024/CVE-2022-29464.md'
