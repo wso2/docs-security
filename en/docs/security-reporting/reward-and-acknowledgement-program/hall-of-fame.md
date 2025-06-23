@@ -19,9 +19,11 @@ security researcher community relationship.
 
 |                                                                     |
 | :------------------------------------------------------------------ |
+| [Abdelkarim Haji](https://www.linkedin.com/in/abdelkarim-haji-4aa84b313/) |
 | [Deepanshu Devaliya](https://linkedin.com/in/deepanshu-devaliya369) |
 | **devme4f**                                                         |
 | [Keyur Maheta](https://www.linkedin.com/in/keyur-maheta-342720256/) |
+| [Rohan Hotkar](https://www.linkedin.com/in/rohanhotkar/)            |
 | **Viral Maniar**                                                    |
 
 ## 2024
@@ -31,7 +33,7 @@ security researcher community relationship.
 |                                                                                                          |
 | :--------------------------------------------------------------------------------------------------------|
 | [Pavel Richtarik](https://www.linkedin.com/in/pavel-richtarik-0b524974/)                                 |
-| [Siebene@](https://twitter.com/Siebene7)
+| [Siebene@](https://twitter.com/Siebene7)                                                                 |
 | [Toqa Hassib - Cyber Security Consultant at Inovasys](https://www.linkedin.com/in/toqa-hassib-621a971b9) |
 | **Anonymous working with Trend Micro Zero Day Initiative**                                               |
 
