@@ -256,8 +256,180 @@ Example with query segments that cannot be parameterized with PDO or MySQL Impro
     ?>
     ```
 
+### Go Specific Recommendations
+
+Use Go's `database/sql` package with prepared statements to prevent SQL injections. The statement will be compiled and the user variables will be assigned to the query parameters at runtime. Since user variables are being set to a precompiled SQL statement, this approach avoids the possibility of SQL injections.
+
+!!! bug error "Example Incorrect Usage"
+    ```go
+    customerName := r.FormValue("customerName")
+    query := "SELECT account_balance FROM user_data WHERE user_name = " + customerName
+    
+    rows, err := db.Query(query)
+    if err != nil {
+        log.Fatal(err)
+    }
+    defer rows.Close()
+    ```
+
+!!! success check done "Example Correct Usage - One-Time Query"
+    ```go
+    customerName := r.FormValue("customerName")
+    // Validations, etc...
+    
+    query := "SELECT account_balance FROM user_data WHERE user_name = ?"
+    rows, err := db.Query(query, customerName)
+    if err != nil {
+        return err
+    }
+    defer rows.Close()
+    
+    // Process rows...
+    ```
+
+!!! success check done "Example Correct Usage - Reusable Prepared Statement"
+    ```go
+    customerName := r.FormValue("customerName")
+    // Validations, etc...
+    
+    query := "SELECT account_balance FROM user_data WHERE user_name = ?"
+    stmt, err := db.Prepare(query)
+    if err != nil {
+        return err
+    }
+    defer stmt.Close()
+    
+    rows, err := stmt.Query(customerName)
+    if err != nil {
+        return err
+    }
+    defer rows.Close()
+    
+    // Process rows...
+    ```
+
+When processing dynamic query segments that cannot be set as prepared statement parameters (table names, column names, ordering information, offset details), validate user input against a whitelist. This approach avoids the risk of providing the end user with the ability to append anything uncontrolled to the SQL query.
+
+Example 1:
+
+!!! bug error "Example Incorrect Usage"
+    ```go
+    customerType := r.FormValue("customerType")
+    order := r.FormValue("order")
+    // Validations, etc...
+    
+    query := "SELECT user_name, account_balance FROM user_data WHERE user_type = ? ORDER BY " + order
+    rows, err := db.Query(query, customerType)
+    if err != nil {
+        log.Fatal(err)
+    }
+    defer rows.Close()
+    ```
+
+!!! success check done "Example Correct Usage"
+    ```go
+    // Package level map maintaining "user input to database column" mapping
+    var validOrderColumns = map[string]string{
+        "accountBalance": "account_balance",
+        "userName":       "user_name",
+    }
+    
+    // Function definition...
+    customerType := r.FormValue("customerType")
+    orderColumn := r.FormValue("orderColumn")
+    orderDirection := r.FormValue("orderDirection")
+    
+    if strings.ToUpper(orderDirection) == "DESC" {
+        orderDirection = "DESC"
+    } else {
+        orderDirection = "ASC"
+    }
+    
+    dbColumn, exists := validOrderColumns[orderColumn]
+    if !exists {
+        // Handle invalid column error
+        return
+    }
+    
+    query := "SELECT user_name, account_balance FROM user_data WHERE user_type = ? ORDER BY " + dbColumn + " " + orderDirection
+    rows, err := db.Query(query, customerType)
+    if err != nil {
+        log.Fatal(err)
+    }
+    defer rows.Close()
+    ```
+
+Example 2:
+
+!!! bug error "Example Incorrect Usage"
+    ```go
+    query := "SELECT * FROM " + columnFamily + " WHERE api_publisher = ?"
+    
+    if selectRowsByColumnName != "" {
+        query = query + " AND " + selectRowsByColumnName + " = ?"
+    }
+    
+    var rows *sql.Rows
+    var err error
+    if selectRowsByColumnName != "" {
+        rows, err = db.Query(query, publisher, selectRowsByColumnValue)
+    } else {
+        rows, err = db.Query(query, publisher)
+    }
+    if err != nil {
+        log.Fatal(err)
+    }
+    defer rows.Close()
+    ```
+
+!!! success check done "Example Correct Usage"
+    ```go
+    // Package level maps maintaining user input to column mapping
+    var validSelectColumns = map[string]string{
+        "apiName": "api_name",
+        "apiId":   "api_id",
+    }
+    
+    var validColumnFamilies = map[string]string{
+        "commonApis":    "COMMON_APIS",
+        "corporateApis": "CORPORATE_APIS",
+    }
+    
+    // Function definition...
+    columnFamily, exists := validColumnFamilies[columnFamilyUserInput]
+    if !exists {
+        // Handle invalid column family error
+        return
+    }
+    
+    query := "SELECT * FROM " + columnFamily + " WHERE api_publisher = ?"
+    
+    if selectRowsByColumnName != "" {
+        columnName, exists := validSelectColumns[selectRowsByColumnName]
+        if exists {
+            query = query + " AND " + columnName + " = ?"
+        } else {
+            selectRowsByColumnName = ""
+        }
+    }
+    
+    var rows *sql.Rows
+    var err error
+    if selectRowsByColumnName != "" {
+        rows, err = db.Query(query, publisher, selectRowsByColumnValue)
+    } else {
+        rows, err = db.Query(query, publisher)
+    }
+    if err != nil {
+        log.Fatal(err)
+    }
+    defer rows.Close()
+    ```
+
 ## LDAP Injection
 LDAP Injection is an attack used to exploit web based applications that construct LDAP statements based on user input. When an application fails to properly sanitize user input, it’s possible to modify LDAP statements using a local proxy. This could result in the execution of arbitrary commands such as granting permissions to unauthorized queries, and content modification inside the LDAP tree. The same advanced exploitation techniques available in SQL Injection can be similarly applied in LDAP Injection[^7][^8].
+
+### Java Specific Recommendations
 
 All user inputs that are getting directly appended to any LDAP queries should be filtered through an encoding function that does proper encoding for LDAP[^9]. 
 
@@ -273,6 +445,39 @@ All user inputs that are getting directly appended to any LDAP queries should be
     groupResults = searchInGroupBase(grpSearchFilter,...)
     ```
 
+### Go Specific Recommendations
+
+All user inputs that are getting directly appended to any LDAP queries should be filtered through an encoding function that does proper encoding for LDAP. Use the `ldap.EscapeFilter` function to escape special characters in filter values.
+
+!!! bug error "Example Incorrect Usage"
+    ```go
+    grpSearchFilter := strings.Replace(searchFilter, "?", role, -1)
+    groupResults, err := conn.Search(ldap.NewSearchRequest(
+        baseDN,
+        ldap.ScopeWholeSubtree,
+        ldap.NeverDerefAliases,
+        0, 0, false,
+        grpSearchFilter,
+        []string{},
+        nil,
+    ))
+    ```
+
+!!! success check done "Example Correct Usage"
+    ```go
+    import "github.com/go-ldap/ldap/v3"
+    
+    grpSearchFilter := strings.Replace(searchFilter, "?", ldap.EscapeFilter(role), -1)
+    groupResults, err := conn.Search(ldap.NewSearchRequest(
+        baseDN,
+        ldap.ScopeWholeSubtree,
+        ldap.NeverDerefAliases,
+        0, 0, false,
+        grpSearchFilter,
+        []string{},
+        nil,
+    ))
+    ```
 
 ## OS Command Injection
 Command injection is an attack in which the goal is the execution of arbitrary commands on the host operating system via a vulnerable application. Command injection attacks are possible when an application passes unsafe user supplied data (forms, cookies, HTTP headers etc.) to a system shell. In this attack, the attacker-supplied operating system commands are usually executed with the privileges of the vulnerable application. Command injection attacks are possible largely due to insufficient input validation[^10].
@@ -329,6 +534,26 @@ PHP applications should not use `exec` function[^11], `WScript.Shell`[^12] or an
     ?>
     ```
 
+### Go Specific Recommendations
+Go applications should not use `os/exec.Command`, `os/exec.CommandContext` or any other method from the `os/exec` package to execute OS commands, constructed based on user input.
+
+!!! bug error "Example Incorrect Usage"
+    ```go
+    cmd := exec.Command(userInput)
+    cmd.Run()
+    ```
+
+!!! bug error "Example Incorrect Usage"
+    ```go
+    cmd := exec.Command("curl", "-v", "-k", userInput)
+    cmd.Run()
+    ```
+
+!!! bug error "Example Incorrect Usage"
+    ```go
+    cmd := exec.CommandContext(ctx, "sh", "-c", "curl -k "+userInput)
+    cmd.Output()
+    ```
 
 ## Cross-Site Scripting (XSS)
 Cross-Site Scripting allows an attacker to execute malicious code (scripts) against the web browser of the user. By leveraging this attack, an attacker could attempt to carry out other forms of attacks such as stealing session cookies to perform [Session Hijacking](#session-hijacking) or stealing token values to conduct [CSRF Attacks](#csrf-attacks), launch a phishing attack etc[^13].
@@ -574,6 +799,204 @@ HTML Purifier[^19] should be used to sanitize HTML content. Default HTML Purifie
 !!! tip hint important "WSO2 Document Reference"
     Further information on required changes and recommended configuration for WSO2 products as well as production deployments are available at [Engineering Guidelines - Security Related HTTP Headers](../security-related-http-headers.md).
 
+### Go Specific Recommendations
+
+#### Output Encoding
+`html/template` package can be used for HTML templating as it provides automatic contextual encoding. For manual encoding, use `html.EscapeString` function to convert special characters to HTML entities.
+
+!!! bug error "Example Incorrect Usage"
+    ```go
+    import "text/template"
+    
+    tmpl := `<div>{{.UserInput}}</div>`
+    t := template.Must(template.New("example").Parse(tmpl))
+    t.Execute(w, data)
+    ```
+
+!!! success check done "Example Correct Usage"
+    ```go
+    import "html/template"
+    
+    tmpl := `<div>{{.UserInput}}</div>`
+    t := template.Must(template.New("example").Parse(tmpl))
+    t.Execute(w, data)
+    ```
+
+For manual encoding in non-template contexts
+
+!!! bug error "Example Incorrect Usage"
+    ```go
+    fmt.Fprintf(w, `<a href="%s">Link</a>`, userInput)
+    ```
+
+!!! success check done "Example Correct Usage"
+    ```go
+    import "html"
+    
+    fmt.Fprintf(w, `<a href="%s">Link</a>`, html.EscapeString(userInput))
+    ```
+
+Encode for JavaScript contexts
+
+!!! bug error "Example Incorrect Usage"
+    ```go
+    fmt.Fprintf(w, `<script>var data = "%s";</script>`, userInput)
+    ```
+
+!!! success check done "Example Correct Usage"
+    ```go
+    import (
+        "encoding/json"
+        "html/template"
+    )
+    
+    jsData, err := json.Marshal(userInput)
+    if err != nil {
+        http.Error(w, "Encoding error", http.StatusInternalServerError)
+        return
+    }
+
+    tmpl := `<script>var data = {{.JSData}};</script>`
+    t := template.Must(template.New("js").Parse(tmpl))
+    t.Execute(w, map[string]template.JS{"JSData": template.JS(jsData)})
+    ```
+
+Encode URLs
+
+!!! bug error "Example Incorrect Usage"
+    ```go
+    fmt.Fprintf(w, `<a href="%s">Click Here</a>`, userInput)
+    ```
+
+!!! success check done "Example Correct Usage"
+    ```go
+    escapedURL := template.URLQueryEscaper(userInput)
+    fmt.Fprintf(w, `<a href="%s">Click Here</a>`, escapedURL)
+    ```
+
+#### Output Sanitization
+
+For Go applications, established libraries such as `bluemonday` can be used to sanitize HTML content. The `bluemonday` library allows you to define a policy for allowed HTML elements and attributes, which helps in preventing XSS attacks.
+
+!!! danger error "Alert - Approval Required"
+    If a custom sanitization policy is defined, the policy should be reviewed and approved by the Security and Compliance (SC) Team. Therefore, before the release of components with custom sanitizer policies, the SC Team should be notified, and use cases should be reviewed.
+
+!!! bug error "Example Incorrect Usage"
+    ```go
+    import (
+        "html/template"
+        "net/http"
+    )
+    
+    func handler(w http.ResponseWriter, r *http.Request) {
+        userHTMLContent := r.FormValue("content")
+        tmpl := template.Must(template.New("page").Parse("<div>{{.Content}}</div>"))
+        tmpl.Execute(w, map[string]string{"Content": userHTMLContent})
+    }
+    ```
+
+!!! success check done "Example Correct Usage"
+    ```go
+    import (
+        "html/template"
+        "net/http"
+        
+        "github.com/microcosm-cc/bluemonday"
+    )
+    
+    func handler(w http.ResponseWriter, r *http.Request) {
+        userHTMLContent := r.FormValue("content")
+        
+        // Use strict policy that only allows a limited subset of HTML
+        p := bluemonday.UGCPolicy()
+        sanitized := p.Sanitize(userHTMLContent)
+        
+        tmpl := template.Must(template.New("page").Parse("<div>{{.Content}}</div>"))
+        // Sanitized content is safe to be unescaped in templates
+        tmpl.Execute(w, map[string]template.HTML{"Content": template.HTML(sanitized)})
+    }
+    ```
+
+Alternatively, you can use regular expressions to sanitize HTML content.
+
+!!! success check done "Example Correct Usage"
+    ```go
+    import (
+        "html"
+        "regexp"
+        "strings"
+    )
+    
+    func sanitizeHTML(input string) string {
+        // Remove script tags and their content
+        scriptRegex := regexp.MustCompile(`(?i)<script[^>]*>.*?</script>`)
+        input = scriptRegex.ReplaceAllString(input, "")
+        
+        // Remove potentially dangerous tags
+        dangerousTagsRegex := regexp.MustCompile(`(?i)</?(?:script|object|embed|link|style|iframe)[^>]*>`)
+        input = dangerousTagsRegex.ReplaceAllString(input, "")
+        
+        // Remove event handlers
+        eventRegex := regexp.MustCompile(`(?i)\s*on\w+\s*=\s*["'][^"']*["']`)
+        input = eventRegex.ReplaceAllString(input, "")
+        
+        return html.EscapeString(input)
+    }
+    
+    sanitized := sanitizeHTML(userHTMLContent)
+    fmt.Fprintf(w, `<div>%s</div>`, sanitized)
+    ```
+
+For basic formatting preservation while maintaining security:
+
+!!! success check done "Example Correct Usage"
+    ```go
+    import (
+        "regexp"
+        "strings"
+    )
+    
+    func sanitizeBasicHTML(input string) string {
+        // Allow only basic formatting tags
+        allowedTags := []string{"b", "i", "u", "strong", "em", "p", "br"}
+        
+        // Remove all tags except allowed ones
+        tagRegex := regexp.MustCompile(`</?([a-zA-Z][a-zA-Z0-9]*)\b[^>]*>`)
+        return tagRegex.ReplaceAllStringFunc(input, func(match string) string {
+            tagNameRegex := regexp.MustCompile(`</?([a-zA-Z][a-zA-Z0-9]*)\b`)
+            tagNameMatch := tagNameRegex.FindStringSubmatch(match)
+            if len(tagNameMatch) > 1 {
+                tagName := strings.ToLower(tagNameMatch[1])
+                for _, allowed := range allowedTags {
+                    if tagName == allowed {
+                        return match
+                    }
+                }
+            }
+            return ""
+        })
+    }
+    
+    sanitized := sanitizeBasicHTML(userHTMLContent)
+    fmt.Fprintf(w, `<div>%s</div>`, sanitized)
+    ```
+
+#### Browser Level Protection
+Set the `X-XSS-Protection` header in HTTP responses using middleware or manual header setting.
+
+!!! success check done "Example Correct Usage"
+    ```go
+    func xssProtectionMiddleware(next http.Handler) http.Handler {
+        return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+            w.Header().Set("X-XSS-Protection", "1; mode=block")
+            next.ServeHTTP(w, r)
+        })
+    }
+    ```
+
+!!! tip hint important "WSO2 Document Reference"
+    Further information on required changes and recommended configuration for WSO2 products as well as production deployments are available at [Engineering Guidelines - Security Related HTTP Headers](../security-related-http-headers.md).
+
 
 ## XML External Entity (XXE)
 An XML External Entity attack is a type of attack against an application that parses XML input. This attack occurs when XML input containing a reference to an external entity is processed by a weakly configured XML parser. This attack may lead to the disclosure of confidential data, denial of service, server-side request forgery, port scanning from the perspective of the machine where the parser is located, and other system impacts[^20].
@@ -790,6 +1213,68 @@ If libxml is used in XML processing, `libxml_disable_entity_loader` function[^21
     ?>
     ```
 
+### Go Specific Recommendations
+
+Go's standard `encoding/xml` package does **not** process external entities or DTDs, and is therefore not vulnerable to XXE attacks by default. However, using third-party XML libraries or custom entity resolvers may introduce vulnerabilities.
+
+!!! bug error "Example Incorrect Usage"
+    ```go
+    import (
+        "bytes"
+        "thirdparty/xmlquery" // Hypothetical third-party library that may process DTDs
+    )
+
+    func parseInsecureXML(data []byte) (*xmlquery.Node, error) {
+        reader := bytes.NewReader(data)
+        doc, err := xmlquery.Parse(reader)
+        if err != nil {
+            return nil, err
+        }
+        return doc, nil
+    }
+    ```
+
+!!! success check done "Example Correct Usage"
+    ```go
+    import (
+        "encoding/xml" // Use Go's standard library for XML parsing
+    )
+
+    type Test struct {
+        Testing string `xml:"testing"`
+    }
+
+    func parseXML(data []byte) (*Test, error) {
+        var t Test
+        err := xml.Unmarshal(data, &t)
+        if err != nil {
+            return nil, err
+        }
+        return &t, nil
+    }
+    ```
+
+!!! success check done "Example Correct Usage"
+    ```go
+    import (
+        "encoding/xml"
+        "io"
+    )
+
+    type Test struct {
+        Testing string `xml:"testing"`
+    }
+
+    func decodeXML(r io.Reader) (*Test, error) {
+        decoder := xml.NewDecoder(r)
+        var t Test
+        err := decoder.Decode(&t)
+        if err != nil {
+            return nil, err
+        }
+        return &t, nil
+    }
+    ```
 
 ## HTTP Response Splitting (CRLF Injection)
 Including unvalidated data in an HTTP header allows an attacker to specify the entirety of the HTTP response rendered by the browser. When an HTTP request contains unexpected CR (carriage return, also given by %0d or \r) and LF (line feed, also given by %0a or \n) characters, the server may respond with an output stream that is interpreted as two different HTTP responses (instead of one). An attacker can control the second response and mount attacks such as cross-site scripting and cache poisoning attacks[^24].
@@ -824,6 +1309,67 @@ Sample filter implementation is available in WSO2 Carbon 4.4.x branch[^30]. Howe
 !!! danger error "Alert - Approval Required"
     If any transport implementation or component that generates HTTP responses directly requires the usage of a custom-written filter that does the "carriage return" and "line feed" (CRLF) filtering, the logic performing filtering should be reviewed and approved by the Security and Compliance (SC) Team. The SC Team should be informed and approval should be obtained before releasing such components or a transport implementation.  
 
+### Go Specific Recommendations
+
+When developing HTTP handlers in Go, avoid including untrusted input directly in HTTP headers. Always validate or sanitize user input before using it in headers.
+
+!!! bug error "Example Incorrect Usage"
+
+    ```go
+    http.HandleFunc("/set-cookie", func(w http.ResponseWriter, r *http.Request) {
+        author := r.URL.Query().Get("author")
+
+        http.SetCookie(w, &http.Cookie{
+            Name:  "author",
+            Value: author,
+            MaxAge: 3600,
+        })
+        w.WriteHeader(http.StatusOK)
+        w.Write([]byte("Cookie set"))
+    })
+    ```
+
+!!! success check done "Example Correct Usage"
+
+    ```go
+    http.HandleFunc("/set-cookie", func(w http.ResponseWriter, r *http.Request) {
+        author := r.URL.Query().Get("author")
+        // Sanitize input by removing CR and LF characters
+        author = strings.ReplaceAll(author, "\r", "")
+        author = strings.ReplaceAll(author, "%0d", "")
+        author = strings.ReplaceAll(author, "\n", "")
+        author = strings.ReplaceAll(author, "%0a", "")
+
+        http.SetCookie(w, &http.Cookie{
+            Name:  "author",
+            Value: author,
+            MaxAge: 3600,
+        })
+        w.WriteHeader(http.StatusOK)
+        w.Write([]byte("Cookie set"))
+    })
+    ```
+
+!!! success check done "Example Correct Usage"
+
+    ```go
+    http.HandleFunc("/set-cookie", func(w http.ResponseWriter, r *http.Request) {
+        author := r.URL.Query().Get("author")
+        // Reject input with CR or LF characters
+        if strings.ContainsAny(author, "\r\n") || strings.ContainsAny(author, "%0d%0a") {
+            http.Error(w, "Invalid input", http.StatusBadRequest)
+            return
+        }
+
+        http.SetCookie(w, &http.Cookie{
+            Name:  "author",
+            Value: author,
+            MaxAge: 3600,
+        })
+        w.WriteHeader(http.StatusOK)
+        w.Write([]byte("Cookie set"))
+    })
+    ```
 
 ## Log Injection / Log Forging (CRLF Injection)
 Including unvalidated data in log files allows an attacker to forge log entries or inject malicious content into logs. When a log entry contains unexpected CR (carriage return, also given by `%0d` or `\r`) and LF (line feed, also given by `%0a` or `\n`) characters, the server may record them in the log files/monitoring systems as different events. This can be used to forge log entries and might result in business level implications, if logs are used for further actions, such as reconciliation[^31].
@@ -894,6 +1440,23 @@ Preventing client-side attacks
 Cookie security
 :   Cookie attributes should be set properly, in order to prevent session related cookies from getting exposed over unencrypted channels.  Please refer to the documentation section [Securing Cookie](#securing-cookie). 
 
+### Go Specific Recommendations 
+
+When using sessions in Go, consider setting secure and HTTP-only flags on cookies to prevent session theft via XSS attacks.
+
+!!! success check done "Example Correct Usage"
+    ```go
+    func configureSessionStore() {
+        store := sessions.NewCookieStore([]byte("your-secret-key"))
+        store.Options = &sessions.Options{
+            Path:     "/",
+            MaxAge:   86400, // 1 day
+            HttpOnly: true,  // Prevents JavaScript access
+            Secure:   true,  // Requires HTTPS
+            SameSite: http.SameSiteStrictMode,
+        }
+    }
+    ```
 
 ## Session Fixation
 Session Fixation is an attack that permits an attacker to hijack a valid user session (a type of Session Hijacking attack). The attack explores a limitation in the way the web application manages the session ID, more specifically the vulnerable web application. When authenticating a user, it doesn’t assign a new session ID, making it possible to use an existing session ID. The attack consists of obtaining a valid session ID (e.g. by connecting to the application), inducing a user to authenticate himself with that session ID, and then hijacking the user-validated session by the knowledge of the used session ID. The attacker has to provide a legitimate Web application session ID and try to make the victim's browser use it[^38].
@@ -1021,6 +1584,73 @@ Destroy current session using session_destroy function, rather than just removin
     ```
 
 
+### Go Specific Recommendations 
+
+#### User Login Flow
+When managing sessions in Go, generate a new session ID after a successful authentication.
+
+!!! bug error "Example Incorrect Usage"
+    ```go
+    func loginHandler(w http.ResponseWriter, r *http.Request) {
+        session, _ := store.Get(r, "session-name")
+        
+        // Authenticate user
+        if login(username, password) {
+            // Set user as authenticated in session
+            session.Values["authenticated"] = true
+            session.Values["user"] = username
+            session.Save(r, w)
+        }
+    }
+    ```
+
+!!! success check done "Example Correct Usage"
+    ```go
+    func loginHandler(w http.ResponseWriter, r *http.Request) {
+        session, _ := store.Get(r, "session-name")
+        
+        // Authenticate user
+        if login(username, password) {
+            // Invalidate existing session
+            session.Options.MaxAge = -1
+            session.Save(r, w)
+            
+            // Create new session
+            session, _ = store.New(r, "session-name")
+            session.Values["authenticated"] = true
+            session.Values["user"] = username
+            session.Save(r, w)
+        }
+    }
+    ```
+
+#### User Logout Flow
+When a user logs out, explicitly delete the session rather than simply removing attributes.
+
+!!! bug error "Example Incorrect Usage"
+    ```go
+    func logoutHandler(w http.ResponseWriter, r *http.Request) {
+        session, _ := store.Get(r, "session-name")
+        
+        // Just remove the authentication flags
+        delete(session.Values, "authenticated")
+        delete(session.Values, "user")
+        session.Save(r, w)
+    }
+    ```
+
+!!! success check done "Example Correct Usage"
+    ```go
+    func logoutHandler(w http.ResponseWriter, r *http.Request) {
+        session, _ := store.Get(r, "session-name")
+        
+        // Set MaxAge to -1 to delete the session
+        session.Options.MaxAge = -1
+        session.Save(r, w)
+    }
+    ```
+
+
 ## Session Prediction
 Session prediction attack focuses on predicting session ID values that permit an attacker to bypass the authentication schema of an application. By analyzing and understanding the session ID generation process, an attacker can predict a valid session ID value and get access to the application.
 
@@ -1059,6 +1689,27 @@ session.cookie_secure   = On
 session.cookie_httponly = 1
 session.use_only_cookies= 1
 session.cache_expire    = 30
+```
+
+
+### Go Specific Recommendations 
+For Go applications, you can use `crypto/rand` package to generate secure random session IDs rather than using `math/rand` package which is deterministic. Here’s an example of how to generate a secure session ID in Go.
+
+```go
+import (
+    "crypto/rand"
+    "encoding/base64"
+)
+
+// GenerateSessionID creates a secure random session ID of at least 128 bits (16 bytes)
+func GenerateSessionID() (string, error) {
+    b := make([]byte, 16)
+    _, err := rand.Read(b)
+    if err != nil {
+        return "", err
+    }
+    return base64.URLEncoding.EncodeToString(b), nil
+}
 ```
 
 
@@ -1120,6 +1771,58 @@ Once operations that require a password are executed, it is required to clear th
             arr[0] = '';
         }
     }
+    ```
+
+
+### Go Specific Recommendations
+In Go, strings are immutable like in Java. Once a string is created, it cannot be modified, which means sensitive data stored in strings can remain in memory even after they're no longer referenced, making them vulnerable to heap inspection attacks.
+
+For handling sensitive information, use byte slices (`[]byte`) which are mutable, and explicitly zero out the memory before the variable goes out of scope.
+
+!!! bug error "Example Incorrect Usage"
+    ```go
+    userPassword := getUserPassword(request)  // userPassword is a string, which is immutable
+    ```
+
+!!! bug error "Example Incorrect Usage"
+    ```go
+    userPassword := getUserPassword(request)  // Returns []byte
+    valid := validateUser(username, userPassword)
+    if valid {
+        // Do valid actions
+    }
+    return valid
+    ```
+
+!!! success check done "Example Correct Usage"
+    ```go
+    userPassword := getUserPassword(request)  // Returns []byte
+    valid := validateUser(username, userPassword)
+    if valid {
+        // Do valid actions
+    }
+    
+    // Clear the password from memory
+    ClearSensitiveData(userPassword)
+    
+    return valid
+    
+    // Helper function to clear sensitive data
+    func ClearSensitiveData(data []byte) {
+        for i := range data {
+            data[i] = 0
+        }
+    }
+    ```
+
+Another approach is to use a dedicated package like `crypto/subtle` which provides constant-time operations to prevent timing attacks while handling sensitive data:
+
+!!! success check done "Example Using crypto/subtle"
+    ```go
+    import "crypto/subtle"
+    
+    // When comparing sensitive data like password hashes
+    isEqual := subtle.ConstantTimeCompare(storedHash, computedHash) == 1
     ```
 
 
@@ -1239,6 +1942,68 @@ Normalize the final path constructed and check if the normalized path is within 
             //No Directory Traversal. Proceed with usual operations based on userDirectoryRealPath.
         }
     ?>
+    ```
+
+
+### Go Specific Recommendations
+Normalize the final path constructed and check if the normalized path is within the expected boundary. The purpose of this validation is to check if any malicious user has used ".." or other traversal techniques to move out of the expected base directory that the action should be performed on.
+
+!!! bug error "Example Incorrect Usage"
+    ```go
+    userDirectory := r.URL.Query().Get("userDirectory")
+    filePath := constants.USER_HOME_BASE + "/" + userDirectory + "/" + constants.LOG_FILE_NAME
+    file, err := os.Open(filePath)
+    ```
+
+!!! success check done "Example Correct Usage"
+    ```go
+    package main
+    
+    import (
+        "net/http"
+        "os"
+        "path/filepath"
+        "strings"
+    )
+    
+    func handleFileRequest(w http.ResponseWriter, r *http.Request) {
+        userDirectory := r.URL.Query().Get("userDirectory")
+        
+        // Join paths securely and normalize
+        requestedPath := filepath.Join(constants.USER_HOME_BASE, userDirectory, constants.LOG_FILE_NAME)
+        
+        // Clean the path to resolve any ".." or other path manipulations
+        requestedPath = filepath.Clean(requestedPath)
+        
+        // Verify the resulting path is still within the base directory
+        baseAbs, err := filepath.Abs(constants.USER_HOME_BASE)
+        if err != nil {
+            http.Error(w, "Internal server error", http.StatusInternalServerError)
+            return
+        }
+        
+        requestedAbs, err := filepath.Abs(requestedPath)
+        if err != nil {
+            http.Error(w, "Internal server error", http.StatusInternalServerError)
+            return
+        }
+        
+        if !strings.HasPrefix(requestedAbs, baseAbs) {
+            // Path traversal detected
+            http.Error(w, "Invalid path", http.StatusBadRequest)
+            return
+        }
+        
+        // Safe to proceed
+        file, err := os.Open(requestedPath)
+        if err != nil {
+            http.Error(w, "Cannot open file", http.StatusInternalServerError)
+            return
+        }
+        defer file.Close()
+        
+        // Continue with file operations
+    }
     ```
 
 
@@ -1365,6 +2130,101 @@ An example code ensures the SampleObjectInputStream class is guaranteed not to d
             }
             return super.resolveClass(osc);
         } 
+    }
+    ```
+
+
+### Go Specific Recommendations
+
+Go provides several packages for serialization and deserialization, such as `encoding/json`, `encoding/xml`, and `encoding/gob`. When handling untrusted input, following secure practices is essential to prevent insecure deserialization vulnerabilities.
+
+#### Use Type-Based Deserialization
+
+Always deserialize into specific types rather than using generic containers like `map[string]interface{}` when dealing with untrusted data. This ensures that the data conforms to expected structures.
+
+!!! bug error "Example Incorrect Usage"
+    ```go
+    var data map[string]interface{}
+    err := json.Unmarshal(untrustedInput, &data)
+    // Using data without validation
+    ```
+
+!!! success check done "Example Recommended Usage"
+    ```go
+    type SafeType struct {
+        Name string
+        Value int
+        // Define only the fields you expect
+    }
+    
+    var safeData SafeType
+    err := json.Unmarshal(untrustedInput, &safeData)
+    if err != nil {
+        // Handle error properly
+    }
+    ```
+
+#### Validate Deserialized Data
+
+Always validate deserialized data before using it, even when deserializing into specific types.
+
+!!! success check done "Example Recommended Usage"
+    ```go
+    type UserData struct {
+        Username string `json:"username"`
+        Role     string `json:"role"`
+    }
+    
+    func validateAndProcess(input []byte) error {
+        var userData UserData
+        if err := json.Unmarshal(input, &userData); err != nil {
+            return err
+        }
+        
+        // Validate the data
+        if !isValidUsername(userData.Username) || !isAllowedRole(userData.Role) {
+            return errors.New("invalid data after deserialization")
+        }
+        
+        // Process the validated data
+        return nil
+    }
+    ```
+
+#### Avoid `gob` Encoding with Untrusted Data
+
+The `encoding/gob` package is designed for sending Go data structures between Go programs. It can deserialize arbitrary types, which is dangerous when handling untrusted input.
+
+!!! bug error "Example Unsafe Usage"
+    ```go
+    var network bytes.Buffer
+    dec := gob.NewDecoder(&network)
+    var data interface{}
+    err := dec.Decode(&data)
+    ```
+
+!!! success check done "Example Recommended Usage"
+    ```go
+    // When receiving external data, prefer json or other formats with explicit typing
+    var network bytes.Buffer
+    var safeData DefinedType
+    dec := json.NewDecoder(&network)
+    dec.DisallowUnknownFields() // Reject JSON with unknown fields
+    err := dec.Decode(&safeData)
+    ```
+
+#### Limit Input Size
+
+Always limit the size of input you accept to prevent processing extremely large payloads.
+
+!!! success check done "Example Recommended Usage"
+    ```go
+    func secureDecodeJSON(r io.Reader, v interface{}) error {
+        // Limit reader to prevent excessive memory usage
+        limitedReader := io.LimitReader(r, 1024*1024) // 1MB limit
+        decoder := json.NewDecoder(limitedReader)
+        decoder.DisallowUnknownFields()
+        return decoder.Decode(v)
     }
     ```
 
@@ -1509,6 +2369,106 @@ In summary, when integrating OWASP CSRFGuard with a product, it is required to d
 * Do thorough testing on the CSRF protected application to verify that there is no functional impact.
 
 
+### Go Specific Recommendations
+
+* For Go applications, use established CSRF protection libraries such as `gorilla/csrf` or `justinas/nosurf`.
+* Ensure that CSRF tokens are generated using cryptographically secure random number generators.
+* Always use HTTP POST, PUT, DELETE (not GET) for state-changing operations.
+* Implement proper token validation for all state-changing operations.
+
+!!! bug error "Example Unsafe Usage"
+    ```go
+    func createUserHandler(w http.ResponseWriter, r *http.Request) {
+        if r.Method != http.MethodPost {
+            http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
+            return
+        }
+        
+        username := r.FormValue("username")
+        password := r.FormValue("password")
+        createUser(username, password)
+        fmt.Fprintf(w, "User created successfully")
+    }
+    ```
+
+!!! success check done "Example Recommended Usage"
+    ```go
+    import (
+        "github.com/gorilla/csrf"
+        "net/http"
+    )
+    
+    func main() {
+        CSRF := csrf.Protect(
+            []byte("32-byte-long-auth-key"),
+            csrf.Secure(true),
+            csrf.HttpOnly(true),
+        )
+        
+        http.HandleFunc("/create_user", createUserHandler)
+        http.ListenAndServe(":8000", CSRF(http.DefaultServeMux))
+    }
+    
+    func createUserHandler(w http.ResponseWriter, r *http.Request) {
+        // CSRF validation happens automatically via the middleware
+        if r.Method != http.MethodPost {
+            http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
+            return
+        }
+        
+        username := r.FormValue("username")
+        password := r.FormValue("password")
+        
+        // Process the user creation
+        createUser(username, password)
+        
+        fmt.Fprintf(w, "User created successfully")
+    }
+    ```
+
+!!! success check done "Example Recommended Usage"
+    ```go
+    import (
+        "github.com/justinas/nosurf"
+        "net/http"
+        "html/template"
+    )
+    
+    func main() {
+        mux := http.NewServeMux()
+        mux.HandleFunc("/create_user", createUserHandler)
+        
+        // Wrap the servemux with the nosurf middleware
+        csrfHandler := nosurf.New(mux)
+        
+        // Configure cookie options
+        csrfHandler.SetBaseCookie(http.Cookie{
+            Path:     "/",
+            HttpOnly: true,
+            Secure:   true,
+            SameSite: http.SameSiteStrictMode,
+        })
+        
+        http.ListenAndServe(":8000", csrfHandler)
+    }
+    
+    func createUserHandler(w http.ResponseWriter, r *http.Request) {
+        // nosurf middleware automatically validates the token
+        if r.Method != http.MethodPost {
+            http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
+            return
+        }
+        
+        username := r.FormValue("username")
+        password := r.FormValue("password")
+        createUser(username, password)
+        fmt.Fprintf(w, "User created successfully")
+    }
+    ```
+
+When implementing CSRF protection in Go applications, remember to use secure random tokens, enforce proper token validation, and ensure that token validation happens before processing any state-changing operation.
+
+
 ## Server Side Request Forgery (SSRF)
 By providing URLs to unexpected hosts or ports, attackers can make it appear that the server is sending the request, possibly bypassing access controls such as firewalls that prevent the attackers from accessing the URLs directly. The server can be used as a proxy to conduct port scanning of hosts in internal networks, use other URLs such as that can access documents on the system (using `file://`), or use other protocols such as `gopher://` or `tftp://`, which may provide greater control over the contents of requests[^65].
 
@@ -1614,6 +2574,46 @@ When a portion of the redirect or forward URL is expected from the user, it is a
     ```
 
 
+### Go Specific Recommendations
+If an absolute URL is accepted by the end user, it should be validated against a list of allowed redirect/forward URLs. As mentioned in the section above, the Security and Compliance Team must approve such use cases.
+
+!!! bug error "Example Incorrect Usage"
+    ```go
+    http.Redirect(w, r, r.URL.Query().Get("url"), http.StatusFound)
+    ```
+
+!!! success check done "Example Correct Usage"
+    ```go
+    url := r.URL.Query().Get("url")
+    allowed := security.ValidateRedirectURL(allowedRedirectURLs, url)
+    if !allowed {
+        // Required logic to show the relevant error to the end-user
+        http.Error(w, "Invalid redirect URL", http.StatusBadRequest)
+        return
+    }
+    http.Redirect(w, r, url, http.StatusFound)
+    ```
+
+When a portion of the redirect or forward URL is expected from the user, you must validate that the appended fragment contains only the expected type of value.
+
+!!! bug error "Example Incorrect Usage"
+    ```go
+    index := r.URL.Query().Get("index")
+    http.Redirect(w, r, constant.BaseURL+"/info/"+index, http.StatusFound)
+    ```
+
+!!! success check done "Example Correct Usage"
+    ```go
+    index := r.URL.Query().Get("index")
+    if _, err := strconv.Atoi(index); err == nil {
+        http.Redirect(w, r, constant.BaseURL+"/info/"+index, http.StatusFound)
+    } else {
+        // Inform end-user about the error
+        http.Error(w, "Invalid parameter", http.StatusBadRequest)
+    }
+    ```
+
+
 ## ClickJacking and Cross Frame Scripting
 Clickjacking, also known as a "UI redress attack", is when an attacker uses multiple transparent or opaque layers to trick a user into clicking on a button or a link on another page when they were intending to click on the top level page. Thus, the attacker is "hijacking" clicks meant for their page and routing them to another page, most likely owned by another application, domain, or both[^71].
 
@@ -1640,6 +2640,31 @@ In addition to the non-standard X-Frame-Options header, the standard frame-ances
 
 !!! tip hint important "WSO2 Document Reference"
     Further information on required changes and recommended configuration for WSO2 products as well as production deployments are available at [Engineering Guidelines - Security Related HTTP Headers](../security-related-http-headers.md).
+
+
+### Go Specific Recommendations
+
+In Go applications, security headers should be added to all HTTP responses. This can be achieved by using middleware functions that intercept and modify responses before they are sent to the client.
+
+!!! success check done "Example Recommended Usage"
+    ```go
+    // Example of adding security headers using net/http middleware
+    func securityHeadersMiddleware(next http.Handler) http.Handler {
+        return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+            w.Header().Set("X-Frame-Options", "DENY")
+            w.Header().Set("Content-Security-Policy", "frame-ancestors 'none'")
+            next.ServeHTTP(w, r)
+        })
+    }
+
+    // Usage with http.ServeMux
+    func main() {
+        mux := http.NewServeMux()
+        mux.HandleFunc("/", homeHandler)
+        securedMux := securityHeadersMiddleware(mux)
+        http.ListenAndServe(":8080", securedMux)
+    }
+    ```
 
 
 ## Cross-Origin Resource Sharing
@@ -1671,6 +2696,16 @@ By setting the "secure" attribute of the cookie, it is possible to instruct the 
     cookie.setSecure(true);
     ```
 
+!!! example "Example of Setting Secure Flag with Go"
+    ```go
+    cookie := &http.Cookie{
+        Name:     "sessionID",
+        Value:    sessionToken,
+        Secure:   true,
+    }
+    http.SetCookie(w, cookie)
+    ```
+
 ### Avoiding cookies being read by JavaScript and other client side scripts
 If an XSS vulnerability is present in the web application a malicious JavaScript would be able to read sensitive information stored in cookies and communicate those to an external party.
 
@@ -1684,6 +2719,16 @@ To prevent JavaScripts and other client-side scripts from accessing cookie value
 !!! example "Example of Setting HttpOnly Flag with Java"
     ```java
     cookie.setHttpOnly(true);
+    ```
+
+!!! example "Example of Setting HttpOnly Flag with Go"
+    ```go
+    cookie := &http.Cookie{
+        Name:     "sessionID",
+        Value:    sessionToken,
+        HttpOnly: true,
+    }
+    http.SetCookie(w, cookie)
     ```
 
 ### Summary of Recommendations
@@ -1753,6 +2798,55 @@ Avoid usage of java.util.Random class for security sensitive operations and use 
     }
     ```
 
+### Go Specific Recommendations
+Avoid usage of `math/rand` package for security sensitive operations and use `crypto/rand` instead.
+
+* Always properly handle errors returned by `crypto/rand` functions as they indicate potential entropy issues.
+* For generating random integers within ranges, use appropriate conversion methods that preserve randomness (avoid modulo bias).
+* Consider using established libraries like `golang.org/x/crypto` for higher-level cryptographic operations that require randomness.
+* In containerized environments, ensure proper entropy sources are available to the Go application.
+
+!!! bug error "Example Incorrect Usage"
+    ```go
+    import (
+        "math/rand"
+        "time"
+    )
+    
+    func generateToken() string {
+        rand.Seed(time.Now().UnixNano())
+        randomValue := rand.Intn(9999)
+        // ...
+    }
+    ```
+
+!!! success check done "Example Correct Usage"
+    ```go
+    import (
+        "crypto/rand"
+        "encoding/binary"
+        "fmt"
+    )
+    
+    func generateToken() (string, error) {
+        // Create a buffer for 4 bytes (for a uint32)
+        b := make([]byte, 4)
+        
+        // Read random bytes from crypto/rand
+        _, err := rand.Read(b)
+        if err != nil {
+            return "", fmt.Errorf("failed to generate random number: %v", err)
+        }
+        
+        // Convert bytes to uint32 and limit to 0-9999 range without modulo bias
+        randomValue := binary.BigEndian.Uint32(b) % 10000
+        
+        // ... further processing
+        
+        return result, nil
+    }
+    ```
+
 ## Unrestricted File Upload
 Unrestricted file upload vulnerabilities[^75] occur when a web server or application permits users to upload files to the filesystem without adequately validating critical file attributes such as name, type, content, or size. Failure to enforce proper validation mechanisms[^76] can lead to severe security risks, including unauthorized file execution and system compromise.
 
@@ -1791,7 +2885,7 @@ Log all file upload activities and monitor them for signs of suspicious behavior
 
 !!! success check done "Example Correct Usage"
     ```java
-        private static final String[] ALLOWED_FILE_EXTENSIONS = new String[]{".xml"};
+    private static final String[] ALLOWED_FILE_EXTENSIONS = new String[]{".xml"};
 
     protected void checkServiceFileExtensionValidity(String fileExtension,String[] allowedExtensions)
         throws FileUploadException {
@@ -1812,20 +2906,122 @@ Log all file upload activities and monitor them for signs of suspicious behavior
 
 !!! success check done "Example Correct Usage"
     ```java
-        public static boolean checkMetaData(File f, String getContentType) {
-            try (InputStream is = new FileInputStream(f)) {
-                ContentHandler contenthandler = new BodyContentHandler();
-                Metadata metadata = new Metadata();
-                metadata.set(Metadata.RESOURCE_NAME_KEY, f.getName());
-                Parser parser = new AutoDetectParser();
-                    try {
-                    parser.parse(is, contenthandler, metadata, new ParseContext());
-                    } catch (SAXException | TikaException e) {
-                    return false;}
-                if (metadata.get(Metadata.CONTENT_TYPE).equalsIgnoreCase(getContentType)) 
-                {
-                return true;} else {return false;}
-    } }
+    public static boolean checkMetaData(File f, String getContentType) {
+        try (InputStream is = new FileInputStream(f)) {
+            ContentHandler contenthandler = new BodyContentHandler();
+            Metadata metadata = new Metadata();
+            metadata.set(Metadata.RESOURCE_NAME_KEY, f.getName());
+            Parser parser = new AutoDetectParser();
+            try {
+                parser.parse(is, contenthandler, metadata, new ParseContext());
+            } catch (SAXException | TikaException e) {
+                return false;}
+            if (metadata.get(Metadata.CONTENT_TYPE).equalsIgnoreCase(getContentType)) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+    }
+    ```
+
+### Go Specific Recommendations
+
+* File Type Validation:
+    Allow only specific file types and perform server-side validation using whitelisting techniques. Avoid relying solely on client-side checks.
+    Go's `http.DetectContentType` function can be used to verify the MIME type of uploaded files based on the extension and content.
+
+* Filename Sanitization:
+    Normalize and sanitize filenames to prevent overwriting critical files. Implement unique naming conventions for uploaded files.
+
+* Secure Filesystem Operations:
+    Use Go's path cleaning functions like `filepath.Clean` to prevent path traversal attacks and ensure files are stored in the intended locations.
+
+* Content Inspection:
+    Inspect file content to ensure it matches the expected file type and format. Reject files that fail validation checks.
+
+* Directory Restrictions:
+    Store uploaded files outside the webroot whenever possible. Apply strict access controls to prevent unauthorized file execution.
+
+* Size Limitation:
+    Enforce file size limits to prevent denial-of-service (DoS) conditions due to large file uploads.
+
+* Access Controls and Permissions:
+    Assign the minimum required permissions to uploaded files and ensure that executable permissions are not granted unless explicitly necessary.
+
+* Comprehensive Logging and Monitoring:
+    Log all file upload activities and monitor them for signs of suspicious behavior.
+
+!!! success check done "Example Correct Usage"
+    ```go
+    func validateFileExtension(filename string) error {
+        // Define allowed extensions
+        allowedExts := map[string]bool{".jpg": true, ".jpeg": true, ".png": true, ".pdf": true}
+        
+        ext := strings.ToLower(filepath.Ext(filename))
+        if !allowedExts[ext] {
+            return fmt.Errorf("unsupported file extension: %s", ext)
+        }
+        
+        return nil
+    }
+    
+    func uploadHandler(w http.ResponseWriter, r *http.Request) {
+        file, header, err := r.FormFile("file")
+        if err != nil {
+            http.Error(w, "Failed to get file from form", http.StatusBadRequest)
+            return
+        }
+        defer file.Close()
+        
+        // Validate file extension
+        if err := validateFileExtension(header.Filename); err != nil {
+            http.Error(w, err.Error(), http.StatusBadRequest)
+            return
+        }
+    }
+    ```
+
+!!! success check done "Example Correct Usage"
+    ```go
+    func validateFileContent(file multipart.File, expectedType string) error {
+        // Save to a buffer to examine content
+        buffer := make([]byte, 512)
+        _, err := file.Read(buffer)
+        if err != nil {
+            return err
+        }
+        
+        // Seek back to the beginning of the file
+        if _, err = file.Seek(0, io.SeekStart); err != nil {
+            return err
+        }
+        
+        // Detect content type from file content
+        contentType := http.DetectContentType(buffer)
+        
+        // Validate that content type matches expected
+        if !strings.HasPrefix(contentType, expectedType) {
+            return fmt.Errorf("invalid file type: got %s, expected %s", contentType, expectedType)
+        }
+        
+        return nil
+    }
+    
+    func uploadPdfHandler(w http.ResponseWriter, r *http.Request) {
+        file, header, err := r.FormFile("pdfFile")
+        if err != nil {
+            http.Error(w, "Failed to get file from form", http.StatusBadRequest)
+            return
+        }
+        defer file.Close()
+        
+        // Validate content type
+        if err := validateFileContent(file, "application/pdf"); err != nil {
+            http.Error(w, err.Error(), http.StatusBadRequest)
+            return
+        }
+    }
     ```
 
 
