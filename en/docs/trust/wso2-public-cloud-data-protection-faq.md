@@ -18,7 +18,7 @@ The workloads of Choreo subscribers are deployed on data planes.
 The Choreo cloud data plane is the default data plane for Choreo. It is available in the US and EU regions and fully managed by WSO2.
 
 ### Choreo Private Data Plane (PDP)
-Choreo subscribers can deploy their workloads on a private data plane, which provides enhanced isolation and control over subscriber workloads. WSO2 can manage private data planes on either WSO2-owned or subscriber-owned Cloud Service Provider subscriptions such as Azure, AWS, GCP, Vultr, etc. Subscribers can choose between Standard and Premium PDP configurations, each providing different levels of security and management models tailored to meet isolation and security requirements. For more details, please refer to the [PDP Security](#pdp-security) section.
+Choreo subscribers can deploy their workloads on a private data plane, which provides enhanced isolation and control over subscriber workloads. WSO2 can manage private data planes on either WSO2-owned or subscriber-owned Cloud Service Provider subscriptions such as Azure, AWS, GCP, Vultr, et. Subscribers can choose between Standard and Premium PDP configurations, each providing different levels of security and management models tailored to meet isolation and security requirements. For more details, please refer to the [PDP Security](#pdp-security) section.
 
 ### WSO2 Billing and Subscription Portal
 The billing and subscription portal allows cloud subscribers to choose their preferred subscription options and view their usage.
@@ -52,60 +52,61 @@ WSO2 subscribers can raise support tickets through ServiceNow, our ticketing sys
 
 | Type of data | Classification | Stored at | Purpose |
 |-------------|---------------|-----------|---------|
-| Organization Administrator profiles and related data | Restricted | Asgardeo US deployment or in External IDP, which the subscriber integrates. | User management |
+| Organization Administrator profiles and related data (Choreo US) | Restricted | Asgardeo US deployment or in External IDP, which the subscriber integrates. | User management |
+| Organization Administrator profiles and related data (Choreo EU) | Restricted | Asgardeo EU deployment or in External IDP, which the subscriber integrates. | User management |
 | End user profiles and associated data | Restricted | Asgardeo regional deployments or in External IDP, which the subscriber integrates. | User management |
 | User roles/scopes | Restricted | Choreo CP | Privilege management |
 | Secrets (keys/tokens/certificates) | Restricted | Choreo DP - Key management services (Key vaults) | For integrations and to facilitate service |
 | Choreo component data | Confidential | Choreo CP | To facilitate service |
 | Observability data | Confidential | Choreo DP | To facilitate service |
 | Log and event data - Choreo user applications | Confidential | Choreo DP | To facilitate service |
-| Log data (audit and CI/CD) | Confidential | Choreo CP | To enable service and legitimate interest (audit logs) |
+| Log data - Audit and CI/CD | Confidential | Choreo CP | To facilitate service |
 | Business data used by Choreo user applications | Confidential | On the cloud services and region selected by the subscriber | To facilitate application storage needs such as databases, caches, and message brokers. |
 
 ## WSO2 public cloud common services
 
 | Type of data | Classification | Stored at | Purpose |
 |-------------|---------------|-----------|---------|
-| Billing information | Restricted | Stripe* / billing module | Billing |
-| Credit card data | Restricted | Stripe* | Billing |
-| Support cases | Confidential | ServiceNow* | To provide support |
+| Billing information | Restricted | Stripe* / billing module | Subscription and Billing |
+| Credit card data | Restricted | Stripe* | Subscription and Billing |
+| Support case data | Confidential | ServiceNow* | To provide support |
 | Organizational Contact information | Confidential | WSO2 Subprocessors  | For subscription and ancillary services |
 
-\* Third-party service providers (sub-processors). See the sub-processor list [here](https://wso2.cachefly.net/wso2/sites/all/trust/wso2-public-cloud-subprocessor-list.pdf).
+\* Third-party service providers (sub-processors). See the sub-processor list [here](https://security.docs.wso2.com/en/latest/trust/wso2-public-cloud-subprocessor-list).
 
 ## Data Protection
+**Personal Data** refers to any information that relates to an identified or identifiable individual (“Data Subject”). This includes data that can directly or indirectly identify a person, either on its own or when combined with other information.
 
-**Data subject** is someone who can be identified from personal data. The data subject's rights will be addressed in the relevant data protection laws and regulations, such as the right to be deleted, informed, data portability, object data processing, and not to be subject to profiling and automated decision-making.
+**Data Subject** is someone who can be identified from Personal Data. The Data Subject's rights will be addressed in the relevant data protection laws and regulations, such as the right to be deleted, informed, data portability, object to data processing, and not to be subject to profiling and automated decision-making.
 
-**Data controller** is the legal entity or person that decides the purposes and means of processing personal data. The Data controller must comply with respective data protection laws and regulations and comply with data subject requests.
+**Data Controller** is the legal entity or person that decides the purposes and means of processing Personal Data. The Data controller must comply with respective data protection laws and regulations and comply with data subject requests.
 
-**Data processor** is the legal entity or the person who processes personal data on behalf of the controller. The Data processor must comply with respective data protection laws and regulations and comply with data subject requests.
+**Data Processor** is the legal entity or the person who processes Personal Data on behalf of the controller. The Data Processor must comply with respective data protection laws and regulations and comply with data subject requests.
 
 ## WSO2's Role in Protecting Data
 
-WSO2 has a dual responsibility as a Data controller and Data processor, depending on the purpose for which the personal data is consumed.
+WSO2 has a dual responsibility as a Data Controller and Data Processor, depending on the purpose for which the personal data is consumed.
 
-**As the Data controller**, WSO2 will collect personal data from the users interacting with WSO2 public cloud platforms, which are limited to:
-* Collecting data to perform legal compliance screening requirements.
-* Collecting data required for user registration or signup process.
+**As the Data Controller**, WSO2 will collect personal data from the users interacting with WSO2 public cloud, which are limited to:
+* Collecting data required for cloud account creation (Organization Administrator profiles and related data).
+* Collecting data required for supporting subscriber queries.
 * Collecting data required for billing and subscription purposes.
+* Collecting data to perform legal compliance screening requirements.
 * Collecting data to protect the platform from security threats.
 * Collecting data to improve our services.
 
-**As the Data processor**, WSO2 will process data provided to WSO2 by the subscriber (who shall be the Data controller). For example, the subscriber is the Data controller for users they invite to WSO2 public clouds, and data is uploaded to WSO2 public clouds by the subscriber and its users.
+WSO2 is the Data Controller for the "Organization Administrator profiles and associated data."
 
-WSO2 is the data controller for the "Organization Administrator profiles and associated data." This is because WSO2 decides what data is needed for the creation of cloud user profiles to facilitate the service for the subscriber.
+**As the Data Processor**, WSO2 will process the subscriber’s "End user profiles and associated data" and any other data onboarded to WSO2 public clouds solely on behalf of the subscriber and in accordance with the subscriber’s instructions. The subscriber is the Data Controller and determines the purposes and means of processing such data.
 
-The subscriber is the data controller for the "End user profiles and associated data." WSO2 is the data processor, as WSO2 processes the data shared according to the subscriber's instructions.
+**As a Sub-Processor**, In scenarios where a Partner or Third Party is involved in developing a subscriber’s business use cases using WSO2 public clouds, or in reselling WSO2 public cloud services to subscribers, and has access to Personally Identifiable Information (PII) during the implementation, management, or integration of applications, the Partner will be considered a Data Processor. This is because the Partner may access Personal Data and influence application behavior on behalf of the Subscriber. In such cases, WSO2 will act as a Sub-Processor when the Personal Data is provided by the Partner or Third Party on behalf of the Subscriber. 
 
-In an event where a partner is developing a subscriber's business use cases using WSO2 clouds and has access to personally identifiable information (PII) while managing the implementation. In that case, the partner also becomes the data processor as they may have access to PIIs and could define the application behaviors. WSO2 becomes a sub-processor in this instance.
-
-Both the data controller and the data processor need to have a Data Processing Agreement (DPA) in place. The DPA should include provisions for passing on DPA obligations to any subprocessors used by the data processor. Additionally, the data processor and any subprocessors should also have a DPA between them.
+Both the Data Controller and the Data Processor need to have a Data Processing Agreement (DPA) in place. The DPA should include provisions for passing on DPA obligations to any subprocessors used by the data processor. Additionally, the data processor and any subprocessors should also have a DPA between them.
 
 **As a Data processor, WSO2 will be responsible for:**
-* Processing personal data in accordance with the Data controller´s instructions.
-* Safeguarding and protecting the Data controller's data in accordance with all required technical and organizational measures and data protection laws currently in force.
-* Ensuring Data subject requests (DSRs) are addressed.
+* Processing Personal Data in accordance with the Data Controller´s instructions.
+* Safeguarding and protecting the Data Controller's data in accordance with all required technical and organizational measures and data protection laws currently in force.
+* Ensuring Data subject requests (DSRs) are addressed in timely manner.
 * Providing information and all reasonable assistance related to data privacy and security requests from the Data controller.
 * Ensuring that sub-processors adhere to all data protection requirements and standards.
 * Ensuring that WSO2 has adopted appropriate safeguards and adequate levels of protection for cross-border data transfers.
@@ -120,11 +121,11 @@ Both the data controller and the data processor need to have a Data Processing A
 
 **The subscriber, as the Data controller, will be responsible for:**
 * Complying with relevant data protection laws and regulations as applicable to the subscriber.
-* As between WSO2 and the subscriber, the subscriber will always remain in control of the data added by the subscriber or its users to the platform.
+* As between WSO2 and the subscriber, the subscriber will always remain in control of the data added by the subscriber or its users to the WSO2 Public Clouds.
 * Ensuring that any applications, websites, APIs, components, and integrations subscribers develop, deploy, or host on WSO2 Public Clouds are securely designed, developed, and managed in accordance with the subscriber's organizational security policies and best practices.
 * Adhering to relevant security best practices as per WSO2 product documentation or of the relevant information technology being used.
 * Inform WSO2 of any data subject requests from subscribers' administrators and developers so that WSO2 can support the subscriber in processing the request. The subscribers can submit a request [form](https://wso2.com/data-privacy-protection-request/) or contact the data protection officer at dpo@wso2.com.
-* Informing WSO2 of any vulnerabilities or security issues related to the platform.
+* Informing WSO2 of any vulnerabilities or security issues related to the platform using support channels or [Security Reporting Channels](https://security.docs.wso2.com/en/latest/security-reporting/report-security-issues/).
 * Complying with applicable WSO2 Public Cloud Terms of Use.
 
 ## Data Residency
@@ -133,16 +134,20 @@ Both the data controller and the data processor need to have a Data Processing A
 * **Asgardeo**
   * Asgardeo organization administrator profiles and associated data would be stored in Asgardeo US deployment.
   * Asgardeo end-user profiles and associated data would be stored in the region where the deployment is provisioned (US or EU).
+  * For detailed information please refer to [Data residency in Asgardeo](https://wso2.com/asgardeo/docs/references/data-residency-in-asgardeo/).
+
 * **Choreo**
-  * Choreo uses Asgardeo as its default identity provider. Therefore, both user profiles and associated data would be stored in Asgardeo US deployment by default.
-  * If a subscriber wants to store their end user data in Asgardeo EU deployment, they would have to first provision a Asgardeo tenant in EU region and then connect it with the Choreo which would ensure that the end user data would be stored in EU region.
+  * Choreo US deployment will use Asgardeo US deployment as its default identity provider. Therefore, both user profiles and associated data would be stored in Asgardeo US deployment by default.
+    * If a Choreo US subscriber wants to store their end user data in Asgardeo EU deployment, they would have to first provision a Asgardeo tenant in EU region and then connect it with the Choreo which would ensure that the end user data would be stored in EU region.
+  * Choreo EU deployment will use Asgardeo EU deployment as its default identity provider. Therefore, both user profiles and associated data would be stored in Asgardeo EU deployment by default.
+
   * If a subscriber wants to use their existing external IDP, the administrator and end-user profiles and associated data will remain within that external IDP.
-  * Choreo's control plane stores specific component data in the same region where the control plane would resides at (US or EU).
+  * Choreo's control plane stores specific component data in the same region where the control plane would resides at (US - Azure or EU - AWS).
   * Choreo applications and associated data would reside in the region where the data plane would reside.
-    * Choreo cloud data plane - US - Azure
-    * Choreo cloud data plane - EU - Azure
-    * Choreo cloud data plane - EU - AWS
-    * Choreo private data plane - subscriber's preferred data center region (AWS, Azure, GCP, OnPrem)
+    * Choreo CDP - US - Azure
+    * Choreo CDP - EU - Azure
+    * Choreo CDP - EU - AWS
+    * Choreo PDP - subscriber's preferred data center region (AWS, Azure, GCP, OnPrem)
 * WSO2 public cloud's billing and support portals are hosted in the US.
 
 ### Can subscribers govern where their data is hosted?
