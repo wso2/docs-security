@@ -14,7 +14,7 @@ version: "1.0.0"
 ASG-SB-2025-H1
 
 ### SCOPE  
-This bulletin summarizes security vulnerabilities addressed during the month of January 2025 for Asgardeo.
+This bulletin summarizes security vulnerabilities addressed during the H1 of 2025 for Asgardeo.
 
 ### VULNERABILITIES ADDRESSED
 
