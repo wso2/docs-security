@@ -3,7 +3,6 @@ title: Asgardeo Security Bulletin – H1 2025
 category: security-announcements
 published: "2025-07-04"
 version: "1.0.0"
-severity: "Multiple"
 ---
 
 # Asgardeo Security Bulletin – H1 2025
