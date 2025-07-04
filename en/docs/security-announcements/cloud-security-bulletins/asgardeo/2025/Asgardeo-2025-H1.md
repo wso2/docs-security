@@ -9,7 +9,6 @@ version: "1.0.0"
 
 <p class="doc-info">Published: 2025-07-04</p>
 <p class="doc-info">Version: 1.0.0</p>
-<p class="doc-info">Severity: Multiple</p>
 
 ### BULLETIN ID  
 ASG-SB-2025-H1
