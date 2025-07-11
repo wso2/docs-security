@@ -351,10 +351,10 @@ nav:
     - 'Cloud Security Bulletin':
       - '': 'security-announcements/cloud-security-bulletins/index.md'
       - 'Asgardeo':
-        - '': 'security-announcements/cloud-security-bulletin/asgardeo/index.md'
+        - '': 'security-announcements/cloud-security-bulletins/asgardeo/index.md'
         - '2025':
-          - '': 'security-announcements/cloud-security-bulletin/asgardeo/2025/index.md'
-          - 'Asgardeo Security Bulletin - 2025 H1': 'security-announcements/security-bulletin/asgardeo/2025/asgardeo-2025-h1.md'
+          - '': 'security-announcements/cloud-security-bulletins/asgardeo/2025/index.md'
+          - 'Asgardeo Security Bulletin - 2025 H1': 'security-announcements/cloud-security-bulletins/asgardeo/2025/asgardeo-2025-h1.md'
     - 'CVE to WSO2 Security Advisory Mapping': 'security-announcements/cve-to-wso2-security-advisory-mapping.md'
     - 'CVE Justifications':
       - '': 'security-announcements/cve-justifications/index.md'
