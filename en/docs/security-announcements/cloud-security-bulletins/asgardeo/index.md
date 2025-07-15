@@ -7,4 +7,4 @@ category: security-announcements
 
 This section contains the security bulletins for asgardeo
 
-* [2025 Asgardeo Security Bulletins]({{#base_path#}}/security-announcements//cloud-security-bulletins/asgardeo/2025/asgardeo-2025-h1.md)
+* [2025 Asgardeo Security Bulletins]({{#base_path#}}/security-announcements/cloud-security-bulletins/asgardeo/2025/)
