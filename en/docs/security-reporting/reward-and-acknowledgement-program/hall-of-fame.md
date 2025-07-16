@@ -26,6 +26,7 @@ security researcher community relationship.
 | [Rohan Hotkar](https://www.linkedin.com/in/rohanhotkar/)                  |
 | **Viral Maniar**                                                          |
 | **CyberMavi**                                                             |
+| [Noël MACCARY](https://fr.linkedin.com/innmaccary)                        |
 
 ## 2024
 
