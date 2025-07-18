@@ -348,6 +348,13 @@ nav:
         - 'WSO2-2016-0168': 'security-announcements/security-advisories/2016/WSO2-2016-0168.md'
         - 'WSO2-2016-0169': 'security-announcements/security-advisories/2016/WSO2-2016-0169.md'
         - 'WSO2-2016-0170': 'security-announcements/security-advisories/2016/WSO2-2016-0170.md'
+    - 'Cloud Security Bulletin':
+      - '': 'security-announcements/cloud-security-bulletins/index.md'
+      - 'Asgardeo':
+        - '': 'security-announcements/cloud-security-bulletins/asgardeo/index.md'
+        - '2025':
+          - '': 'security-announcements/cloud-security-bulletins/asgardeo/2025/index.md'
+          - 'Asgardeo Security Bulletin - 2025 H1': 'security-announcements/cloud-security-bulletins/asgardeo/2025/asgardeo-2025-h1.md'
     - 'CVE to WSO2 Security Advisory Mapping': 'security-announcements/cve-to-wso2-security-advisory-mapping.md'
     - 'CVE Justifications':
       - '': 'security-announcements/cve-justifications/index.md'
