@@ -1,5 +1,5 @@
 ---
-title: Cloud Security Bulletins
+title: Choreo Cloud Security Bulletins
 category: security-announcements
 ---
 
