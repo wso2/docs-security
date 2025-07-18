@@ -1,9 +1,9 @@
 ---
-title: Choreo Security Bulletins
+title: Choreo Security Bulletins for 2025
 category: security-announcements
 ---
 
-# Cloud Security Bulletins
+# Choreo Security Bulletins for 2025
 
 This section contains the security bulletins for Choreo
 
