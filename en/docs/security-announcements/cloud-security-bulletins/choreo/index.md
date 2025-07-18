@@ -3,7 +3,7 @@ title: Choreo Cloud Security Bulletins
 category: security-announcements
 ---
 
-# Cloud Security Bulletins
+# Choreo Cloud Security Bulletins
 
 This section contains the security bulletins for Choreo
 
