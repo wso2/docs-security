@@ -359,7 +359,7 @@ nav:
         - '': 'security-announcements/cloud-security-bulletins/choreo/index.md'
         - '2025':
           - '': 'security-announcements/cloud-security-bulletins/choreo/2025/index.md'
-          - 'Choreo Security Bulletin - 2025 H1': 'security-announcements/cloud-security-bulletins/choreo/2025/choreo-2025-h1.md'        
+          - '2025 H1': 'security-announcements/cloud-security-bulletins/choreo/2025/choreo-2025-h1.md'        
     - 'CVE to WSO2 Security Advisory Mapping': 'security-announcements/cve-to-wso2-security-advisory-mapping.md'
     - 'CVE Justifications':
       - '': 'security-announcements/cve-justifications/index.md'
