@@ -1,8 +1,8 @@
-
 ---
-| Title | Category | Published | Version |
-|--------------|-------|----------|---------|
-|Choreo Security Bulletin – H1 2025|security-announcements|2025-07-15|1.0.0
+title: Choreo Security Bulletin – H1 2025
+category: security-announcements
+published: "2025-07-15"
+version: "1.0.0"
 ---
 
 # Choreo Security Bulletin – H1 2025
