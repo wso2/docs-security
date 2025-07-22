@@ -260,10 +260,13 @@ Example with query segments that cannot be parameterized with PDO or MySQL Impro
 
 Use Go's `database/sql` package with prepared statements to prevent SQL injections. The statement will be compiled and the user variables will be assigned to the query parameters at runtime. Since user variables are being set to a precompiled SQL statement, this approach avoids the possibility of SQL injections.
 
+!!! info "Note"
+    The placeholder syntax (e.g., `?`, `$1`, `:name`) for parameters in prepared statements is database-driver specific. Please refer to your driver's documentation for the correct syntax.
+
 !!! bug error "Example Incorrect Usage"
     ```go
     customerName := r.FormValue("customerName")
-    query := "SELECT account_balance FROM user_data WHERE user_name = " + customerName
+    query := "SELECT account_balance FROM user_data WHERE user_name = '" + customerName + "'"
     
     rows, err := db.Query(query)
     if err != nil {
@@ -278,7 +281,7 @@ Use Go's `database/sql` package with prepared statements to prevent SQL injectio
     // Validations, etc...
     
     query := "SELECT account_balance FROM user_data WHERE user_name = ?"
-    rows, err := db.Query(query, customerName)
+    rows, err := db.QueryContext(r.Context(), query, customerName)
     if err != nil {
         return err
     }
@@ -293,13 +296,13 @@ Use Go's `database/sql` package with prepared statements to prevent SQL injectio
     // Validations, etc...
     
     query := "SELECT account_balance FROM user_data WHERE user_name = ?"
-    stmt, err := db.Prepare(query)
+    stmt, err := db.PrepareContext(r.Context(), query)
     if err != nil {
         return err
     }
     defer stmt.Close()
     
-    rows, err := stmt.Query(customerName)
+    rows, err := stmt.QueryContext(r.Context(), customerName)
     if err != nil {
         return err
     }
@@ -318,7 +321,8 @@ Example 1:
     order := r.FormValue("order")
     // Validations, etc...
     
-    query := "SELECT user_name, account_balance FROM user_data WHERE user_type = ? ORDER BY " + order
+    // Since SQL prepared statements cannot parameterize identifiers (like table or column names)
+    query := "SELECT user_name, account_balance FROM user_data WHERE user_type = ? ORDER BY '" + order + "'"
     rows, err := db.Query(query, customerType)
     if err != nil {
         log.Fatal(err)
@@ -328,16 +332,15 @@ Example 1:
 
 !!! success check done "Example Correct Usage"
     ```go
+    customerType := r.FormValue("customerType")
+    orderColumn := r.FormValue("orderColumn")
+    orderDirection := r.FormValue("orderDirection")
+
     // Package level map maintaining "user input to database column" mapping
     var validOrderColumns = map[string]string{
         "accountBalance": "account_balance",
         "userName":       "user_name",
     }
-    
-    // Function definition...
-    customerType := r.FormValue("customerType")
-    orderColumn := r.FormValue("orderColumn")
-    orderDirection := r.FormValue("orderDirection")
     
     if strings.ToUpper(orderDirection) == "DESC" {
         orderDirection = "DESC"
@@ -347,12 +350,11 @@ Example 1:
     
     dbColumn, exists := validOrderColumns[orderColumn]
     if !exists {
-        // Handle invalid column error
-        return
+        dbColumn = "account_balance" // or handle the error appropriately
     }
     
     query := "SELECT user_name, account_balance FROM user_data WHERE user_type = ? ORDER BY " + dbColumn + " " + orderDirection
-    rows, err := db.Query(query, customerType)
+    rows, err := db.QueryContext(r.Context(), query, customerType)
     if err != nil {
         log.Fatal(err)
     }
@@ -416,9 +418,9 @@ Example 2:
     var rows *sql.Rows
     var err error
     if selectRowsByColumnName != "" {
-        rows, err = db.Query(query, publisher, selectRowsByColumnValue)
+        rows, err = db.QueryContext(r.Context(), query, publisher, selectRowsByColumnValue)
     } else {
-        rows, err = db.Query(query, publisher)
+        rows, err = db.QueryContext(r.Context(), query, publisher)
     }
     if err != nil {
         log.Fatal(err)
