@@ -137,24 +137,26 @@ Both the Data Controller and the Data Processor need to have a Data Processing A
   * For detailed information please refer to [Data residency in Asgardeo](https://wso2.com/asgardeo/docs/references/data-residency-in-asgardeo/).
 
 * **Choreo**
-  * Choreo US deployment will use Asgardeo US deployment as its default identity provider. Therefore, both user profiles and associated data would be stored in Asgardeo US deployment by default.
+  * The Choreo US deployment uses Asgardeo US as its identity provider (IdP) by default. As a result, all administrator and end user profiles and their associated data are stored in the Asgardeo US deployment.
     * If a Choreo US subscriber wants to store their end user data in Asgardeo EU deployment, they would have to first provision a Asgardeo tenant in EU region and then connect it with the Choreo which would ensure that the end user data would be stored in EU region.
-  * Choreo EU deployment will use Asgardeo EU deployment as its default identity provider. Therefore, both user profiles and associated data would be stored in Asgardeo EU deployment by default.
 
-  * If a subscriber wants to use their existing external IDP, the administrator and end-user profiles and associated data will remain within that external IDP.
+  * The Choreo EU deployment uses Asgardeo EU as its IdP by default. As a result, all administrator and end user profiles and their associated data are stored in the Asgardeo EU deployment.
+
+  * If a subscriber wants to use their existing external IdP, the administrator and end-user profiles and associated data will remain within that external IdP.
   * Choreo's control plane stores specific component data in the same region where the control plane would resides at (US - Azure or EU - AWS).
   * Choreo applications and associated data would reside in the region where the data plane would reside.
-    * Choreo CDP - US - Azure
-    * Choreo CDP - EU - Azure
-    * Choreo CDP - EU - AWS
-    * Choreo PDP - subscriber's preferred data center region (AWS, Azure, GCP, OnPrem)
+    * Choreo CDP - US - Azure 
+    * Choreo CDP - EU - Azure 
+    * Choreo CDP - EU - AWS 
+    * Choreo PDP - will use subscriber's preferred location (AWS, Azure, GCP,or onprem)
 * WSO2 public cloud's billing and support portals are hosted in the US.
 
 ### Can subscribers govern where their data is hosted?
 * **Asgardeo**
   * Asgardeo subscribers can select US or EU data centers to store user data while provisioning the Asgardeo organization. However, the Asgardeo organization administrator profile data would be residing in the Asgardeo US deployment. For more details, please refer to "[Data residency in Asgardeo](https://wso2.com/asgardeo/docs/references/data-residency-in-asgardeo/)."
 * **Choreo**
-  * Choreo subscribers can host their workloads on the Choreo cloud data plane (US and EU) or private data planes in a region and a cloud or a data center of their preference. However, Choreo control plane data would reside in the US.
+  * By default, Choreo administrator data is stored according to the Choreo region and the external IdP configuration the subsriber has opted in.
+  * Choreo subscribers can host their workloads on the Choreo cloud data plane (US or EU) or on private data planes in any region, cloud provider, or data center of their choice.
   * Choreo also simplifies creating databases, caches, and message brokers for user applications on Azure, AWS, GCP, Vultr, and DigitalOcean, with deployment options in the US and EU if they prefer to use application dependencies created through Choreo instead of connecting to their existing resources.
 
 ### Is subscriber data transferred around the world?
