@@ -103,3 +103,4 @@ Transfer of personal data between WSO2 subsidiaries and affiliate companies is i
 | 2024-06-07 | Subprocessor updates |
 | 2025-01-09 | Refactored the subprocessor list to reflect public clouds<br>Subprocessor updates<br>- Removed sub-processors related to onprem products.<br>- Included "WSO2 subsidiaries and affiliate companies" |
 | 2025-05-27 | Removed Wallarm Inc |
+| 2025-07-30   | Convert to markdown format|

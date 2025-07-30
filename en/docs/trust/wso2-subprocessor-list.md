@@ -83,3 +83,4 @@ Transfer of personal data between WSO2 subsidiaries and affiliate companies is i
 | 2024-05-02 | Subprocessor updates<br>- Removed Rackspace, Rollup Helper, and Drift. |
 | 2024-06-07 | Subprocessor updates<br>- Added Aiven |
 | 2024-12-21 | Refactored the subprocessor list to reflect on-prem products<br>Included information on data collection, location, data access, and data retention.<br>Subprocessor updates<br>- Removed sub-processors related to cloud products.<br>- Included "WSO2 subsidiaries and affiliate companies" |
+| 2025-07-30   | Convert to markdown format|

@@ -72,7 +72,7 @@ WSO2 subscribers can raise support tickets through ServiceNow, our ticketing sys
 | Support case data | Confidential | ServiceNow* | To provide support |
 | Organizational Contact information | Confidential | WSO2 Subprocessors  | For subscription and ancillary services |
 
-\* Third-party service providers (sub-processors). See the sub-processor list [here](https://security.docs.wso2.com/en/latest/trust/wso2-public-cloud-subprocessor-list).
+\* Third-party service providers (sub-processors). See the sub-processor list [here](https://security.docs.wso2.com/en/latest/trust/wso2-public-cloud-subprocessor-list/).
 
 ## Data Protection
 **Personal Data** refers to any information that relates to an identified or identifiable individual (“Data Subject”). This includes data that can directly or indirectly identify a person, either on its own or when combined with other information.
@@ -340,7 +340,7 @@ WSO2 public clouds are aligned with the requirements of CCPA.
 WSO2 has obtained the ISO/IEC 27001:2013 certification (2022 version upgrade audit completed) for the Digital Operations function, which oversees the access management of WSO2 internal infrastructure and the overall management of endpoints. ISO control domains such as Organisation of Information Security, Human Resource Security, Asset Management, Access Control, Physical & Environmental Security, Operations Security, Communications Security, Supplier Relationships, Information Security Incident Management, Information Security Aspects of Business Continuity Management, and compliance with legal and contractual requirements are applied across the organization.
 
 ### Are WSO2 public clouds PCI DSS certified?
-Choreo Control Plane and Cloud Data Plane are certified by PCI DSS v4.0 Level 1.
+Choreo Control Plane and US Cloud Data Plane are certified by PCI DSS v4.0 Level 1.
 
 ### Are WSO2 public clouds HIPAA compliant?
 WSO2 public clouds are not HIPAA compliant. However, our SOC 2 report includes applicable HITRUST CSF control mapping.
@@ -351,7 +351,7 @@ WSO2 public clouds are not HIPAA compliant. However, our SOC 2 report includes a
 WSO2 does not subcontract services related to WSO2 public clouds.
 
 ### Do WSO2 public clouds use subprocessors?
-WSO2 leverages subcontractors who provide us with specific services in our [Public Cloud Subprocessor List](https://wso2.cachefly.net/wso2/sites/all/trust/wso2-public-cloud-subprocessor-list.pdf).
+WSO2 leverages subcontractors who provide us with specific services in our [Public Cloud Subprocessor List](https://security.docs.wso2.com/en/latest/trust/wso2-public-cloud-subprocessor-list/).
 
 ### Does WSO2 perform vendor security risk assessments (VSRAs)?
 A team composed of IT, security, legal, HR, and finance would vet all suppliers, subcontractors, service providers, and vendors to ensure that external entities meet WSO2 standards. During the evaluation process, we would leverage vendors' security certifications, attestations, and security responses.
@@ -391,5 +391,5 @@ A team composed of IT, security, legal, HR, and finance would vet all suppliers,
 | 2023-02-22   | Initial release |
 | 2023-10-17   | Updates:<br>- Asgardeo and Choreo EU deployments.<br>- Asgardeo and Choreo data classifications.<br>- Public cloud compliances. |
 | 2025-01-09   | Updates:<br>- Backup and data retention frequencies<br>- New public cloud sub-processor list<br>- Compliance statement updates |
-| 2025-05-27   | Convert to markdown format|
+| 2025-07-30   | Convert to markdown format|
 

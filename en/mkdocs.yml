@@ -419,10 +419,10 @@ nav:
     - 'Reporting Service Abuse or Malicious Content': 'security-reporting/abuse-report.md'
   - 'Trust':
     - '': 'trust/index.md'
+    - 'Security commitment for self-hosted products': 'trust/security-commitment-for-self-hosted-products.md'
     - 'Public Cloud Data Protection FAQ': 'trust/wso2-public-cloud-data-protection-faq.md'
-    - 'Public Cloud Subprocessor List': 'trust/wso2-public-cloud-subprocessor-list.md'
-    - 'Security Commitment for Self-Hosted Products': 'trust/security-commitment-for-self-hosted-products.md'
-    - 'WSO2 Subprocessor List': 'trust/wso2-subprocessor-list.md'
+    - 'Public Cloud Subprocessor list': 'trust/wso2-public-cloud-subprocessor-list.md'
+    - 'WSO2 Subprocessor list': 'trust/wso2-subprocessor-list.md'
   - '404 - Not found': 'page-not-found.md'
 
 # Extensions
