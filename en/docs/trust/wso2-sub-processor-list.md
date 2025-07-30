@@ -1,4 +1,4 @@
-# WSO2 Subprocessor List
+# WSO2 Sub-processor List
 
 ## Data WSO2 collects from its on-premise subscribers.
 * WSO2 is committed to respecting your privacy and collects only the essential personally identifiable information (PII) from our subscribers and their employees. We limit this information to the full name, email address, phone number(s), and billing details. This information enables us to set up support accounts, offer support services, and manage billing effectively.
@@ -8,19 +8,19 @@
 * Furthermore, when you visit or interact with WSO2 websites, we collect and process data in accordance with https://wso2.com/privacy-policy.
 
 ## Data Location
-* WSO2 primarily employs subprocessors located in the United States unless specified otherwise in the sub-processor list below, thereby resulting in data being stored within the United States.
-* WSO2 executes Data Protection Agreements in conjunction with Standard Contractual Clauses (SCCs) prior to engaging with the subprocessors. Furthermore, WSO2 guarantees that its subprocessors have implemented adequate technical and organizational measures to facilitate the transmission of personal data.
+* WSO2 primarily employs sub-processors located in the United States unless specified otherwise in the sub-processor list below, thereby resulting in data being stored within the United States.
+* WSO2 executes Data Protection Agreements in conjunction with Standard Contractual Clauses (SCCs) prior to engaging with the sub-processors. Furthermore, WSO2 guarantees that its sub-processors have implemented adequate technical and organizational measures to facilitate the transmission of personal data.
 
 ## Data Access
 * WSO2 employees across WSO2 subsidiaries and affiliate companies access personal data collected by WSO2 solely to provide subscription and professional services for the subscriber. This includes ancillary operational activities related to subscription and professional services, such as account management and invoicing. Additionally, data collected from visitors to the WSO2 websites are accessed for website-related functionalities and services.
-* This data will be accessed exclusively by WSO2 employees involved in the activities mentioned above. Furthermore, personal data may be transmitted to subprocessors engaged by WSO2 to perform these activities.
+* This data will be accessed exclusively by WSO2 employees involved in the activities mentioned above. Furthermore, personal data may be transmitted to sub-processors engaged by WSO2 to perform these activities.
 
 ## Data Retention
 * The data collected for support service subscription will be retained as stated in section 10 of the support services policy (https://wso2.com/licenses/support-policy/).
 
-## WSO2 Subprocessors
+## WSO2 sub-processors
 
-| Subprocessor | Purpose of processing | Categories of Data Subjects | Location | Transfer Mechanism |
+| Sub-processor | Purpose of processing | Categories of Data Subjects | Location | Transfer Mechanism |
 |--------------|----------------------|----------------------------|----------|-------------------|
 | Salesforce | For account management | Employees of the subscribers involved in the procurement or renewal of subscriptions and raising support tickets through the support portal. | USA | [Salesforce DPA](https://salesforce.com) |
 | Pardot | For sending notifications to subscribers and managing communication preferences. | Those who have filled out any form on the WSO2 website. | USA | [Salesforce DPA](https://salesforce.com) |
@@ -39,18 +39,18 @@
 | DocuSign | For executing contracts between subscribers and WSO2. | Employees of the subscribers involved in the procurement or renewal of subscriptions. | USA | [DocuSign DPA](https://docusign.com) |
 | Netsuite | For subscriber invoicing and internal finance system. | Employees of the subscribers involved in the procurement or renewal of subscriptions. | USA | DPA has been executed |
 
-## Infrastructure service subprocessors
+## Infrastructure service sub-processors
 
-| Subprocessor | Purpose of processing | Categories of Data Subjects | Location | Transfer Mechanism |
+| Sub-processor | Purpose of processing | Categories of Data Subjects | Location | Transfer Mechanism |
 |--------------|----------------------|----------------------------|----------|-------------------|
 | Microsoft Azure | To host WSO2 workloads, and workloads may process subscriber information. | Employees of the subscribers involved in communications with WSO2. | Global | [Microsoft DPA](https://microsoft.com) |
 | AWS | To host WSO2 workloads, and workloads may process subscriber information. | Employees of the subscribers involved in communications with WSO2. | Global | [AWS DPA](https://aws.com) |
 | Google Cloud Platform | To host WSO2 workloads, and workloads may process subscriber information. | Employees of the subscribers involved in communications with WSO2. | Global | [Google Cloud DPA](https://google.com) |
 | CacheFly | To host WSO2 workloads, and workloads may process subscriber information. | Employees of the subscribers involved in communications with WSO2. | Global | [CacheFly DPA](https://cachefly.com) |
 
-## Optional subprocessors
+## Optional sub-processors
 
-| Subprocessor | Purpose of processing | Categories of Data Subjects | Location | Transfer Mechanism |
+| Sub-processor | Purpose of processing | Categories of Data Subjects | Location | Transfer Mechanism |
 |--------------|----------------------|----------------------------|----------|-------------------|
 | Thinkific | For providing WSO2 training and product exams. | Those who undergo WSO2 training and exams. | USA | DPA has been executed |
 | Silicon Vally Bank Payment Gateway | To facilitate card payments to purchase WSO2 services. | Those who make online payments to WSO2. | USA | DPA has been executed |
@@ -78,9 +78,9 @@ Transfer of personal data between WSO2 subsidiaries and affiliate companies is i
 | Release Date | Summary of Changes |
 |-------------|-------------------|
 | 2023-02-22 | Initial version |
-| 2023-03-21 | Subprocessor updates |
-| 2023-10-17 | Subprocessor updates |
-| 2024-05-02 | Subprocessor updates<br>- Removed Rackspace, Rollup Helper, and Drift. |
-| 2024-06-07 | Subprocessor updates<br>- Added Aiven |
-| 2024-12-21 | Refactored the subprocessor list to reflect on-prem products<br>Included information on data collection, location, data access, and data retention.<br>Subprocessor updates<br>- Removed sub-processors related to cloud products.<br>- Included "WSO2 subsidiaries and affiliate companies" |
+| 2023-03-21 | Sub-processor updates |
+| 2023-10-17 | Sub-processor updates |
+| 2024-05-02 | Sub-processor updates<br>- Removed Rackspace, Rollup Helper, and Drift. |
+| 2024-06-07 | Sub-processor updates<br>- Added Aiven |
+| 2024-12-21 | Refactored the sub-processor list to reflect on-prem products<br>Included information on data collection, location, data access, and data retention.<br>Sub-processor updates<br>- Removed sub-processors related to cloud products.<br>- Included "WSO2 subsidiaries and affiliate companies" |
 | 2025-07-30   | Convert to markdown format|

@@ -70,9 +70,9 @@ WSO2 subscribers can raise support tickets through ServiceNow, our ticketing sys
 | Billing information | Restricted | Stripe* / billing module | Subscription and Billing |
 | Credit card data | Restricted | Stripe* | Subscription and Billing |
 | Support case data | Confidential | ServiceNow* | To provide support |
-| Organizational Contact information | Confidential | WSO2 Subprocessors  | For subscription and ancillary services |
+| Organizational Contact information | Confidential | WSO2 Sub-processors  | For subscription and ancillary services |
 
-\* Third-party service providers (sub-processors). See the sub-processor list [here](https://security.docs.wso2.com/en/latest/trust/wso2-public-cloud-subprocessor-list/).
+\* Third-party service providers (sub-processors). See the sub-processor list [here](https://security.docs.wso2.com/en/latest/trust/wso2-public-cloud-sub-processor-list/).
 
 ## Data Protection
 **Personal Data** refers to any information that relates to an identified or identifiable individual (“Data Subject”). This includes data that can directly or indirectly identify a person, either on its own or when combined with other information.
@@ -101,7 +101,7 @@ WSO2 is the Data Controller for the "Organization Administrator profiles and ass
 
 **As a Sub-Processor**, In scenarios where a Partner or Third Party is involved in developing a subscriber’s business use cases using WSO2 public clouds, or in reselling WSO2 public cloud services to subscribers, and has access to Personally Identifiable Information (PII) during the implementation, management, or integration of applications, the Partner will be considered a Data Processor. This is because the Partner may access Personal Data and influence application behavior on behalf of the Subscriber. In such cases, WSO2 will act as a Sub-Processor when the Personal Data is provided by the Partner or Third Party on behalf of the Subscriber. 
 
-Both the Data Controller and the Data Processor need to have a Data Processing Agreement (DPA) in place. The DPA should include provisions for passing on DPA obligations to any subprocessors used by the data processor. Additionally, the data processor and any subprocessors should also have a DPA between them.
+Both the Data Controller and the Data Processor need to have a Data Processing Agreement (DPA) in place. The DPA should include provisions for passing on DPA obligations to any sub-processors used by the data processor. Additionally, the data processor and any sub-processors should also have a DPA between them.
 
 **As a Data processor, WSO2 will be responsible for:**
 * Processing Personal Data in accordance with the Data Controller´s instructions.
@@ -115,7 +115,7 @@ Both the Data Controller and the Data Processor need to have a Data Processing A
   * receive requests from any supervisory authorities (unless prohibited by law).
   * receive requests from any law enforcement authorities.
   * becomes aware of a confirmed security breach.
-  * changes to privacy policies, terms, security statements, data protection agreements, processors, or subprocessors.
+  * changes to privacy policies, terms, security statements, data protection agreements, processors, or sub-processors.
 
 ## Subscriber's Role in Protecting Data
 
@@ -163,13 +163,13 @@ Both the Data Controller and the Data Processor need to have a Data Processing A
 WSO2 would not transfer data outside of the region where the data is residing. The WSO2 team would have limited access to deployment data; please refer to the [Data Access](#data-access) section.
 
 ### What is the legal basis for WSO2 cross-border data transfers?
-WSO2 operates globally and may transfer, store, access, or process subscribers' data across its affiliates and authorized subprocessors to provide the subscription and ancillary services.
+WSO2 operates globally and may transfer, store, access, or process subscribers' data across its affiliates and authorized sub-processors to provide the subscription and ancillary services.
 
 For transfers of personal data originating from the EU, WSO2 relies on valid legal mechanisms, including adequacy decisions or the EU Standard Contractual Clauses (2021). WSO2 ensures that all cross-border data transfers from the EU comply with GDPR requirements.
 
 WSO2 employees across WSO2 subsidiaries and affiliate companies access personal data collected by WSO2 solely to provide subscription and professional services for the subscriber. This includes ancillary operational activities related to subscription and professional services, such as account management and invoicing. Additionally, data collected from visitors to the WSO2 websites are accessed for website-related functionalities and services.
 
-This data will be accessed exclusively by WSO2 employees and the authorized subprocessors involved in the activities mentioned above.
+This data will be accessed exclusively by WSO2 employees and the authorized sub-processors involved in the activities mentioned above.
 
 ## Data Access
 
@@ -350,8 +350,8 @@ WSO2 public clouds are not HIPAA compliant. However, our SOC 2 report includes a
 ### Do WSO2 public clouds use subcontractors?
 WSO2 does not subcontract services related to WSO2 public clouds.
 
-### Do WSO2 public clouds use subprocessors?
-WSO2 leverages subcontractors who provide us with specific services in our [Public Cloud Subprocessor List](https://security.docs.wso2.com/en/latest/trust/wso2-public-cloud-subprocessor-list/).
+### Do WSO2 public clouds use sub-processors?
+WSO2 leverages subcontractors who provide us with specific services in our [Public Cloud Sub-processor List](https://security.docs.wso2.com/en/latest/trust/wso2-public-cloud-sub-processor-list/).
 
 ### Does WSO2 perform vendor security risk assessments (VSRAs)?
 A team composed of IT, security, legal, HR, and finance would vet all suppliers, subcontractors, service providers, and vendors to ensure that external entities meet WSO2 standards. During the evaluation process, we would leverage vendors' security certifications, attestations, and security responses.

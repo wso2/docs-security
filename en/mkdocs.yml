@@ -421,8 +421,8 @@ nav:
     - '': 'trust/index.md'
     - 'Security commitment for self-hosted products': 'trust/security-commitment-for-self-hosted-products.md'
     - 'Public Cloud Data Protection FAQ': 'trust/wso2-public-cloud-data-protection-faq.md'
-    - 'Public Cloud Subprocessor list': 'trust/wso2-public-cloud-subprocessor-list.md'
-    - 'WSO2 Subprocessor list': 'trust/wso2-subprocessor-list.md'
+    - 'Public Cloud Sub-processor list': 'trust/wso2-public-cloud-sub-processor-list.md'
+    - 'WSO2 Sub-processor list': 'trust/wso2-sub-processor-list.md'
   - '404 - Not found': 'page-not-found.md'
 
 # Extensions
