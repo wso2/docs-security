@@ -12,5 +12,5 @@ This section provides security and compliance trust artifacts.
 
 * [Public Cloud Sub-Processor List](wso2-public-cloud-sub-processor-list.md): This list consists of processors and sub-processors used in relation to WSO2 public clouds (Asgardeo and Choreo).
 
-* [WSO2 Sub-processor list](wso2-sub-processor-list.md): This list consists of processors and sub-processors used by WSO2 for self-hosted EULA products and subscription services.
+* [WSO2 Sub-Processor List](wso2-sub-processor-list.md): This list consists of processors and sub-processors used by WSO2 for self-hosted EULA products and subscription services.
 
