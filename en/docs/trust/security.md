@@ -35,7 +35,7 @@ WSO2 products are developed following WSO2’s [Secure Software Development Proc
 Any reported vulnerabilities related to WSO2 products will be managed in accordance with  our [Vulnerability Management Process](https://security.docs.wso2.com/en/latest/security-processes/vulnerability-management-process/), and confirmed vulnerabilities will be addressed based on their severity and impact.
 
 
-#### Coordinated vulnerability disclosure notifications:  
+#### Coordinated Vulnerability Disclosure Notifications
   - For [EULA](https://wso2.com/licenses/eula/) subscribers and coordinated vulnerability disclosure (CVD) partners:
     - "Security Announcements" will be communicated in advance through official support channels before the public listing of [Security Advisories](https://security.docs.wso2.com/en/latest/security-announcements/security-advisories/). Subscribers should actively monitor these announcements and quickly apply the recommended fixes using the [WSO2 Updates tool](https://wso2.com/updates/). 
 
