@@ -59,7 +59,7 @@
 
 ## WSO2 subsidiaries and affiliate companies
 
-| WSO2 subsidiaries and affiliate companies | Location |
+| WSO2 Subsidiaries and Affiliate Companies | Location |
 |------------------------------------------|----------|
 | WSO2 LLC | USA |
 | WSO2 (UK) Limited | United Kingdom |
