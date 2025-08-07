@@ -75,7 +75,7 @@ Furthermore, when you visit WSO2.com to access documentation or use the Contact 
 | DocuSign | For executing contracts between subscribers and WSO2. | Employees of the subscribers involved in the procurement or renewal of subscriptions. | USA | [DocuSign DPA](https://www.docusign.com/legal/terms-and-conditions/data-protection-attachment) |
 | Netsuite | For subscriber invoicing and internal finance system. | Employees of the subscribers involved in the procurement or renewal of subscriptions. | USA | DPA has been executed. |
 
-## WSO2 subsidiaries and affiliate companies
+## WSO2 Subsidiaries and Affiliate Companies
 
 | WSO2 subsidiaries and affiliate companies | Location |
 |------------------------------------------|----------|
