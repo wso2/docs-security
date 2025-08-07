@@ -57,7 +57,7 @@
 | Stripe | To facilitate card payments to purchase WSO2 services. | Those who make online payments to WSO2. | USA | DPA has been executed |
 | Zoom | To facilitate webinar events, we may invite subscribers to present their experiences with WSO2. | Those who participate in events that are conducted using Zoom. | USA | DPA has been executed |
 
-## WSO2 subsidiaries and affiliate companies
+## WSO2 Subsidiaries and Affiliate Companies
 
 | WSO2 Subsidiaries and Affiliate Companies | Location |
 |------------------------------------------|----------|
