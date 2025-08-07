@@ -1,6 +1,6 @@
 # WSO2 Sub-Processor List
 
-## Data WSO2 collects from its on-premise subscribers.
+## Data WSO2 Collects
 * WSO2 is committed to respecting your privacy and collects only the essential personally identifiable information (PII) from our subscribers and their employees. We limit this information to the full name, email address, phone number(s), and billing details. This information enables us to set up support accounts, offer support services, and manage billing effectively.
 * While working with the subscriber, WSO2 may encounter information related to the subscriber's implementation and support needs.
 * While providing support services, WSO2 may request logs, dumps, and configurations related to your subscription. We recommend sanitizing these before sharing them with us.
@@ -20,7 +20,7 @@
 
 ## WSO2 sub-processors
 
-| Sub-processor | Purpose of processing | Categories of Data Subjects | Location | Transfer Mechanism |
+| Sub-Processor | Purpose of Processing | Categories of Data Subjects | Location | Transfer Mechanism |
 |--------------|----------------------|----------------------------|----------|-------------------|
 | Salesforce | For account management | Employees of the subscribers involved in the procurement or renewal of subscriptions and raising support tickets through the support portal. | USA | [Salesforce DPA](https://salesforce.com) |
 | Pardot | For sending notifications to subscribers and managing communication preferences. | Those who have filled out any form on the WSO2 website. | USA | [Salesforce DPA](https://salesforce.com) |

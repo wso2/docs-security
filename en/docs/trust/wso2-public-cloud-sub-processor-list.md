@@ -26,14 +26,14 @@
 
 ## Asgardeo sub-processors
 
-| Sub-processor | Purpose of processing | Categories of Data Subjects | Location | Transfer Mechanism |
+| Sub-Processor | Purpose of Processing | Categories of Data Subjects | Location | Transfer Mechanism |
 |--------------|----------------------|----------------------------|----------|-------------------|
 | Google Inc (Google reCAPTCHA) | To protect logins and forms from bots | Those who log in to Asgardeo. | USA | [Google Cloud DPA](https://cloud.google.com/terms/sccs) |
 | VirusTotal | To protect WSO2 systems and services against malware and bad actors. | Any request to WSO2 websites and public cloud services that are flagged by the security monitoring solutions in place for anomalies or suspicious or malicious. | USA | [VirusTotal DPA](https://assets.virustotal.com/vt-premium-service-terms-llc.pdf) |
 
 ## Choreo Sub-processors
 
-| Sub-processor | Purpose of processing | Categories of Data Subjects | Location | Transfer Mechanism |
+| Sub-Processor | Purpose of Processing | Categories of Data Subjects | Location | Transfer Mechanism |
 |--------------|----------------------|----------------------------|----------|-------------------|
 | Aiven | For providing database as a service for choreo subscribers. | Those who consume Choreo database as a service. | USA and EU | [Aiven DPA](https://aiven.io/dpa) |
 | Amplitude | For the performance and analytics purposes of Choreo. | Those who have interacted with Choreo Console. | USA and EU | [Amplitude DPA](https://amplitude.com/dpa) |
@@ -48,7 +48,7 @@ When you create a public cloud subscription, your organization administrator use
 
 Furthermore, when you visit WSO2.com to access documentation or use the Contact Us forms, the following sub-processors get involved.
 
-| Sub-processor | Purpose of processing | Categories of Data Subjects | Location | Transfer Mechanism |
+| Sub-Processor | Purpose of Processing | Categories of Data Subjects | Location | Transfer Mechanism |
 |--------------|----------------------|----------------------------|----------|-------------------|
 | Salesforce | For account management | Employees of the subscribers involved in the procurement or renewal of subscriptions and raising support tickets through the support portal. | USA | [Salesforce DPA](https://www.salesforce.com/content/dam/web/en_us/www/documents/legal/Agreements/scc-amendment.pdf) |
 | Pardot | For sending notifications to subscribers and managing communication preferences. | Those who have filled out any form on the WSO2 website. | USA | [Salesforce DPA](https://www.salesforce.com/content/dam/web/en_us/www/documents/legal/Agreements/scc-amendment.pdf) |
@@ -65,7 +65,7 @@ Furthermore, when you visit WSO2.com to access documentation or use the Contact 
 
 ## Optional sub-processors
 
-| Sub-processor | Purpose of processing | Categories of Data Subjects | Location | Transfer Mechanism |
+| Sub-processor | Purpose of Processing | Categories of Data Subjects | Location | Transfer Mechanism |
 |--------------|----------------------|----------------------------|----------|-------------------|
 | Thinkific | For providing WSO2 training and product exams. | Those who undergo WSO2 training and exams. | USA | DPA has been executed. |
 | Silicon Vally Bank Payment Gateway | To facilitate card payments to purchase WSO2 services. | Those who make payments using online payment options. | USA | DPA has been executed. |
@@ -77,7 +77,7 @@ Furthermore, when you visit WSO2.com to access documentation or use the Contact 
 
 ## WSO2 Subsidiaries and Affiliate Companies
 
-| WSO2 subsidiaries and affiliate companies | Location |
+| WSO2 Subsidiaries and Affiliate Companies | Location |
 |------------------------------------------|----------|
 | WSO2 LLC | USA |
 | WSO2 (UK) Limited | United Kingdom |
