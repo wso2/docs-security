@@ -7,7 +7,7 @@ WSO2 provides security fixes until the product reaches its End of Life (EOL).
 For detailed information, please refer to the [WSO2 Support Matrix](https://wso2.com/products/support-matrix/) and [WSO2 Product Support Lifecycle](https://wso2.com/products/support-matrix/#:~:text=WSO2%20Product%20Support%20Lifecycle).
 
 
-## Reporting security vulnerabilities
+## Reporting Security Vulnerabilities
 Please **do not submit security vulnerabilities through GitHub Issues or Discussions**.
 
 **To responsibly disclose a vulnerability, please use our [official security reporting channels](https://security.docs.wso2.com/en/latest/security-reporting/)** in accordance with our [Reward and Acknowledgement Program](https://security.docs.wso2.com/en/latest/security-reporting/reward-and-acknowledgement-program/). All vulnerability disclosures must follow [Vulnerability Reporting Guidelines](https://security.docs.wso2.com/en/latest/security-reporting/vulnerability-reporting-guidelines/). The WSO2 team will contact you within 24 hours of submitting a vulnerability report.
