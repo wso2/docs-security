@@ -18,7 +18,7 @@ WSO2 has a well-defined [Secure Software Development Process](https://security.d
 
 Security by design approach is followed within WSO2 for each new development initiative. It is conducted to identify the relevant security endpoints and trust boundaries to minimize the product vulnerabilities and reduce the attack surface through the product designing phase.
 
-## Secure coding and reviews
+## Secure Coding and Reviews
 
 * WSO2 engineers adhere to the [WSO2 Secure Engineering Guideline](https://security.docs.wso2.com/en/latest/security-guidelines/secure-engineering-guidelines/) when doing engineering tasks. This guideline provides technical guidance on addressing OWASP's Top 10 application security risks and additional security guidelines related to [WSO2 Secure Development processes](https://security.docs.wso2.com/en/latest/security-processes/secure-software-development-process/).
 * WSO2 uses GitHub as our source code repository system. Source codes of products are available to the public in our [GitHub organization](https://github.com/wso2) for anyone to review and report security issues.
