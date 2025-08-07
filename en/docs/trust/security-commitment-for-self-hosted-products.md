@@ -61,7 +61,7 @@ Security by design approach is followed within WSO2 for each new development ini
 * Customers should follow these guidelines to ensure security when setting up products for production use. 
 * Any product-related queries can be raised at the WSO2 support channels.
 
-## Security commitment of WSO2
+## Security Commitment of WSO2
 
 * Adhere to the [WSO2 Secure Engineering Guideline](https://security.docs.wso2.com/en/latest/security-guidelines/secure-engineering-guidelines/) and [WSO2 Secure Development processes](https://security.docs.wso2.com/en/latest/security-processes/secure-software-development-process/) when engineering WSO2 products.
 * Ensure [mandatory product security assessments](https://security.docs.wso2.com/en/latest/security-processes/secure-software-development-process/#mandatory-checks-during-releases) are conducted and that periodic security scans are performed on supported products to maintain security throughout the product lifecycle.
