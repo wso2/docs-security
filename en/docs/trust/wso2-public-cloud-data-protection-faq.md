@@ -14,6 +14,10 @@ Organizations can use the Choreo control plane components to define, create, obs
 ### Choreo Data Planes (DP)
 The workloads of Choreo subscribers are deployed on data planes.
 
+Choreo's Data Plane system components operate independently, relying only on the Choreo Control Plane for control instructions and user workload configuration. Once user workloads receive traffic, the Control Plane connection is no longer required, ensuring that the data plane's core functions remain isolated and unaffected by external dependencies.
+
+Within the Data Plane, workloads are organized into [projects](https://wso2.com/choreo/docs/choreo-concepts/project/#project) following a [cell-based architecture](https://github.com/wso2/reference-architecture/blob/master/reference-architecture-cell-based.md). This structure allows subscribers to control the visibility of their endpoints, deciding whether they are exposed to the public, accessible to other projects, or kept private within the project. This level of control reinforces service isolation by clearly delineating which services interact and how they are exposed.
+
 ### Choreo Cloud Data Plane (CDP)
 The Choreo cloud data plane is the default data plane for Choreo. It is available in the US and EU regions and fully managed by WSO2.
 
@@ -139,9 +143,7 @@ Both the Data Controller and the Data Processor need to have a Data Processing A
 * **Choreo**
   * The Choreo US deployment uses Asgardeo US as its identity provider (IdP) by default. As a result, all administrator and end user profiles and their associated data are stored in the Asgardeo US deployment.
     * If a Choreo US subscriber wants to store their end user data in Asgardeo EU deployment, they would have to first provision a Asgardeo tenant in EU region and then connect it with the Choreo which would ensure that the end user data would be stored in EU region.
-
   * The Choreo EU deployment uses Asgardeo EU as its IdP by default. As a result, all administrator and end user profiles and their associated data are stored in the Asgardeo EU deployment.
-
   * If a subscriber wants to use their existing external IdP, the administrator and end-user profiles and associated data will remain within that external IdP.
   * Choreo's control plane stores specific component data in the same region where the control plane would resides at (US - Azure or EU - AWS).
   * Choreo applications and associated data would reside in the region where the data plane would reside.
@@ -213,7 +215,7 @@ WSO2 ensures data at rest is encrypted using cloud service provider (CSP) techno
 #### How are Secrets encrypted?
 Secrets are encrypted using cloud service provider-managed keys and securely stored in key management services, such as Key Vaults. These services ensure robust encryption, centralized management, and controlled access to sensitive data.
 
-### Are application service users stored securely?
+#### Are application service users stored securely?
 Choreo ensures that application service users are stored and managed securely by leveraging trusted and industry-standard identity providers.
 * **User Authentication**: Choreo primarily authenticates users through well-established social logins, such as Google, GitHub, and Microsoft, ensuring the security of user credentials. Additionally, Choreo supports [Enterprise ID logins](https://wso2.com/choreo/docs/administer/configure-enterprise-login/), allowing seamless integration with your organization's identity provider for Single Sign-On (SSO). This means the complexity of password management is handled by the chosen identity provider, not Choreo itself, minimizing security risks.
 * **API Consumer Authentication and Authorization**: Choreo uses [Asgardeo as the default external identity provider](https://wso2.com/choreo/docs/authentication-and-authorization/secure-api-access-with-asgardeo/) (IDP), which can be used to securely manage end-user identities. If you prefer to use an external IDP like [Azure Active Directory](https://wso2.com/choreo/docs/authentication-and-authorization/secure-api-access-with-azure-ad/), Choreo allows flexible integration, ensuring that user management and authentication are securely handled by the respective external IDP.
@@ -221,15 +223,9 @@ Choreo ensures that application service users are stored and managed securely by
 
 By utilizing these secure, trusted identity providers and protocols, Choreo guarantees that user data is securely managed, reducing the risk of unauthorized access.
 
-### Data Isolation
-Choreo's Data Plane system components operate independently, relying only on the Choreo Control Plane for control instructions and user workload configuration. Once user workloads receive traffic, the Control Plane connection is no longer required, ensuring that the data plane's core functions remain isolated and unaffected by external dependencies.
-
-Within the Data Plane, workloads are organized into [projects](https://wso2.com/choreo/docs/choreo-concepts/project/#project) following a [cell-based architecture](https://github.com/wso2/reference-architecture/blob/master/reference-architecture-cell-based.md). This structure allows subscribers to control the visibility of their endpoints, deciding whether they are exposed to the public, accessible to other projects, or kept private within the project. This level of control reinforces service isolation by clearly delineating which services interact and how they are exposed.
-
 ### System Availability
-Uptime SLAs, along with exclusions and Service Credit plans, are detailed in the [Choreo Support Policy](https://wso2.com/choreo/support-policy) and [Asgardeo Support Policy](https://wso2.com/asgardeo/support-policy/). 
-
-Platfrom uptim can bee seen from [Choreo status page](https://status.choreo.dev/) and [Asgardeo status Page](https://status.asgardeo.io/).
+#### What is the Uptime SLA?
+Uptime SLAs, along with exclusions and Service Credit plans, are detailed in the [Choreo Support Policy](https://wso2.com/choreo/support-policy) and [Asgardeo Support Policy](https://wso2.com/asgardeo/support-policy/). Platfrom uptime can bee seen from [Choreo status page](https://status.choreo.dev/) and [Asgardeo status Page](https://status.asgardeo.io/).
 
 ## Data Backups
 
