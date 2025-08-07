@@ -1,4 +1,4 @@
-# WSO2 Public Cloud Sub-processor List
+# WSO2 Public Cloud Sub-Processor List
 
 ## Data WSO2 collects from its Public Cloud subscribers.
 * Please refer to the **[Data Classification](https://security.docs.wso2.com/en/latest/trust/wso2-public-cloud-data-protection-faq/#data-classification)** section for more details.
