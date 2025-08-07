@@ -19,13 +19,29 @@ security researcher community relationship.
 
 |                                                                           |
 | :------------------------------------------------------------------------ |
-| [Abdelkarim Haji](https://www.linkedin.com/in/abdelkarim-haji-4aa84b313/) |
 | [Deepanshu Devaliya](https://linkedin.com/in/deepanshu-devaliya369)       |
+| [Dũng x Bắc from VNPT Cyber Immunity](https://x.com/onsra_03)             |
 | **devme4f**                                                               |
 | [Keyur Maheta](https://www.linkedin.com/in/keyur-maheta-342720256/)       |
+| [LUU HONG QUAN](https://www.linkedin.com/in/hong-quan-3a3b93224/)         |
+| **Marcos Vinicius from CyberMavi**                                        |
+| [Noël Maccary](https://fr.linkedin.com/in/nmaccary)                       |
 | [Rohan Hotkar](https://www.linkedin.com/in/rohanhotkar/)                  |
+| [Suraj Theekshana](https://www.linkedin.com/in/suraj-theekshana-10171023a/)                                                |
 | **Viral Maniar**                                                          |
-| **CyberMavi**                                                             |
+
+### Choreo
+
+|                                                                               |
+| :-----------------------------------------------------------------------------|
+| [Abdelkarim Haji](https://www.linkedin.com/in/abdelkarim-haji-4aa84b313/)     |
+
+### Asgardeo
+
+|                                                                               |
+| :-----------------------------------------------------------------------------|
+| [Keyur Maheta](https://www.linkedin.com/in/keyur-maheta-342720256/)           |
+
 
 ## 2024
 
