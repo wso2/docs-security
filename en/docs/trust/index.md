@@ -4,6 +4,7 @@ category: trust
 ---
 
 # Trust Overview
+
 This section provides security and compliance trust artifacts.
 
 * [Security Commitment for Self-Hosted Products](security-commitment-for-self-hosted-products.md): This document outlines WSO2's security commitments for self-hosted products and the shared responsibilities of customers when using WSO2's self-hosted products.
