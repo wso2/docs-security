@@ -35,7 +35,7 @@ Security by design approach is followed within WSO2 for each new development ini
 * To ensure that our supported products are secure, we continuously scan third-party dependencies and periodically conduct static and dynamic scans on updated product packs of our supported products.
 * Vulnerabilities that are discovered will be assessed for their impact. If any true-positive vulnerabilities are identified, immediate actions will be taken, such as implementing fixes and patches according to their severity, in line with our [Vulnerability Management Process](https://security.docs.wso2.com/en/latest/security-processes/vulnerability-management-process/).
 
-## Product vulnerability and patch management
+## Product Vulnerability and Patch Management
 
 * WSO2 products are supported for three years upon a major release. WSO2 provides updates and patches for bugs and security issues during this period. Please refer to the [support matrix](https://wso2.com/products/support-matrix/) for detailed information on supported products.
 * Any vulnerability reported against WSO2 products would undergo the [ Vulnerability Management Process](https://security.docs.wso2.com/en/latest/security-processes/vulnerability-management-process/). Reported vulnerabilities will be assessed according to the CVSS scheme and fixed according to the given resolution timeframes.
