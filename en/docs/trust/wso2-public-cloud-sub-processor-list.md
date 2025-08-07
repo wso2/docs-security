@@ -12,7 +12,7 @@
 ## Data Retention
 * Please refer to the **[Termination of Subscription](https://security.docs.wso2.com/en/latest/trust/wso2-public-cloud-data-protection-faq/#termination-of-subscription)** section for more details.
 
-## Infrastructure service sub-processors
+## Infrastructure Service Sub-Processors
 
 | Sub-processor | Purpose of processing | Categories of Data Subjects | Location | Transfer Mechanism |
 |--------------|----------------------|----------------------------|----------|-------------------|
