@@ -14,7 +14,7 @@ WSO2 is committed to ensuring that industry best practices regarding security st
 
 WSO2 has a well-defined [Secure Software Development Process](https://security.docs.wso2.com/en/latest/security-processes/secure-software-development-process/), which details how we incorporate security aspects into our product development process.
 
-## Security of product design
+## Security of Product Design
 
 Security by design approach is followed within WSO2 for each new development initiative. It is conducted to identify the relevant security endpoints and trust boundaries to minimize the product vulnerabilities and reduce the attack surface through the product designing phase.
 
