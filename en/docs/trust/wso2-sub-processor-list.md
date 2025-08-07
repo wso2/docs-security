@@ -50,7 +50,7 @@
 
 ## Optional sub-processors
 
-| Sub-processor | Purpose of processing | Categories of Data Subjects | Location | Transfer Mechanism |
+| Sub-Processor | Purpose of Processing | Categories of Data Subjects | Location | Transfer Mechanism |
 |--------------|----------------------|----------------------------|----------|-------------------|
 | Thinkific | For providing WSO2 training and product exams. | Those who undergo WSO2 training and exams. | USA | DPA has been executed |
 | Silicon Vally Bank Payment Gateway | To facilitate card payments to purchase WSO2 services. | Those who make online payments to WSO2. | USA | DPA has been executed |
