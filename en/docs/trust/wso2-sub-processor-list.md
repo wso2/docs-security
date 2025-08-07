@@ -1,4 +1,4 @@
-# WSO2 Sub-processor List
+# WSO2 Sub-Processor List
 
 ## Data WSO2 collects from its on-premise subscribers.
 * WSO2 is committed to respecting your privacy and collects only the essential personally identifiable information (PII) from our subscribers and their employees. We limit this information to the full name, email address, phone number(s), and billing details. This information enables us to set up support accounts, offer support services, and manage billing effectively.
