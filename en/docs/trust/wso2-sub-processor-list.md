@@ -1,6 +1,7 @@
 # WSO2 Sub-Processor List
 
 ## Data WSO2 Collects
+
 * WSO2 is committed to respecting your privacy and collects only the essential personally identifiable information (PII) from our subscribers and their employees. We limit this information to the full name, email address, phone number(s), and billing details. This information enables us to set up support accounts, offer support services, and manage billing effectively.
 * While working with the subscriber, WSO2 may encounter information related to the subscriber's implementation and support needs.
 * While providing support services, WSO2 may request logs, dumps, and configurations related to your subscription. We recommend sanitizing these before sharing them with us.
@@ -8,14 +9,17 @@
 * Furthermore, when you visit or interact with WSO2 websites, we collect and process data in accordance with https://wso2.com/privacy-policy.
 
 ## Data Location
+
 * WSO2 primarily employs sub-processors located in the United States unless specified otherwise in the sub-processor list below, thereby resulting in data being stored within the United States.
 * WSO2 executes Data Protection Agreements in conjunction with Standard Contractual Clauses (SCCs) prior to engaging with the sub-processors. Furthermore, WSO2 guarantees that its sub-processors have implemented adequate technical and organizational measures to facilitate the transmission of personal data.
 
 ## Data Access
+
 * WSO2 employees across WSO2 subsidiaries and affiliate companies access personal data collected by WSO2 solely to provide subscription and professional services for the subscriber. This includes ancillary operational activities related to subscription and professional services, such as account management and invoicing. Additionally, data collected from visitors to the WSO2 websites are accessed for website-related functionalities and services.
 * This data will be accessed exclusively by WSO2 employees involved in the activities mentioned above. Furthermore, personal data may be transmitted to sub-processors engaged by WSO2 to perform these activities.
 
 ## Data Retention
+
 * The data collected for support service subscription will be retained as stated in section 10 of the support services policy (https://wso2.com/licenses/support-policy/).
 
 ## WSO2 sub-processors

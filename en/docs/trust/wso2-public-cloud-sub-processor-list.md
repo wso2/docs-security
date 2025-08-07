@@ -1,15 +1,19 @@
 # WSO2 Public Cloud Sub-Processor List
 
 ## Data WSO2 Collects
+
 * Please refer to the **[Data Classification](https://security.docs.wso2.com/en/latest/trust/wso2-public-cloud-data-protection-faq/#data-classification)** section for more details.
 
 ## Data Location
+
 * Please refer to the **[Data Residency](https://security.docs.wso2.com/en/latest/trust/wso2-public-cloud-data-protection-faq/#data-residency)** section for more details.
 
 ## Data Access
+
 * Please refer to the **[Data Access](https://security.docs.wso2.com/en/latest/trust/wso2-public-cloud-data-protection-faq/#data-access)** section for more details.
 
 ## Data Retention
+
 * Please refer to the **[Termination of Subscription](https://security.docs.wso2.com/en/latest/trust/wso2-public-cloud-data-protection-faq/#termination-of-subscription)** section for more details.
 
 ## Infrastructure Service Sub-Processors

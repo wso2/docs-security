@@ -1,10 +1,10 @@
 # WSO2's Security Commitment for Self-Hosted Products
-
+## Overview
 WSO2 is committed to ensuring that industry best practices regarding security standards and mechanisms are rigorously applied to our processes. Below are WSO2's security commitments to its self-hosted products, covering the type of data we collate and how such data is used, such as the security of product development, design, coding testing, etc.
 
 ## Data Processed by WSO2
 
-* WSO2 only collects limited personally identifiable information (PII), such as full name, email address, phone number(s), and billing information, to provide support services and for billing purposes, per the [WSO2 Privacy Policy](https://wso2.com/privacy-policy).
+* WSO2 only collects limited personally identifiable information (PII), such as full name, email address, phone number(s), and billing information, to provide support services and for billing purposes, per the [WSO2 Privacy Policy](https://wso2.com/privacy-policy/).
 * During the engagement with the customer, the WSO2 team would encounter limited information regarding the customer's requirements and environments to assist in the implementation and support-related matters through the official WSO2 support system and the official SFTP server. This information would be kept confidential.
 * While providing enterprise support services, WSO2 may request logs, dumps, and configurations related to WSO2 products. However, WSO2 recommends sanitizing these artifacts before sharing.
 * WSO2 does not require access to the customer's environment to provide support services.
@@ -21,7 +21,7 @@ Security by design approach is followed within WSO2 for each new development ini
 ## Secure Coding and Reviews
 
 * WSO2 engineers adhere to the [WSO2 Secure Engineering Guideline](https://security.docs.wso2.com/en/latest/security-guidelines/secure-engineering-guidelines/) when doing engineering tasks. This guideline provides technical guidance on addressing OWASP's Top 10 application security risks and additional security guidelines related to [WSO2 Secure Development processes](https://security.docs.wso2.com/en/latest/security-processes/secure-software-development-process/).
-* WSO2 uses GitHub as our source code repository system. Source codes of products are available to the public in our [GitHub organization](https://github.com/wso2) for anyone to review and report security issues.
+* WSO2 uses GitHub as our source code repository system. Source codes of products are available to the public in our [GitHub organization](https://github.com/wso2/) for anyone to review and report security issues.
 * Mandatory [peer code reviews](https://security.docs.wso2.com/en/latest/security-processes/secure-software-development-process/#code-reviews) are performed before any change is added to the code base to identify security deficiencies.
 * When a 3rd party dependency is introduced to the WSO2 product, WSO2 engineers and the Security and Compliance team will assess the security of such dependencies. Approved dependencies are added and reviewed as part of [Third Party Dependency Analysis](https://security.docs.wso2.com/en/latest/security-processes/secure-software-development-process/#third-party-dependency-analysis).
 
@@ -52,7 +52,7 @@ Security by design approach is followed within WSO2 for each new development ini
 * A central MDM solution manages all user endpoints and servers. A regular patch management process is in place.
 * Conduct independent third-party audits annually, which are separated from annual ISO audits.
 * Regular Internal and External VAPTs are conducted on WSO2 systems and network devices.
-* All infrastructure-related incident responses are handled in alignment with ISO standards.
+* All infrastructure-related incident responses are handled in alignment with ISO/IEC 27002 standard.
 
 ## Security Guidelines for Production Deployment of WSO2 Products
 
@@ -95,7 +95,7 @@ Security by design approach is followed within WSO2 for each new development ini
 ## Exclusions
 
 WSO2 shall not be responsible for any security/breaches in respect of the following:
-* If the customer gets compromised due to not monitoring the [Customer Security Announcements](https://security.docs.wso2.com/en/latest/security-processes/vulnerability-management-process/#announcing-to-the-customers) proactively, remediation actions must be taken to safeguard deployment following such announcements.
+* If the customer gets compromised due to not monitoring the [Customer Security Announcements](https://security.docs.wso2.com/en/latest/security-processes/vulnerability-management-process/#announcing-to-the-customers/) proactively, remediation actions must be taken to safeguard deployment following such announcements.
 * If the customer gets compromised due to not adhering to the [Security Guidelines for Production Deployment](https://security.docs.wso2.com/en/latest/security-guidelines/security-guidelines-for-production-deployment/).
 * The customer gets compromised due to not migrating to supported product versions listed under the [WSO2 Support Matrix](https://wso2.com/products/support-matrix/).
 * Customizations or extensions developed or integrated into WSO2 products by the customer.
