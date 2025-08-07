@@ -14,7 +14,7 @@
 
 ## Infrastructure Service Sub-Processors
 
-| Sub-processor | Purpose of processing | Categories of Data Subjects | Location | Transfer Mechanism |
+| Sub-Processor | Purpose of Processing | Categories of Data Subjects | Location | Transfer Mechanism |
 |--------------|----------------------|----------------------------|----------|-------------------|
 | Microsoft Azure* | To host WSO2 public cloud services | Public cloud subscriber data, including administrator profiles and end-user profiles. | Global | [Microsoft DPA](https://www.microsoft.com/licensing/docs/view/Microsoft-Products-and-Services-Data-Protection-Addendum-DPA) |
 | AWS* | To host WSO2 public cloud services | Public cloud subscriber data, including end-user profiles. | Global | [AWS DPA](https://d1.awsstatic.com/legal/aws-gdpr/AWS_GDPR_DPA.pdf) |
