@@ -30,7 +30,7 @@ Security by design approach is followed within WSO2 for each new development ini
 * WSO2 conduct [mandatory product security assessments](https://security.docs.wso2.com/en/latest/security-processes/secure-software-development-process/#mandatory-checks-during-releases) during product release cycles under three categories. [Static Code Analysis](https://security.docs.wso2.com/en/latest/security-processes/secure-software-development-process/#static-code-analysis), [Software Composition Analysis](https://security.docs.wso2.com/en/latest/security-processes/secure-software-development-process/#third-party-dependency-analysis), and [Dynamic Analysis](https://security.docs.wso2.com/en/latest/security-processes/secure-software-development-process/#dynamic-analysis).
   * For Static Application Security Testing (SAST), we utilize the Find Security Bugs plugin, the Spotbugs plugin, Super-Linter, GoSec, and Veracode Static Analysis which provide OWASP Top 10 and SANS CWE Top 25 coverage.
   * For Dynamic Application Security Testing (DAST), we utilize Invicti (formerly Netsparker), BurpSuite Pro, and Qualys Web Application Scanner (WAS).
-  * For Software Composition Analysis (SCA) or third-party dependency analysis, we utilize OWASP Dependency Check, OWASP Dependency Track, FOSSA, JFrog Xray, and Trivy (specifically for container images). Tools such as FOSSA are directly integrated with our source code repositories to provide near real-time visibility into third-party dependency vulnerabilities.
+  * For Software Composition Analysis (SCA) or third-party dependency analysis, we utilize OWASP Dependency Check, FOSSA, JFrog Xray, and Trivy (specifically for container images). Tools such as FOSSA are directly integrated with our source code repositories to provide near real-time visibility into third-party dependency vulnerabilities.
   * Product teams ensure products are released without any true positive vulnerabilities.
 * To ensure that our supported products are secure, we continuously scan third-party dependencies and periodically conduct static and dynamic scans on updated product packs of our supported products.
 * Vulnerabilities that are discovered will be assessed for their impact. If any true-positive vulnerabilities are identified, immediate actions will be taken, such as implementing fixes and patches according to their severity, in line with our [Vulnerability Management Process](https://security.docs.wso2.com/en/latest/security-processes/vulnerability-management-process/).
@@ -38,7 +38,7 @@ Security by design approach is followed within WSO2 for each new development ini
 ## Product Vulnerability and Patch Management
 
 * WSO2 provides security fixes until the product reaches its End of Life (EOL). For detailed information, please refer to the [WSO2 Support Matrix](https://wso2.com/products/support-matrix/) and [WSO2 Product Support Lifecycle](https://wso2.com/products/support-matrix/#:~:text=WSO2%20Product%20Support%20Lifecycle).
-* Any vulnerability reported against WSO2 products would undergo the [ Vulnerability Management Process](https://security.docs.wso2.com/en/latest/security-processes/vulnerability-management-process/). Reported vulnerabilities will be assessed according to the CVSS scheme and fixed according to the given resolution timeframes.
+* Any vulnerability reported against WSO2 products would undergo the [Vulnerability Management Process](https://security.docs.wso2.com/en/latest/security-processes/vulnerability-management-process/). Reported vulnerabilities will be assessed according to the CVSS scheme and fixed according to the given resolution timeframes.
 * WSO2 has established a [Security Reward and Acknowledgement Program](https://security.docs.wso2.com/en/latest/security-reporting/reward-and-acknowledgement-program/) where security researchers can analyze the security state of WSO2 products and report any identified security issues or vulnerabilities in alignment with [Vulnerability Reporting Guidelines](https://security.docs.wso2.com/en/latest/security-reporting/vulnerability-reporting-guidelines/).
 * WSO2 will first release patches to its customers via the U2 ([Update tool](https://wso2.com/updates/)). After one month, once customers have received these patches and updates, WSO2 will publish a security advisory on the [Security Advisory](https://security.docs.wso2.com/en/latest/security-announcements/security-advisories/) page.  This allows community users to patch their products by following the guidance provided in the Solution section of the Security Advisory.
 * In some cases, certain reported vulnerabilities may not apply to WSO2 products, and WSO2 might choose not to patch them. Those vulnerabilities will be detailed on the [CVE Justifications](https://security.docs.wso2.com/en/latest/security-announcements/cve-justifications/) page.
@@ -56,7 +56,7 @@ Security by design approach is followed within WSO2 for each new development ini
 
 ## Security Guidelines for Production Deployment of WSO2 Products
 
-* WSO2 has published [secure guidelines for production deployment](https://security.docs.wso2.com/en/latest/security-guidelines/security-guidelines-for-production-deployment/). 
+* WSO2 has published [Secure Guidelines for Production Deployment](https://security.docs.wso2.com/en/latest/security-guidelines/security-guidelines-for-production-deployment/). 
 * This guideline recommends configurations to secure all layers of the production environment (OS, Network, and Application)
 * Customers should follow these guidelines to ensure security when setting up products for production use. 
 * Any product-related queries can be raised at the WSO2 support channels.
@@ -96,7 +96,7 @@ Security by design approach is followed within WSO2 for each new development ini
 
 WSO2 shall not be responsible for any security/breaches in respect of the following:
 * If the customer gets compromised due to not monitoring the [Customer Security Announcements](https://security.docs.wso2.com/en/latest/security-processes/vulnerability-management-process/#announcing-to-the-customers) proactively, remediation actions must be taken to safeguard deployment following such announcements.
-* If the customer gets compromised due to not adhering to the [security guidelines for production deployment](https://security.docs.wso2.com/en/latest/security-guidelines/security-guidelines-for-production-deployment/).
+* If the customer gets compromised due to not adhering to the [Security Guidelines for Production Deployment](https://security.docs.wso2.com/en/latest/security-guidelines/security-guidelines-for-production-deployment/).
 * The customer gets compromised due to not migrating to supported product versions listed under the [WSO2 Support Matrix](https://wso2.com/products/support-matrix/).
 * Customizations or extensions developed or integrated into WSO2 products by the customer.
 
