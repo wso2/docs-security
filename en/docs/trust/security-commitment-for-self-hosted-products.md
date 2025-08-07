@@ -1,4 +1,4 @@
-# WSO2's security commitment for self-hosted products
+# WSO2's Security Commitment for Self-Hosted Products
 
 WSO2 is committed to ensuring that industry best practices regarding security standards and mechanisms are rigorously applied to our processes. Below are WSO2's security commitments to its self-hosted products, covering the type of data we collate and how such data is used, such as the security of product development, design, coding testing, etc.
 
