@@ -70,7 +70,7 @@ Security by design approach is followed within WSO2 for each new development ini
 * In the event of a security incident, privacy incident, or data breach involving a customer(s), notify the customer(s) immediately within 48 hours of declaring the incident.
 * WSO2 would work proactively with customers to remediate security incidents and provide detailed information/reporting regarding security incidents impacting customers.
 
-## WSO2's Responsibilities
+## WSO2's responsibilities
 
 * WSO2 shall make "Customer Security Announcements" regarding product vulnerabilities and remediations via its support system with clear instructions on how to apply the same.
 * WSO2 will share the following reports subject to appropriate confidentiality undertakings with customers upon request.
