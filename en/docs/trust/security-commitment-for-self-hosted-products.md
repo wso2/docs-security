@@ -25,7 +25,7 @@ Security by design approach is followed within WSO2 for each new development ini
 * Mandatory [peer code reviews](https://security.docs.wso2.com/en/latest/security-processes/secure-software-development-process/#code-reviews) are performed before any change is added to the code base to identify security deficiencies.
 * When a 3rd party dependency is introduced to the WSO2 product, WSO2 engineers and the Security and Compliance team will assess the security of such dependencies. Approved dependencies are added and reviewed as part of [Third Party Dependency Analysis](https://security.docs.wso2.com/en/latest/security-processes/secure-software-development-process/#third-party-dependency-analysis).
 
-## Security testing
+## Security Testing
 
 * WSO2 conduct [mandatory product security assessments](https://security.docs.wso2.com/en/latest/security-processes/secure-software-development-process/#mandatory-checks-during-releases) during product release cycles under three categories. [Static Code Analysis](https://security.docs.wso2.com/en/latest/security-processes/secure-software-development-process/#static-code-analysis), [Software Composition Analysis](https://security.docs.wso2.com/en/latest/security-processes/secure-software-development-process/#third-party-dependency-analysis), and [Dynamic Analysis](https://security.docs.wso2.com/en/latest/security-processes/secure-software-development-process/#dynamic-analysis).
   * For Static Application Security Testing (SAST), we utilize the Find Security Bugs plugin, the Spotbugs plugin, Super-Linter, GoSec, and Veracode Static Analysis which provide OWASP Top 10 and SANS CWE Top 25 coverage.
