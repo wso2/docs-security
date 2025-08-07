@@ -10,7 +10,7 @@ WSO2 is committed to ensuring that industry best practices regarding security st
 * WSO2 does not require access to the customer's environment to provide support services.
 * WSO2 updates service collects information regarding the product, product version, last applied update level, applied date, and customer email to validate subscriptions and send customer updates and notifications.
 
-## Secure Software Development Process
+## Secure Software Development Process (SSDLC)
 
 WSO2 has a well-defined [Secure Software Development Process](https://security.docs.wso2.com/en/latest/security-processes/secure-software-development-process/), which details how we incorporate security aspects into our product development process.
 
