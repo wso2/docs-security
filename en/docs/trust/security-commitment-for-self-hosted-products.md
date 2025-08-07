@@ -54,7 +54,7 @@ Security by design approach is followed within WSO2 for each new development ini
 * Regular Internal and External VAPTs are conducted on WSO2 systems and network devices.
 * All infrastructure-related incident responses are handled in alignment with ISO standards.
 
-## Security guidelines for production deployment of WSO2 products
+## Security Guidelines for Production Deployment of WSO2 Products
 
 * WSO2 has published [secure guidelines for production deployment](https://security.docs.wso2.com/en/latest/security-guidelines/security-guidelines-for-production-deployment/). 
 * This guideline recommends configurations to secure all layers of the production environment (OS, Network, and Application)
