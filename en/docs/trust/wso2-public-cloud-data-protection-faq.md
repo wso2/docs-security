@@ -310,6 +310,7 @@ SOC monitoring is an add-on for Premium PDPs and Private Clouds; SOC does not mo
 In a security incident or data breach, if we discover that our subscribers are impacted, we will notify the affected subscribers immediately, not exceeding 48 hours.
 
 ## Audits
+
 ### Can subscribers perform penetration tests?
 Yes, subscribers can perform penetration tests with prior approval for their paid subscriptions. Subscribers have to bear the cost incurred and follow data clean-up procedures. The penetration tests must ensure that any identified security vulnerabilities are informed and that data is not disclosed or disrupted by other subscribers (e.g., tests related to DDoS and DoS mitigation techniques).
 
