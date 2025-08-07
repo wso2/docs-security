@@ -41,7 +41,7 @@
 
 ## Infrastructure service sub-processors
 
-| Sub-processor | Purpose of processing | Categories of Data Subjects | Location | Transfer Mechanism |
+| Sub-Processor | Purpose of Processing | Categories of Data Subjects | Location | Transfer Mechanism |
 |--------------|----------------------|----------------------------|----------|-------------------|
 | Microsoft Azure | To host WSO2 workloads, and workloads may process subscriber information. | Employees of the subscribers involved in communications with WSO2. | Global | [Microsoft DPA](https://microsoft.com) |
 | AWS | To host WSO2 workloads, and workloads may process subscriber information. | Employees of the subscribers involved in communications with WSO2. | Global | [AWS DPA](https://aws.com) |
