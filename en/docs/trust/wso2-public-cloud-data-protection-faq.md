@@ -63,7 +63,7 @@ WSO2 subscribers can raise support tickets through ServiceNow, our ticketing sys
 | Log data - Audit and CI/CD | Confidential | Choreo CP | To facilitate service |
 | Business data used by Choreo user applications | Confidential | On the cloud services and region selected by the subscriber | To facilitate application storage needs such as databases, caches, and message brokers. |
 
-## WSO2 public cloud common services
+## WSO2 Public Cloud Common Services
 
 | Type of data | Classification | Stored at | Purpose |
 |-------------|---------------|-----------|---------|
