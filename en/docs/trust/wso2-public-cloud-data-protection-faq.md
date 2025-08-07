@@ -23,7 +23,7 @@ Choreo subscribers can deploy their workloads on a private data plane, which pro
 ### WSO2 Billing and Subscription Portal
 The billing and subscription portal allows cloud subscribers to choose their preferred subscription options and view their usage.
 
-### Payment gateway (Stripe)
+### Payment Gateway (Stripe)
 WSO2 public clouds utilize Stripe, a PCI-DSS-certified payment gateway provider. Subscribers enter their payment and billing information directly on Stripe when they are subscribing to paid plans.
 
 ### Support Portal (ServiceNow)
