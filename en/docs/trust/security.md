@@ -12,7 +12,7 @@ Please **do not submit security vulnerabilities through GitHub Issues or Discuss
 
 **To responsibly disclose a vulnerability, please use our [official security reporting channels](https://security.docs.wso2.com/en/latest/security-reporting/)** in accordance with our [Reward and Acknowledgement Program](https://security.docs.wso2.com/en/latest/security-reporting/reward-and-acknowledgement-program/). All vulnerability disclosures must follow [Vulnerability Reporting Guidelines](https://security.docs.wso2.com/en/latest/security-reporting/vulnerability-reporting-guidelines/). The WSO2 team will contact you within 24 hours of submitting a vulnerability report.
 
-## Secure Product usage
+## Secure Product Usage
 To ensure a secure and compliant deployment, users are strongly advised to:
 - Follow the [Security Guidelines for Production Deployment](https://security.docs.wso2.com/en/latest/security-guidelines/security-guidelines-for-production-deployment/) as well as other recommended best practices for the product features and specifications you are using.
 
