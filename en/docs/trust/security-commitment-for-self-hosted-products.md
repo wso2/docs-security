@@ -43,7 +43,7 @@ Security by design approach is followed within WSO2 for each new development ini
 * WSO2 will first release patches to its customers via the U2 ([Update tool](https://wso2.com/updates/)). After one month, once customers have received these patches and updates, WSO2 will publish a security advisory on the [Security Advisory](https://security.docs.wso2.com/en/latest/security-announcements/security-advisories/) page.  This allows community users to patch their products by following the guidance provided in the Solution section of the Security Advisory.
 * In some cases, certain reported vulnerabilities may not apply to WSO2 products, and WSO2 might choose not to patch them. Those vulnerabilities will be detailed on the [CVE Justifications](https://security.docs.wso2.com/en/latest/security-announcements/cve-justifications/) page.
 
-## WSO2 infrastructure security
+## WSO2 Infrastructure Security
 
 * WSO2's internal infrastructure and endpoints are managed in alignment with ISO/IEC 27001.
 * All user endpoints and production servers are secured with an EPP/EDR solution to provide real-time protection against malware and exploitation and are monitored regularly.
