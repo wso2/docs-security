@@ -1336,30 +1336,10 @@ When developing HTTP handlers in Go, avoid including untrusted input directly in
     ```go
     http.HandleFunc("/set-cookie", func(w http.ResponseWriter, r *http.Request) {
         author := r.URL.Query().Get("author")
-        // Sanitize input by removing CR and LF characters
-        author = strings.ReplaceAll(author, "\r", "")
-        author = strings.ReplaceAll(author, "%0d", "")
-        author = strings.ReplaceAll(author, "\n", "")
-        author = strings.ReplaceAll(author, "%0a", "")
 
-        http.SetCookie(w, &http.Cookie{
-            Name:  "author",
-            Value: author,
-            MaxAge: 3600,
-        })
-        w.WriteHeader(http.StatusOK)
-        w.Write([]byte("Cookie set"))
-    })
-    ```
-
-!!! success check done "Example Correct Usage"
-
-    ```go
-    http.HandleFunc("/set-cookie", func(w http.ResponseWriter, r *http.Request) {
-        author := r.URL.Query().Get("author")
-        // Reject input with CR or LF characters
-        if strings.ContainsAny(author, "\r\n") || strings.ContainsAny(author, "%0d%0a") {
-            http.Error(w, "Invalid input", http.StatusBadRequest)
+        // Validate the author input. If invalid, return an error.
+        if err := validateAuthorInput(author); err != nil {
+            http.Error(w, "Invalid author input", http.StatusBadRequest)
             return
         }
 
@@ -1444,7 +1424,7 @@ Cookie security
 
 ### Go Specific Recommendations 
 
-When using sessions in Go, consider setting secure and HTTP-only flags on cookies to prevent session theft via XSS attacks.
+When using sessions in Go, set secure and HTTP-only flags on cookies to prevent session theft via XSS attacks.
 
 !!! success check done "Example Correct Usage"
     ```go
@@ -1815,16 +1795,6 @@ For handling sensitive information, use byte slices (`[]byte`) which are mutable
             data[i] = 0
         }
     }
-    ```
-
-Another approach is to use a dedicated package like `crypto/subtle` which provides constant-time operations to prevent timing attacks while handling sensitive data:
-
-!!! success check done "Example Using crypto/subtle"
-    ```go
-    import "crypto/subtle"
-    
-    // When comparing sensitive data like password hashes
-    isEqual := subtle.ConstantTimeCompare(storedHash, computedHash) == 1
     ```
 
 
@@ -2373,7 +2343,7 @@ In summary, when integrating OWASP CSRFGuard with a product, it is required to d
 
 ### Go Specific Recommendations
 
-* For Go applications, use established CSRF protection libraries such as `gorilla/csrf` or `justinas/nosurf`.
+* For Go applications, use established CSRF protection library `gorilla/csrf`. If a requirement is not met by `gorilla/csrf` library or you require custom implementation, reach security team for review.
 * Ensure that CSRF tokens are generated using cryptographically secure random number generators.
 * Always use HTTP POST, PUT, DELETE (not GET) for state-changing operations.
 * Implement proper token validation for all state-changing operations.
@@ -2424,46 +2394,6 @@ In summary, when integrating OWASP CSRFGuard with a product, it is required to d
         // Process the user creation
         createUser(username, password)
         
-        fmt.Fprintf(w, "User created successfully")
-    }
-    ```
-
-!!! success check done "Example Recommended Usage"
-    ```go
-    import (
-        "github.com/justinas/nosurf"
-        "net/http"
-        "html/template"
-    )
-    
-    func main() {
-        mux := http.NewServeMux()
-        mux.HandleFunc("/create_user", createUserHandler)
-        
-        // Wrap the servemux with the nosurf middleware
-        csrfHandler := nosurf.New(mux)
-        
-        // Configure cookie options
-        csrfHandler.SetBaseCookie(http.Cookie{
-            Path:     "/",
-            HttpOnly: true,
-            Secure:   true,
-            SameSite: http.SameSiteStrictMode,
-        })
-        
-        http.ListenAndServe(":8000", csrfHandler)
-    }
-    
-    func createUserHandler(w http.ResponseWriter, r *http.Request) {
-        // nosurf middleware automatically validates the token
-        if r.Method != http.MethodPost {
-            http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
-            return
-        }
-        
-        username := r.FormValue("username")
-        password := r.FormValue("password")
-        createUser(username, password)
         fmt.Fprintf(w, "User created successfully")
     }
     ```
