@@ -72,6 +72,7 @@ WSO2 subscribers can raise support tickets through ServiceNow, our ticketing sys
 | Organization Administrator profiles and related data (Choreo US) | Restricted | Asgardeo US deployment or in External IDP, which the subscriber integrates. | User management |
 | Organization Administrator profiles and related data (Choreo EU) | Restricted | Asgardeo EU deployment or in External IDP, which the subscriber integrates. | User management |
 | End user profiles and associated data | Restricted | Asgardeo regional deployments or in External IDP, which the subscriber integrates. | User management |
+| Test user profiles | Restricted | Choreo CP | Enable developers to test authentication and login flows during development without requiring external Identity Provider (IDP) integration |
 | User roles/scopes | Restricted | Choreo CP | Privilege management |
 | Secrets (keys/tokens/certificates) | Restricted | Choreo DP - Key management services (Key vaults) | For integrations and to facilitate service |
 | Choreo component data | Confidential | Choreo CP | To facilitate service |
@@ -150,8 +151,8 @@ Both the Data Controller and the Data Processor need to have a Data Processing A
 
 ### Where is the subscriber data stored?
 * **Asgardeo**
-  * Asgardeo organization administrator profiles and associated data would be stored in Asgardeo US deployment.
-  * Asgardeo end-user profiles and associated data would be stored in the region where the deployment is provisioned (US or EU).
+  * Effective June 27, 2025, Asgardeo [Administrator profiles](https://wso2.com/asgardeo/docs/references/data-residency-in-asgardeo/#administrator-data) and [End User profiles](https://wso2.com/asgardeo/docs/references/data-residency-in-asgardeo/#administrator-data), along with their respective data, are stored in the deployment region selected during onboarding (US or EU). 
+    * Prior to this date, administrator profiles and their associated data were stored exclusively in the Asgardeo US deployment, while end user data was stored in regional deployments. 
   * For detailed information please refer to [Data residency in Asgardeo](https://wso2.com/asgardeo/docs/references/data-residency-in-asgardeo/).
 
 * **Choreo**
@@ -243,7 +244,7 @@ Choreo ensures that application service users are stored and managed securely by
 * **User Authentication**: Choreo primarily authenticates users through well-established social logins, such as Google, GitHub, and Microsoft, ensuring the security of user credentials. Additionally, Choreo supports [Enterprise ID logins](https://wso2.com/choreo/docs/administer/configure-enterprise-login/), allowing seamless integration with your organization's identity provider for Single Sign-On (SSO). This means the complexity of password management is handled by the chosen identity provider, not Choreo itself, minimizing security risks.
 
 * **API Consumer Authentication and Authorization**: Choreo uses [Asgardeo as the default external identity provider](https://wso2.com/choreo/docs/authentication-and-authorization/secure-api-access-with-asgardeo/) (IDP), which can be used to securely manage end-user identities. If you prefer to use an external IDP like [Azure Active Directory](https://wso2.com/choreo/docs/authentication-and-authorization/secure-api-access-with-azure-ad/), Choreo allows flexible integration, ensuring that user management and authentication are securely handled by the respective external IDP.
-
+* **Organization End User profiles**: Organizations created before June 18, 2025 use [Asgardeo as the default identity provider](https://wso2.com/choreo/docs/authentication-and-authorization/secure-api-access-with-asgardeo/) (IDP) for secure end-user identity management. Choreo also provides flexible integration capabilities to connect your preferred OIDC-compliant identity providers, such as [Azure Active Directory](https://wso2.com/choreo/docs/authentication-and-authorization/secure-api-access-with-azure-ad/). This ensures that user management and authentication are securely handled by the respective external identity providers, removing the burden of direct user credential storage from Choreo.
 * **User Tokens**: The Choreo Console stores the tokens in the browser's session storage and uses them to authenticate the user with the backend services. Choreo CLI persists the tokens in an encrypted file in the local machine's file system. The key to decrypt the tokens is stored in the system's Keychain. The Choreo VSCode Extension uses the Choreo CLI to manage the tokens and invoke backend services.
 
 By utilizing these secure, trusted identity providers and protocols, Choreo guarantees that user data is securely managed, reducing the risk of unauthorized access.
