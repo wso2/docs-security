@@ -62,11 +62,16 @@ We review reported security issues case-by-case. Generally, we do not consider t
 * Logout Cross-site Request Forgery (CSRF)
 * Missing CSRF token in login forms
 * Cross domain referer leakage
+* Self-XSS issues
 * Missing HttpOnly flags
 * SSL/TLS related issues
 * Missing HTTP security headers
 * Account enumeration
-* Brute-force Attacks
+* Lack of rate-limiting or brute-force protections
+* DNS related issues
+* Automated-scanner, theoretical, or “best-practice” reports without POCs
+* Out-of-date third-party libraries or frameworks without POC
+* Findings in third-party assets, demos, staging, or other domains not owned by WSO2
 * Non-critical Information Leakages (such as server information, stack trace)
 
 !!! info
