@@ -26,3 +26,6 @@ hs_err_pid*
 
 .DS_Store
 
+.python-version
+
+venv/
