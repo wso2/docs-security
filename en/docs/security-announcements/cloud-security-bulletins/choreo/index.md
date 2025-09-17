@@ -1,10 +1,10 @@
 ---
-title: Cloud Security Bulletins
+title: Choreo Cloud Security Bulletins
 category: security-announcements
 ---
 
-# Cloud Security Bulletins
+# Choreo Cloud Security Bulletins
 
 This section contains the security bulletins for Choreo
 
-* [2025 Security Bulletins]({{#base_path#}}/security-announcements//cloud-security-bulletins/choreo/2025/)
+* [2025]({{#base_path#}}/security-announcements/cloud-security-bulletins/choreo/2025/)

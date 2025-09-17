@@ -353,7 +353,18 @@ nav:
         - 'WSO2-2016-0168': 'security-announcements/security-advisories/2016/WSO2-2016-0168.md'
         - 'WSO2-2016-0169': 'security-announcements/security-advisories/2016/WSO2-2016-0169.md'
         - 'WSO2-2016-0170': 'security-announcements/security-advisories/2016/WSO2-2016-0170.md'
-    - 'CVE to WSO2 Security Advisory Mapping': 'security-announcements/cve-to-wso2-security-advisory-mapping.md'
+    - 'Cloud Security Bulletin':
+      - '': 'security-announcements/cloud-security-bulletins/index.md'
+      - 'Asgardeo':
+        - '': 'security-announcements/cloud-security-bulletins/asgardeo/index.md'
+        - '2025':
+          - '': 'security-announcements/cloud-security-bulletins/asgardeo/2025/index.md'
+          - '2025 H1': 'security-announcements/cloud-security-bulletins/asgardeo/2025/asgardeo-2025-h1.md'
+      - 'Choreo':
+        - '': 'security-announcements/cloud-security-bulletins/choreo/index.md'
+        - '2025':
+          - '': 'security-announcements/cloud-security-bulletins/choreo/2025/index.md'
+          - '2025 H1': 'security-announcements/cloud-security-bulletins/choreo/2025/choreo-2025-h1.md'        
     - 'CVE Justifications':
       - '': 'security-announcements/cve-justifications/index.md'
       - '2025':
@@ -365,6 +376,7 @@ nav:
         - 'CVE-2025-47889': 'security-announcements/cve-justifications/2025/CVE-2025-47889.md'
         - 'CVE-2021-42646': 'security-announcements/cve-justifications/2025/CVE-2021-42646.md'
         - 'CVE-2025-22874': 'security-announcements/cve-justifications/2025/CVE-2025-22874.md'
+        - 'CVE-2025-46392': 'security-announcements/cve-justifications/2025/CVE-2025-46392.md'
       - '2024':
         - '': 'security-announcements/cve-justifications/2024/index.md'
         - 'CVE-2022-29464': 'security-announcements/cve-justifications/2024/CVE-2022-29464.md'
