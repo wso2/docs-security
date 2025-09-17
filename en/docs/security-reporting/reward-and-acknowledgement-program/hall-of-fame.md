@@ -29,6 +29,7 @@ security researcher community relationship.
 | [Rohan Hotkar](https://www.linkedin.com/in/rohanhotkar/)                  |
 | [Suraj Theekshana](https://www.linkedin.com/in/suraj-theekshana-10171023a/)                                                |
 | **Viral Maniar**                                                          |
+| **CyberMavi**                                                             |
 
 ### Choreo
 
@@ -41,7 +42,6 @@ security researcher community relationship.
 |                                                                               |
 | :-----------------------------------------------------------------------------|
 | [Keyur Maheta](https://www.linkedin.com/in/keyur-maheta-342720256/)           |
-
 
 ## 2024
 
