@@ -27,7 +27,7 @@ security researcher community relationship.
 | **Marcos Vinicius from CyberMavi**                                        |
 | [Noël Maccary](https://fr.linkedin.com/in/nmaccary)                       |
 | [Rohan Hotkar](https://www.linkedin.com/in/rohanhotkar/)                  |
-| [Suraj Theekshana](https://www.linkedin.com/in/suraj-theekshana-10171023a/)                                                |
+| [Suraj Theekshana](https://www.linkedin.com/in/suraj-theekshana-10171023a/) |
 | [Vaibhav Shinde](https://www.linkedin.com/in/vaibhav-shinde-28b811242/)   |
 | **Viral Maniar**                                                          |
 | **CyberMavi**                                                             |
