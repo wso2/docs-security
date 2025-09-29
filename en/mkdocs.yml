@@ -404,6 +404,9 @@ nav:
         - '': 'security-announcements/cve-justifications/2019/index.md'
         - 'CVE-2019-6512': 'security-announcements/cve-justifications/2019/CVE-2019-6512.md'
         - 'CVE-2019-6515': 'security-announcements/cve-justifications/2019/CVE-2019-6515.md'
+      - '2014':
+        - '': 'security-announcements/cve-justifications/2014/index.md'
+        - 'CVE-2014-3623': 'security-announcements/cve-justifications/2014/CVE-2014-3623.md'
     - 'Incident Clarifications':
       - '': 'security-announcements/incident-clarifications/index.md'
       - '2021':
