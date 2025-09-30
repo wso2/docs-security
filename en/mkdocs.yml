@@ -406,6 +406,9 @@ nav:
         - 'CVE-2019-6515': 'security-announcements/cve-justifications/2019/CVE-2019-6515.md'
     - 'Incident Clarifications':
       - '': 'security-announcements/incident-clarifications/index.md'
+      - '2025':
+        - '': 'security-announcements/incident-clarifications/2025/index.md'
+        - 'NPM Packages Compromised in Supply Chain Attack': 'security-announcements/incident-clarifications/2025/npm-packages-compromised-in-supply-chain-attack.md'
       - '2021':
         - '': 'security-announcements/incident-clarifications/2021/index.md'
         - 'Codecov supply chain breach': 'security-announcements/incident-clarifications/2021/codecov-supply-chain-breach.md'
