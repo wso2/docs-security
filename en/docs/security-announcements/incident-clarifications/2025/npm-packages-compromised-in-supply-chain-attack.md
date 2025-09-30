@@ -20,3 +20,8 @@ Following the incident, the WSO2 Security and Compliance team immediately collab
 The investigation confirmed that none of the compromised NPM packages are used in WSO2 products, services, or related build environments.
 
 Based on this analysis, WSO2 and its customers are not impacted by this supply chain attack.
+
+
+### References
+
+[^1]: [https://thehackernews.com/2025/09/40-npm-packages-compromised-in-supply.html](https://thehackernews.com/2025/09/40-npm-packages-compromised-in-supply.html)
