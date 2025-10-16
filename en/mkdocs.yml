@@ -75,6 +75,10 @@ nav:
       - '': 'security-announcements/security-advisories/index.md'
       - '2025 Advisories':
         - '': 'security-announcements/security-advisories/2025/2025-advisories.md'
+        - 'WSO2-2025-4585': 'security-announcements/security-advisories/2025/WSO2-2025-4585.md'
+        - 'WSO2-2025-4526': 'security-announcements/security-advisories/2025/WSO2-2025-4526.md'
+        - 'WSO2-2025-4503': 'security-announcements/security-advisories/2025/WSO2-2025-4503.md'
+        - 'WSO2-2025-4483': 'security-announcements/security-advisories/2025/WSO2-2025-4483.md'
         - 'WSO2-2025-4217': 'security-announcements/security-advisories/2025/WSO2-2025-4217.md'
         - 'WSO2-2025-4119': 'security-announcements/security-advisories/2025/WSO2-2025-4119.md'
         - 'WSO2-2025-4104': 'security-announcements/security-advisories/2025/WSO2-2025-4104.md'
@@ -133,6 +137,7 @@ nav:
         - 'WSO2-2023-2972': 'security-announcements/security-advisories/2024/WSO2-2023-2972.md'
         - 'WSO2-2023-2938': 'security-announcements/security-advisories/2024/WSO2-2023-2938.md'
         - 'WSO2-2023-2935': 'security-announcements/security-advisories/2024/WSO2-2023-2935.md'
+        - 'WSO2-2023-2864': 'security-announcements/security-advisories/2024/WSO2-2023-2864.md'
         - 'WSO2-2023-2831': 'security-announcements/security-advisories/2024/WSO2-2023-2831.md'
         - 'WSO2-2023-2827': 'security-announcements/security-advisories/2024/WSO2-2023-2827.md'
         - 'WSO2-2023-2808': 'security-announcements/security-advisories/2024/WSO2-2023-2808.md'
