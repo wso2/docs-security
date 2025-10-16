@@ -508,8 +508,8 @@ extra:
       link: https://www.linkedin.com/company/wso2
   site_version: 1.0.0
   cp_timeframe: 2015-2023
-  # base_path: 'https://security.docs.wso2.com/en/latest'    # base path prod
-  base_path: ''                                             # base path dev
+  base_path: 'https://security.docs.wso2.com/en/latest'    # base path prod
+  # base_path: ''                                             # base path dev
   nav_list:
     - WSO2 Security and Compliance Documentation
     - Security Processes
