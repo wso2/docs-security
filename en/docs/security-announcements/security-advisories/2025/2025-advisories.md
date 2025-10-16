@@ -6,6 +6,7 @@ category: security-announcements
 
 # 2025 Security Advisories
 
+* [WSO2-2025-4217]({{#base_path#}}/security-announcements/security-advisories/2025/WSO2-2025-4217)
 * [WSO2-2025-4119]({{#base_path#}}/security-announcements/security-advisories/2025/WSO2-2025-4119)
 * [WSO2-2025-4104]({{#base_path#}}/security-announcements/security-advisories/2025/WSO2-2025-4104)
 * [WSO2-2025-4010]({{#base_path#}}/security-announcements/security-advisories/2025/WSO2-2025-4010)
