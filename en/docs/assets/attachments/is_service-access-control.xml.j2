@@ -1,0 +1,278 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<!--
+~ Copyright (c) 2025, WSO2 LLC. (http://www.wso2.com).
+~
+~ WSO2 LLC. licenses this file to you under the Apache License,
+~ Version 2.0 (the "License"); you may not use this file except
+~ in compliance with the License.
+~ You may obtain a copy of the License at
+~
+~ http://www.apache.org/licenses/LICENSE-2.0
+~
+~ Unless required by applicable law or agreed to in writing,
+~ software distributed under the License is distributed on an
+~ "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+~ KIND, either express or implied.  See the License for the
+~ specific language governing permissions and limitations
+~ under the License.
+ -->
+
+<ServiceAccessControl>
+    <Enabled>{{ admin_service.enable_central_access_control | default('true') }}</Enabled>
+    <Services>
+        <Service>
+            <Name>UserInformationRecoveryService</Name>
+            <AuthenticationEnabled>true</AuthenticationEnabled>
+            <Permissions>
+                <Permission>/permission/admin/manage</Permission>
+            </Permissions>
+            <Operations>
+                <Operation name="verifyUser">
+                    <Permissions>
+                        <Permission>/permission/admin/manage/identity/usermgt/update</Permission>
+                    </Permissions>
+                </Operation>
+               <Operation name="sendRecoveryNotification">
+                    <Permissions>
+                       <Permission>/permission/admin/manage/identity/usermgt/update</Permission>
+                    </Permissions>
+                </Operation>
+               <Operation name="resendNotification">
+                   <Permissions>
+                       <Permission>/permission/admin/manage/identity/usermgt/update</Permission>
+                   </Permissions>
+               </Operation>
+               <Operation name="verifyConfirmationCode">
+                   <Permissions>
+                       <Permission>/permission/admin/manage/identity/usermgt/update</Permission>
+                   </Permissions>
+               </Operation>
+                <Operation name="updatePassword">
+                    <Permissions>
+                        <Permission>/permission/admin/manage/identity/usermgt/update</Permission>
+                    </Permissions>
+                </Operation>
+               <Operation name="getUserChallengeQuestionIds">
+                   <Permissions>
+                       <Permission>/permission/admin/manage/identity/usermgt/view</Permission>
+                   </Permissions>
+               </Operation>
+               <Operation name="getUserChallengeQuestion">
+                   <Permissions>
+                       <Permission>/permission/admin/manage/identity/usermgt/view</Permission>
+                   </Permissions>
+               </Operation>
+               <Operation name="getUserChallengeQuestions">
+                   <Permissions>
+                       <Permission>/permission/admin/manage/identity/usermgt/view</Permission>
+                   </Permissions>
+               </Operation>
+               <Operation name="verifyUserChallengeAnswer">
+                   <Permissions>
+                       <Permission>/permission/admin/manage/identity/usermgt/update</Permission>
+                   </Permissions>
+               </Operation>
+               <Operation name="verifyUserChallengeAnswers">
+                   <Permissions>
+                       <Permission>/permission/admin/manage/identity/usermgt/update</Permission>
+                   </Permissions>
+               </Operation>
+                <Operation name="verifyAccount">
+                    <Permissions>
+                        <Permission>/permission/admin/manage/identity/usermgt/update</Permission>
+                    </Permissions>
+                </Operation>
+                <Operation name="registerUser">
+                    <Permissions>
+                        <Permission>/permission/admin/manage/identity/usermgt/create</Permission>
+                    </Permissions>
+                </Operation>
+                <Operation name="resendSignUpConfiramtionCode">
+                    <Permissions>
+                        <Permission>/permission/admin/manage/identity/usermgt/create</Permission>
+                    </Permissions>
+                </Operation>
+                <Operation name="confirmUserSelfRegistration">
+                    <Permissions>
+                        <Permission>/permission/admin/manage/identity/usermgt/create</Permission>
+                    </Permissions>
+                </Operation>
+            </Operations>
+        </Service>
+        <Service>
+            <Name>LogViewer</Name>
+            <AuthenticationEnabled>true</AuthenticationEnabled>
+            <Permissions>
+                <Permission>/permission/admin/monitor/logs</Permission>
+            </Permissions>
+        </Service>
+        <Service>
+            <Name>UserAdmin</Name>
+            <AuthenticationEnabled>true</AuthenticationEnabled>
+            <Operations>
+                <Operation name="hasMultipleUserStores">
+                    <Permissions>
+                        <Permission>/permission/admin/manage/identity/userstore/config/view</Permission>
+                    </Permissions>
+                </Operation>
+                <Operation name="changePasswordByUser">
+                    <AuthenticationEnabled>false</AuthenticationEnabled>
+                </Operation>
+            </Operations>
+        </Service>
+        <Service>
+            <Name>UserProfileMgtService</Name>
+            <AuthenticationEnabled>true</AuthenticationEnabled>
+            <Operations>
+                <Operation name="isReadOnlyUserStore">
+                    <Permissions>
+                        <Permission>/permission/admin/manage/identity/userstore/config/view</Permission>
+                    </Permissions>
+                </Operation>
+                <Operation name="getProfileFieldsForInternalStore">
+                    <Permissions>
+                        <Permission>/permission/admin/manage/identity/userstore/config/view</Permission>
+                    </Permissions>
+                </Operation>
+                <Operation name="isAddProfileEnabled">
+                    <Permissions>
+                        <Permission>/permission/admin/manage/identity/userstore/config/view</Permission>
+                    </Permissions>
+                </Operation>
+                <Operation name="isAddProfileEnabledForDomain">
+                    <Permissions>
+                        <Permission>/permission/admin/manage/identity/userstore/config/view</Permission>
+                    </Permissions>
+                </Operation>
+                <Operation name="getNameAssociatedWith">
+                    <Permissions>
+                        <Permission>/permission/admin/manage/identity/user/association/view</Permission>
+                    </Permissions>
+                </Operation>
+                <Operation name="getAssociatedIDsForUser">
+                    <Permissions>
+                        <Permission>/permission/admin/manage/identity/user/association/view</Permission>
+                    </Permissions>
+                </Operation>
+                <Operation name="removeAssociateIDForUser">
+                    <Permissions>
+                        <Permission>/permission/admin/manage/identity/user/association/delete</Permission>
+                    </Permissions>
+                </Operation>
+            </Operations>
+        </Service>
+        <Service>
+            <Name>IdentityPassiveSTSService</Name>
+            <AuthenticationEnabled>true</AuthenticationEnabled>
+            <Operations>
+                <Operation name="addTrustedService">
+                    <Permissions>
+                        <Permission>/permission/admin/manage/identity/idpmgt/create</Permission>
+                    </Permissions>
+                </Operation>
+                <Operation name="getAllTrustedServices">
+                    <Permissions>
+                        <Permission>/permission/admin/manage/identity/idpmgt/view</Permission>
+                    </Permissions>
+                </Operation>
+                <Operation name="getResponse">
+                    <AuthenticationEnabled>false</AuthenticationEnabled>
+                </Operation>
+                <Operation name="getTrustedServiceClaims">
+                    <Permissions>
+                        <Permission>/permission/admin/manage/identity/idpmgt/view</Permission>
+                    </Permissions>
+                </Operation>
+                <Operation name="removeTrustedService">
+                    <Permissions>
+                        <Permission>/permission/admin/manage/identity/idpmgt/delete</Permission>
+                    </Permissions>
+                </Operation>
+            </Operations>
+        </Service>
+        <Service>
+            <Name>IdentitySAMLValidatorService</Name>
+            <AuthenticationEnabled>true</AuthenticationEnabled>
+            <Operations>
+                <Operation name="buildResponse">
+                    <Permissions>
+                        <Permission>/permission/admin/manage/identity/usermgt/update</Permission>
+                    </Permissions>
+                </Operation>
+                <Operation name="validateAuthnRequest">
+                    <Permissions>
+                        <Permission>/permission/admin/manage/identity/usermgt/update</Permission>
+                    </Permissions>
+                </Operation>
+                <Operation name="getIssuersOfSAMLServiceProviders">
+                    <Permissions>
+                        <Permission>/permission/admin/manage/identity/applicationmgt/view</Permission>
+                    </Permissions>
+                </Operation>
+            </Operations>
+        </Service>
+        <Service>
+            <Name>PackageInfoService</Name>
+            <AuthenticationEnabled>true</AuthenticationEnabled>
+            <Operations>
+                <Operation name="getPackageInfos">
+                    <Permissions>
+                        <Permission>/permission/admin/manage</Permission>
+                    </Permissions>
+                </Operation>
+            </Operations>
+        </Service>
+        <Service>
+            <Name>UserRegistrationAdminService</Name>
+            <AuthenticationEnabled>true</AuthenticationEnabled>
+            <Operations>
+                <Operation name="addUser">
+                    <Permissions>
+                        <Permission>/permission/admin/manage/identity/usermgt/create</Permission>
+                    </Permissions>
+                </Operation>
+                <Operation name="isUserExist">
+                    <Permissions>
+                        <Permission>/permission/admin/manage/identity/usermgt/view</Permission>
+                    </Permissions>
+                </Operation>
+                <Operation name="getRoleName">
+                    <Permissions>
+                        <Permission>/permission/admin/manage/identity/usermgt/view</Permission>
+                    </Permissions>
+                </Operation>
+            </Operations>
+        </Service>
+        {% for svc in admin_service.access_control %}
+        <Service>
+            <Name>{{ svc.name }}</Name>
+            <AuthenticationEnabled>{{ svc.authentication_enabled | default(true) | string | lower }}</AuthenticationEnabled>
+            {% if svc.permissions %}
+            <Permissions>
+                {% for perm in svc.permissions %}
+                <Permission>{{ perm }}</Permission>
+                {% endfor %}
+            </Permissions>
+            {% endif %}
+            {% if svc.operation %}
+            <Operations>
+                {% for op in svc.operation %}
+                <Operation name="{{ op.name }}">
+                {% if op.permissions %}
+                <Permissions>
+                    {% for perm in op.permissions %}
+                    <Permission>{{ perm }}</Permission>
+                    {% endfor %}
+                </Permissions>
+                {% elif op.authentication_enabled is defined %}
+                <AuthenticationEnabled>{{ op.authentication_enabled | string | lower }}</AuthenticationEnabled>
+                {% endif %}
+                </Operation>
+                {% endfor %}
+            </Operations>
+            {% endif %}
+        </Service>
+        {% endfor %}
+    </Services>
+</ServiceAccessControl>
