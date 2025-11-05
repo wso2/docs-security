@@ -21,6 +21,7 @@ security researcher community relationship.
 | :-------------------------------------------------------------------------- |
 | [AGS Lakpahana](https://www.linkedin.com/in/lakpahana)                      |
 | [crnkovic](https://crnkovic.dev)                                            |
+| **CyberMavi**                                                               |
 | **Danh Nguyen (k4it0) from VIB Pentest Team**                               |
 | [Deepanshu Devaliya](https://linkedin.com/in/deepanshu-devaliya369)         |
 | [Dũng x Bắc from VNPT Cyber Immunity](https://x.com/onsra_03)               |
@@ -36,7 +37,6 @@ security researcher community relationship.
 | [Suraj Theekshana](https://www.linkedin.com/in/suraj-theekshana-10171023a/) |
 | [Vaibhav Shinde](https://www.linkedin.com/in/vaibhav-shinde-28b811242/)     |
 | **Viral Maniar**                                                            |
-| **CyberMavi**                                                               |
 
 
 ### Choreo
