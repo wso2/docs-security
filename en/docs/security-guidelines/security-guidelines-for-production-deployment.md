@@ -13,7 +13,8 @@ Refer to the listed documentation for each product based on the version that you
     refer to the common [Security Guidelines for Production Deployment](https://docs.wso2.com/display/ADMIN44x/Security+Guidelines+for+Production+Deployment).
 
 * WSO2 API Manager
-    - [APIM-4.5.0 (latest)](https://apim.docs.wso2.com/en/latest/install-and-setup/setup/deployment-best-practices/security-guidelines-for-production-deployment/)
+    - [APIM-4.6.0 (latest)](https://apim.docs.wso2.com/en/latest/install-and-setup/setup/deployment-best-practices/security-guidelines-for-production-deployment/)
+    - [APIM-4.5.0](https://apim.docs.wso2.com/en/4.5.0/install-and-setup/setup/deployment-best-practices/security-guidelines-for-production-deployment/)
     - [APIM-4.4.0](https://apim.docs.wso2.com/en/4.4.0/install-and-setup/setup/deployment-best-practices/security-guidelines-for-production-deployment/)
     - [APIM-4.3.0](https://apim.docs.wso2.com/en/4.3.0/install-and-setup/setup/deployment-best-practices/security-guidelines-for-production-deployment/)
     - [APIM-4.2.0](https://apim.docs.wso2.com/en/4.2.0/install-and-setup/setup/deployment-best-practices/security-guidelines-for-production-deployment/)
@@ -26,7 +27,8 @@ Refer to the listed documentation for each product based on the version that you
     - [EI-7.1.0 (latest)](https://ei.docs.wso2.com/en/latest/micro-integrator/setup/deployment/deployment_checklist/)
     - [EI-7.0.0](https://ei.docs.wso2.com/en/7.0.0/micro-integrator/setup/deployment/deployment_checklist/)
 * WSO2 Identity Server
-    - [IS-7.1.0 (latest)](https://is.docs.wso2.com/en/latest/deploy/security/security-guidelines-for-production-deployment/)
+    - [IS-7.2.0 (latest)](https://is.docs.wso2.com/en/latest/deploy/security/security-guidelines-for-production-deployment/)
+    - [IS-7.1.0](https://is.docs.wso2.com/en/7.1.0/deploy/security/security-guidelines-for-production-deployment/)
     - [IS-7.0.0](https://is.docs.wso2.com/en/7.0.0/deploy/security/security-guidelines-for-production-deployment/)
     - [IS-6.1.0](https://is.docs.wso2.com/en/6.1.0/deploy/security/security-guidelines-for-production-deployment/)
     - [IS-6.0.0](https://is.docs.wso2.com/en/6.0.0/administer/security-guidelines-for-production-deployment/)
@@ -34,5 +36,7 @@ Refer to the listed documentation for each product based on the version that you
     - [IS-5.10.0](https://is.docs.wso2.com/en/5.10.0/administer/security-guidelines-for-production-deployment/)
     - [IS-5.9.0](https://is.docs.wso2.com/en/5.9.0/administer/security-guidelines-for-production-deployment/)
  * WSO2 Micro Integrator
-    - [MI-4.3.0 (latest)](https://mi.docs.wso2.com/en/latest/install-and-setup/setup/deployment-best-practices/security-guidelines-for-production-deployment/)
+    - [MI-4.5.0 (latest)](https://mi.docs.wso2.com/en/latest/install-and-setup/setup/deployment-best-practices/security-guidelines-for-production-deployment/)
+    - [MI-4.4.0](https://mi.docs.wso2.com/en/4.4.0/install-and-setup/setup/deployment-best-practices/security-guidelines-for-production-deployment/)
+    - [MI-4.3.0](https://mi.docs.wso2.com/en/4.3.0/install-and-setup/setup/deployment-best-practices/security-guidelines-for-production-deployment/)
     - [MI-4.2.0](https://mi.docs.wso2.com/en/4.2.0/install-and-setup/setup/deployment-best-practices/security-guidelines-for-production-deployment/)
