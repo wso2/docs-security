@@ -5,7 +5,7 @@ published: 19th Mar 2020
 version: 2.2
 ---
 
-# Secure Software Development Process (SDLC)
+# Secure Software Development Process (SSDLC)
 
 Security is not an afterthought at WSO2. It's an integral part of each phase in the development life cycle. This ensures that security vulnerabilities are identified and mitigated as early as possible.
 
