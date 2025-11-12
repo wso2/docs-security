@@ -39,6 +39,19 @@ security researcher community relationship.
 | **Viral Maniar**                                                                 |
 
 
+### WSO2 Cloud Security Hackathon 2025
+
+This internal hackathon event was conducted during 2025 H2 and following are the winners.
+
+| 1st Place Team CheeseCake | 2nd Place Team Overwatch | 3rd Place Team ZeroTrust Ninjas |  4th Place Team Atlas |
+|:-------------------------:|:------------------------:|:-------------------------------:|:---------------------:|
+| Anshajanth Yoganathan     | Sajith Ekanayaka         | Dehami Koswatte                 | Samindu Cooray        |
+| Thilan Dissanayaka        | Tharaka Wijekoon         | Sachith Manchanayaka            | Chandima Jayawickrama |
+| Chathura Ranathunga       | Mifraz Murthaja          | Ushani Athukorala               | Janitha Senevirathna  |
+|                           | Lahiru Samaranayaka      | Dinithi Amarasinghe             | Prabod Dunuwila       |
+|                           |                          |                                 | Hasitha Pathirana     |
+
+
 ### Choreo
 
 |                                                                               |
