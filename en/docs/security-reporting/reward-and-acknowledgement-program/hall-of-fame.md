@@ -39,6 +39,7 @@ security researcher community relationship.
 | **Viral Maniar**                                                                 |
 
 
+
 ### Choreo
 
 |                                                                               |
@@ -50,6 +51,29 @@ security researcher community relationship.
 |                                                                               |
 | :-----------------------------------------------------------------------------|
 | [Keyur Maheta](https://www.linkedin.com/in/keyur-maheta-342720256/)           |
+
+
+### WSO2 Cloud Security Hackathon 2025
+
+|                        |
+| :--------------------- |
+| Anshajanth Yoganathan  |
+| Sajith Ekanayaka       |
+| Dehami Koswatte        |
+| Samindu Cooray         |
+| Thilan Dissanayaka     |
+| Tharaka Wijekoon       |
+| Sachith Manchanayaka   |
+| Chandima Jayawickrama  |
+| Chathura Ranathunga    |
+| Mifraz Murthaja        |
+| Ushani Athukorala      |
+| Janitha Senevirathna   |
+| Lahiru Samaranayaka    |
+| Dinithi Amarasinghe    |
+| Prabod Dunuwila        |
+| Hasitha Pathirana      |
+
 
 ## 2024
 
