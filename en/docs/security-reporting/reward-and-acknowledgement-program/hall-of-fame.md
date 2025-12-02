@@ -26,12 +26,14 @@ security researcher community relationship.
 | [Deepanshu Devaliya](https://linkedin.com/in/deepanshu-devaliya369)              |
 | [Dũng x Bắc from VNPT Cyber Immunity](https://x.com/onsra_03)                    |
 | **devme4f**                                                                      |
+| **Gaurang Maheta**                                                               |
 | [Keyur Maheta](https://www.linkedin.com/in/keyur-maheta-342720256/)              |
 | [Kumar Gaurav](https://www.linkedin.com/in/k10gaurav)                            |
 | [LUU HONG QUAN](https://www.linkedin.com/in/hong-quan-3a3b93224/)                |
 | [Manisha Dilshan](https://www.linkedin.com/in/manisha-dilshan-b08ba3215)         |
 | **Marcos Vinicius from CyberMavi**                                               |
 | [Milan Katwal](https://x.com/milankatwal99)                                      |
+| **Nikhil Mittal**                                                                |
 | [Noël Maccary](https://fr.linkedin.com/in/nmaccary)                              |
 | [Rohan Hotkar](https://www.linkedin.com/in/rohanhotkar/)                         |
 | [Suraj Theekshana](https://www.linkedin.com/in/suraj-theekshana-10171023a/)      |
