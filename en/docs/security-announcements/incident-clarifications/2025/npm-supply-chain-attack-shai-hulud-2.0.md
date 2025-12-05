@@ -14,7 +14,7 @@ category: security-announcements
 ---
 
 ### Reported Incident
-On November 21, 2025, we were made aware of a software supply chain attack affecting certain open-source NPM packages, referred to in the security community as "Shai-Hulud 2.0" [1]. This self-propagating worm is designed to extract developers’ secrets accessible to CI/CD pipelines, upload them to a public GitHub repository, and enable attackers to access them. It also repacks itself into available NPM packages and injects malicious payloads.
+On November 21, 2025, we were made aware of a software supply chain attack affecting certain open-source NPM packages, referred to in the security community as "Shai-Hulud 2.0" [^1]. This self-propagating worm is designed to extract developers’ secrets accessible to CI/CD pipelines, upload them to a public GitHub repository, and enable attackers to access them. It also repacks itself into available NPM packages and injects malicious payloads.
 WSO2 primarily uses NPM (Node Package Manager) to manage dependencies and packages, and to build its JavaScript-based components and modern user interfaces (UIs).
 ### Impact on WSO2 Products and Deployments
 
