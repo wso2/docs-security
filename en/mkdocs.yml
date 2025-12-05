@@ -440,6 +440,7 @@ nav:
       - '2025':
         - '': 'security-announcements/incident-clarifications/2025/index.md'
         - 'NPM Packages Compromised in Supply Chain Attack': 'security-announcements/incident-clarifications/2025/npm-packages-compromised-in-supply-chain-attack.md'
+        - 'NPM Supply Chain Attack - Shai-Hulud 2.0': 'security-announcements/incident-clarifications/2025/npm-supply-chain-attack-shai-hulud-2.0.md'
       - '2021':
         - '': 'security-announcements/incident-clarifications/2021/index.md'
         - 'Codecov supply chain breach': 'security-announcements/incident-clarifications/2021/codecov-supply-chain-breach.md'
