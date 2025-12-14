@@ -390,6 +390,7 @@ nav:
       - '': 'security-announcements/cve-justifications/index.md'
       - '2025':
         - '': 'security-announcements/cve-justifications/2025/index.md'
+        - 'CVE-2025-66516': 'security-announcements/cve-justifications/2025/CVE-2025-66516.md'
         - 'CVE-2025-59340': 'security-announcements/cve-justifications/2025/CVE-2025-59340.md'
         - 'CVE-2025-48913' : 'security-announcements/cve-justifications/2025/CVE-2025-48913.md'
         - 'CVE-2025-47889': 'security-announcements/cve-justifications/2025/CVE-2025-47889.md'
