@@ -53,7 +53,7 @@ security researcher community relationship.
 |                                                                               |
 | :-----------------------------------------------------------------------------|
 | [Keyur Maheta](https://www.linkedin.com/in/keyur-maheta-342720256/)           |
-
+| [Shenal Mario Peiris](https://www.linkedin.com/in/shenal-mario)           |
 
 ### WSO2 Cloud Security Hackathon 2025
 
