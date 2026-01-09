@@ -388,6 +388,9 @@ nav:
           - '2025 H1': 'security-announcements/cloud-security-bulletins/choreo/2025/choreo-2025-h1.md'        
     - 'CVE Justifications':
       - '': 'security-announcements/cve-justifications/index.md'
+      - '2026':
+        - '': 'security-announcements/cve-justifications/2026/index.md'
+        - 'jQuery vulnerabilities in OpenAPI Generator (CVE-2012-6708 CVE-2015-9251 CVE-2019-11358 CVE-2020-11022 CVE-2020-11023 CVE-2020-7656)': 'security-announcements/cve-justifications/2026/jQuery vulnerabilities in OpenAPI Generator (CVE-2012-6708 CVE-2015-9251 CVE-2019-11358 CVE-2020-11022 CVE-2020-11023 CVE-2020-7656).md'
       - '2025':
         - '': 'security-announcements/cve-justifications/2025/index.md'
         - 'CVE-2025-66516': 'security-announcements/cve-justifications/2025/CVE-2025-66516.md'
