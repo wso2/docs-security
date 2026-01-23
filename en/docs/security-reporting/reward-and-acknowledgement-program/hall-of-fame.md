@@ -20,9 +20,10 @@ security researcher community relationship.
 |                                                                                  |
 | :------------------------------------------------------------------------------- |
 | [AGS Lakpahana](https://www.linkedin.com/in/lakpahana)                           |
+| **[Alex Williams](https://pellera.com/)**                                        | 
 | [crnkovic](https://crnkovic.dev)                                                 |
 | **CyberMavi**                                                                    |
-| [Danh Nguyen (k4it0) from VIB Pentest Team](https://www.linkedin.com/in/k4it0) |
+| [Danh Nguyen (k4it0) from VIB Pentest Team](https://www.linkedin.com/in/k4it0)   |
 | [Deepanshu Devaliya](https://linkedin.com/in/deepanshu-devaliya369)              |
 | [Dũng x Bắc from VNPT Cyber Immunity](https://x.com/onsra_03)                    |
 | **devme4f**                                                                      |
