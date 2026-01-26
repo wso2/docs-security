@@ -20,6 +20,7 @@ security researcher community relationship.
 |                                                                                  |
 | :------------------------------------------------------------------------------- |
 | [AGS Lakpahana](https://www.linkedin.com/in/lakpahana)                           |
+| **Alex Williams from Pellera Technologies**                                      |
 | [crnkovic](https://crnkovic.dev)                                                 |
 | **CyberMavi**                                                                    |
 | [Danh Nguyen (k4it0) from VIB Pentest Team](https://www.linkedin.com/in/k4it0) |
@@ -52,7 +53,9 @@ security researcher community relationship.
 
 |                                                                               |
 | :-----------------------------------------------------------------------------|
+| **Hamed Elnwasani from Deepstrike.io**                                            |
 | [Keyur Maheta](https://www.linkedin.com/in/keyur-maheta-342720256/)           |
+| [Mahmoud Osama](https://www.linkedin.com/in/mahmoud0x00/)           |
 | [Shenal Mario Peiris](https://www.linkedin.com/in/shenal-mario)           |
 
 ### WSO2 Cloud Security Hackathon 2025
