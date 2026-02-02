@@ -15,6 +15,7 @@ category: security-announcements
 * [WSO2-2025-4577]({{#base_path#}}/security-announcements/security-advisories/2025/WSO2-2025-4577)
 * [WSO2-2025-4530]({{#base_path#}}/security-announcements/security-advisories/2025/WSO2-2025-4530)
 * [WSO2-2025-4525]({{#base_path#}}/security-announcements/security-advisories/2025/WSO2-2025-4525)
+* [WSO2-2025-4517]({{#base_path#}}/security-announcements/security-advisories/2025/WSO2-2025-4517)
 * [WSO2-2025-4480]({{#base_path#}}/security-announcements/security-advisories/2025/WSO2-2025-4480)
 * [WSO2-2025-4469]({{#base_path#}}/security-announcements/security-advisories/2025/WSO2-2025-4469)
 * [WSO2-2025-4410]({{#base_path#}}/security-announcements/security-advisories/2025/WSO2-2025-4410)
