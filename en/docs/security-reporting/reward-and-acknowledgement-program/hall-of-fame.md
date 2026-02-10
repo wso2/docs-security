@@ -53,7 +53,7 @@ security researcher community relationship.
 
 |                                                                               |
 | :-----------------------------------------------------------------------------|
-| **Hamed Elnwasani from Deepstrike.io**                                            |
+| **Hamed Elnwasani from DeepStrike.io**                                            |
 | [Keyur Maheta](https://www.linkedin.com/in/keyur-maheta-342720256/)           |
 | [Mahmoud Osama](https://www.linkedin.com/in/mahmoud0x00/)           |
 | [Shenal Mario Peiris](https://www.linkedin.com/in/shenal-mario)           |
