@@ -441,6 +441,7 @@ nav:
         - 'CVE-2012-5881': 'security-announcements/cve-justifications/2025/CVE-2012-5881.md'
         - 'CVE-2012-5882': 'security-announcements/cve-justifications/2025/CVE-2012-5882.md'
         - 'CVE-2012-5883': 'security-announcements/cve-justifications/2025/CVE-2012-5883.md'
+        - 'CVE-2025-41249': 'security-announcements/cve-justifications/2025/CVE-2025-41249.md'
       - '2024':
         - '': 'security-announcements/cve-justifications/2024/index.md'
         - 'CVE-2022-45868': 'security-announcements/cve-justifications/2024/CVE-2022-45868.md'
