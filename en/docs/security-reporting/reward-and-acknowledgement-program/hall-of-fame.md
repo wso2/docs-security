@@ -32,10 +32,12 @@ security researcher community relationship.
 | [Kumar Gaurav](https://www.linkedin.com/in/k10gaurav)                                         |
 | [LUU HONG QUAN](https://www.linkedin.com/in/hong-quan-3a3b93224/)                             |
 | [Manisha Dilshan](https://www.linkedin.com/in/manisha-dilshan-b08ba3215)                      |
-| **Marcos Vinicius from CyberMavi**                                                            |
+| **Marcos Vinicius from CyberMavi**   
+| [Michał Majchrowicz, Marcin Wyczechowski, and Paweł Zdunek — members of the AFINE Team](https://afine.com/)  |                                                         |
 | [Milan Katwal](https://x.com/milankatwal99)                                                   |
 | **Nikhil Mittal**                                                                             |
-| [Noël Maccary](https://fr.linkedin.com/in/nmaccary)                                           |
+| [Noël Maccary](https://fr.linkedin.com/in/nmaccary)   
+| **Omri Inbar**                                                                |                                        |
 | [Rohan Hotkar](https://www.linkedin.com/in/rohanhotkar/)                                      |
 | [Suraj Theekshana](https://www.linkedin.com/in/suraj-theekshana-10171023a/)                   |
 | [Vaibhav Shinde](https://www.linkedin.com/in/vaibhav-shinde-28b811242/)                       |
@@ -53,7 +55,7 @@ security researcher community relationship.
 
 |                                                                               |
 | :-----------------------------------------------------------------------------|
-| **Hamed Elnwasani from DeepStrike.io**                                            |
+| [Hamed Elnwasani from DeepStrike](https://deepstrike.io/)                                           |
 | [Keyur Maheta](https://www.linkedin.com/in/keyur-maheta-342720256/)           |
 | [Mahmoud Osama](https://www.linkedin.com/in/mahmoud0x00/)           |
 | [Shenal Mario Peiris](https://www.linkedin.com/in/shenal-mario)           |
