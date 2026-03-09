@@ -50,6 +50,7 @@ security researcher community relationship.
 | [Keyur Maheta](https://www.linkedin.com/in/keyur-maheta-342720256/)                                                  |
 | [Kumar Gaurav](https://www.linkedin.com/in/k10gaurav)                                                                |
 | [LUU HONG QUAN](https://www.linkedin.com/in/hong-quan-3a3b93224/)                                                    |
+| [Manisha Dilshan](https://www.linkedin.com/in/manisha-dilshan-b08ba3215)                                             |
 | **Marcos Vinicius from CyberMavi**                                                                                   |
 | [Milan Katwal](https://x.com/milankatwal99)                                                                          |
 | **Nikhil Mittal**                                                                                                    |
