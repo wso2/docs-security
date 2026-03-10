@@ -13,6 +13,26 @@ However, please note that WSO2-maintained websites (including wso2.com) are curr
 with acknowledgement. Refer to our [Security Reward and Acknowledgement Program](index.md) to learn more about our 
 security researcher community relationship.
 
+## 2026
+
+### WSO2 Products and Infrastructure
+
+|                                                                                                                      |
+| :------------------------------------------------------------------------------------------------------------------- |
+| [Alex Williams from Pellera Technologies](https://www.linkedin.com/in/alexanderwilliamscyber)                        |
+| [Claire Wang](https://clairewang.net/)                                                                               |
+| [Manisha Dilshan](https://www.linkedin.com/in/manisha-dilshan-b08ba3215)                                             |
+| [Michał Majchrowicz, Marcin Wyczechowski, and Paweł Zdunek — members of the AFINE Team](https://afine.com/)          |
+
+
+### Asgardeo
+
+|                                                                     |
+| :------------------------------------------------------------------ |
+| [Hamed Elnwasani from DeepStrike](https://deepstrike.io/)           |
+| [Mahmoud Osama](https://www.linkedin.com/in/mahmoud0x00/)           |
+
+
 ## 2025
 
 ### WSO2 Products and Infrastructure
@@ -20,7 +40,6 @@ security researcher community relationship.
 |                                                                                                                      |
 | :------------------------------------------------------------------------------------------------------------------- |
 | [AGS Lakpahana](https://www.linkedin.com/in/lakpahana)                                                               |
-| [Alex Williams from Pellera Technologies](https://www.linkedin.com/in/alexanderwilliamscyber)                        |
 | [crnkovic](https://crnkovic.dev)                                                                                     |
 | **CyberMavi**                                                                                                        |
 | [Danh Nguyen (k4it0) from VIB Pentest Team](https://www.linkedin.com/in/k4it0)                                       |
@@ -33,7 +52,6 @@ security researcher community relationship.
 | [LUU HONG QUAN](https://www.linkedin.com/in/hong-quan-3a3b93224/)                                                    |
 | [Manisha Dilshan](https://www.linkedin.com/in/manisha-dilshan-b08ba3215)                                             |
 | **Marcos Vinicius from CyberMavi**                                                                                   |
-| [Michał Majchrowicz, Marcin Wyczechowski, and Paweł Zdunek — members of the AFINE Team](https://afine.com/)          |
 | [Milan Katwal](https://x.com/milankatwal99)                                                                          |
 | **Nikhil Mittal**                                                                                                    |
 | [Noël Maccary](https://fr.linkedin.com/in/nmaccary)                                                                  |
@@ -55,9 +73,7 @@ security researcher community relationship.
 
 |                                                                     |
 | :------------------------------------------------------------------ |
-| [Hamed Elnwasani from DeepStrike](https://deepstrike.io/)           |
 | [Keyur Maheta](https://www.linkedin.com/in/keyur-maheta-342720256/) |
-| [Mahmoud Osama](https://www.linkedin.com/in/mahmoud0x00/)           |
 | [Shenal Mario Peiris](https://www.linkedin.com/in/shenal-mario)     |
 
 ### WSO2 Cloud Security Hackathon 2025
