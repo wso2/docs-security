@@ -10,3 +10,4 @@ This section contains the security bulletins for WSO2 cloud offerings.
 
 * [Choreo]({{#base_path#}}/security-announcements/cloud-security-bulletins/choreo/)
 * [Asgardeo]({{#base_path#}}/security-announcements/cloud-security-bulletins/asgardeo/)
+* [Bijira]({{#base_path#}}/security-announcements/cloud-security-bulletins/Bijira/)
