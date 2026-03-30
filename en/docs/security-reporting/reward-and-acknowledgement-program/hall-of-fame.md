@@ -21,8 +21,12 @@ security researcher community relationship.
 | :------------------------------------------------------------------------------------------------------------------- |
 | [Alex Williams from Pellera Technologies](https://www.linkedin.com/in/alexanderwilliamscyber)                        |
 | [Claire Wang](https://clairewang.net/)                                                                               |
+| [Lasantha Karunarathne](https://www.linkedin.com/in/lasakaru/)                                                       |
 | [Manisha Dilshan](https://www.linkedin.com/in/manisha-dilshan-b08ba3215)                                             |
 | [Michał Majchrowicz, Marcin Wyczechowski, and Paweł Zdunek — members of the AFINE Team](https://afine.com/)          |
+| **Omri Inbar**                                                                                                       |
+| [Robert C. Raducioiu](https://it.linkedin.com/in/rbct)                                                               |
+
 
 
 ### Asgardeo
@@ -32,6 +36,14 @@ security researcher community relationship.
 | [Hamed Elnwasani from DeepStrike](https://deepstrike.io/)           |
 | [Mahmoud Osama](https://www.linkedin.com/in/mahmoud0x00/)           |
 
+
+
+### Choreo
+
+|                                                                                                                      |
+| :------------------------------------------------------------------------------------------------------------------- |
+| [AGS Lakpahana](https://www.linkedin.com/in/lakpahana)                                                               |
+| [Alex Roger from Laburity](https://laburity.com)                                                               |
 
 ## 2025
 
