@@ -481,6 +481,9 @@ nav:
         - 'CVE-2014-3623': 'security-announcements/cve-justifications/2014/CVE-2014-3623.md'
     - 'Incident Clarifications':
       - '': 'security-announcements/incident-clarifications/index.md'
+      - '2026':
+        - '': 'security-announcements/incident-clarifications/2026/index.md'
+        - 'Axios NPM Supply Chain Compromise': 'security-announcements/incident-clarifications/2026/axios-npm-supply-chain-compromise.md'
       - '2025':
         - '': 'security-announcements/incident-clarifications/2025/index.md'
         - 'NPM Packages Compromised in Supply Chain Attack': 'security-announcements/incident-clarifications/2025/npm-packages-compromised-in-supply-chain-attack.md'

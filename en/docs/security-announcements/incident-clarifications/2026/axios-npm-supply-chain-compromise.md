@@ -23,8 +23,10 @@ WSO2 official product release artifacts rely on pinned dependencies defined in t
 
 #### Potential Exposure Conditions
 Exposure may be possible only in cases where deployments were modified from the official release baseline. This includes scenarios in which:
+
 * a semantic versioning range, such as ^0.30.0, was specified in the package.json file instead of an exact version, and npm install was executed; or
 * npm update was executed during the incident window between March 31, 2026, 00:21 UTC and 03:15 UTC.
+
 In such cases, a malicious version may have been resolved unintentionally.
 
 #### Recommended Action
