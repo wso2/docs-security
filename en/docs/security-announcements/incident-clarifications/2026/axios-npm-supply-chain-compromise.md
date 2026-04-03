@@ -17,7 +17,6 @@ category: security-announcements
 On March 30, 2026, a security incident was reported involving malicious versions of the Axios HTTP client library: specifically, axios@1.14.1 and axios@0.30.4. These versions were published to npm through a compromised maintainer account and included a hidden dependency, plain-crypto-js@4.2.1. This dependency executes a post-installation script that served as a cross-platform remote-access trojan dropper for macOS, Windows, and Linux. The malicious packages were modified to exfiltrate sensitive information, including authentication tokens and configuration details from developer environments and pipelines.
 
 ### Impact on WSO2 Products and Deployments
-
 Following the reported incident, the WSO2 Security Team immediately collaborated with the engineering teams to review the Axios versions used across WSO2 products and services. In addition, developer machines, build environments, and WSO2-managed deployments were examined for indicators of compromise, and no evidence of impact was found.
 
 WSO2 official product release artifacts rely on pinned dependencies defined in the package-lock.json file. Our assessment confirmed that these artifacts did not resolve to any of the malicious Axios versions associated with the incident.
