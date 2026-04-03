@@ -13,24 +13,67 @@ However, please note that WSO2-maintained websites (including wso2.com) are curr
 with acknowledgement. Refer to our [Security Reward and Acknowledgement Program](index.md) to learn more about our 
 security researcher community relationship.
 
+## 2026
+
+### WSO2 Products and Infrastructure
+
+|                                                                                                                      |
+| :------------------------------------------------------------------------------------------------------------------- |
+| [Alex Williams from Pellera Technologies](https://www.linkedin.com/in/alexanderwilliamscyber)                        |
+| [Claire Wang](https://clairewang.net/)                                                                               |
+| [Lasantha Karunarathne](https://www.linkedin.com/in/lasakaru/)                                                       |
+| [Manisha Dilshan](https://www.linkedin.com/in/manisha-dilshan-b08ba3215)                                             |
+| [Michał Majchrowicz, Marcin Wyczechowski, and Paweł Zdunek — members of the AFINE Team](https://afine.com/)          |
+| **Omri Inbar**                                                                                                       |
+| [Robert C. Raducioiu](https://it.linkedin.com/in/rbct)                                                               |
+
+
+
+### Asgardeo
+
+|                                                                     |
+| :------------------------------------------------------------------ |
+| [Hamed Elnwasani from DeepStrike](https://deepstrike.io/)           |
+| [Mahmoud Osama](https://www.linkedin.com/in/mahmoud0x00/)           |
+
+
+
+### Choreo
+
+|                                                                                                                      |
+| :------------------------------------------------------------------------------------------------------------------- |
+| [AGS Lakpahana](https://www.linkedin.com/in/lakpahana)                                                               |
+| [Alex Roger from Laburity](https://laburity.com)                                                               |
+
 ## 2025
 
 ### WSO2 Products and Infrastructure
 
-|                                                                           |
-| :------------------------------------------------------------------------ |
-| [Deepanshu Devaliya](https://linkedin.com/in/deepanshu-devaliya369)       |
-| [Dũng x Bắc from VNPT Cyber Immunity](https://x.com/onsra_03)             |
-| **devme4f**                                                               |
-| [Keyur Maheta](https://www.linkedin.com/in/keyur-maheta-342720256/)       |
-| [LUU HONG QUAN](https://www.linkedin.com/in/hong-quan-3a3b93224/)         |
-| **Marcos Vinicius from CyberMavi**                                        |
-| [Noël Maccary](https://fr.linkedin.com/in/nmaccary)                       |
-| [Rohan Hotkar](https://www.linkedin.com/in/rohanhotkar/)                  |
-| [Suraj Theekshana](https://www.linkedin.com/in/suraj-theekshana-10171023a/) |
-| [Vaibhav Shinde](https://www.linkedin.com/in/vaibhav-shinde-28b811242/)   |
-| **Viral Maniar**                                                          |
-| **CyberMavi**                                                             |
+|                                                                                                                      |
+| :------------------------------------------------------------------------------------------------------------------- |
+| [AGS Lakpahana](https://www.linkedin.com/in/lakpahana)                                                               |
+| [crnkovic](https://crnkovic.dev)                                                                                     |
+| **CyberMavi**                                                                                                        |
+| [Danh Nguyen (k4it0) from VIB Pentest Team](https://www.linkedin.com/in/k4it0)                                       |
+| [Deepanshu Devaliya](https://linkedin.com/in/deepanshu-devaliya369)                                                  |
+| [Dũng x Bắc from VNPT Cyber Immunity](https://x.com/onsra_03)                                                        |
+| **devme4f**                                                                                                          |
+| **Gaurang Maheta**                                                                                                   |
+| [Keyur Maheta](https://www.linkedin.com/in/keyur-maheta-342720256/)                                                  |
+| [Kumar Gaurav](https://www.linkedin.com/in/k10gaurav)                                                                |
+| [LUU HONG QUAN](https://www.linkedin.com/in/hong-quan-3a3b93224/)                                                    |
+| [Manisha Dilshan](https://www.linkedin.com/in/manisha-dilshan-b08ba3215)                                             |
+| **Marcos Vinicius from CyberMavi**                                                                                   |
+| [Milan Katwal](https://x.com/milankatwal99)                                                                          |
+| **Nikhil Mittal**                                                                                                    |
+| [Noël Maccary](https://fr.linkedin.com/in/nmaccary)                                                                  |
+| **Omri Inbar**                                                                                                       |
+| [Rohan Hotkar](https://www.linkedin.com/in/rohanhotkar/)                                                             |
+| [Suraj Theekshana](https://www.linkedin.com/in/suraj-theekshana-10171023a/)                                          |
+| [Vaibhav Shinde](https://www.linkedin.com/in/vaibhav-shinde-28b811242/)                                              |
+| **Viral Maniar**                                                                                                     |
+
+
 
 ### Choreo
 
@@ -40,9 +83,32 @@ security researcher community relationship.
 
 ### Asgardeo
 
-|                                                                               |
-| :-----------------------------------------------------------------------------|
-| [Keyur Maheta](https://www.linkedin.com/in/keyur-maheta-342720256/)           |
+|                                                                     |
+| :------------------------------------------------------------------ |
+| [Keyur Maheta](https://www.linkedin.com/in/keyur-maheta-342720256/) |
+| [Shenal Mario Peiris](https://www.linkedin.com/in/shenal-mario)     |
+
+### WSO2 Cloud Security Hackathon 2025
+
+|                        |
+| :--------------------- |
+| Anshajanth Yoganathan  |
+| Sajith Ekanayaka       |
+| Dehami Koswatte        |
+| Samindu Cooray         |
+| Thilan Dissanayaka     |
+| Tharaka Wijekoon       |
+| Sachith Manchanayaka   |
+| Chandima Jayawickrama  |
+| Chathura Ranathunga    |
+| Mifraz Murthaja        |
+| Ushani Athukorala      |
+| Janitha Senevirathna   |
+| Lahiru Samaranayaka    |
+| Dinithi Amarasinghe    |
+| Prabod Dunuwila        |
+| Hasitha Pathirana      |
+
 
 ## 2024
 

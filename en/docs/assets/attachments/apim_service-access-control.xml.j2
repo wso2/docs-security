@@ -1,0 +1,272 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ Copyright (c) 2025, WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
+  ~
+  ~ WSO2 LLC. licenses this file to you under the Apache License,
+  ~ Version 2.0 (the "License"); you may not use this file except
+  ~ in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~     http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing,
+  ~ software distributed under the License is distributed on an
+  ~ "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+  ~ KIND, either express or implied.  See the License for the
+  ~ specific language governing permissions and limitations
+  ~ under the License.
+  -->
+
+<ServiceAccessControl>
+  <Enabled>{{ admin_service.enable_global_access_control | default('true') }}</Enabled>
+  <Services>
+
+    <Service>
+      <Name>LogViewer</Name>
+      <AuthenticationEnabled>true</AuthenticationEnabled>
+      <Permissions>
+        <Permission>/permission/admin/monitor/logs</Permission>
+      </Permissions>
+    </Service>
+
+    <Service>
+      <Name>APIGatewayAdmin</Name>
+      <AuthenticationEnabled>true</AuthenticationEnabled>
+      <Permissions>
+        <Permission>/permission/admin/manage</Permission>
+      </Permissions>
+    </Service>
+
+    <Service>
+      <Name>APILocalEntryAdmin</Name>
+      <AuthenticationEnabled>true</AuthenticationEnabled>
+      <Permissions>
+        <Permission>/permission/admin/manage</Permission>
+      </Permissions>
+    </Service>
+
+    <Service>
+      <Name>APIKeyMgtRemoteUserStoreMgtService</Name>
+      <AuthenticationEnabled>true</AuthenticationEnabled>
+      <Permissions>
+        <Permission>/permission/admin/manage</Permission>
+      </Permissions>
+    </Service>
+
+    <Service>
+      <Name>UserProfileMgtService</Name>
+      <AuthenticationEnabled>true</AuthenticationEnabled>
+      <Operations>
+        <Operation name="isReadOnlyUserStore">
+          <Permissions>
+            <Permission>/permission/admin/manage/identity/userstore/config/view</Permission>
+          </Permissions>
+        </Operation>
+        <Operation name="getProfileFieldsForInternalStore">
+          <Permissions>
+            <Permission>/permission/admin/manage/identity/userstore/config/view</Permission>
+          </Permissions>
+        </Operation>
+        <Operation name="isAddProfileEnabled">
+          <Permissions>
+            <Permission>/permission/admin/manage/identity/userstore/config/view</Permission>
+          </Permissions>
+        </Operation>
+        <Operation name="isAddProfileEnabledForDomain">
+          <Permissions>
+            <Permission>/permission/admin/manage/identity/userstore/config/view</Permission>
+          </Permissions>
+        </Operation>
+        <Operation name="getNameAssociatedWith">
+          <Permissions>
+            <Permission>/permission/admin/manage/identity/user/association/view</Permission>
+          </Permissions>
+        </Operation>
+        <Operation name="getAssociatedIDsForUser">
+          <Permissions>
+            <Permission>/permission/admin/manage/identity/user/association/view</Permission>
+          </Permissions>
+        </Operation>
+        <Operation name="removeAssociateIDForUser">
+          <Permissions>
+            <Permission>/permission/admin/manage/identity/user/association/delete</Permission>
+          </Permissions>
+        </Operation>
+      </Operations>
+    </Service>
+
+    <Service>
+      <Name>CustomMeteringService</Name>
+      <AuthenticationEnabled>true</AuthenticationEnabled>
+      <Permissions>
+        <Permission>/permission/admin/manage</Permission>
+      </Permissions>
+    </Service>
+
+    <Service>
+      <Name>PackageInfoService</Name>
+      <AuthenticationEnabled>true</AuthenticationEnabled>
+      <Permissions>
+        <Permission>/permission/admin/manage</Permission>
+      </Permissions>
+    </Service>
+
+    <Service>
+      <Name>ManageGenericArtifactService</Name>
+      <AuthenticationEnabled>true</AuthenticationEnabled>
+      <Operations>
+        <Operation name="getArtifactUIConfiguration">
+          <Permissions>
+            <Permission>/permission/admin/configure/governance/manage-rxt</Permission>
+          </Permissions>
+        </Operation>
+        <Operation name="getAvailableAspects">
+          <Permissions>
+            <Permission>/permission/admin/configure/governance/manage-rxt</Permission>
+          </Permissions>
+        </Operation>
+        <Operation name="canChange">
+          <Permissions>
+            <Permission>/permission/admin/configure/governance/manage-rxt</Permission>
+          </Permissions>
+        </Operation>
+      </Operations>
+    </Service>
+
+    <Service>
+      <Name>QpidAdminService</Name>
+      <AuthenticationEnabled>true</AuthenticationEnabled>
+      <Permissions>
+        <Permission>/permission/admin/manage</Permission>
+      </Permissions>
+    </Service>
+
+    <Service>
+      <Name>IdentityProviderMgtService</Name>
+      <AuthenticationEnabled>true</AuthenticationEnabled>
+      <Operations>
+        <Operation name="getAllIdPs">
+          <Permissions>
+            <Permission>/permission/admin/manage/identity/idpmgt/view</Permission>
+          </Permissions>
+        </Operation>
+        <Operation name="getAllIdPsSearch">
+          <Permissions>
+            <Permission>/permission/admin/manage/identity/idpmgt/view</Permission>
+          </Permissions>
+        </Operation>
+      </Operations>
+    </Service>
+
+    <Service>
+      <Name>TierCacheService</Name>
+      <AuthenticationEnabled>true</AuthenticationEnabled>
+      <Permissions>
+        <Permission>/permission/admin/manage</Permission>
+      </Permissions>
+    </Service>
+
+    <Service>
+      <Name>RegistryCacheInvalidationService</Name>
+      <AuthenticationEnabled>true</AuthenticationEnabled>
+      <Permissions>
+        <Permission>/permission/admin/manage</Permission>
+      </Permissions>
+    </Service>
+
+    <Service>
+      <Name>LifeCycleManagementService</Name>
+      <AuthenticationEnabled>true</AuthenticationEnabled>
+      <Operations>
+        <Operation name="getLifecycleList">
+          <Permissions>
+            <Permission>/permission/admin/configure/governance/lifecycles</Permission>
+          </Permissions>
+        </Operation>
+        <Operation name="isLifecycleNameInUse">
+          <Permissions>
+            <Permission>/permission/admin/configure/governance/lifecycles</Permission>
+          </Permissions>
+        </Operation>
+      </Operations>
+    </Service>
+
+    <Service>
+      <Name>APIAuthenticationService</Name>
+      <AuthenticationEnabled>true</AuthenticationEnabled>
+      <Permissions>
+        <Permission>/permission/admin/manage</Permission>
+      </Permissions>
+    </Service>
+
+    <Service>
+      <Name>APIKeyMgtProviderService</Name>
+      <AuthenticationEnabled>true</AuthenticationEnabled>
+      <Permissions>
+        <Permission>/permission/admin/manage</Permission>
+      </Permissions>
+    </Service>
+
+    <Service>
+      <Name>APIKeyMgtSubscriberService</Name>
+      <AuthenticationEnabled>true</AuthenticationEnabled>
+      <Permissions>
+        <Permission>/permission/admin/manage</Permission>
+      </Permissions>
+    </Service>
+
+    <Service>
+      <Name>UserAdmin</Name>
+      <AuthenticationEnabled>true</AuthenticationEnabled>
+      <Operations>
+        <Operation name="hasMultipleUserStores">
+          <Permissions>
+            <Permission>/permission/admin/manage/identity/userstore/config/view</Permission>
+          </Permissions>
+        </Operation>
+        <Operation name="changePasswordByUser">
+          <AuthenticationEnabled>false</AuthenticationEnabled>
+        </Operation>
+      </Operations>
+    </Service>
+
+    <Service>
+      <Name>GAppTenantRegistrationService</Name>
+      <AuthenticationEnabled>true</AuthenticationEnabled>
+      <Permissions>
+        <Permission>/permission/admin/manage</Permission>
+      </Permissions>
+    </Service>
+
+{% for svc in admin_service.access_control %}
+    <Service>
+      <Name>{{ svc.name }}</Name>
+      <AuthenticationEnabled>{{ svc.authentication_enabled | default(true) | string | lower }}</AuthenticationEnabled>
+      {% if svc.permissions %}
+      <Permissions>
+        {% for perm in svc.permissions %}
+        <Permission>{{ perm }}</Permission>
+        {% endfor %}
+      </Permissions>
+      {% endif %}
+      {% if svc.operation %}
+      <Operations>
+        {% for op in svc.operation %}
+        <Operation name="{{ op.name }}">
+          {% if op.permissions %}
+          <Permissions>
+            {% for perm in op.permissions %}
+            <Permission>{{ perm }}</Permission>
+            {% endfor %}
+          </Permissions>
+          {% elif op.authentication_enabled is defined %}
+          <AuthenticationEnabled>{{ op.authentication_enabled | string | lower }}</AuthenticationEnabled>
+          {% endif %}
+        </Operation>
+        {% endfor %}
+      </Operations>
+      {% endif %}
+    </Service>
+  {% endfor %}
+  </Services>
+</ServiceAccessControl>
