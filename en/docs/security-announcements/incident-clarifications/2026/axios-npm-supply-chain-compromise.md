@@ -10,7 +10,7 @@ category: security-announcements
 <p class="doc-info">WSO2 impacted: Yes</p>
 <p class="doc-info">Evidence of compromise: No</p>
 <p class="doc-info">Customers impacted: No (Unless potential exposure conditions are met)</p>
-<p class="doc-info">Customers' actions required: No (Unless potential exposure conditions are met)</p>
+<p class="doc-info">Customer actions required: No (Unless potential exposure conditions are met)</p>
 ---
 
 ### Reported Incident
