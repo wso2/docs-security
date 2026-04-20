@@ -431,6 +431,7 @@ nav:
         - 'CVE-2019-11358': 'security-announcements/cve-justifications/2026/CVE-2019-11358.md'
         - 'CVE-2015-9251': 'security-announcements/cve-justifications/2026/CVE-2015-9251.md'
         - 'CVE-2012-6708': 'security-announcements/cve-justifications/2026/CVE-2012-6708.md'
+        - 'CVE-2025-11143': 'security-announcements/cve-justifications/2026/CVE-2025-11143.md'
       - '2025':
         - '': 'security-announcements/cve-justifications/2025/index.md'
         - 'CVE-2025-66516': 'security-announcements/cve-justifications/2025/CVE-2025-66516.md'
