@@ -365,11 +365,11 @@ nav:
         - '2025':
           - '': 'security-announcements/cloud-security-bulletins/choreo/2025/index.md'
           - '2025 H1': 'security-announcements/cloud-security-bulletins/choreo/2025/choreo-2025-h1.md'        
-      - 'Bijira':
-        - '': 'security-announcements/cloud-security-bulletins/bijira/index.md'
+      - 'WSO2 API Platform':
+        - '': 'security-announcements/cloud-security-bulletins/wso2-api-platform/index.md'
         - '2025':
-          - '': 'security-announcements/cloud-security-bulletins/bijira/2025/index.md'
-          - '2025 H2': 'security-announcements/cloud-security-bulletins/bijira/2025/bijira-2025-h2.md'
+          - '': 'security-announcements/cloud-security-bulletins/wso2-api-platform/2025/index.md'
+          - '2025 H2': 'security-announcements/cloud-security-bulletins/wso2-api-platform/2025/wso2-api-platform-2025-h2.md'
     - 'CVE Justifications':
       - '': 'security-announcements/cve-justifications/index.md'
       - '2025':
