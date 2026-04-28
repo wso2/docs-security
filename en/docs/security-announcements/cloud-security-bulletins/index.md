@@ -8,5 +8,6 @@ category: security-announcements
 
 This section contains the security bulletins for WSO2 cloud offerings.
 
-* [Choreo]({{#base_path#}}/security-announcements/cloud-security-bulletins/choreo/)
 * [Asgardeo]({{#base_path#}}/security-announcements/cloud-security-bulletins/asgardeo/)
+* [Choreo]({{#base_path#}}/security-announcements/cloud-security-bulletins/choreo/)
+* [WSO2 API Platform]({{#base_path#}}/security-announcements/cloud-security-bulletins/wso2-api-platform/)
