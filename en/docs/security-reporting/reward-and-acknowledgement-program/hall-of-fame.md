@@ -31,10 +31,11 @@ security researcher community relationship.
 
 ### Asgardeo
 
-|                                                                     |
-| :------------------------------------------------------------------ |
-| [Hamed Elnwasani from DeepStrike](https://deepstrike.io/)           |
-| [Mahmoud Osama](https://www.linkedin.com/in/mahmoud0x00/)           |
+|                                                                                       |
+| :------------------------------------------------------------------------------------ |
+| [Hamed Elnwasani from DeepStrike](https://deepstrike.io/)                             |
+| [Lakshitha Perera](https://www.linkedin.com/in/lakshitha-perera-687857352/)           |
+| [Mahmoud Osama](https://www.linkedin.com/in/mahmoud0x00/)                             |
 
 
 
