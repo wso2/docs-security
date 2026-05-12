@@ -1,5 +1,5 @@
 <!--
- * Copyright (c) 2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,22 +16,12 @@
  * under the License.
 -->
 
-<!-- Hack: unset variable, as we're using it recursively in tabs-item.html -->
-{% set class = "" %}
+<link rel="stylesheet" href="{{ 'assets/css/report-issues.css' | url }}">
 
-<!-- Navigation tabs -->
-<nav
-  class="md-tabs"
-  aria-label="{{ lang.t('tabs') }}"
-  data-md-component="tabs"
->
-  <div class="md-grid">
-    <ul class="md-tabs__list">
-      {% for nav_item in nav %}
-        {% if config.extra.explicit_tab_list and nav_item.title in config.extra.explicit_tab_list %}
-          {% include "partials/tabs-item.html" %}
-        {% endif %}
-      {% endfor %}
-    </ul>
-  </div>
-</nav>
+<div class="report-issues-fixed">
+  <button class="md-typeset md-button md-button--small md-button--flex md-button--report-issues"
+          onclick="javascript:window.open('https://github.com/wso2/api-manager'+'/issues/new?title=Doc%20Feedback:&labels=docs&body=Location%20:%20'+window.location.href)"
+          title="Report Issues">
+    <label class="md-header__link__label">Report Issues</label>
+  </button>
+</div>

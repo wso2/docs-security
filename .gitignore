@@ -30,3 +30,7 @@ hs_err_pid*
 
 venv/
 .venv/
+
+# MkDocs build output
+en/site/
+site/

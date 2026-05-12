@@ -1,5 +1,5 @@
---- 
-template: templates/single-column.html 
+---
+template: templates/no-navbars.html
 ---
 
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />

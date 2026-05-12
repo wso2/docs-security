@@ -1,4 +1,4 @@
-<!--
+/**
  * Copyright (c) 2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
@@ -14,24 +14,29 @@
  * KIND, either express or implied. See the License for the
  * specific language governing permissions and limitations
  * under the License.
--->
+ */
 
-<!-- Hack: unset variable, as we're using it recursively in tabs-item.html -->
-{% set class = "" %}
+:root,
+[data-md-color-scheme=default] {
+  --md-icon-padding: 8px;
+  --md-icon-hover-background-color: var(--colors-mystic);
+}
 
-<!-- Navigation tabs -->
-<nav
-  class="md-tabs"
-  aria-label="{{ lang.t('tabs') }}"
-  data-md-component="tabs"
->
-  <div class="md-grid">
-    <ul class="md-tabs__list">
-      {% for nav_item in nav %}
-        {% if config.extra.explicit_tab_list and nav_item.title in config.extra.explicit_tab_list %}
-          {% include "partials/tabs-item.html" %}
-        {% endif %}
-      {% endfor %}
-    </ul>
-  </div>
-</nav>
+:root,
+[data-md-color-scheme=slate] {
+  --md-icon-hover-background-color: #393939;
+}
+
+:root,
+[data-md-color-scheme=slate] {
+  --md-header-box-shadow: none;
+}
+
+.md-icon.md-icon--hover {
+  padding: 8px;
+}
+
+.md-icon.md-icon--hover:hover {
+  background: var(--md-icon-hover-background-color);
+  border-radius: 50%;
+}

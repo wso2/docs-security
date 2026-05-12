@@ -31,16 +31,49 @@ copyright: WSO2 Security and Compliance - Documentation
 # Configuration
 theme:
   name: material
-  palette:
-    primary: deep-orange
-    accent: deep-orange
   custom_dir: theme/material
-  logo: images/logo.svg
-  favicon: images/favicon.png
-  highlightjs: true
-  feature:
-    tabs: true
+  logo: assets/images/logo.svg
+  logo_light: assets/images/logo-for-light.svg
+  favicon: assets/images/favicon.png
   language: 'en'
+  font: false
+  palette:
+    # Palette toggle for light mode
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: deep orange
+      accent: deep orange
+      toggle:
+        icon: assets/libs/oxygen-ui-icons/1.7.3/crescent-bright-16.svg
+        name: Switch to dark mode
+    # Palette toggle for dark mode
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: deep orange
+      accent: deep orange
+      toggle:
+        icon: assets/libs/oxygen-ui-icons/1.7.3/sun-16.svg
+        name: Switch to light mode
+  features:
+    - navigation.tabs
+    - navigation.indexes
+    - navigation.path
+    - navigation.top
+    - navigation.footer
+    - navigation.instant.progress
+    - content.code.copy
+    - content.action.edit
+    - content.action.view
+    - content.tabs.link
+    - search.suggest
+    - search.share
+
+# Breaks build if there's a warning
+strict: false
+
+validation:
+  absolute_links: ignore
+  unrecognized_links: ignore
 
 # Navigation
 nav:
@@ -520,15 +553,13 @@ nav:
 
 # Extensions
 markdown_extensions:
-  - markdown.extensions.admonition
-  - markdown.extensions.codehilite:
-      linenums: true
-      use_pygments: false
+  - admonition
   - markdown.extensions.def_list
   - markdown.extensions.footnotes
   - markdown.extensions.meta
   - markdown.extensions.toc:
       permalink: true
+      toc_depth: 3
   - markdown_include.include:
       base_path: docs
   - pymdownx.arithmatex
@@ -543,42 +574,65 @@ markdown_extensions:
   - pymdownx.keys
   - pymdownx.mark
   - pymdownx.smartsymbols
+  - pymdownx.highlight:
+      anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
   - pymdownx.superfences
+  - pymdownx.tabbed:
+      alternate_style: true
   - pymdownx.tasklist:
       custom_checkbox: true
   - pymdownx.tilde
   - pymdownx.snippets:
       base_path: docs
   - attr_list
-  - pymdownx.highlight
-  - pymdownx.emoji:
-      emoji_index: !!python/name:materialx.emoji.twemoji
-      emoji_generator: !!python/name:materialx.emoji.to_svg
 
 # Plugin
 plugins:
-  - search
+  - search:
+      separator: '[\s\-,:!=\[\]()"`/]+|\.(?!\d)|&[lg]t;|(?!\b)(?=[A-Z][a-z])'
   - markdownextradata:
       jinja_options:
         variable_start_string: '{{#'
         variable_end_string: '#}}'
+  - redirects:
+      redirect_maps: {}
+  - minify:
+      minify_html: true
+      minify_js: true
+      minify_css: true
+      htmlmin_opts:
+        remove_comments: true
+  - glightbox:
+      touchNavigation: true
+      loop: false
+      effect: zoom
+      slide_effect: slide
+      width: 100%
+      height: auto
+      zoomable: true
+      draggable: true
+      skip_classes:
+        - skip-lightbox
+      auto_caption: false
+      caption_position: bottom
+  - include-markdown
+  - exclude:
+      glob:
+        - wip/*
+        - '*.j2'
 
 # Extra
 extra_css:
-  - assets/lib/highlightjs/default.min.css
   - assets/css/theme.css
-extra_javascript:
-  - assets/lib/highlightjs/highlight.min.js
-  - assets/js/theme.js
-  - assets/lib/backtotop/js/util.js
-  - assets/lib/backtotop/js/main.js
 extra:
   social:
-    - type: github
+    - icon: fontawesome/brands/github
       link: https://github.com/wso2
-    - type: twitter
+    - icon: fontawesome/brands/twitter
       link: https://twitter.com/wso2
-    - type: linkedin
+    - icon: fontawesome/brands/linkedin
       link: https://www.linkedin.com/company/wso2
   site_version: 1.0.0
   cp_timeframe: 2015-2023
