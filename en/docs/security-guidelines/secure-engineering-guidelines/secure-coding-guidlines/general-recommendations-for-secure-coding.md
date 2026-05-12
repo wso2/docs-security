@@ -558,7 +558,7 @@ Go applications should not use `os/exec.Command`, `os/exec.CommandContext` or an
     ```
 
 ## Cross-Site Scripting (XSS)
-Cross-Site Scripting allows an attacker to execute malicious code (scripts) against the web browser of the user. By leveraging this attack, an attacker could attempt to carry out other forms of attacks such as stealing session cookies to perform [Session Hijacking](#session-hijacking) or stealing token values to conduct [CSRF Attacks](#csrf-attacks), launch a phishing attack etc[^13].
+Cross-Site Scripting allows an attacker to execute malicious code (scripts) against the web browser of the user. By leveraging this attack, an attacker could attempt to carry out other forms of attacks such as stealing session cookies to perform [Session Hijacking](#session-hijacking) or stealing token values to conduct [CSRF Attacks](#cross-site-request-forgery-csrf), launch a phishing attack etc[^13].
 
 
 ### Prevention Techniques 
@@ -1420,7 +1420,7 @@ Preventing client-side attacks
 :   Please refer to the documentation section [Cross-Site Scripting (XSS)](#cross-site-scripting-xss). 
 
 Cookie security
-:   Cookie attributes should be set properly, in order to prevent session related cookies from getting exposed over unencrypted channels.  Please refer to the documentation section [Securing Cookie](#securing-cookie). 
+:   Cookie attributes should be set properly, in order to prevent session related cookies from getting exposed over unencrypted channels.  Please refer to the documentation section [Securing Cookies](#securing-cookies). 
 
 ### Go Specific Recommendations 
 

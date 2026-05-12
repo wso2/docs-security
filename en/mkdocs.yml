@@ -597,7 +597,17 @@ plugins:
         variable_start_string: '{{#'
         variable_end_string: '#}}'
   - redirects:
-      redirect_maps: {}
+      redirect_maps:
+        # Asgardeo H1 filename case normalization
+        'security-announcements/cloud-security-bulletins/asgardeo/2025/Asgardeo-2025-H1.md': 'security-announcements/cloud-security-bulletins/asgardeo/2025/asgardeo-2025-h1.md'
+        # CVE-2024-0392 reassigned to WSO2-2023-2987
+        'security-announcements/security-advisories/2024/CVE-2024-0392.md': 'security-announcements/security-advisories/2024/WSO2-2023-2987.md'
+        # CVE-2010-4208 superseded by CVE-2013-6780 in-depth analysis
+        'security-announcements/cve-justifications/2025/CVE-2010-4208.md': 'security-announcements/cve-justifications/2025/CVE-2013-6780.md'
+        # WSO2-2023-2617 was withdrawn; point to year index
+        'security-announcements/security-advisories/2023/WSO2-2023-2617.md': 'security-announcements/security-advisories/2023/2023-advisories.md'
+        # public-artifacts section retired; point to docs root
+        'public-artifacts/index.md': 'index.md'
   - minify:
       minify_html: true
       minify_js: true
