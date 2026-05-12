@@ -2957,8 +2957,1116 @@ Log all file upload activities and monitor them for signs of suspicious behavior
     ```
 
 
-## References
-[^1]: [https://www.owasp.org/index.php/SQL_Injection](https://www.owasp.org/index.php/SQL_Injection)
+## Software Supply Chain Failures
+
+OWASP Top 10 - 2025 widens the 2021 "Vulnerable and Outdated Components" category into "Software Supply Chain Failures" (A03), which is the cumulative risk that anything pulled in from outside your own source tree could be compromised: a direct dependency, a transitive dependency, a build-time tool, a base container image, a publisher account, a private registry, or the CI runner itself. The 2025-2026 incidents that WSO2 has already published clarifications for — the [npm packages compromised in supply-chain attack](../../../security-announcements/incident-clarifications/2025/npm-packages-compromised-in-supply-chain-attack.md), [Shai-Hulud 2.0](../../../security-announcements/incident-clarifications/2025/npm-supply-chain-attack-shai-hulud-2.0.md), and the [axios npm supply-chain compromise](../../../security-announcements/incident-clarifications/2026/axios-npm-supply-chain-compromise.md) — all turned on a single attacker capability: pushing a malicious version of an otherwise-legitimate package and waiting for downstream consumers to resolve it.
+
+The dependency-vulnerability subset of this category is covered separately in [Using Known Vulnerable Components](#using-known-vulnerable-components); the build-integrity overlap with A08 is in [Software and Data Integrity Failures](#software-and-data-integrity-failures).
+
+### Prevention Techniques
+
+* Pin every dependency to an exact version, in every language. Never use floating ranges (`^1.2`, `~1.2`, `LATEST`, `RELEASE`, `latest`) in any manifest that produces a shipped artefact. Commit the lock file (`package-lock.json`, `pnpm-lock.yaml`, `go.sum`) on every change, and verify it in CI with `npm ci` / `pnpm install --frozen-lockfile` / `go mod download` under `GOFLAGS=-mod=readonly`.
+* Validate dependency manifests on every pull request. The build must fail if a manifest changes without an explicit approval label, and it must fail if a vulnerability scan returns a finding above the agreed threshold that is not on an audited allow-list.
+* Maintain a single trusted source for each ecosystem (the WSO2 Nexus for Maven, the official WSO2-controlled npm registry or scoped mirror, the documented Go module proxy). Disable resolution from any other source; if Maven Central, npmjs.com, or `proxy.golang.org` is required, configure it explicitly and review additions to the trust list.
+* Generate an SBOM (CycloneDX or SPDX) as part of the release pipeline for every product, and attach it to the released artefact. Without an SBOM, customers and security teams cannot answer "are we affected by this CVE?" without re-scanning binaries.
+* Sign every released artefact (Maven JAR, Docker image, Helm chart, OS package) and publish the signature alongside the artefact. The release pipeline that performs the signing must run on protected infrastructure with a fresh, short-lived signing identity for each release.
+* Treat the CI runner and its secrets as a primary attack surface. Use the least-privileged `permissions:` block on every workflow; never use `pull_request_target` with secrets unless the workflow gates execution behind an approval step; rotate CI tokens on every public supply-chain incident even when WSO2 is not directly affected.
+
+### Java Specific Recommendations
+
+#### Pin exact versions and centralise repositories in the parent POM
+
+WSO2's product POMs already restrict resolution to WSO2-controlled repositories. The pattern from `product-apim`:
+
+```xml
+<!-- product-apim/pom.xml -->
+<repositories>
+    <repository>
+        <id>wso2-nexus</id>
+        <url>https://maven.wso2.org/nexus/content/groups/wso2-public/</url>
+        <releases>
+            <enabled>true</enabled>
+            <updatePolicy>daily</updatePolicy>
+            <checksumPolicy>fail</checksumPolicy>
+        </releases>
+    </repository>
+</repositories>
+```
+
+Two rules apply when adding a new product POM: pin every `<version>` explicitly or through a `<properties>` block, never via Maven version ranges or `LATEST` / `RELEASE`; and inherit repository configuration from a single parent POM so that adding a new Maven repository is a reviewable change to one file, not many.
+
+#### Run dependency scans on every pull request
+
+The existing [Using Known Vulnerable Components](#using-known-vulnerable-components) section describes OWASP Dependency Check at PR time. For the supply-chain category the additional requirement is the **manifest guard**: a CI workflow that fails the build when `pom.xml`, `go.mod`, `go.sum`, `package.json`, `package-lock.json`, `pnpm-lock.yaml`, or `.npmrc` changes without a label such as `dependencies-approved`. This pattern is already in use in `thunderid/.github/workflows/dependency-guard.yml`:
+
+```yaml
+# Reusable guard: if any dependency manifest changed and the PR is not
+# labelled `dependencies-approved`, the workflow fails.
+on:
+  pull_request:
+    paths:
+      - '**/pom.xml'
+      - '**/package.json'
+      - '**/package-lock.json'
+      - '**/pnpm-lock.yaml'
+      - '**/go.mod'
+      - '**/go.sum'
+      - '**/.npmrc'
+```
+
+The guard exists so that supply-chain changes require an explicit reviewer, not a passing test suite.
+
+#### Sign Maven releases and publish checksums
+
+`maven-release-plugin` does the version bump and tag; on its own it does not sign. Every product release pipeline must additionally run `maven-gpg-plugin` (or a sigstore-equivalent) to produce `.asc` signatures next to each artefact, publish SHA-256 checksums in the release notes, and make signature verification a documented step in the customer install guide. Today, several WSO2 release pipelines lack GPG signing for the published JARs — see [Software and Data Integrity Failures](#software-and-data-integrity-failures) for the integrity side of the same requirement.
+
+### Go Specific Recommendations
+
+#### Commit `go.sum` and build with `-mod=readonly`
+
+`go.sum` is the integrity manifest. The CI build must refuse to run if `go.mod` is modified without a matching `go.sum` update, which is what `GOFLAGS=-mod=readonly` enforces. Thunder's pipeline sets this explicitly, and PRs that add a Go dependency are blocked until the dependency is approved against an external registry:
+
+```yaml
+# thunderid/.github/workflows/dependency-validation.yml
+env:
+  GOFLAGS: "-mod=readonly"
+on:
+  pull_request_target:
+    paths:
+      - '**/go.mod'
+      - '**/go.sum'
+```
+
+For new Go services in WSO2, replicate the pattern: `GOFLAGS=-mod=readonly` in CI, `go.sum` committed on every change, dependency additions go through a registry check before merge.
+
+#### Pin every direct dependency to an exact version, audit transitives
+
+Go's default is exact pinning; the trap is the `replace` directive in `go.mod`, which can silently substitute a local fork or an alternative repository for an upstream module. Treat any `replace` line as a review-required change with a documented reason — by default, do not use it.
+
+For frontends shipped from the Go services (Thunder and WSO2 API Platform both ship pnpm-based portals), pin the entire dependency graph through the workspace catalog and lock file:
+
+```yaml
+# thunderid/frontend/pnpm-workspace.yaml — exact versions only, no ranges
+catalog:
+  '@asgardeo/react': 0.24.2
+  react: 18.3.1
+```
+
+Do not use `^` or `~` in `package.json` for production builds. Both the workspace catalog and `pnpm-lock.yaml` are committed and verified with `pnpm install --frozen-lockfile` in CI.
+
+#### Configure the Go module proxy explicitly for air-gapped builds
+
+For deployments that build inside a customer network, document the required `GOPROXY` value (an internal mirror, not `direct`). `direct` resolution bypasses the integrity-friendly proxy and reaches the upstream VCS — fine for internet builds, but a supply-chain hole for air-gapped builds where the customer expects the artefact to be reproducible.
+
+### Lessons from recent incidents
+
+The three published clarifications agree on the same defensive posture and they are worth reading before adopting the rules above. The shared lesson is that exact version pinning plus committed lock files were the controls that kept WSO2 product artefacts clean during the September 2025 npm compromise, the November 2025 Shai-Hulud 2.0 worm, and the March 2026 axios compromise. Deployments that diverge from the official baseline — by relaxing pins, running `npm update` against a live registry, or building from `latest` — were left without that protection.
+
+
+## Cryptographic Failures
+
+OWASP Top 10 - 2025 A04 covers everything from "we used MD5 for a password" to "we passed the wrong key into AES-GCM and the nonce repeated". The four sections already in this document — [Heap Inspection Attacks](#heap-inspection-attacks), [Privacy Violation - Password AutoComplete](#privacy-violation-password-autocomplete), [Random Number Generation](#random-number-generation), and [Securing Cookies](#securing-cookies) — cover specific facets. This section covers algorithm choice, TLS, key management, encryption at rest, and JWT signing.
+
+### Prevention Techniques
+
+* Use only the algorithms on WSO2's approved list. Symmetric: AES-128 or AES-256 in GCM mode, with a random 96-bit nonce per encryption. Asymmetric: RSA 2048+ with OAEP-SHA-256 padding, or ECDSA P-256+, or Ed25519. Hashing for integrity: SHA-256 or SHA-3. Password hashing: Argon2id, or PBKDF2-HMAC-SHA256 with at least 600 000 iterations and a 32-byte salt.
+* Never use MD5, SHA-1, 3DES, RC4, AES in ECB mode, `RSA/ECB/PKCS1Padding`, `Cipher.getInstance("AES")` without a mode, or `Cipher.getInstance("RSA")` without padding. If a legacy interoperability requirement forces a deprecated algorithm, isolate the use, log a deprecation warning at start-up, and add a tracked removal date.
+* Configure TLS with a minimum protocol of TLS 1.2 (TLS 1.3 preferred), an explicit cipher allow-list, strict hostname verification, and HSTS. Never use `AllowAllHostnameVerifier`, `NoopHostnameVerifier.INSTANCE`, or `tls.Config{InsecureSkipVerify: true}` outside isolated test code; if present in production code paths, treat as a security defect.
+* Centralise crypto access behind WSO2's helpers — `org.wso2.carbon.core.util.CryptoUtil` and the `CryptoService` OSGi service in Java; the `internal/system/cryptolab` package in Thunder. Never call `Cipher.getInstance` or `crypto/aes` directly from product code; the helper layer is what allows algorithms and parameters to be upgraded in one place when defaults change.
+* Manage keys explicitly. Document the keystore layout (primary, internal, tenant), source private-key passphrases from a secret manager (SecureVault, KMS, Vault, sealed secret), enforce a rotation cadence, and log every key lifecycle event. Each tenant must have its own data-encryption key; one tenant's compromise must not decrypt another tenant's data.
+* For JWTs, pin the accepted `alg` values to an explicit allow-list per verifier — typically `RS256`, `RS384`, `ES256`. Reject `alg: none` and reject HMAC algorithms wherever the verifier is configured with an asymmetric key (alg-confusion). Validate `iss`, `aud`, `exp`, `nbf`, and `iat` on every verification. Use the `kid` header to look up the key from a JWKS, never trust an inline `jwk` header.
+
+### Java Specific Recommendations
+
+#### Go through `CryptoUtil` and `CryptoService`, not `Cipher` directly
+
+Carbon's central facade for encryption is `org.wso2.carbon.core.util.CryptoUtil` with methods such as `encryptAndBase64Encode()` and `base64DecodeAndDecrypt()`, backed by a pluggable `InternalCryptoProvider`. Identity and APIM components select the provider via configuration:
+
+```java
+// org.wso2.carbon.identity.user.store.configuration.utils.SecondaryUserStoreConfigurator
+private static final String CRYPTO_PROVIDER =
+        "CryptoService.InternalCryptoProviderClassName";
+private static final String SYMMETRIC_KEY_CRYPTO_PROVIDER =
+        "org.wso2.carbon.crypto.provider.SymmetricKeyInternalCryptoProvider";
+```
+
+New code that handles a secret — refresh tokens, identity provider credentials, vault-managed configuration — must go through `CryptoUtil` or an injected `CryptoService` rather than calling `Cipher.getInstance` itself. The shared helper ensures that an algorithm or padding upgrade is a one-place change, not a campaign.
+
+When a legacy code path does instantiate a `Cipher` directly, use the modern transformations explicitly. The pattern below is what to follow for new symmetric encryption:
+
+```java
+// New code: AES-GCM with a fresh 96-bit nonce per encryption
+byte[] iv = new byte[12];
+SecureRandom.getInstanceStrong().nextBytes(iv);
+Cipher cipher = Cipher.getInstance("AES/GCM/NoPadding");
+cipher.init(Cipher.ENCRYPT_MODE, key, new GCMParameterSpec(128, iv));
+byte[] ciphertext = cipher.doFinal(plaintext);
+// Persist iv || ciphertext together; never reuse iv with the same key.
+```
+
+For asymmetric, use `RSA/ECB/OAEPWithSHA-256AndMGF1Padding`, never `RSA/ECB/PKCS1Padding`. Audit older code in `SecondaryUserStoreConfigurator` and related places that fall back to `Cipher.getInstance("RSA", …)` without an explicit padding string — this resolves to provider-dependent defaults and is a known weak pattern.
+
+#### Configure TLS with a strict baseline
+
+Carbon's `MutualSSLManager` hard-codes the protocol baseline:
+
+```java
+// org.wso2.carbon.identity.application.authentication.endpoint.util.MutualSSLManager
+private static final String protocol = "TLSv1.2";
+```
+
+That is the minimum. New product code that builds an `SSLContext` or an HTTP client must:
+
+* set the protocol to TLS 1.2 or higher, prefer TLS 1.3 where the JVM supports it,
+* set `setEndpointIdentificationAlgorithm("HTTPS")` on client `SSLParameters` so hostname verification happens in the SSL engine itself,
+* never install `NoopHostnameVerifier.INSTANCE` or any `HostnameVerifier` that returns true unconditionally. APIM's `APIManagerComponent` exposes an `ALLOW_ALL` option for backwards compatibility; that option must not be enabled in any production deployment, and new components must not add similar opt-outs.
+
+HSTS is configured in the terminating proxy or Carbon's Tomcat configuration (`catalina-server.xml`); a deployment without HSTS on every TLS-terminating endpoint is a hardening defect.
+
+#### Sign JWTs with RS256, validate against an allow-list, reject `alg: none`
+
+API Manager's gateway verifies JWT signatures via Nimbus JOSE and explicitly restricts the accepted algorithms:
+
+```java
+// org.wso2.carbon.apimgt.gateway.utils.GatewayUtils
+JWSAlgorithm algorithm = jwt.getHeader().getAlgorithm();
+if (algorithm != null && (JWSAlgorithm.RS256.equals(algorithm)
+        || JWSAlgorithm.RS384.equals(algorithm)
+        || JWSAlgorithm.RS512.equals(algorithm))) {
+    JWSVerifier jwsVerifier = new RSASSAVerifier(publicKey);
+    return jwt.verify(jwsVerifier);
+} else {
+    log.error("Public key is not a RSA");
+    throw new APISecurityException(
+            APISecurityConstants.API_AUTH_GENERAL_ERROR,
+            APISecurityConstants.API_AUTH_GENERAL_ERROR_MESSAGE);
+}
+```
+
+Take the same shape for any new JWT verifier: an explicit `if (algorithm.equals(RS256) || …)` allow-list, with `alg: none` rejected by construction (it is not in the allow-list). Where a verifier holds an asymmetric public key, reject `HS256`/`HS384`/`HS512` outright — the algorithm-confusion attack works precisely when a verifier accepts an HMAC algorithm against a key it thinks is a public RSA key.
+
+On the issuing side, `AbstractJWTGenerator` defaults to `SHA256_WITH_RSA` (RS256) and explicitly guards the `none` alternative — that gate must remain in place. New token issuers must not introduce HMAC-signing for tokens that leave the service boundary; the receiver and issuer would need to share the secret, which defeats the security model.
+
+Validate `iss`, `aud`, `exp`, `nbf`, and `iat` claims on every verifier, look up the signing key via the `kid` header against a JWKS endpoint with a documented refresh policy, and never honour an inline `jwk` header from the token itself.
+
+#### Manage keys through `KeyStoreManager`, plan rotation
+
+Identity Server uses `KeyStoreManager` per tenant, with the primary keystore alias declared as `Security.KeyStore.KeyAlias`:
+
+```java
+// SecondaryUserStoreConfigurator.initializeKeyStore
+String keyAlias = config.getFirstProperty(SERVER_KEYSTORE_KEY_ALIAS);
+KeyStore store = KeyStoreManager
+        .getInstance(MultitenantConstants.SUPER_TENANT_ID)
+        .getPrimaryKeyStore();
+Certificate cert = store.getCertificate(keyAlias);
+```
+
+The supply-chain weakness in many deployments is *not* the algorithm — it is that the primary keystore password lives in plain text in `repository/conf/carbon.xml` or that key rotation is never performed. Source private-key passphrases from SecureVault, document a rotation cadence for each key class (signing keys ≤ 2 years, data-encryption keys ≤ 1 year), and audit every keystore replacement with a logged event. Each tenant must have its own data-encryption key.
+
+### Go Specific Recommendations
+
+#### Use `internal/system/cryptolab` instead of `crypto/aes` directly
+
+Thunder's `cryptolab` package wraps the algorithm choice so that callers never instantiate a primitive. The encrypt entry point dispatches by algorithm and binds the right primitive:
+
+```go
+// thunderid/backend/internal/system/cryptolab/encrypt.go
+switch params.Algorithm {
+case AlgorithmAESGCM:
+    aesKey, ok := key.([]byte)
+    if !ok {
+        return nil, nil, errors.New("AES-GCM requires a []byte key")
+    }
+    return encryptAESGCM(aesKey, content)
+case AlgorithmRSAOAEP256:
+    rsaPub, ok := key.(*rsa.PublicKey)
+    if !ok {
+        return nil, nil, errors.New("RSA-OAEP-256 requires *rsa.PublicKey")
+    }
+    return encryptRSAOAEP256(rsaPub, content)
+}
+```
+
+The AES-GCM implementation generates a fresh random nonce per call and prepends it to the ciphertext — the canonical safe pattern:
+
+```go
+// thunderid/backend/internal/system/cryptolab/encrypt.go
+func encryptAESGCM(key, plaintext []byte) ([]byte, error) {
+    block, err := aes.NewCipher(key)
+    if err != nil {
+        return nil, fmt.Errorf("failed to create AES cipher: %w", err)
+    }
+    aesgcm, err := cipher.NewGCM(block)
+    if err != nil {
+        return nil, fmt.Errorf("failed to create GCM mode: %w", err)
+    }
+    nonce := make([]byte, aesgcm.NonceSize())
+    if _, err = rand.Read(nonce); err != nil {
+        return nil, fmt.Errorf("failed to generate nonce: %w", err)
+    }
+    return aesgcm.Seal(nonce, nonce, plaintext, nil), nil
+}
+```
+
+Two rules: never reuse `key+nonce` (the `rand.Read` call is what makes this safe — do not "optimise" it by deriving a nonce from a counter), and never call `aes.NewCipher` from product code. Go through the helper so that an algorithm bump is a one-place change.
+
+#### Hash passwords with Argon2id, configured externally
+
+Thunder's password-hash provider reads parameters from configuration rather than hard-coding them:
+
+```go
+// thunderid/backend/internal/system/cryptolab/hash/service.go
+h := argon2.IDKey(
+    credentialValue,
+    credSalt,
+    uint32(a.Iterations),
+    uint32(a.Memory),
+    uint8(a.Parallelism),
+    uint32(a.KeySize),
+)
+```
+
+For new Go services follow the same shape. Choose Argon2id with memory ≥ 19 MiB, iterations ≥ 2, parallelism ≥ 1, key size 32 bytes; or PBKDF2-HMAC-SHA256 with ≥ 600 000 iterations and a 32-byte salt. Always store the algorithm name and parameters alongside the hash so that increasing the parameters in configuration causes a re-hash on the next successful authentication.
+
+#### Configure `tls.Config` with `MinVersion`, never `InsecureSkipVerify`
+
+Thunder's SMTP client baseline is the right shape:
+
+```go
+// thunderid/backend/internal/system/email/smtp_client.go
+tlsConfig := &tls.Config{
+    MinVersion: tls.VersionTLS12,
+    ServerName: host,
+}
+```
+
+Two anti-patterns appear in test code and must never appear in production:
+
+```go
+// Test-only — do NOT copy into production paths
+TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
+```
+
+A code review must reject any non-test occurrence of `InsecureSkipVerify: true` or a missing `MinVersion`. The gateway controller in WSO2 API Platform demonstrates the configuration-driven approach: cipher suites are parsed from operator-supplied configuration, not hard-coded — but the parser must reject any cipher outside the allow-list rather than silently accepting an unknown name.
+
+#### Validate JWTs with explicit algorithm and claim checks
+
+Where a Go service consumes JWTs, the verifier must (a) restrict the accepted algorithm at parse time, (b) load the public key by `kid` from a JWKS cache with an expiry, (c) validate `iss`, `aud`, `exp`, `nbf`, `iat`, and (d) refuse tokens without a signature. The `golang-jwt/jwt` library accepts a keyfunc callback — use the callback to enforce the algorithm allow-list:
+
+```go
+token, err := jwt.ParseWithClaims(raw, claims, func(t *jwt.Token) (any, error) {
+    switch t.Method.Alg() {
+    case "RS256", "RS384", "ES256":
+        // continue
+    default:
+        return nil, fmt.Errorf("unsupported alg %q", t.Method.Alg())
+    }
+    kid, _ := t.Header["kid"].(string)
+    return jwks.GetKey(kid)
+})
+```
+
+Do not rely on the library's default keyfunc — it accepts whatever algorithm appears in the header, which is the algorithm-confusion vulnerability class.
+
+
+## Insecure Design
+
+OWASP Top 10 - 2025 places "Insecure Design" (A06) ahead of most implementation-level categories because the deepest classes of vulnerability — privilege confusion, workflow bypass, race conditions across security-relevant state, missing rate limits, and unsafe defaults — can rarely be patched by changing a single line of code. They have to be designed out before the first commit. The patterns below codify the practices that WSO2 already uses across the Carbon, Identity Server, API Manager, Thunder, and WSO2 API Platform codebases.
+
+Two specific design failures that already have their own entries are linked from here rather than repeated: see [Insecure Deserialization](#insecure-deserialization) and [Unrestricted File Upload](#unrestricted-file-upload).
+
+### Prevention Techniques
+
+* Any feature that introduces a new external attack surface, a new authentication or authorisation surface, a new credential or secret store, or a new privilege grant must go through a documented design review with the product's security lead before code review begins. WSO2's [Secure Software Development Process](../../../security-processes/secure-software-development-process.md) describes the STRIDE-LM threat modelling that is expected at this stage.
+* Default configurations must be safe to deploy unchanged. Dangerous features (debug endpoints, sample applications, analytics with PII, weak ciphers, broad CORS, mutual TLS off, secure vault off) ship disabled. Production hardening is opt-in, not opt-out.
+* Workflow state transitions (API lifecycle, application registration, user/account state, subscription approvals) must be enforced by an explicit state machine — an enum plus a transition table — checked at the service layer before any persistence. Never derive the next state from caller input alone.
+* All shared mutable state must be guarded against race conditions. Critical sections that span "check then act" steps must hold a lock for the duration of both steps, or use compare-and-set primitives. TOCTOU bugs are design defects and cannot be fixed in catch blocks.
+* Every endpoint that performs work — authentication, token issuance, OTP send, password reset, user creation, API publish, file upload, expensive query — must be rate-limited. The default policy is per-user **and** per-IP **and** global, not just one of those.
+* Trust boundaries must be named and enforced. Inputs crossing into a higher trust zone (REST handler → service, untrusted user → tenant data, external system → internal cluster) get re-validated on entry; tenant identity is carried in context and re-checked at the data layer, never inferred.
+
+### Java Specific Recommendations
+
+#### Use the STRIDE-LM design review
+
+The Secure Software Development Process at WSO2 lists a mandatory design phase that runs before code review. Quoting the published process:
+
+> Formal threat modeling using STRIDE-LM methodology is followed for selected features. … What are the access and trust boundaries of the component? Who should be able to consume the functionalities exposed by the component? What level of authentication and authorization is required by the component, and what is the granularity of the permissions? Are there configuration elements that include confidential data? If so, how should they be protected?
+
+Any of the following changes triggers a STRIDE-LM review: new external HTTP/SOAP/gRPC surface; new persisted credential, key, or token type; new privileged role or permission; new cross-tenant operation; new outbound integration that handles tenant data. The artefacts of the review (data flow diagram, trust boundaries, abuse cases, risks accepted and risks remediated) live in the product's architecture repository — not only in tickets.
+
+#### Ship secure defaults in `repository/conf/*.xml`
+
+Carbon and Identity Server defaults sit in `repository/conf/identity/identity.xml`, `repository/conf/carbon.xml`, and `repository/conf/api-manager.xml`. Risky features ship disabled. From `api-manager.xml`:
+
+```xml
+<EnableSecureVault>false</EnableSecureVault>
+<EnableMTLSForAPIs>false</EnableMTLSForAPIs>
+<Analytics>
+    <Enabled>false</Enabled>
+</Analytics>
+```
+
+The pattern is intentional: an operator must explicitly opt in to features that change the trust model. The same discipline applies to any new feature flag — the safe state must be the default value, and the configuration loader must never silently promote a missing setting to the permissive value.
+
+#### Enforce state machines for lifecycle workflows
+
+Where business state can change (API lifecycle, application registration, workflow approval), define an enum of legal states and a service-layer guard that rejects unknown transitions before persistence. The API Manager publishing lifecycle is modelled with `APIStatus` (`CREATED`, `PUBLISHED`, `DEPRECATED`, `RETIRED`) and `APIStatusObserver`/`APIStatusHandler` is responsible for refusing illegal transitions; the workflow framework uses `WorkflowStatusEnum`. New domains should follow the same shape rather than encoding transitions ad hoc inside the persistence layer.
+
+#### Protect critical sections against races
+
+For one-time initialisation of shared state, use class- or interned-string-level locks. Carbon's identity caches follow the pattern:
+
+```java
+// org.wso2.carbon.identity.application.common.cache.BaseCache
+synchronized (cacheName.intern()) {
+    if (cacheManager == null) {
+        // one-time initialisation of the shared cache
+    }
+}
+```
+
+For higher-throughput state, prefer `java.util.concurrent` primitives (`AtomicReference`, `ConcurrentHashMap.computeIfAbsent`, `ReentrantReadWriteLock`) over `synchronized`. Where the decision is "is this idempotency key already used", check and insert atomically against the database (`INSERT ... ON CONFLICT` / unique index) — never `SELECT` then `INSERT`.
+
+#### Rate-limit every action that costs something
+
+The API Manager gateway enforces multi-tier throttling through `org.wso2.carbon.apimgt.gateway.handlers.throttling.ThrottleHandler`, with policies layered application → subscription → API → resource → hard limit. New gateway-fronted services inherit this. Endpoints that sit outside the gateway (Identity Server admin services, custom inbound endpoints, OAuth token endpoints) need explicit throttling — either an APIM tier policy or a custom `IdentityEventListener` that enforces a per-user/per-IP counter. CAPTCHA enforcement on login/registration flows is wired through `carbon-identity-framework`'s reCAPTCHA components and exposed by `DefaultStepHandler`:
+
+```java
+// org.wso2.carbon.identity.application.authentication.framework.handler.step.impl.DefaultStepHandler
+// Set user account lock message for authFailureMsg if authFailure is true.
+return retryParam + "&authFailureMsg=user.account.locked";
+```
+
+The companion behaviours — account lockout, attempt counting, IP throttling — are covered under [Authentication Failures](#authentication-failures); design-wise, every interactive form that submits credentials must have all three.
+
+#### Carry tenant identity in `CarbonContext`, never infer it
+
+Every code path that touches tenant data must read the tenant from `PrivilegedCarbonContext` (or from an authenticated principal that itself was resolved against the tenant). Designs that pull tenant id from a request header, query string, or path parameter are wrong by construction — those are user input. The companion lifecycle rule (`startTenantFlow` / `endTenantFlow` in a `try`/`finally`) is in [Mishandling of Exceptional Conditions](#mishandling-of-exceptional-conditions).
+
+### Go Specific Recommendations
+
+#### Define the trust model in `ARCHITECTURE.md`
+
+Thunder's architecture document enumerates the trust model explicitly:
+
+```
+Backend patterns:
+- Each domain package: handler → service → store, single Initialize(mux, …) in init.go.
+- Public paths (no JWT): /auth/**, /flow/execute/**, /oauth2/**, /.well-known/**,
+  /gate/**, /console/**, /mcp/** — full list in system/security/permissions.go.
+```
+
+New Go services in WSO2 should declare the same shape: a `permissions.go` (or equivalent) that lists every public path, and a default-deny rule for any path not in the list. The list is reviewed during design review, not at code review.
+
+#### Use declarative policy on inbound traffic
+
+The WSO2 API Platform represents per-operation security as data, in the API specification, rather than as ad-hoc code in each handler:
+
+```yaml
+# api-platform/concepts/api-yaml-specification.md
+operations:
+  - method: POST
+    path: /
+    requestPolicies:
+      - name: jwt
+        params:
+          header: Authorization
+      - name: rateLimit
+        params:
+          limit: 100
+          window: 60s
+```
+
+That style is what new Go services should aim for: security decisions encoded as version-controlled data, so reviews are diff-based and audits do not need to read handler code.
+
+#### Make workflow state explicit
+
+Thunder's flow engine treats authentication and registration as JSON graphs of nodes (`START → PROMPT → TASK → DECISION → COMPLETE`) with state persisted in `runtimedb` across requests. The engine refuses transitions that are not declared in the graph. When a new long-running workflow is added to a Go service, model it the same way: a typed `State` enum, a transition table reviewed by the security lead, and persistence keyed on `(flow_instance_id, current_state)` with optimistic locking to prevent concurrent advances.
+
+#### Lock or use atomics; do not "check then act"
+
+Goroutines compete for the same maps. The idiomatic Go safe patterns are:
+
+```go
+// one-time init
+var once sync.Once
+once.Do(func() { initialise() })
+
+// per-key locks for hot caches
+mu.Lock()
+defer mu.Unlock()
+if _, ok := cache[key]; !ok {
+    cache[key] = compute(key)
+}
+```
+
+For idempotency, prefer database-side uniqueness (`INSERT ... ON CONFLICT DO NOTHING`) over an in-memory check-then-write loop. `context.Context` is the right way to thread cancellation across the goroutines that participate in a single operation; do not invent ad-hoc cancellation channels per call site.
+
+#### Rate-limit at middleware, not in handlers
+
+Thunder and the API Platform install rate limiting and correlation in the request pipeline rather than per handler — `middleware.CorrelationIDMiddleware` is wired in `cmd/server/main.go`, and rate-limit policy in the API Platform is part of the per-operation spec quoted above. Putting the policy in middleware/spec keeps the security-relevant logic out of the data-plane handler, where it is easy to forget to add to the next endpoint.
+
+#### Validate at the boundary, re-check at the data layer
+
+Each Go domain package follows handler → service → store. Inputs are decoded and validated at the handler (typed DTO, allow-listed fields), the tenant id is read from the authenticated context at the service, and the store refuses queries that do not include the tenant predicate. That layered re-check is the design defence against confused-deputy bugs — even if a handler is bypassed by a future refactor, the store still requires a tenant.
+
+
+## Authentication Failures
+
+OWASP Top 10 - 2025 A07 covers weaknesses that let an attacker take over an account: weak or reused passwords, missing or bypassable second factors, brute-force tolerance, credential stuffing, and implementation pitfalls in OAuth 2.0 / OIDC. The session-lifecycle half of this category — hijacking, fixation, prediction — is already covered in [Session Hijacking](#session-hijacking), [Session Fixation](#session-fixation), and [Session Prediction](#session-prediction); the section below covers the rest.
+
+### Prevention Techniques
+
+* Enforce a password policy on every credential write — self-registration, admin user creation, password reset, password change, federated provisioning. The minimum is length, character classes, and a check that the password does not match the username; products that hold personal data should additionally check against a breached-password list (HIBP API or an internal mirror).
+* Store passwords as salted, key-stretched hashes. The accepted algorithms are Argon2id and PBKDF2 with parameters that meet current OWASP guidance. Store the algorithm identifier with the hash so the parameters can be increased and credentials re-hashed on next login without re-prompting users.
+* Treat MFA as the default for any account with administrative or sensitive-data access. Support TOTP and FIDO2 / WebAuthn as the primary factors; SMS/email OTP is acceptable as a step-up factor or fallback, never as the only second factor for privileged accounts.
+* Lock accounts after a small number of failed authentication attempts within a sliding window, unlock after a documented duration or by an admin, and reset the counter on a successful authentication. Lockout enforcement must apply equally to the interactive login UI **and** to programmatic credential endpoints (OAuth `password` grant, token endpoint, SCIM provisioning).
+* Defend against credential stuffing at the gateway: per-IP and per-user rate limits on authentication endpoints, CAPTCHA escalation after the first few failed attempts, breached-password rejection at password-set time, and anomaly logging (impossible travel, unfamiliar device, distributed sources hitting one account).
+* On OAuth 2.0 / OIDC implementations, require PKCE with `S256` for every public client; reject `plain`. Validate `state` on every authorisation code flow and `nonce` on every OIDC implicit/hybrid flow, bind the `nonce` to the issued ID token, and enforce **exact** `redirect_uri` matching with no fragment. Rotate refresh tokens on every refresh and detect reuse. Validate the JWT `alg` against a per-context allow-list — reject `none` and reject symmetric algorithms when the key is asymmetric.
+
+### Java Specific Recommendations
+
+#### Enforce password policies through the `PolicyEnforcer` registry
+
+WSO2's Identity Management framework ships with a pluggable policy registry. The supplied enforcers cover length, regex pattern, no-username-substring, and no-whitespace:
+
+```java
+// org.wso2.carbon.identity.mgt.policy.password.DefaultPasswordLengthPolicy
+private int MIN_LENGTH = 6;
+private int MAX_LENGTH = 10;
+
+@Override
+public boolean enforce(Object... args) {
+    String password = args[0].toString();
+    if (password.length() < MIN_LENGTH) {
+        errorMessage = "Password must have at least " + MIN_LENGTH + " characters";
+        return false;
+    }
+    if (password.length() > MAX_LENGTH) {
+        errorMessage = "Password cannot have more than " + MAX_LENGTH + " characters";
+        return false;
+    }
+    return true;
+}
+```
+
+The shipped defaults (`MIN_LENGTH = 6`, `MAX_LENGTH = 10`) are **not** strong enough for production — they exist to satisfy the demo profile. Every deployment that issues credentials must override the policy registry with at least: minimum length 12, all four character classes required, no whitespace, and a maximum length high enough to allow passphrases (no upper bound below 64). Wire the enforcers into `IdentityMgtEventListener.doPreUpdateCredential()` so that every credential write — self-registration, admin user creation, password reset, JIT provisioning — passes through the same check.
+
+Where the product handles personal data, add a custom `PolicyEnforcer` that calls the HaveIBeenPwned k-Anonymity API (or a local HIBP mirror) at password-set time. A new user must not be allowed to register with a password that is already on a breach list.
+
+#### Hash passwords with modern parameters and plan for upgrades
+
+Carbon's underlying user store accepts the algorithm choice via configuration; Argon2id and PBKDF2 are both supported. For new deployments choose Argon2id (memory ≥ 19 MiB, iterations ≥ 2, parallelism ≥ 1) or PBKDF2-HMAC-SHA256 with at least 600 000 iterations and a 32-byte salt, per current OWASP guidance. Always store the algorithm name and parameters alongside the hash so that a future tightening of the defaults can be applied transparently on the next successful authentication.
+
+#### Make MFA the default for privileged operations
+
+Identity Server ships authenticators for TOTP, FIDO2, SMS-OTP, and Email-OTP under `carbon-identity-framework/components/authenticator/`. Adaptive authentication scripts (`JsAuthenticationContext`, `executeStep`, `selectAcrFrom`) select the second factor based on the requested ACR, the user's enrolled factors, and risk signals. New product deployments must:
+
+* enrol every administrative user in TOTP or FIDO2 before granting the role,
+* require the second factor for every login that asks for an administrative scope (not only the first login of the day), and
+* prohibit SMS/email OTP as the sole factor for any account that can administer tenants, manage keys, or read other users' data.
+
+#### Lock accounts and reset on success
+
+Account locking is wired through `IdentityMgtEventListener` and the `AccountLockHandler` event handler. The listener tracks failed attempts in the `UserIdentityClaimsDO` claims, sets the `http://wso2.org/claims/identity/accountLocked` claim when the threshold is exceeded, and is consulted in `doPreAuthenticate()` before any credential check. Successful authentication in `doPostAuthenticate()` resets the counter.
+
+The single design rule that must be reviewed in every product: **the lockout claim must be honoured by every authentication path**. Lockout for the interactive login servlet but not the OAuth `password` grant, or for the token endpoint but not SCIM `/Users` provisioning lookups, is the bug pattern that lets attackers move sideways to the unguarded endpoint. The check belongs in a shared pre-authentication step, not duplicated per handler.
+
+#### Validate OAuth 2.0 / OIDC parameters strictly
+
+API Manager's `JWTValidator` and Identity Server's OAuth components ship with the expected validation surface — audience, issuer, signature, expiry. Two specific reviews are required on any code that *issues* or *consumes* tokens:
+
+```java
+// org.wso2.carbon.apimgt.gateway.handlers.security.jwt.JWTValidator
+public JWTValidator(APIKeyValidator apiKeyValidator, String tenantDomain, Set<String> audiences)
+        throws APIManagementException {
+    this(apiKeyValidator, tenantDomain);
+    this.setAudiences(audiences);
+}
+// Validator enforces aud, iss, exp, and signature; relies on the Nimbus JOSE library
+// to reject `alg: none` and asymmetric-symmetric confusion.
+```
+
+* When validating, pass an explicit allow-list of algorithms to Nimbus JOSE (typically `RS256`, `RS384`, `ES256`, `ES384`). Never call the `parse` overloads that accept any algorithm.
+* When issuing, refuse to honour a request where the client has changed its registered algorithm at runtime via a header.
+
+Redirect-URI validation, PKCE enforcement, and refresh-token rotation must be checked feature-by-feature against the deployment's OAuth configuration; if any of those is configured as optional, document the threat model that justifies the looser setting.
+
+### Go Specific Recommendations
+
+#### Configure password hashing centrally
+
+Thunder exposes the password-hashing parameters as configuration rather than hard-coding them. Operators choose Argon2id or PBKDF2 and tune memory/iterations/parallelism per deployment:
+
+```go
+// thunderid/backend/internal/system/config/config.go
+type PasswordHashingConfig struct {
+    Algorithm string         // "argon2id" or "pbkdf2"
+    Argon2ID  Argon2IDConfig // Memory, Iterations, Parallelism
+    PBKDF2    PBKDF2Config   // SaltSize, Iterations, KeySize
+}
+```
+
+For new Go services follow the same shape: never inline a constant iteration count or memory size — read it from configuration and store the algorithm identifier with the hash so that a tightening of the defaults can be applied on next successful authentication without re-prompting users.
+
+#### Issue and verify OTPs as opaque session tokens
+
+Thunder's `otpService` generates a numeric OTP, hashes it server-side, embeds the hash in a session JWT issued to the client, and verifies on submission by recomputing the hash:
+
+```go
+// thunderid/backend/internal/notification/otp_service.go
+otp, err := s.generateOTP()
+sessionData := common.OTPSessionData{
+    Recipient:  otpDTO.Recipient,
+    Channel:    otpDTO.Channel,
+    OTPValue:   hash.GenerateThumbprintFromString(otp.Value), // hash, never plaintext
+    ExpiryTime: otp.ExpiryTimeInMillis,
+}
+sessionToken, _ := s.createSessionToken(ctx, sessionData)
+// ...
+func (s *otpService) VerifyOTP(ctx context.Context, in common.VerifyOTPDTO) (...) {
+    if time.Now().UnixMilli() > sessionData.ExpiryTime {
+        return invalid()
+    }
+    providedOTPHash := hash.GenerateThumbprintFromString(in.OTPCode)
+    if providedOTPHash != sessionData.OTPValue {
+        return invalid()
+    }
+    return verified()
+}
+```
+
+The pattern carries two guarantees: the OTP is never stored or transmitted in clear after generation, and the session is bound to a single attempt window (after expiry the server returns "invalid" without distinguishing expired-vs-wrong-code).
+
+For new Go services, refuse to keep an OTP in a server-side map keyed by phone/email — that store becomes a credential-stuffing target. Issue a short-lived signed token to the client and treat that token as the session.
+
+#### Enforce PKCE `S256` and reject `plain`
+
+Thunder's PKCE validator accepts only the SHA256 challenge method and rejects everything else by construction:
+
+```go
+// thunderid/backend/internal/oauth/oauth2/pkce/pkce.go
+func ValidatePKCE(codeChallenge, codeChallengeMethod, codeVerifier string) error {
+    if codeChallengeMethod != CodeChallengeMethodS256 {
+        return ErrInvalidChallengeMethod
+    }
+    if err := validateCodeVerifier(codeVerifier); err != nil {
+        return err
+    }
+    if codeChallenge == "" {
+        return ErrInvalidCodeChallenge
+    }
+    return validateS256Challenge(codeChallenge, codeVerifier)
+}
+```
+
+For new OAuth implementations follow this exact shape — make the enum strict, do not accept `plain` for "backwards compatibility", and enforce the verifier length (43–128 unreserved characters) at the authorisation request before storing the challenge.
+
+#### Validate authorisation request parameters before issuing a code
+
+The authorisation endpoint must reject malformed requests **before** consulting the user store. Thunder's request validator runs PKCE, nonce length, and prompt validation inline:
+
+```go
+// thunderid/backend/internal/oauth/oauth2/authz/requestvalidator/validator.go
+if responseType == string(constants.ResponseTypeCode) {
+    codeChallenge := params[constants.RequestParamCodeChallenge]
+    codeChallengeMethod := params[constants.RequestParamCodeChallengeMethod]
+    if oauthApp.RequiresPKCE() && codeChallenge == "" {
+        return constants.ErrorInvalidRequest, "code_challenge is required for this application"
+    }
+    if codeChallenge != "" || codeChallengeMethod != "" {
+        if err := pkce.ValidateCodeChallenge(codeChallenge, codeChallengeMethod); err != nil {
+            return constants.ErrorInvalidRequest, "Invalid code_challenge or code_challenge_method parameter"
+        }
+    }
+}
+nonce := params[constants.RequestParamNonce]
+if nonce != "" && len(nonce) > constants.MaxNonceLength {
+    return constants.ErrorInvalidRequest, "nonce exceeds maximum allowed length"
+}
+```
+
+Apply the same discipline to `state`: the value must be present on any flow that returns to the user agent, and its length must be capped so that an attacker cannot push arbitrary content through.
+
+#### Match `redirect_uri` exactly
+
+Substring or prefix matches on `redirect_uri` are the source of many open-redirect-to-token leaks. Thunder's validator compares against the registered URIs as a set, not a regex:
+
+```go
+// thunderid/backend/internal/inboundclient/model/oauth.go
+func (o *OAuthClient) ValidateRedirectURI(redirectURI string) error {
+    return ValidateRedirectURI(o.RedirectURIs, redirectURI)
+}
+```
+
+Any new client registration that requires a wildcard must document why and be approved by the security lead at design review — by default, a registered URI is matched exactly, with no fragment and no trailing slash inference.
+
+#### Rotate refresh tokens on every refresh, detect reuse
+
+Thunder's refresh-token grant handler validates the incoming token against the configured token validator before issuing a new pair:
+
+```go
+// thunderid/backend/internal/oauth/oauth2/granthandlers/refresh_token.go
+refreshTokenClaims, err := h.tokenValidator.ValidateRefreshToken(
+    tokenRequest.RefreshToken, tokenRequest.ClientID)
+if err != nil {
+    return nil, &model.ErrorResponse{
+        Error:            constants.ErrorInvalidGrant,
+        ErrorDescription: "Invalid refresh token",
+    }
+}
+```
+
+The piece that must be added in every service is **rotation with reuse detection**: when the new token pair is issued, the old refresh token is invalidated; if a request later presents that invalidated token, the entire token family must be revoked and the event logged. Without reuse detection, a leaked refresh token is good until natural expiry — defeating the point of rotation.
+
+
+## Software and Data Integrity Failures
+
+OWASP Top 10 - 2025 A08 is the integrity-of-what-you-ship counterpart to A03's integrity-of-what-you-consume. The category covers shipping a binary an attacker can replace, accepting an update without verifying who built it, and trusting an untyped blob from the network because the deserialiser does whatever its content tells it to. Two adjacent topics already exist in this document and are not repeated here: [Insecure Deserialization](#insecure-deserialization) for the run-time half, and [Software Supply Chain Failures](#software-supply-chain-failures) for the dependency-integrity half.
+
+### Prevention Techniques
+
+* Sign every release artefact (JAR, Docker image, Helm chart, OS package, plug-in) on protected infrastructure with a short-lived signing identity, and publish the signature next to the artefact. The customer must have a documented verification step in the install guide, and CI must produce SHA-256 checksums alongside every download.
+* Reference container images by digest, not by tag. `image: ghcr.io/wso2/foo:1.2.3` is mutable; `image: ghcr.io/wso2/foo@sha256:…` is not. The release pipeline must record the digest of the image it pushed; deployment manifests must reference the digest the pipeline recorded.
+* Protect the build infrastructure. Every workflow declares an explicit `permissions:` block scoped to the minimum needed, never uses `pull_request_target` to checkout untrusted code with secrets in scope, requires code-owner review for changes to the workflows themselves, and uses ephemeral credentials (OIDC federation) instead of long-lived API tokens where the platform supports it.
+* Treat configuration files and code-execution gates with the same integrity rigour as code. Auto-update channels must verify a signature before applying. Plug-ins and extensions loaded from disk must have their hash compared against an allow-list captured at install time. Webhook payloads that trigger privileged action must carry an HMAC the receiver verifies before doing any work.
+* Reject deserialisation of untrusted data into arbitrary types. See the [Insecure Deserialization](#insecure-deserialization) section for the language-specific patterns (`ObjectInputFilter` in Java, typed JSON decoding in Go, signed envelopes for any cross-trust-boundary payload).
+
+### Java Specific Recommendations
+
+#### Sign Maven and container release artefacts
+
+Carbon and product release pipelines run `maven-release-plugin` for the version bump and tag. On its own that does not sign anything:
+
+```xml
+<!-- carbon-kernel/pom.xml — release plugin without signing -->
+<plugin>
+    <groupId>org.apache.maven.plugins</groupId>
+    <artifactId>maven-release-plugin</artifactId>
+    <configuration>
+        <preparationGoals>clean install</preparationGoals>
+        <autoVersionSubmodules>true</autoVersionSubmodules>
+    </configuration>
+</plugin>
+```
+
+Every product release pipeline must additionally:
+
+* run `maven-gpg-plugin` (or `sigstore-maven-plugin`) so each artefact has an adjacent `.asc` or sigstore bundle,
+* compute and publish a `.sha256` for each artefact in the release notes,
+* sign container images with cosign before pushing (`cosign sign --key cosign.key registry/...@sha256:digest`),
+* sign Helm charts in the OCI registry and document `cosign verify` in the install guide.
+
+The signing identity must be a hardware-protected key or a short-lived sigstore identity tied to the release workflow's OIDC token — never a long-lived key stored in a CI secret store.
+
+#### Reject untrusted deserialisation across the trust boundary
+
+Java serialisation gadget chains remain the canonical A08 demonstration. The [Insecure Deserialization](#insecure-deserialization) section covers `ObjectInputFilter` (JEP 290), `resolveClass` overrides, and the preference for JSON/XML over `Serializable`. For new APIs, prefer typed DTO classes deserialised by Jackson with `MapperFeature.BLOCK_UNSAFE_POLYMORPHIC_BASE_TYPES` enabled — never accept arbitrary `Object` from the network.
+
+For inbound payloads that are inherently dynamic (webhooks, plug-in configuration), require the producer to sign the payload with an HMAC keyed on a shared secret, verify the HMAC before parsing, and only then construct the typed object.
+
+#### Constrain CI/CD workflow permissions
+
+GitHub Actions defaults give workflows broader permissions than they need. Each WSO2 workflow file must declare its own `permissions:` block, scoped to the minimum the workflow actually requires. The Thunder workflows demonstrate the pattern:
+
+```yaml
+# Release builder — needs to push tags, packages, attach release assets
+permissions:
+  contents: write
+  packages: write
+
+# Dependency validation — only needs to comment on the PR
+permissions:
+  pull-requests: write
+  issues: write
+  contents: read
+```
+
+The release builder may need `packages: write` to push to GHCR; a workflow that runs a linter must not. Any new workflow that triggers on `pull_request_target` must gate execution of untrusted code behind an `actions/checkout` of the *base* branch first, then validate the PR contents against an approved manifest before running anything from the PR's head.
+
+### Go Specific Recommendations
+
+#### Pull container images by digest, not by tag
+
+Thunder's Helm chart supports either form but defaults to `pullPolicy: Always` so a poisoned tag would at least be re-pulled on every deployment. The stronger guarantee is to deploy by digest:
+
+```yaml
+# Helm values — prefer the digest form for immutable releases
+image:
+  registry: ghcr.io/thunder-id/thunderid
+  digest: sha256:0e1f3c…   # always present in release notes
+  pullPolicy: IfNotPresent
+```
+
+The release pipeline emits the digest as part of the release notes; the customer's deployment manifest pins that digest. Combined with cosign verification at admission (cosign-policy-controller, Kyverno, or equivalent) the chain from "the release we built" to "the workload running in production" is verifiable.
+
+#### Sign release binaries and Helm charts
+
+Thunder ships multi-platform ZIPs from GitHub Releases and pushes Helm charts to the GHCR OCI registry. Both need signatures. The release workflow must run after the build, against the artefact paths it produced, and attach the signature next to the artefact:
+
+```yaml
+# release-builder.yml — sign each ZIP and the Helm chart
+- name: Sign release artefacts
+  run: |
+    for f in dist/*.zip; do
+      cosign sign-blob --yes \
+        --bundle "${f}.cosign.bundle" "${f}"
+      sha256sum "${f}" > "${f}.sha256"
+    done
+    cosign sign --yes "ghcr.io/thunder-id/thunderid:${VERSION}"
+```
+
+Document the verification step in the install guide so customers can confirm the artefact before they deploy it.
+
+#### Verify webhook and update integrity at the receiver
+
+For any inbound update or webhook from outside the trust boundary, refuse to act on the payload until its HMAC has verified. The pattern with `hmac.Equal` is the right primitive — never use `==` to compare MACs:
+
+```go
+mac := hmac.New(sha256.New, sharedSecret)
+mac.Write(rawBody)
+expected := mac.Sum(nil)
+got, err := hex.DecodeString(r.Header.Get("X-Hub-Signature-256"))
+if err != nil || !hmac.Equal(expected, got) {
+    http.Error(w, "invalid signature", http.StatusUnauthorized)
+    return
+}
+// Only now: parse and act on rawBody.
+```
+
+For auto-update channels in services that pull packages from a registry, verify a cosign signature on every download before unpacking it. Treat an unsigned or signature-mismatched download as a security incident, not a transient error.
+
+
+## Mishandling of Exceptional Conditions
+
+OWASP Top 10 - 2025 introduces "Mishandling of Exceptional Conditions" (A10) as a category in its own right. The class of bugs covers code that catches exceptions too broadly, fails open on error paths, leaks internal details in error responses, skips resource cleanup on failure, or loses critical state when an unexpected condition is hit. In multi-tenant deployments these mistakes can cross tenant boundaries, so they are treated as security issues, not just reliability issues.
+
+The rules below codify the patterns already used across the Carbon, API Manager, and Identity Server codebases, and the equivalent idioms in WSO2's Go products (Thunder, the WSO2 API Platform).
+
+### Prevention Techniques
+
+* Catch the **specific** exception type you can handle. Catching `Exception`, `Throwable`, `RuntimeException`, or in Go using a bare `recover()` for ordinary control flow, hides bugs and disables compile-time discipline.
+* On any exception during a security-relevant decision (authentication, authorisation, signature verification, integrity check, license check) the request **must default to deny**. Initialise the decision variable to the safe value before the `try` block, and never set it to the permissive value inside `catch`.
+* At every external boundary (REST endpoint, SOAP service, gRPC handler, JMS listener, scheduled job) install a centralised exception mapper. The mapper must produce a sanitised response that does not contain stack traces, file paths, SQL fragments, class names, or framework identifiers.
+* Always release every resource that an exception path could leak — JDBC connections, statements, result sets, file handles, network sockets, OSGi service references, mutex locks, `ThreadLocal` entries, `CarbonContext` tenant flows. Use `try`-with-resources in Java and `defer` in Go.
+* Log the original exception with its stack trace **server-side** using the canonical logger. Never log secrets (passwords, JWTs, OAuth tokens, API keys, session identifiers) or PII as part of the exception message. Mask sensitive values with the helpers provided by the product (`MaskedString` in Thunder, the masking utilities in `carbon-apimgt`).
+* If the failing operation participated in a transaction, the cleanup must roll the transaction back; never let an aborted operation be committed.
+* Avoid time-of-check-to-time-of-use (TOCTOU) gaps around exception handlers — re-validate state inside the recovery block rather than relying on values captured before the failure.
+
+### Java Specific Recommendations
+
+#### Catch the narrowest exception type that you can actually handle
+
+Catching `Exception` or `Throwable` makes it impossible to tell whether the runtime failure was an expected business condition or a programmer error. Carbon code consistently catches typed checked exceptions and lets unexpected throwables propagate to the framework's exception mapper.
+
+```java
+// Good - typed catch, full context preserved
+try {
+    URITemplate uriTemplate = new URITemplate(uri);
+} catch (URITemplateException e) {
+    String msg = "Error parsing URI " + uri + " when building the white-listed URI set.";
+    log.error(msg, e);
+    throw new APIManagementException(msg, e);
+}
+```
+
+The exception of note is the `BundleActivator.start(BundleContext)` / `stop(BundleContext)` pair, which is allowed to declare `throws Exception`. The OSGi framework expects the activator to surface bootstrap failures rather than swallow them.
+
+```java
+public class CarbonCoreBundleActivator implements BundleActivator {
+    @Override
+    public void start(BundleContext bundleContext) throws Exception {
+        DataHolder.getInstance().setBundleContext(bundleContext);
+        logger.debug("Carbon core bundle started successfully.");
+    }
+}
+```
+
+#### Fail secure on every security decision
+
+Initialise the decision variable to the deny value before any code that could throw. Never let an exception cause the variable to be `true` by accident.
+
+```java
+// Good - default deny; exception path cannot flip the decision to allow
+boolean isAuthorized = false;
+try {
+    isAuthorized = authorizationManager.isUserAuthorized(user, resource, action);
+} catch (UserStoreException e) {
+    log.error("Authorisation check failed for user " + maskedUser(user)
+              + " on resource " + resource, e);
+    // isAuthorized stays false
+}
+if (!isAuthorized) {
+    throw RestApiUtil.buildForbiddenException(resource, id);
+}
+```
+
+When mapping caught exceptions to HTTP responses, use the existing classification helpers in `RestApiUtil` (`isDueToAuthorizationFailure`, `isDueToResourceNotFound`) rather than parsing exception messages. The helpers walk the cause chain via `ExceptionUtils.getRootCause` and return a stable boolean, which keeps the policy in one place.
+
+#### Sanitise responses at the REST/SOAP boundary
+
+JAX-RS APIs in `carbon-apimgt` route every uncaught throwable through `org.wso2.carbon.apimgt.rest.api.util.exceptionMappers.GlobalThrowableMapper`. The mapper builds an `ErrorDTO` (`code`, `message`, `description`, `moreInfo`) and decides server-side whether to log the full stack via the per-error `ErrorHandler.printStackTrace()` flag. New REST modules must follow the same pattern and never write `e.getMessage()` or `e.toString()` directly into the response.
+
+```java
+@Provider
+public class GlobalThrowableMapper implements ExceptionMapper<Throwable> {
+    private final ErrorDTO e500 = new ErrorDTO();
+    public GlobalThrowableMapper() {
+        e500.setCode(500L);
+        e500.setMessage("Internal server error");
+        e500.setDescription("The server encountered an internal error. Please contact administrator.");
+    }
+    @Override
+    public Response toResponse(Throwable e) {
+        // ... walk the cause chain, pick the most specific ErrorHandler ...
+        log.error("Unmapped exception captured by GlobalThrowableMapper", e);
+        return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+                .type(MediaType.APPLICATION_JSON_TYPE)
+                .entity(e500).build();
+    }
+}
+```
+
+Stack traces, internal class names, SQL fragments, and file paths must never appear in `ErrorDTO.description` or `ErrorDTO.moreInfo`. Include a correlation identifier in the log entry so operators can join the sanitised client response to the full stack on the server.
+
+#### Always release resources — including `CarbonContext` tenant flows
+
+For database, file, and stream resources use `try`-with-resources (JDK 7+). The JDBC pattern in `carbon-apimgt` is canonical:
+
+```java
+try (Connection conn = APIMgtDBUtil.getConnection();
+     PreparedStatement ps = conn.prepareStatement(SQL_ORGANIZATION_EXISTS)) {
+    ps.setString(1, orgId);
+    try (ResultSet rs = ps.executeQuery()) {
+        return rs.next();
+    }
+} catch (SQLException e) {
+    APIMgtDBUtil.rollbackConnection(conn, "Failed to look up organisation " + orgId, e);
+    throw new APIManagementException("Failed to look up organisation", e);
+}
+```
+
+The multi-tenancy variant is **security-critical**. Carbon's tenant scoping is held in a `ThreadLocal`; if `PrivilegedCarbonContext.endTenantFlow()` is not called the next request reused on the same thread runs with the previous tenant's identity, including its permissions and userstore. Always call `endTenantFlow()` from a `finally` block, even when the body of the flow has its own resources:
+
+```java
+PrivilegedCarbonContext.startTenantFlow();
+try {
+    PrivilegedCarbonContext.getThreadLocalCarbonContext()
+            .setTenantDomain(tenantDomain, true);
+    // tenant-scoped work
+} finally {
+    PrivilegedCarbonContext.endTenantFlow();
+}
+```
+
+The same rule applies to nested tenant flows. Each `startTenantFlow` must be paired with exactly one `endTenantFlow` on every path, including exception paths.
+
+#### Log exceptions with the original throwable
+
+Use `log.error(message, throwable)` so the logger captures the full stack and any cause chain. `log.error("..." + e.getMessage())` is lossy and prevents correlation across components.
+
+```java
+catch (IOException e) {
+    log.error("Error transferring upload " + maskedName(newFileName), e);
+    throw new APIManagementException("File transfer failed", e);
+}
+```
+
+When logging, mask values that would identify a session or expose a secret. WSO2 product code already uses local helpers (for example, `MaskedString` constructions in `carbon-apimgt` and IdP audit utilities) — extend those rather than building ad-hoc redactors.
+
+For Carbon products on log4j, use the `%K` UUID pattern in the log layout so that forged log entries from log-injection attempts are distinguishable from genuine entries (see [Log Injection / Log Forging (CRLF Injection)](#log-injection-log-forging-crlf-injection)).
+
+#### Do not catch in order to silence
+
+The following anti-patterns should never appear in a code review:
+
+```java
+// Anti-pattern: swallow and continue
+try {
+    riskyCall();
+} catch (Exception ignored) {
+}
+
+// Anti-pattern: lossy log, swallow cause
+try {
+    riskyCall();
+} catch (Exception e) {
+    log.error("Something failed: " + e.getMessage());   // no stack, no cause chain
+}
+
+// Anti-pattern: fail open
+boolean allowed = true;
+try {
+    allowed = check();
+} catch (Exception e) {
+    log.warn("permission check failed", e);   // 'allowed' stays true
+}
+```
+
+Empty `catch` blocks are only acceptable in very narrow cases (best-effort cleanup such as `closeQuietly`), and in those cases the cleanup helper must itself log at `WARN` so that the failure is still observable.
+
+### Go Specific Recommendations
+
+#### Use `error` returns, not `panic`, for ordinary control flow
+
+`panic` is reserved for unrecoverable initialisation failures (failing to register a required handler, misconfigured singleton). Recover from a `panic` only at safe boundaries — request handlers, goroutine entry points, and transaction wrappers — and convert the recovered value to an `error`. The Thunder transaction wrapper illustrates the canonical shape:
+
+```go
+defer func() {
+    if p := recover(); p != nil {
+        stack := string(debug.Stack())
+        log.GetLogger().Error("panic during transaction",
+            log.String("dbName", t.dbName),
+            log.Any("panic", p),
+            log.String("stack", stack),
+        )
+        if rbErr := tx.Rollback(); rbErr != nil {
+            switch v := p.(type) {
+            case error:
+                err = errors.Join(fmt.Errorf("transaction aborted: %w", v), rbErr)
+            default:
+                err = errors.Join(fmt.Errorf("transaction aborted: %v", v), rbErr)
+            }
+        }
+    }
+}()
+```
+
+Apply the same pattern to every goroutine. An unrecovered panic in a goroutine terminates the process — at minimum it must be logged and the goroutine's failure must be surfaced to its supervisor.
+
+#### Wrap errors, do not swallow them
+
+Use `fmt.Errorf("...: %w", err)` to wrap the lower-level error so the cause chain is preserved. Inspect chains with `errors.Is` for sentinel errors and `errors.As` for typed errors. Sentinel errors must be declared at the package level, never built inline.
+
+```go
+var ErrIDPNotFound = errors.New("idp not found")
+
+if err != nil && !errors.Is(err, ErrIDPNotFound) {
+    return nil, fmt.Errorf("listing IdPs failed: %w", err)
+}
+```
+
+Wrap with `%w`, log only at the boundary where the error stops, and never log and return the same error at every layer (the resulting log noise hides the real failure).
+
+#### Sanitise HTTP responses
+
+Define a single `ErrorResponse` envelope per service and translate errors only at the handler layer. The Thunder pattern uses an i18n-aware response carrying a stable code, a translatable message, and an optional description:
+
+```go
+type ErrorResponse struct {
+    Code        string            `json:"code"`
+    Message     core.I18nMessage  `json:"message"`
+    Description core.I18nMessage  `json:"description"`
+}
+
+var ErrUnauthorized = ErrorResponse{
+    Code: "AUTH-4010",
+    Message: core.I18nMessage{
+        Key:          "error.auth.unauthorized",
+        DefaultValue: "Unauthorized",
+    },
+    Description: core.I18nMessage{
+        Key:          "error.auth.unauthorized_description",
+        DefaultValue: "Authentication is required to access this resource",
+    },
+}
+```
+
+Never serialise a raw Go `error` into a JSON response — `err.Error()` typically contains the wrapped chain, including file paths and driver-level messages. The handler must select the correct envelope and HTTP status by inspecting the chain with `errors.Is`/`errors.As`, and fall back to a generic 500 for unknown causes.
+
+#### Fail secure in middleware
+
+Authentication and authorisation belong in middleware. On any failure the middleware aborts the request — never falls through to the handler with a missing identity. The API Platform JWT middleware shows the deny-first pattern:
+
+```go
+authHeader := c.GetHeader("Authorization")
+if authHeader == "" {
+    c.JSON(http.StatusUnauthorized, gin.H{
+        "error": "Authorization header is required",
+    })
+    c.Abort()
+    return
+}
+tokenString := strings.TrimPrefix(authHeader, "Bearer ")
+if tokenString == authHeader {
+    c.JSON(http.StatusUnauthorized, gin.H{
+        "error": "Invalid authorization header format. Expected: Bearer <token>",
+    })
+    c.Abort()
+    return
+}
+```
+
+The pattern generalises: validate inputs at the top of the middleware, return early on any failure, and reserve `c.Next()` for the path where every check has succeeded.
+
+#### `defer` cleanup immediately after acquisition
+
+Place the `defer` on the line after the acquisition, before any code that could `return` or panic. This guarantees the cleanup runs on every exit path.
+
+```go
+tx, err := r.db.Begin()
+if err != nil {
+    return err
+}
+defer tx.Rollback() // safe: Rollback is a no-op after Commit
+
+if err := r.doWork(tx); err != nil {
+    return err
+}
+return tx.Commit()
+```
+
+For HTTP responses:
+
+```go
+resp, err := http.DefaultClient.Do(req)
+if err != nil {
+    return nil, fmt.Errorf("upstream request failed: %w", err)
+}
+defer func() { _ = resp.Body.Close() }()
+```
+
+Never put `defer` inside a loop — each iteration accumulates a deferred call that does not run until the function returns. Wrap the loop body in a closure and defer there, or close explicitly inside the loop.
+
+#### Use `context.Context` for cancellation, tracing, and tenancy
+
+Every function that performs I/O must accept `ctx context.Context` as its first parameter and pass it to every downstream call. Set deadlines at the entry point (HTTP handler, scheduler tick) and propagate them; never replace the incoming context with `context.Background()` mid-flight.
+
+Where the runtime supports tenant scoping (the Carbon-equivalent in Go services), keep the tenant identifier in `context.Context` via a typed key, not a `string` value:
+
+```go
+type tenantCtxKey struct{}
+
+func WithTenant(ctx context.Context, tenantID string) context.Context {
+    return context.WithValue(ctx, tenantCtxKey{}, tenantID)
+}
+
+func GetTenant(ctx context.Context) (string, bool) {
+    tenantID, ok := ctx.Value(tenantCtxKey{}).(string)
+    return tenantID, ok && tenantID != ""
+}
+```
+
+Repository code must `GetTenant` and refuse to execute if the tenant is missing. Defaulting to a "super tenant" or the empty string is a cross-tenant data exposure waiting to happen.
+
+#### Log with structured fields, mask secrets
+
+Use `log/slog` (or the project's wrapper around it) and emit structured fields rather than concatenated strings. The Thunder logging helpers ship `MaskedString`, `MaskedStrings`, and `MaskedMap` for redacting sensitive values — prefer those over re-implementing masking at each call site.
+
+```go
+log.GetLogger().Error("token validation failed",
+    log.MaskedString("token", token),
+    log.String("tenant", tenantID),
+    log.String("request_id", traceID),
+    log.Any("cause", err),
+)
+```
+
+Log at the failure boundary only. Avoid the "log every layer" anti-pattern — it produces unreadable traces and frequently leaks the same secret repeatedly.
+
+
+
 [^2]: [http://php.net/manual/en/book.pdo.php](http://php.net/manual/en/book.pdo.php)
 [^3]: [https://www.owasp.org/index.php/SQL_Injection_Prevention_Cheat_Sheet](https://www.owasp.org/index.php/SQL_Injection_Prevention_Cheat_Sheet)
 [^4]: [http://php.net/manual/en/book.mysqli.php](http://php.net/manual/en/book.mysqli.php)
