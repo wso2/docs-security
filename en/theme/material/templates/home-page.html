@@ -1,5 +1,5 @@
 <!--
- * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2026, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -35,31 +35,29 @@
 <div class="md-content">
   <article class="md-content__inner md-typeset">
     <div class="md-home-search-container">
-      <h1 class="md-home-search-input-label">WSO2 API Manager Documentation</h1>
+      <h1 class="md-home-search-input-label">WSO2 Security and Compliance Documentation</h1>
       {% include "partials/search.html" %}
-
     </div>
     <div class="description-section"
       style="display: flex; flex-direction: row; align-items: flex-start; margin-top: 30px;">
       <p>
-        WSO2 API Manager is a complete platform for building, integrating, and exposing your digital services as
-        managed APIs in the cloud, on-premise, and hybrid architectures to drive your digital transformation strategy.
+        Security is our top priority. We continuously improve the security of WSO2 products, services, and
+        infrastructure, and we publish our security program openly so customers can run WSO2 software in
+        mission-critical environments with confidence. Contributions from researchers, developers, and the wider
+        community are welcome — eligible reports are recognized in our Security Hall of Fame.
       </p>
     </div>
 
     {{ page.content }}
 
-    <a href="{{base_path}}/en/4.7.0/get-started/api-manager-quick-start-guide/" target="_blank" rel="noopener"
-      class="quickstart-cta">
-
+    <a href="{{ 'security-reporting/report-security-issues/' | url }}" class="quickstart-cta">
       <div class="cta-icon">
-        {{ home_card_icon("octicons/rocket-16") }}
+        {{ home_card_icon("octicons/megaphone-16") }}
       </div>
-
       <div class="cta-content">
-        <span class="cta-title">New to API Manager?</span>
-        <span class="cta-desc">Take our 15-minute quick start guide to design, deploy, and consume your first
-          API.</span>
+        <span class="cta-title">Found a security issue?</span>
+        <span class="cta-desc">Report it through our private, confidential security mailing list. We triage every
+          report and recognize eligible findings in our Security Hall of Fame.</span>
       </div>
     </a>
 
@@ -69,24 +67,32 @@
 
         <div>
           <div class="components-section-header">
-            <h2>Design & Manage APIs</h2>
-            <p>Build, iterate, and apply policies to your APIs and API products.</p>
+            <h2>Security Processes</h2>
+            <p>How WSO2 builds, maintains, and responds to security across the product lifecycle.</p>
           </div>
           <div class="components-card">
             <div>
               <div class="md-column-grid-item-header-icon icon-color-4">
-                {{ home_card_icon("octicons/pencil-16") }}
+                {{ home_card_icon("octicons/workflow-16") }}
               </div>
-              <h3>API Design</h3>
+              <h3>Processes &amp; Programs</h3>
               <div class="components-card-content">
-                Toolkit to design, document, and mock REST, GraphQL, and AsyncAPI specifications. Create AI APIs and use the AI-powered Design Assistant to generate APIs from natural language.
+                The processes behind how we develop, release, and operate WSO2 software — covering secure software
+                development, vulnerability management, cloud security, and customer notification for SaaS incidents.
               </div>
             </div>
             <div class="components-card-footer">
-
-              <a href="{{base_path}}/en/4.7.0/api-design-manage/design/design-api-overview/" target="_blank"
-                rel="noopener" class="components-resource-link">
-                Design APIs Overview <span>&rarr;</span>
+              <a href="{{ 'security-processes/secure-software-development-process/' | url }}" class="components-resource-link">
+                Secure Software Development <span>&rarr;</span>
+              </a>
+              <a href="{{ 'security-processes/vulnerability-management-process/' | url }}" class="components-resource-link">
+                Vulnerability Management <span>&rarr;</span>
+              </a>
+              <a href="{{ 'security-processes/cloud-security-process/' | url }}" class="components-resource-link">
+                Cloud Security Process <span>&rarr;</span>
+              </a>
+              <a href="{{ 'security-processes/saas-incident-notification-process/' | url }}" class="components-resource-link">
+                SaaS Incident Notification <span>&rarr;</span>
               </a>
             </div>
           </div>
@@ -94,25 +100,32 @@
 
         <div>
           <div class="components-section-header">
-            <h2>Discover APIs</h2>
-            <p>Explore and subscribe to APIs and MCP Servers.</p>
+            <h2>Security Guidelines</h2>
+            <p>Engineering and operational practices that build security into WSO2 products and deployments.</p>
           </div>
           <div class="components-card">
             <div>
               <div class="md-column-grid-item-header-icon icon-color-4">
-                {{ home_card_icon("octicons/browser-16") }}
+                {{ home_card_icon("octicons/book-16") }}
               </div>
-              <h3>API Developer Portal</h3>
+              <h3>Engineering &amp; Operations</h3>
               <div class="components-card-content">
-                The hub for Application Developers. Discover a catalog of available APIs and MCP Servers, subscribe your applications,
-                and manage your API keys and credentials.
+                Reference material for developers and operators: secure coding patterns, OWASP Top 10 prevention,
+                static and dynamic analysis tooling, and hardening guidance for production deployments.
               </div>
             </div>
             <div class="components-card-footer">
-
-              <a href="{{base_path}}/en/4.7.0/api-developer-portal/consume-api-overview/" target="_blank" rel="noopener"
-                class="components-resource-link">
-                Consume APIs Overview <span>&rarr;</span>
+              <a href="{{ 'security-guidelines/secure-engineering-guidelines/secure-coding-guidlines/general-recommendations-for-secure-coding/' | url }}" class="components-resource-link">
+                General Secure Coding Recommendations <span>&rarr;</span>
+              </a>
+              <a href="{{ 'security-guidelines/secure-engineering-guidelines/secure-coding-guidlines/general-recommendations-for-react-secure-coding/' | url }}" class="components-resource-link">
+                React Secure Coding <span>&rarr;</span>
+              </a>
+              <a href="{{ 'security-guidelines/security-guidelines-for-production-deployment/' | url }}" class="components-resource-link">
+                Production Deployment Guidelines <span>&rarr;</span>
+              </a>
+              <a href="{{ 'security-guidelines/' | url }}" class="components-resource-link">
+                All Security Guidelines <span>&rarr;</span>
               </a>
             </div>
           </div>
@@ -120,181 +133,151 @@
       </div>
 
       <div class="components-section-header">
-        <h2>Run APIs</h2>
-        <p>Deploy and manage the runtime environment for your API traffic.</p>
+        <h2>Security Announcements</h2>
+        <p>Authoritative WSO2 publications: product advisories, CVE analysis, periodic cloud bulletins, and
+          responses to industry incidents.</p>
       </div>
 
       <div class="components-grid-2">
         <div class="components-card">
           <div>
             <div class="md-column-grid-item-header-icon icon-color-4">
-              {{ home_card_icon("octicons/server-16") }}
-            </div>
-            <h3>API Gateway</h3>
-            <div class="components-card-content">
-              Secure, manage, and scale your API traffic. Learn to deploy the runtime, enforce security policies, and
-              manage deployments.
-            </div>
-          </div>
-          <div class="components-card-footer">
-
-            <a href="{{base_path}}/en/4.7.0/api-gateway/overview-of-the-api-gateway/" target="_blank" rel="noopener"
-              class="components-resource-link">
-              Universal Gateway Overview <span>&rarr;</span>
-            </a>
-
-            <a href="{{base_path}}/en/4.7.0/api-gateway/federated-gateways/overview/" target="_blank" rel="noopener"
-              class="components-resource-link">
-              Federated Gateways Overview <span>&rarr;</span>
-            </a>
-
-          </div>
-        </div>
-
-        <div class="components-card">
-          <div>
-            <div class="md-column-grid-item-header-icon icon-color-4">
-              {{ home_card_icon("octicons/hubot-16") }}
-            </div>
-            <h3>AI Gateway</h3>
-            <div class="components-card-content">
-              Enterprise-grade gateway for AI workloads. Secure, monitor, and control access to LLMs and AI services with cost controls, multi-provider routing, observability, and policy enforcement. Transform APIs into AI-callable tools and manage AI interactions with centralized governance.
-            </div>
-          </div>
-          <div class="components-card-footer">
-
-            <a href="{{base_path}}/en/4.7.0/ai-gateway/ai-gateway-overview/" target="_blank" rel="noopener"
-              class="components-resource-link">
-              AI Gateway Overview <span>&rarr;</span>
-            </a>
-
-          </div>
-        </div>
-      </div>
-
-      <div class="components-section-header">
-        <h2>Govern APIs</h2>
-        <p>Oversee and control the security, usage, and automation of your API ecosystem.</p>
-      </div>
-
-      <div class="components-grid-3">
-        <div class="components-card">
-          <div>
-            <div class="md-column-grid-item-header-icon icon-color-4">
               {{ home_card_icon("octicons/shield-check-16") }}
             </div>
-            <h3>API Security</h3>
+            <h3>Security Advisories</h3>
             <div class="components-card-content">
-              Secure APIs with design-time audits and runtime enforcement. Manage authentication, authorization, and
-              tokens using the Key Manager.
+              Advisories for confirmed vulnerabilities in WSO2 products. Each advisory lists the affected products
+              and versions, CVSS severity, and the recommended fix or mitigation.
             </div>
           </div>
           <div class="components-card-footer">
-            <a href="{{base_path}}/en/4.7.0/api-security/runtime/api-authentication/api-authentication-overview/"
-              target="_blank" rel="noopener" class="components-resource-link">
-              Authentication Overview <span>&rarr;</span>
-            </a>
-            <a href="{{base_path}}/en/4.7.0/api-security/runtime/authorization/api-authorization/" target="_blank"
-              rel="noopener" class="components-resource-link">
-              Authorization Overview <span>&rarr;</span>
-            </a>
-            <a href="{{base_path}}/en/4.7.0/api-security/key-management/key-manager-overview/" target="_blank" rel="noopener"
+            <a href="{{ 'security-announcements/security-advisories/' | url }}"
               class="components-resource-link">
-              Key Manager Overview <span>&rarr;</span>
+              Security Advisories <span>&rarr;</span>
             </a>
-
-          </div>
-        </div>
-        <div class="components-card">
-          <div>
-            <div class="md-column-grid-item-header-icon icon-color-4">
-              {{ home_card_icon("octicons/graph-16") }}
-            </div>
-            <h3>API Analytics & Monetization</h3>
-            <div class="components-card-content">
-              Track usage, monitor performance, and configure billing. Gain insights and govern your API products.
-            </div>
-          </div>
-          <div class="components-card-footer">
-
-            <a href="{{base_path}}/en/4.7.0/monitoring/api-analytics/analytics-overview/" target="_blank" rel="noopener"
-              class="components-resource-link">
-              Analytics Overview <span>&rarr;</span>
-            </a>
-
-            <a href="{{base_path}}/en/4.7.0/monitoring/api-monetization/monetizing-an-api/" target="_blank"
-              rel="noopener" class="components-resource-link">
-              Monetization How-to Guide <span>&rarr;</span>
-            </a>
-
           </div>
         </div>
 
         <div class="components-card">
           <div>
             <div class="md-column-grid-item-header-icon icon-color-4">
-              {{ home_card_icon("octicons/workflow-16") }}
+              {{ home_card_icon("octicons/file-badge-16") }}
             </div>
-            <h3>APIOps</h3>
+            <h3>CVE Justifications</h3>
             <div class="components-card-content">
-              Automate your API lifecycle and governance. Use the command-line tool to script operations and enforce
-              standards.
+              Analysis of third-party CVEs that appear in scans of WSO2 products — whether the vulnerable code path
+              is actually reachable and whether any action is required from customers.
             </div>
           </div>
           <div class="components-card-footer">
-            <a href="{{base_path}}/en/4.7.0/apiops/cli/ci-cd-with-wso2-api-management/" target="_blank" rel="noopener"
+            <a href="{{ 'security-announcements/cve-justifications/' | url }}"
               class="components-resource-link">
-              CI/CD for APIs Overview <span>&rarr;</span>
+              CVE Justifications <span>&rarr;</span>
             </a>
-            <a href="{{base_path}}/en/4.7.0/install-and-setup/setup/api-controller/getting-started-with-wso2-api-controller/"
-              target="_blank" rel="noopener" class="components-resource-link">
-              API Controller Quickstart <span>&rarr;</span>
-            </a>
+          </div>
+        </div>
+      </div>
 
+      <div class="components-grid-2">
+        <div class="components-card">
+          <div>
+            <div class="md-column-grid-item-header-icon icon-color-4">
+              {{ home_card_icon("octicons/cloud-16") }}
+            </div>
+            <h3>Cloud Security Bulletins</h3>
+            <div class="components-card-content">
+              Half-yearly bulletins summarizing the security posture and notable events for WSO2 cloud services —
+              Asgardeo, Choreo, and the WSO2 API Platform.
+            </div>
+          </div>
+          <div class="components-card-footer">
+            <a href="{{ 'security-announcements/cloud-security-bulletins/' | url }}"
+              class="components-resource-link">
+              Cloud Security Bulletins <span>&rarr;</span>
+            </a>
           </div>
         </div>
 
-
+        <div class="components-card">
+          <div>
+            <div class="md-column-grid-item-header-icon icon-color-4">
+              {{ home_card_icon("octicons/alert-16") }}
+            </div>
+            <h3>Incident Clarifications</h3>
+            <div class="components-card-content">
+              WSO2's official position on public security incidents and supply-chain events — what is and is not
+              impacted, and what customers should do.
+            </div>
+          </div>
+          <div class="components-card-footer">
+            <a href="{{ 'security-announcements/incident-clarifications/' | url }}"
+              class="components-resource-link">
+              Incident Clarifications <span>&rarr;</span>
+            </a>
+          </div>
+        </div>
       </div>
 
       <div class="components-section-header">
-        <h2>Administration</h2>
-        <p>Configure and manage the core system, tenants, and other entities.</p>
+        <h2>Reporting</h2>
+        <p>How to report a vulnerability, abuse, or malicious content responsibly — and how we recognize the
+          researchers who help us.</p>
       </div>
 
-      <div style="max-width: 50%;">
+      <div class="components-grid-2">
         <div class="components-card">
           <div>
             <div class="md-column-grid-item-header-icon icon-color-4">
-              {{ home_card_icon("octicons/person-16") }}
+              {{ home_card_icon("octicons/megaphone-16") }}
             </div>
-
-            <h3>Administration & Governance</h3>
+            <h3>Report an Issue</h3>
             <div class="components-card-content">
-              Configure the platform: manage users, tenants, and system-wide policies like rate limiting. Register
-              Gateways and Key Managers.
+              Private channels for reporting vulnerabilities in WSO2 products and infrastructure, along with
+              guidance on what details to include so we can triage and fix the issue quickly.
             </div>
           </div>
           <div class="components-card-footer">
-
-            <a href="{{base_path}}/en/4.7.0/administer/admin-overview/" target="_blank" rel="noopener"
+            <a href="{{ 'security-reporting/report-security-issues/' | url }}"
               class="components-resource-link">
-              Administration Overview <span>&rarr;</span>
+              Report Security Issues <span>&rarr;</span>
             </a>
-            <a href="{{base_path}}/en/4.7.0/administer/governance/overview/" target="_blank" rel="noopener"
+            <a href="{{ 'security-reporting/vulnerability-reporting-guidelines/' | url }}"
               class="components-resource-link">
-              Governance Overview <span>&rarr;</span>
+              Vulnerability Reporting Guidelines <span>&rarr;</span>
             </a>
+            <a href="{{ 'security-reporting/abuse-report/' | url }}"
+              class="components-resource-link">
+              Report Abuse or Malicious Content <span>&rarr;</span>
+            </a>
+          </div>
+        </div>
 
+        <div class="components-card">
+          <div>
+            <div class="md-column-grid-item-header-icon icon-color-4">
+              {{ home_card_icon("octicons/trophy-16") }}
+            </div>
+            <h3>Reward &amp; Acknowledgement</h3>
+            <div class="components-card-content">
+              Researchers who disclose vulnerabilities responsibly may qualify for a reward and are recognized in
+              our Security Hall of Fame.
+            </div>
+          </div>
+          <div class="components-card-footer">
+            <a href="{{ 'security-reporting/reward-and-acknowledgement-program/' | url }}"
+              class="components-resource-link">
+              Reward Program <span>&rarr;</span>
+            </a>
+            <a href="{{ 'security-reporting/reward-and-acknowledgement-program/hall-of-fame/' | url }}"
+              class="components-resource-link">
+              Security Hall of Fame <span>&rarr;</span>
+            </a>
           </div>
         </div>
       </div>
 
     </div>
 
-
-</div>
-
-</article>
+  </article>
 </div>
 {% endblock %}

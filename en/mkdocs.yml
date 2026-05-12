@@ -16,7 +16,7 @@
 
 # Project information
 site_name: WSO2 Security and Compliance Documentation
-site_description: Documentation for WSO2 Security and Compliance
+site_description: WSO2 security advisories, CVE justifications, cloud security bulletins, secure coding and deployment guidelines, and how to report a vulnerability.
 site_author: WSO2
 site_url: https://security.docs.wso2.com/en/latest/
 
@@ -55,7 +55,6 @@ theme:
         icon: assets/libs/oxygen-ui-icons/1.7.3/sun-16.svg
         name: Switch to light mode
   features:
-    - navigation.tabs
     - navigation.indexes
     - navigation.path
     - navigation.top
@@ -77,7 +76,7 @@ validation:
 
 # Navigation
 nav:
-  - 'WSO2 Security and Compliance Documentation': 'index.md'
+  - 'Home': 'index.md'
   - 'Security Processes':
     - '': 'security-processes/index.md'
     - 'Secure Software Development Process': 'security-processes/secure-software-development-process.md'
@@ -549,7 +548,6 @@ nav:
       - 'Reward and Acknowledgement Program': 'security-reporting/reward-and-acknowledgement-program/index.md'
       - 'Security Hall of Fame': 'security-reporting/reward-and-acknowledgement-program/hall-of-fame.md'
     - 'Reporting Service Abuse or Malicious Content': 'security-reporting/abuse-report.md'
-  - '404 - Not found': 'page-not-found.md'
 
 # Extensions
 markdown_extensions:
@@ -646,11 +644,45 @@ extra:
       link: https://www.linkedin.com/company/wso2
   site_version: 1.0.0
   cp_timeframe: 2015-2023
-  base_path: 'https://security.docs.wso2.com/en/latest'    # base path prod
-  # base_path: ''                                             # base path dev
+  # Root-relative so links resolve under both prod (security.docs.wso2.com/en/latest/)
+  # and the local dev server, which mkdocs serves under /en/latest/ because of site_url.
+  base_path: '/en/latest'
   nav_list:
-    - WSO2 Security and Compliance Documentation
+    - Home
     - Security Processes
     - Security Guidelines
     - Security Announcements
     - Security Reporting
+
+  nav_icons:
+    Home:
+      icon: octicons/home-16
+      level: 1
+    Security Processes:
+      icon: octicons/workflow-16
+      level: 1
+    Security Guidelines:
+      icon: octicons/book-16
+      level: 1
+    Security Reporting:
+      icon: octicons/megaphone-16
+      level: 1
+    Security Announcements:
+      icon: octicons/shield-check-16
+      level: 1
+
+  expanded_navs:
+    - title: Security Processes
+      options:
+        - verticle-line
+    - title: Security Guidelines
+      options:
+        - verticle-line
+        - divider
+    - title: Security Reporting
+      options:
+        - verticle-line
+    - title: Security Announcements
+      options:
+        - verticle-line
+        - divider

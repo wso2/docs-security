@@ -193,6 +193,9 @@
         {% else %}
           {% set checked_attr = "checked" %}
         {% endif %}
+      {% elif nav_item.active %}
+        {# Match Material default: auto-expand any section whose descendant is the current page. #}
+        {% set checked_attr = "checked" %}
       {% else %}
         {% set checked_attr = "" %}
       {% endif %}
