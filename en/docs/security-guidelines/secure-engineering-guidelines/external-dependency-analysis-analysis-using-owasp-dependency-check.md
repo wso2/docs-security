@@ -9,19 +9,21 @@ version: 3.1
 <p class="doc-info">Version: 3.1</p>
 ___
 
-This document covers WSO2's policy for finding and triaging **known-vulnerable third-party dependencies**. Tool-by-tool tutorials are in the tools' own documentation — linked below. The supply-chain framing (version pinning, lock files, manifest guards, release signing) is in [Secure Coding Guide — Software Supply Chain Failures]({{#base_path#}}/security-guidelines/secure-engineering-guidelines/secure-coding-guidlines/secure-coding-guide/#software-supply-chain-failures).
+When you build a WSO2 product, wire in the dependency-vulnerability scans described below. Tool-by-tool tutorials are in the tools' own documentation — linked below; this page covers the policy, the CI wiring, and the triage workflow. The supply-chain framing (version pinning, lock files, manifest guards, release signing) is in [Secure Coding Guide — Software Supply Chain Failures]({{#base_path#}}/security-guidelines/secure-engineering-guidelines/secure-coding-guidlines/secure-coding-guide/#software-supply-chain-failures).
 
-## The WSO2 rule
+## The rule
 
 **A known-vulnerable component never ships in a release.** Either the vulnerable code path is not reachable from product code (documented and approved by a designated security reviewer for the product) or the component is upgraded / replaced / removed. A finding that is neither fixed nor formally accepted **blocks the release**. Defer is not an option.
 
-## When dependency scans run
+## When scans run
+
+Configure your CI to run scans at three points:
 
 * **Every pull request** — fast subset; build fails on any new high-severity finding.
 * **Daily on `main`** — full database refresh; surfaces findings discovered overnight.
 * **Before every release** — full scan with the latest vulnerability database; report attached to the release artefact.
 
-The CI pipeline owns the scan; manual runs are for local debugging only.
+CI owns the scan; manual runs are for local debugging only.
 
 ## Tooling by stack
 
@@ -31,11 +33,11 @@ The CI pipeline owns the scan; manual runs are for local debugging only.
 
 Output format: **SARIF** wherever the tool supports it — uploads cleanly to the GitHub Security tab and integrates with the SAST dashboard. See the [SARIF specification](https://docs.oasis-open.org/sarif/sarif/v2.1.0/sarif-v2.1.0.html) and [GitHub's SARIF support](https://docs.github.com/en/code-security/code-scanning/integrating-with-code-scanning/sarif-support-for-code-scanning).
 
-## WSO2 CI configuration
+## CI configuration
 
 ### Java (Dependency Check Maven plugin)
 
-Pin the plugin version in the parent POM. WSO2 settings:
+Pin the plugin version in the parent POM. Recommended configuration:
 
 ```xml
 <plugin>
@@ -59,7 +61,7 @@ Pin the plugin version in the parent POM. WSO2 settings:
 </plugin>
 ```
 
-* `failBuildOnCVSS=7` — fails on High and Critical. WSO2 builds should aim for zero unsuppressed findings at this threshold.
+* `failBuildOnCVSS=7` — fails on High and Critical. Your build should aim for zero unsuppressed findings at this threshold.
 * `nvdApiKey` is required for non-throttled runs. Obtain a [free NVD API key](https://nvd.nist.gov/developers/request-an-api-key) and store as the `NVD_API_KEY` CI secret.
 * Never use Maven version ranges (`[1.0,)`), `LATEST`, or `RELEASE` in product POMs. Dependency Check can only assess what Maven resolves at build time; a moving version target makes findings unreproducible.
 
@@ -120,15 +122,15 @@ When a new finding lands above the severity threshold:
 * Wildcard suppressions on entire packages are not acceptable.
 * Every accepted finding names the security reviewer who approved it and an expiry date.
 
-Example WSO2 Dependency Check suppression:
+Example Dependency Check suppression:
 
 ```xml
 <suppressions xmlns="https://jeremylong.github.io/DependencyCheck/dependency-suppression.1.3.xsd">
     <suppress>
         <notes>
             CVE-2024-XXXXX applies only to the FTP server functionality of
-            commons-net, which WSO2 does not use. Confirmed by Security and
-            Compliance Team review YYYY-MM-DD.
+            commons-net, which this product does not use. Confirmed by
+            security review YYYY-MM-DD.
         </notes>
         <gav regex="true">^commons-net:commons-net:.*$</gav>
         <cve>CVE-2024-XXXXX</cve>

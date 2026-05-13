@@ -9,16 +9,16 @@ version: 3.1
 <p class="doc-info">Version: 3.1</p>
 ___
 
-This document covers the WSO2-specific guidance for static-analysis tooling. Tool-by-tool tutorials, install steps, and configuration references are in the tools' own documentation — linked below.
+When you set up the build for a WSO2 product, wire in the static analysis tooling described below. Tool-by-tool tutorials, install steps, and configuration references are in the tools' own documentation — linked below; this page covers what to run, the thresholds to gate on, and the WSO2-specific patterns worth encoding as custom rules.
 
 Static analysis complements [Dynamic Analysis with OWASP ZAP]({{#base_path#}}/security-guidelines/secure-engineering-guidelines/dynamic-analysis-with-owasp-zap/) and [Dependency Vulnerability Analysis]({{#base_path#}}/security-guidelines/secure-engineering-guidelines/external-dependency-analysis-analysis-using-owasp-dependency-check/).
 
 !!! note "FindBugs is defunct"
     Earlier versions of this document referenced FindBugs and `FindBugs-IDEA`. **FindBugs has been unmaintained since 2015** and is formally archived; the project moved to [SpotBugs](https://spotbugs.github.io/) in 2017, and Find Security Bugs now runs on SpotBugs. Use SpotBugs + Find Security Bugs for new work; migrate any legacy build that still references FindBugs.
 
-## What WSO2 builds run
+## What every product build should run
 
-Every WSO2 product build runs all four:
+Wire all four into the PR builder:
 
 * **OWASP-Top-10-focused SAST** — SpotBugs + Find Security Bugs (Java); `gosec` (Go).
 * **General-purpose static analyzer** — SpotBugs core (Java); `staticcheck` (Go).
@@ -37,9 +37,11 @@ Findings above the agreed severity threshold fail the PR build. Suppressions go 
 * **CodeQL**: [codeql.github.com](https://codeql.github.com/).
 * **`reviewdog`** (surface SAST findings as inline PR comments): [github.com/reviewdog/reviewdog](https://github.com/reviewdog/reviewdog).
 
-## WSO2 thresholds and CI integration
+## Thresholds and CI integration
 
-* Maven SpotBugs plugin pinned in the parent POM with `<effort>Max</effort>` and `<threshold>Low</threshold>`; `<failOnError>true</failOnError>`. New code should be quiet at this setting. Pin both the SpotBugs and Find Security Bugs plugin versions; check their sites for current releases.
+When wiring these into your product's CI:
+
+* Pin the Maven SpotBugs plugin in the parent POM with `<effort>Max</effort>`, `<threshold>Low</threshold>`, and `<failOnError>true</failOnError>`. New code should be quiet at this setting. Pin both the SpotBugs and Find Security Bugs plugin versions; check their sites for current releases.
 * `gosec` in CI: `gosec -severity high -confidence medium -exclude-dir=vendor ./...` — fails on any high-severity finding.
 * SARIF output from each tool uploaded to the GitHub Security tab. Semgrep and CodeQL produce SARIF natively; `gosec` supports it directly; SpotBugs XML can be converted via a reviewdog adapter or `spotbugs-sarif`.
 * SAST runs as a parallel step alongside build/test in the PR builder. `reviewdog` surfaces findings as inline PR comments rather than a single "build failed" line.

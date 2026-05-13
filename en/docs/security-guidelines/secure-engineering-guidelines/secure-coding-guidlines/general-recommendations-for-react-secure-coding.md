@@ -9,9 +9,7 @@ version: 3.1
 <p class="doc-info">Version: 3.1</p>
 ___
 
-This document is the WSO2 delta for **React 18+** frontends shipped by WSO2 products. The general "what XSS is", "what `dangerouslySetInnerHTML` does", or "how CSP works" is covered by the community references below — we link to them and only add what is WSO2- or product-specific.
-
-Cross-cutting rules (authentication, supply chain, logging, exception handling, cookie defaults) are in the [Secure Coding Guide]({{#base_path#}}/security-guidelines/secure-engineering-guidelines/secure-coding-guidlines/secure-coding-guide/); this page does not restate them.
+When you build a React 18+ frontend for a WSO2 product, this is the engineering guide for what your code should and shouldn't do. The general "what XSS is", "what `dangerouslySetInnerHTML` does", or "how CSP works" is covered by the community references below — links rather than restatement. Cross-cutting rules (authentication, supply chain, logging, exception handling, cookie defaults) are in the [Secure Coding Guide]({{#base_path#}}/security-guidelines/secure-engineering-guidelines/secure-coding-guidlines/secure-coding-guide/) and not restated here.
 
 ## External references
 
@@ -21,7 +19,7 @@ Cross-cutting rules (authentication, supply chain, logging, exception handling, 
 * **OAuth for browsers.** [RFC 9700 — OAuth 2.0 Security BCP](https://datatracker.ietf.org/doc/html/rfc9700) · [RFC 7636 — PKCE](https://datatracker.ietf.org/doc/html/rfc7636).
 * **Library guidance.** [`react-markdown` security](https://github.com/remarkjs/react-markdown#security) · [DOMPurify](https://github.com/cure53/DOMPurify) · [`rehype-sanitize`](https://github.com/rehypejs/rehype-sanitize).
 
-## WSO2-specific rules for React surfaces
+## Rules for React in WSO2 products
 
 These are the points that are not obvious from the external references, that recur across WSO2 product UIs, or that have a WSO2-specific reason.
 
@@ -99,11 +97,11 @@ useEffect(() => {
 }, []);
 ```
 
-### Build hygiene specific to WSO2 ships
+### Build hygiene
 
-* **Production source maps disabled** (`GENERATE_SOURCEMAP=false` for CRA, `productionBrowserSourceMaps: false` for Next.js), or behind authentication on the WSO2 deployment surface.
-* **Browser-exposed env vars are public.** Never put a token, internal URL, or any value that should not be world-readable behind `REACT_APP_*` / `VITE_*` / `NEXT_PUBLIC_*` — the bundler inlines them.
-* **Error boundaries** return a generic message; the full exception is reported through the same sanitised error-report endpoint the rest of the WSO2 telemetry uses.
+* **Production source maps disabled** (`GENERATE_SOURCEMAP=false` for CRA, `productionBrowserSourceMaps: false` for Next.js), or served behind authentication on the deployment surface.
+* **Browser-exposed env vars are public.** Never put a token, internal URL, or any value that should not be world-readable behind `REACT_APP_*` / `VITE_*` / `NEXT_PUBLIC_*` — the bundler inlines them into the shipped bundle.
+* **Error boundaries** return a generic message; the full exception is reported through your product's sanitised error-report endpoint, never displayed to the user.
 
 ### Past incidents
 

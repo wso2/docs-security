@@ -9,7 +9,7 @@ version: 3.1
 <p class="doc-info">Version: 3.1</p>
 ___
 
-This document is the operational configuration reference for CSRFGuard on the **Carbon-based Java products**. The CSRF threat model, when CSRF tokens are required vs. when `SameSite` cookies suffice, and bearer-token-API exemptions are covered by the external references below — and at a WSO2 framing in [Secure Coding Guide — Cross-Site Request Forgery (CSRF)]({{#base_path#}}/security-guidelines/secure-engineering-guidelines/secure-coding-guidlines/secure-coding-guide/#cross-site-request-forgery-csrf).
+When you build a browser-rendered Carbon webapp that authenticates via session cookies, wire OWASP CSRFGuard in front of it as described here. The CSRF threat model, when CSRF tokens are required vs. when `SameSite` cookies suffice, and bearer-token-API exemptions are covered by the external references below and in [Secure Coding Guide — Cross-Site Request Forgery (CSRF)]({{#base_path#}}/security-guidelines/secure-engineering-guidelines/secure-coding-guidlines/secure-coding-guide/#cross-site-request-forgery-csrf).
 
 **External references:**
 
@@ -17,11 +17,11 @@ This document is the operational configuration reference for CSRFGuard on the **
 * [MDN — SameSite cookies](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Set-Cookie/SameSite) — the primary modern defence.
 * [OWASP CSRFGuard project](https://owasp.org/www-project-csrfguard/) · [GitHub](https://github.com/OWASP/www-project-csrfguard) — current releases, release notes, and upstream configuration reference.
 
-## WSO2 approach
+## Approach
 
-For browser-rendered Carbon surfaces that authenticate via session cookies — Carbon Management Console, IS My Account / Console, APIM Publisher / DevPortal — the WSO2 defence is **`SameSite=Strict` on the session cookie *plus* CSRFGuard tokens** (defence in depth). Either alone is acceptable in some configurations; both together matches the existing Carbon deployment shape.
+For browser-rendered Carbon surfaces that authenticate via session cookies — Carbon Management Console, IS My Account / Console, APIM Publisher / DevPortal — apply both layers: **`SameSite=Strict` on the session cookie *plus* CSRFGuard tokens** (defence in depth). Either alone is acceptable in some configurations; both together matches the existing Carbon shape.
 
-Operational rules:
+Engineering rules:
 
 1. **State-changing actions use POST / PUT / DELETE only.** CSRFGuard does not validate GET (`UnprotectedMethods=GET`); GET must not have side effects.
 2. **Session cookies are `HttpOnly; Secure; SameSite=Strict`** — see [HTTP Security Headers]({{#base_path#}}/security-guidelines/secure-engineering-guidelines/security-related-http-headers/).
@@ -32,7 +32,7 @@ Operational rules:
 
 ### CSRFGuard version
 
-WSO2 Carbon historically pinned CSRFGuard 3.x. Current upstream is 4.x. Before adopting 4.x in a Carbon product, verify the configuration keys against the [current CSRFGuard documentation](https://owasp.org/www-project-csrfguard/) and run the existing integration test suite. The configuration shown below is for the version Carbon ships with; consult upstream release notes when upgrading.
+Carbon historically pinned CSRFGuard 3.x. Current upstream is 4.x. Before adopting 4.x in your product, verify the configuration keys against the [current CSRFGuard documentation](https://owasp.org/www-project-csrfguard/) and run the existing integration test suite. The configuration shown below is for the version Carbon currently ships; consult upstream release notes when upgrading.
 
 ## Servlet wiring
 
@@ -79,9 +79,9 @@ Include the JavaScriptServlet as the **first** script in `<head>` of every prote
 </head>
 ```
 
-## WSO2 configuration overrides
+## Carbon configuration overrides
 
-`Owasp.CsrfGuard.Carbon.properties` — the property overrides WSO2 applies on top of the upstream default. Each entry below documents the WSO2-specific reason; reviewers should not change these without a documented rationale.
+`Owasp.CsrfGuard.Carbon.properties` — the property overrides Carbon applies on top of the upstream CSRFGuard default. Each entry below documents the reason; do not change these in your product without a documented rationale.
 
 ```properties
 # State-changing operations don't go through GET, so skip GET validation.
@@ -137,7 +137,7 @@ org.owasp.csrfguard.unprotected.Example=%servletContext%/exampleAction/*
 org.owasp.csrfguard.unprotected.ExampleRegEx=^%servletContext%/.*Public\.do$
 ```
 
-WSO2 rules for exclusions:
+Rules for exclusions:
 
 * **Every exclusion has a comment immediately above it** naming the endpoint and the reason. Reviewers reject blanket exclusions and exclusions for state-changing endpoints.
 * **No additional `.` characters in the alias suffix.** CSRFGuard's property loader splits on `.`:
@@ -154,9 +154,9 @@ WSO2 rules for exclusions:
 * `org.owasp.csrfguard.action.Invalidate=...` — invalidates the session entirely on a blocked CSRF attempt; forces re-authentication. Strong defence; tune UX so this doesn't appear after a benign expired-token mid-session.
 * `org.owasp.csrfguard.TokenLength=32` and `org.owasp.csrfguard.PRNG=SHA1PRNG` defaults are appropriate for most deployments; only override when there's a specific threat-model or platform reason.
 
-## Product integration checklist
+## Integration checklist
 
-Steps that apply when integrating a Carbon product with CSRFGuard. Roughly in order:
+Walk these in order when wiring CSRFGuard into a Carbon webapp:
 
 ### 1. State-changing operations use POST / PUT / DELETE only
 

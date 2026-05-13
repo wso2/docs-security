@@ -9,7 +9,7 @@ version: 4.1
 <p class="doc-info">Version: 4.1</p>
 ___
 
-This guide is the WSO2 delta over external secure-coding references. Each section opens with the canonical external reading, then lists only what is WSO2-specific: named helpers, default configurations, audit findings, and stack-specific call shapes. For the general "what and why" of a category, follow the external links.
+When you write code for a WSO2 product, follow this guide. Each section opens with the canonical external reading (OWASP, NIST, RFCs), then lists what's WSO2-specific: named helpers to use, default configurations to override, anti-patterns to avoid, and stack-specific call shapes. For the general "what and why" of a category, follow the external links.
 
 **How to read this guide.** Click the tab for your stack (**Java stack** for Carbon-based products, **Go stack** for the new Go-based products). Material remembers your choice across the site.
 
@@ -30,9 +30,9 @@ Read these once; we link back to specific entries throughout this guide instead 
 * Supply chain: [SLSA](https://slsa.dev/), [OWASP SCVS](https://owasp.org/www-project-software-component-verification-standard/), [OpenSSF Best Practices](https://www.bestpractices.dev/), [CycloneDX](https://cyclonedx.org/), [SPDX](https://spdx.dev/).
 * WSO2 internal: [Secure Software Development Process]({{#base_path#}}/security-processes/secure-software-development-process/) · [Vulnerability Management]({{#base_path#}}/security-processes/vulnerability-management-process/) · [Cloud Security Process]({{#base_path#}}/security-processes/cloud-security-process/) · [Security Reporting]({{#base_path#}}/security-reporting/report-security-issues/) · [Incident clarifications]({{#base_path#}}/security-announcements/incident-clarifications/).
 
-## WSO2-specific principles
+## Principles specific to WSO2 product code
 
-The general principles (defence in depth, fail secure, least privilege, deny by default, secure defaults, no security through obscurity) are covered in [OWASP Proactive Controls](https://owasp.org/www-project-proactive-controls/). The principles that are *not* obvious from external references and must be stated for WSO2 work:
+The general principles (defence in depth, fail secure, least privilege, deny by default, secure defaults, no security through obscurity) are covered in [OWASP Proactive Controls](https://owasp.org/www-project-proactive-controls/). The principles that are *not* obvious from external references and must be applied when writing WSO2 product code:
 
 1. **Tenant identity rides in context, never in caller input.** Carbon's `PrivilegedCarbonContext` in Java; a typed `context.Context` key in Go. Reading tenant id from a header, query parameter, or request body is wrong by construction.
 2. **Re-check authorisation at the data layer.** The store layer carries tenant and owner predicates on every query and refuses to return non-matching rows; handler-level checks alone are insufficient.
@@ -169,7 +169,7 @@ External: [OWASP A05](https://owasp.org/Top10/A05_2021-Security_Misconfiguration
 
 ### HTTP security headers
 
-The values WSO2 deployments ship with, and how to apply them on Carbon/Tomcat, Go services, reverse proxies, and Kubernetes ingresses, are in [HTTP Security Headers — Configuration Reference]({{#base_path#}}/security-guidelines/secure-engineering-guidelines/security-related-http-headers/).
+The header set your code should emit, and how to wire it on Carbon/Tomcat, Go services, the WSO2 API Gateway, reverse proxies, and Kubernetes ingresses, is in [HTTP Security Headers — Configuration Reference]({{#base_path#}}/security-guidelines/secure-engineering-guidelines/security-related-http-headers/).
 
 ### Container security defaults
 
@@ -524,7 +524,7 @@ Strip CR/LF from any user-controlled value before logging; see [Logging and Aler
 
 === "Java stack"
 
-    Carbon 4.4.3+ supports `%K` in the log4j pattern — appends a per-entry UUID so forged entries lack a valid UUID. **Current audit:** `%K` is not consistently enabled in default log layouts; production deployments should set it.
+    Carbon 4.4.3+ supports `%K` in the log4j pattern — appends a per-entry UUID so forged entries lack a valid UUID. **Current audit:** `%K` is not consistently set in shipped log layouts; include it in your product's `log4j2.properties` pattern.
 
 ### Server-Side Template Injection (SSTI)
 
@@ -632,7 +632,7 @@ WSO2-specific additions:
 
 === "Java stack"
 
-    Password policies through `PolicyEnforcer` registered against `IdentityMgtEventListener.doPreUpdateCredential()`. **The shipped `DefaultPasswordLengthPolicy` defaults (`MIN_LENGTH=6`, `MAX_LENGTH=10`) are demo defaults — production deployments must override.** Products handling personal data add a custom `PolicyEnforcer` consulting the HIBP k-Anonymity API.
+    Password policies through `PolicyEnforcer` registered against `IdentityMgtEventListener.doPreUpdateCredential()`. **The shipped `DefaultPasswordLengthPolicy` defaults (`MIN_LENGTH=6`, `MAX_LENGTH=10`) are demo defaults — your product must register a stronger policy.** For products handling personal data, add a custom `PolicyEnforcer` that consults the HIBP k-Anonymity API at password-set time.
 
     MFA authenticators in `carbon-identity-framework/components/authenticator/` (TOTP, FIDO2, SMS-OTP, Email-OTP). Adaptive authentication scripts select the second factor based on ACR / enrolled factors / risk signals.
 
@@ -750,7 +750,7 @@ WSO2 baselines to:
 WSO2-specific operational rules on top of the OWASP baseline:
 
 * **Operational logs and audit logs are different sinks.** Operational logs: short-retention, standard log aggregator. Audit logs: long-retention, append-only sink, stable schema, no stack traces or framework chatter. In Carbon products the audit log uses the `AUDIT_LOG` logger wired to a separate appender. In Go services it's a dedicated `*slog.Logger` (e.g., a separate `audit` package) with its own handler.
-* **`source_ip` is resolved against trusted proxies**, never the raw `X-Forwarded-For`. WSO2 deployments are commonly behind a load balancer; document the trust chain explicitly in `deployment.toml` / equivalent config.
+* **`source_ip` is resolved against trusted proxies**, never the raw `X-Forwarded-For`. When your product runs behind a load balancer, document the trust chain explicitly in `deployment.toml` / equivalent config.
 * **Tenant id comes from the authenticated context**, never from request input — same rule as everywhere else in the Carbon stack.
 * **Events that should trigger alerts** beyond the OWASP Logging Cheat Sheet baseline — emit audit events for these, and wire the alerts into whatever monitors the deployment:
     * Cross-tenant deny attempts.
