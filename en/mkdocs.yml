@@ -89,12 +89,12 @@ nav:
       - '': 'security-guidelines/secure-engineering-guidelines/index.md'
       - 'Secure Coding Guidelines':
         - 'Introduction': 'security-guidelines/secure-engineering-guidelines/secure-coding-guidlines/introduction.md'
-        - 'General Recommendations for Secure Coding': 'security-guidelines/secure-engineering-guidelines/secure-coding-guidlines/general-recommendations-for-secure-coding.md'
-        - 'General Recommendations for React Secure Coding': 'security-guidelines/secure-engineering-guidelines/secure-coding-guidlines/general-recommendations-for-react-secure-coding.md'
+        - 'Secure Coding Principles': 'security-guidelines/secure-engineering-guidelines/secure-coding-guidlines/principles.md'
+        - 'Java Stack': 'security-guidelines/secure-engineering-guidelines/secure-coding-guidlines/java-stack.md'
+        - 'Go Stack': 'security-guidelines/secure-engineering-guidelines/secure-coding-guidlines/go-stack.md'
+        - 'React': 'security-guidelines/secure-engineering-guidelines/secure-coding-guidlines/general-recommendations-for-react-secure-coding.md'
         - 'OWASP Top 10 - 2025 Prevention': 'security-guidelines/secure-engineering-guidelines/secure-coding-guidlines/owasp-t10-2025-prevention.md'
-        - 'OWASP Top 10 - 2017 Prevention': 'security-guidelines/secure-engineering-guidelines/secure-coding-guidlines/owasp-t10-2017-prevention.md'
-        - 'OWASP Top 10 - 2013 Prevention': 'security-guidelines/secure-engineering-guidelines/secure-coding-guidlines/owasp-t10-2013-prevention.md'
-        - 'OWASP Mobile Top 10 Prevention': 'security-guidelines/secure-engineering-guidelines/secure-coding-guidlines/owasp-mobile-t10-prevention.md'
+        - 'OWASP API Security Top 10 - 2023 Prevention': 'security-guidelines/secure-engineering-guidelines/secure-coding-guidlines/owasp-api-top10-2023-prevention.md'
         - 'Tooling Recommendations for Secure Coding': 'security-guidelines/secure-engineering-guidelines/secure-coding-guidlines/tooling-recommendations-for-secure-coding.md'
       - 'Security Related HTTP Headers': 'security-guidelines/secure-engineering-guidelines/security-related-http-headers.md'
       - 'OWASP CSRFGuard': 'security-guidelines/secure-engineering-guidelines/owasp-csrf-guard.md'
@@ -607,6 +607,11 @@ plugins:
         'security-announcements/security-advisories/2023/WSO2-2023-2617.md': 'security-announcements/security-advisories/2023/2023-advisories.md'
         # public-artifacts section retired; point to docs root
         'public-artifacts/index.md': 'index.md'
+        # Secure-coding guide split — renamed and retired pages
+        'security-guidelines/secure-engineering-guidelines/secure-coding-guidlines/general-recommendations-for-secure-coding.md': 'security-guidelines/secure-engineering-guidelines/secure-coding-guidlines/java-stack.md'
+        'security-guidelines/secure-engineering-guidelines/secure-coding-guidlines/owasp-t10-2017-prevention.md': 'security-guidelines/secure-engineering-guidelines/secure-coding-guidlines/owasp-t10-2025-prevention.md'
+        'security-guidelines/secure-engineering-guidelines/secure-coding-guidlines/owasp-t10-2013-prevention.md': 'security-guidelines/secure-engineering-guidelines/secure-coding-guidlines/owasp-t10-2025-prevention.md'
+        'security-guidelines/secure-engineering-guidelines/secure-coding-guidlines/owasp-mobile-t10-prevention.md': 'security-guidelines/secure-engineering-guidelines/secure-coding-guidlines/owasp-t10-2025-prevention.md'
   - minify:
       minify_html: true
       minify_js: true

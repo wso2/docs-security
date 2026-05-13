@@ -1,46 +1,43 @@
 ---
 title: Secure Coding Guidelines
 category: security-guidelines
-published: October 22, 2018
-updated: August 09, 2022
-version: 2.2
+version: 3.0
 ---
 
 # Secure Coding Guidelines
-<p class="doc-info">Version: 2.2</p>
+<p class="doc-info">Version: 3.0</p>
 ___
 
 ## Introduction
-This page summarizes the **Secure Coding Guidelines** that WSO2 Engineers follow while implementing WSO2 products 
-and applications within the organization.
 
-The purpose of this document is to increase security awareness and make sure the products and the applications 
-developed by WSO2 are inherently secure, by ensuring that security best practices are followed throughout the 
-Software Development Life Cycle.
+This section is the entry point to the **Secure Coding Guidelines** that WSO2 Engineers follow while implementing WSO2 products and applications. The guidelines exist to make sure WSO2 products and applications are inherently secure, by codifying the practices that apply throughout the Software Development Life Cycle.
 
-* [General Recommendations for Secure Coding](general-recommendations-for-secure-coding.md)
+The guidelines are split by engineering stack, because the Java/Carbon-based products and the new Go-based products live under different constraints. Start with the principles document, then read the stack guide that applies to the codebase you are working in.
 
-     Explains different attacks or security threats that the engineers must focus on while implementing a product or an 
-     application. Prevention techniques are discussed in generic form, and some sections discuss programming language-specific prevention techniques.
+* [Secure Coding Principles](principles.md)
 
-* [General Recommendations for React Secure Coding](general-recommendations-for-react-secure-coding.md) 
+     Language-agnostic principles every WSO2 engineer applies, plus the public references (OWASP, NIST, RFCs, SLSA) every engineer is expected to know. Read this first.
 
-      Explains secure coding best practices for React.
+* [Java Stack Secure Coding Guide](java-stack.md)
 
-* [OWASP Top 10 - 2017 Prevention](owasp-t10-2017-prevention.md) 
+     WSO2-specific secure coding guidance for the established Java-based products (the Carbon-framework codebase). Reflects the constraints of working inside a long-running codebase: existing helpers, existing conventions, cross-bundle constraints.
 
-      Lists OWASP Top 10 2017 list of the most critical application security risks.
+* [Go Stack Secure Coding Guide](go-stack.md)
 
-* [OWASP Top 10 - 2013 Prevention](owasp-t10-2013-prevention.md)
+     WSO2-specific secure coding guidance for the new Go-based products. Reflects greenfield expectations: adopt the modern pattern by default.
 
-      Lists OWASP Top 10 2013 list of the most critical application security risks.
+* [General Recommendations for React Secure Coding](general-recommendations-for-react-secure-coding.md)
 
-* [OWASP Mobile Top 10 Prevention](owasp-mobile-t10-prevention.md) 
+     Secure coding best practices for React frontends.
 
-      Explains different attacks or security threats that the engineers must focus when developing mobile applications. 
-      Prevention techniques are discussed in generic form, and some sections discuss mobile platform-specific prevention techniques.
+* [OWASP Top 10 - 2025 Prevention](owasp-t10-2025-prevention.md)
 
-- [Tooling Recommendations for Secure Coding](tooling-recommendations-for-secure-coding.md) 
+     Maps the OWASP Top 10 - 2025 categories to the matching sections in the Java and Go stack guides.
 
-      Lists all documentation on security-related tooling that is used within WSO2 and recommendations for such tools 
-      in the engineering process.
+* [OWASP API Security Top 10 - 2023 Prevention](owasp-api-top10-2023-prevention.md)
+
+     Maps the OWASP API Security Top 10 - 2023 categories to the matching sections in the Java and Go stack guides.
+
+* [Tooling Recommendations for Secure Coding](tooling-recommendations-for-secure-coding.md)
+
+     Documentation on security-related tooling used within WSO2 and recommendations for such tools in the engineering process.
