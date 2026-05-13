@@ -602,7 +602,7 @@ WSO2-specific:
 
 External: [OWASP API6:2023](https://owasp.org/API-Security/editions/2023/en/0xa6-unrestricted-access-to-sensitive-business-flows/).
 
-WSO2 sensitive flows to identify at STRIDE-LM review: signup, password reset, OTP send, MFA enrolment, gift-code redemption, refund initiation, free-tier resource creation. Apply layered budgets (per-user, per-device, per-IP, per-tenant, global) plus behavioural signals (CAPTCHA after first few failures, device fingerprinting). Every invocation emits an audit event so that velocity anomalies for high-value flows are observable to whoever monitors security events for the deployment.
+WSO2 sensitive flows to identify at STRIDE-LM review: signup, password reset, OTP send, MFA enrolment, gift-code redemption, refund initiation, free-tier resource creation. Apply layered budgets (per-user, per-device, per-IP, per-tenant, global) plus behavioural signals (CAPTCHA after first few failures, device fingerprinting). Every invocation emits an audit event so that velocity anomalies are observable; alerts on the highest-value flows are wired into the deployment's security monitoring.
 
 ### Unrestricted File Upload
 
@@ -692,11 +692,23 @@ WSO2-specific operational rules:
 
 === "Java stack"
 
-    WSO2 Maven artefacts on Maven Central carry `.asc` (GPG) signatures per Maven Central's signing requirement. Verification instructions for consumers belong in the product's install guide. HMAC verification on inbound payloads uses `MessageDigest.isEqual(byte[], byte[])` — never `Arrays.equals` (not constant-time in older JDKs).
+    WSO2 Maven artefacts published to Maven Central carry `.asc` (GPG) signatures per Maven Central's signing requirement; verification instructions for consumers belong in the product's install guide. Target shape for the release pipeline going forward: signed `.asc` (or sigstore equivalent) for every artefact, SHA-256 checksums in the release notes, container images signed with cosign before push. HMAC verification on inbound payloads uses `MessageDigest.isEqual(byte[], byte[])` — never `Arrays.equals` (not constant-time in older JDKs).
 
 === "Go stack"
 
-    Sign release artefacts with [cosign](https://docs.sigstore.dev/cosign/overview/) (or the project's equivalent supply-chain signing tool); publish the signature alongside the artefact and document verification in the install guide. Webhook HMAC verification uses `hmac.Equal` — never `==`:
+    Target shape for a new Go service's release pipeline — sign every artefact with [cosign](https://docs.sigstore.dev/cosign/overview/), publish the signature and a SHA-256 checksum alongside, and document verification in the install guide:
+
+    ```yaml
+    - name: Sign release artefacts
+      run: |
+        for f in dist/*.zip; do
+          cosign sign-blob --yes --bundle "${f}.cosign.bundle" "${f}"
+          sha256sum "${f}" > "${f}.sha256"
+        done
+        cosign sign --yes "ghcr.io/.../${IMAGE}:${VERSION}"
+    ```
+
+    Webhook HMAC verification uses `hmac.Equal` — never `==`:
 
     ```go
     mac := hmac.New(sha256.New, sharedSecret)
@@ -740,8 +752,13 @@ WSO2-specific operational rules on top of the OWASP baseline:
 * **Operational logs and audit logs are different sinks.** Operational logs: short-retention, standard log aggregator. Audit logs: long-retention, append-only sink, stable schema, no stack traces or framework chatter. In Carbon products the audit log uses the `AUDIT_LOG` logger wired to a separate appender. In Go services it's a dedicated `*slog.Logger` (e.g., a separate `audit` package) with its own handler.
 * **`source_ip` is resolved against trusted proxies**, never the raw `X-Forwarded-For`. WSO2 deployments are commonly behind a load balancer; document the trust chain explicitly in `deployment.toml` / equivalent config.
 * **Tenant id comes from the authenticated context**, never from request input — same rule as everywhere else in the Carbon stack.
-* **Events worth alerting on** beyond the OWASP Logging Cheat Sheet baseline: cross-tenant deny attempts, refresh-token reuse-detection trigger, privileged-key read, change to a security-relevant setting (CORS allow-list, lockout thresholds, JWT issuers, federated IdPs). Whether and how to alert is owned by the team operating the deployment — emit the audit events so they have the signal.
-* **Retention** is set per deployment — long enough for security investigation and any applicable compliance horizon. Forward to a dedicated audit sink; consider signing or hash-chaining log batches for tamper evidence.
+* **Events that should trigger alerts** beyond the OWASP Logging Cheat Sheet baseline — emit audit events for these, and wire the alerts into whatever monitors the deployment:
+    * Cross-tenant deny attempts.
+    * Refresh-token reuse-detection trigger (a strong signal of stolen tokens).
+    * Read of a privileged key.
+    * Change to a security-relevant setting (CORS allow-list, lockout thresholds, JWT issuers, federated IdPs, MFA enforcement).
+    * N authentication failures from one source / one principal within a window (lockout-rate signal).
+* **Retention** — long enough for security investigation and any applicable compliance horizon. Forward to a dedicated audit sink separate from operational logs; consider signing or hash-chaining log batches for tamper evidence.
 * **Where a value needs to appear for correlation** (e.g., a token id), log its **hash** or **truncated prefix** with explicit ellipsis (`abcd1234…`) — never the full value. WSO2-shipped masking helpers are extended for this; reviewers reject ad-hoc redactors.
 
 === "Java stack"
