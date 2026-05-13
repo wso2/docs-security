@@ -439,9 +439,9 @@ The general rules (allow-list not deny-list, length caps, format validation, can
 
 ### SQL Injection
 
-External: [OWASP SQL Injection Prevention Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/SQL_Injection_Prevention_Cheat_Sheet.html).
+External: [OWASP SQL Injection Prevention Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/SQL_Injection_Prevention_Cheat_Sheet.html) — covers parameterised queries (Defense Option 1) and the [allow-list input validation pattern](https://cheatsheetseries.owasp.org/cheatsheets/SQL_Injection_Prevention_Cheat_Sheet.html#defense-option-4-allowlist-input-validation) for dynamic identifiers (Defense Option 4) with worked examples.
 
-Parameterised queries with bind variables; for dynamic identifiers (column names in `ORDER BY`, table names) validate against a server-side allow-list before composing the statement.
+WSO2 rule: parameterised queries with bind variables for every value. Where the value is a SQL identifier that cannot be parameterised (column name in `ORDER BY`, table name, sort direction), validate the input against an allow-list of legal values **server-side** before composing the statement — the worked example in the OWASP link above shows the shape.
 
 === "Java stack"
 
@@ -464,9 +464,9 @@ Parameterised queries with bind variables; for dynamic identifiers (column names
 
 ### LDAP Injection
 
-External: [OWASP LDAP Injection Prevention Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/LDAP_Injection_Prevention_Cheat_Sheet.html).
+External: [OWASP LDAP Injection Prevention Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/LDAP_Injection_Prevention_Cheat_Sheet.html) — covers the [search-filter character set](https://cheatsheetseries.owasp.org/cheatsheets/LDAP_Injection_Prevention_Cheat_Sheet.html#defenses) that must be escaped (`*`, `(`, `)`, `\`, NUL) and the [distinguished-name character set](https://cheatsheetseries.owasp.org/cheatsheets/LDAP_Injection_Prevention_Cheat_Sheet.html#distinguished-name-escaping) (different rules).
 
-Use the project's LDAP filter-escape helper. Building a filter via `String.format` / `fmt.Sprintf` / `+` with user input is a security defect.
+WSO2 rule: build every LDAP filter and DN through the escape helper provided by the LDAP client library (e.g., Spring Security's `LdapEncoder.filterEncode` / `nameEncode`, or the Apache Directory API's escaping utilities — pick whatever your library provides and use it consistently). Building a filter via `String.format` / `fmt.Sprintf` / string concatenation with user input is a security defect, even when the input "looks like" a username.
 
 ### OS Command Injection
 
@@ -533,6 +533,8 @@ External: [OWASP SSTI](https://owasp.org/www-community/attacks/Server-Side_Templ
 User input is substituted into pre-defined parameters of an already-compiled template — never into the template *source*. Anti-pattern: `engine.evaluate(userSuppliedTemplate, context)`.
 
 ### NoSQL and XPath injection
+
+External: [OWASP — Testing for NoSQL Injection](https://owasp.org/www-project-web-security-testing-guide/latest/4-Web_Application_Security_Testing/07-Input_Validation_Testing/05.6-Testing_for_NoSQL_Injection) · [OWASP XPath Injection](https://owasp.org/www-community/attacks/XPATH_Injection).
 
 Construct queries with the driver's structured API (MongoDB filters, BSON documents, XPath with bound variables) — never by concatenating user input into a query string.
 
