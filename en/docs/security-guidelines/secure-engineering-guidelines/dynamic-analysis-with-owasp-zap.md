@@ -1,299 +1,244 @@
 ---
 title: Dynamic Analysis with OWASP ZAP
 category: security-guidelines
-published: October 22, 2018
-version: 1.2
+version: 3.0
 ---
 
 # Dynamic Analysis with OWASP ZAP
-<p class="doc-info">Version: 1.2</p>
+
+<p class="doc-info">Version: 3.0</p>
 ___
 
-## Introduction
-This document provides details of all necessary steps for configuring the OWASP Zed Attack Proxy (OWASP ZAP)[^1] tool for scanning WSO2 products in order to discover security threats. 
+[OWASP ZAP](https://www.zaproxy.org/) (Zed Attack Proxy) runs against a *deployed* WSO2 product and probes its HTTP surface for the vulnerability classes a scanner can detect from outside the application. ZAP complements the static analysis tools in [Static Code Analysis]({{#base_path#}}/security-guidelines/secure-engineering-guidelines/static-code-analysis-using-findsecuritybugs/) and the dependency scanners in [Dependency Vulnerability Analysis]({{#base_path#}}/security-guidelines/secure-engineering-guidelines/external-dependency-analysis-analysis-using-owasp-dependency-check/); the three together form the SAST + DAST + SCA baseline every WSO2 product runs.
 
+This document covers two operating modes:
 
-## OWASP ZAP Setup
+1. **Automated CI scans** (the default — runs on every release branch and nightly on `main`).
+2. **Interactive scans for new features** (for an engineer working on a feature whose security posture is not yet covered by the automated baseline).
 
-### Increase JVM Heap Size for Running ZAP
-The heap size is defined in the *zap.sh* (for Linux) and *zap.bat* (for Windows) files. The default value is set to `Xmx512m` (if available free memory is above 1,500 MB) and increase the value appropriately based on the memory availability of your system. (At least 4GB is recommended)
+The interactive UI workflow is documented because it is still useful for triaging findings; the daily security signal should come from CI, not from a human clicking through the desktop UI.
 
-In addition to that, the ZAP scan is a long-running process. Therefore, it is better to run ZAP in a cloud instance or in a dedicated server to avoid any interruptions. 
+## Automated CI scans
 
+### Docker images
 
-### Fine Tune ZAP Tool with Pre-Configured Policy 
-The ZAP tool should be fine-tuned before running a scan for obtaining better results. For this, you can download the WSO2 policy file for ZAP[^2], which contains the settings to fine-tune ZAP. 
+ZAP ships official Docker images on GitHub Container Registry:
 
-Go to **Analyze** &rarr; **Scan Policy** Manager in ZAP.
+* `ghcr.io/zaproxy/zaproxy:stable` — the full ZAP distribution, with all add-ons.
+* `ghcr.io/zaproxy/zaproxy:weekly` — built from the development branch; useful when a fix or new add-on hasn't reached `stable` yet.
 
-![Placeholder](../../assets/images/secure-coding-guidelines/zap-01.png)
+The packaged scans live in the same image:
 
-In the **Scan Policy Manager** window, click **Import**.
+* `zap-baseline.py` — fast, passive scan only. Reports issues observable from the response headers and body without actively probing. Suitable for every PR.
+* `zap-full-scan.py` — passive plus active scan (probes the application). Slower; suitable for nightly or release-gate runs.
+* `zap-api-scan.py` — scans a REST API described by an OpenAPI / Swagger or SOAP description. Suitable for any WSO2 product that publishes an OpenAPI spec.
 
-![Placeholder](../../assets/images/secure-coding-guidelines/zap-02.png)
+### GitHub Action
 
-Browse and select the WSO2 Policy file you downloaded.
+The official `zaproxy/action-baseline` and `zaproxy/action-full-scan` actions wrap the Docker images for GitHub Actions:
 
-![Placeholder](../../assets/images/secure-coding-guidelines/zap-03.png)
+```yaml
+name: ZAP Baseline
 
-Since the policy file is imported correctly, you can use this later when you run the spider and the scan. 
+on:
+  pull_request:
+  schedule:
+    - cron: '30 3 * * *'  # nightly
 
+jobs:
+  zap-baseline:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
 
-### Configuring ZAP Proxy to Trace Browser Traffic
-Rather than providing the URL of the WSO2 server and attacking the URL with ZAP, it is much more effective if we record the UI actions we do on the WSO2 server and let the ZAP tool capture the traffic that can then be used for performing attacks. 
+      - name: Boot the product under test
+        run: docker compose up -d --wait
 
-Go to **Tools** &rarr; **Options** &rarr; **Local Proxy** and set the hostname/IP address and the port number for the proxy. *(In this example, the port is set to 7777 which is selected randomly)*
+      - name: ZAP baseline scan
+        uses: zaproxy/action-baseline@v0.13.0
+        with:
+          target: 'https://localhost:9443/'
+          rules_file_name: '.zap/baseline-rules.tsv'
+          cmd_options: '-a -j -T 5'
+          fail_action: true
+          allow_issue_writing: false
+```
 
-![Placeholder](../../assets/images/secure-coding-guidelines/zap-04.png)
+`rules_file_name` is the project's per-rule allow-list (false positives, accepted findings). Each row carries a rule id, the action (`IGNORE`/`WARN`/`FAIL`), and a rationale comment.
 
-Now the ZAP tool is ready to capture the traffic going through the port (set above). The next step is to configure the browser to send traffic through this port number so that the ZAP tool can trace them.
+`fail_action: true` makes the job fail on any unresolved finding above the configured threshold. The action also uploads the HTML report as a workflow artefact.
 
-In Firefox, go to **Edit** &rarr; **Preferences** and in the **Advanced** options, click **Settings** under the Network tab. 
+For the active scan in a nightly run, swap to `zaproxy/action-full-scan@v0.13.0`. Active scans are longer (typically 30–90 minutes against a Carbon product) and are not appropriate for every PR.
 
-Select the **Manual proxy configuration** and set the hostname/IP and the port number.
+### Scanning REST APIs
 
-![Placeholder](../../assets/images/secure-coding-guidelines/zap-05.png)
+WSO2 products publish OpenAPI specs for their REST surfaces. Point `zap-api-scan.py` at the spec:
 
-If any exception for **localhost, 127.0.0.1** or the hostname of the WSO2 server you are trying to scan is given in **No Proxy for:** text box, remove them so ZAP can detect the traffic flow of that as well. 
+```sh
+docker run --rm -t \
+    --network host \
+    -v "$PWD:/zap/wrk/:rw" \
+    ghcr.io/zaproxy/zaproxy:stable \
+    zap-api-scan.py \
+        -t https://localhost:9443/api/am/publisher/v4/swagger.yaml \
+        -f openapi \
+        -r api-scan-report.html \
+        -J api-scan-report.json
+```
 
-Now, go to firefox and access the WSO2 server. You will see the SSL warning below because the traffic goes through the ZAP proxy. Add an exception to the site in the browser.
+The API scan reads the spec, generates request shapes from it, and probes the endpoints. It does **not** automatically obtain an OAuth token — see [Authenticated scans](#authenticated-scans).
 
-![Placeholder](../../assets/images/secure-coding-guidelines/zap-06.png)
+### Authenticated scans
 
-Now the WSO2 Server URL should be opened in the browser. Also, it should be listed in ZAP under the sites. 
+WSO2 products expose almost all interesting state behind authentication. An unauthenticated scan finds the login page and not much else. There are three patterns for giving ZAP the credentials it needs.
 
-![Placeholder](../../assets/images/secure-coding-guidelines/zap-07.png)
+**Session-cookie-based UIs (Management Console, Publisher / DevPortal / Console).** Configure a ZAP Authentication script that logs in by submitting the login form and captures the session cookie. The packaged `Form-Based Authentication` method handles this for most Carbon flows. Configure it in the ZAP context (see [Interactive scans — Authentication setup](#authentication-setup)); the same context is reusable in CI by exporting it as a `.context` file and importing in the Docker run with `-z "-config ..."`.
 
-Select the Mode of the scan as **Protected Mode**. With this, you can choose which sites to be used for attacking. *(For example, if you are trying out the Federated Authentication scenario with WSO2 Identity Server and Facebook, under the Sites in ZAP tool, the Facebook website also will be listed to be attacked. In the scope of scanning, external websites should be removed. With the Protected Mode, you able to select the sites that should be attacked by the ZAP tool)*
+**Bearer-token REST APIs.** Obtain an OAuth token before the scan, then run with the `Authorization` header injected:
 
+```sh
+TOKEN=$(curl -sk -u "$CLIENT_ID:$CLIENT_SECRET" \
+    -d "grant_type=client_credentials" \
+    https://localhost:9443/oauth2/token | jq -r .access_token)
 
-## Scanning Process
+docker run --rm -t --network host -v "$PWD:/zap/wrk/:rw" \
+    ghcr.io/zaproxy/zaproxy:stable \
+    zap-api-scan.py \
+        -t https://localhost:9443/api/am/publisher/v4/swagger.yaml \
+        -f openapi \
+        -z "-config replacer.full_list(0).description=Authorization \
+            -config replacer.full_list(0).enabled=true \
+            -config replacer.full_list(0).matchtype=REQ_HEADER \
+            -config replacer.full_list(0).matchstr=Authorization \
+            -config replacer.full_list(0).regex=false \
+            -config replacer.full_list(0).replacement=Bearer\ $TOKEN"
+```
 
-### Excluding the Server Logout from Spider
-When we run the ZAP scan with an active user session, if ZAP executes the action to logout from the server in the middle of the scan, the actions that should be performed with a logged in user session would not be performed after that (because the active session is removed with the logout action ). In order to avoid that, we need to exclude the logout action from the Spider.
+Set the token's validity period long enough to cover the scan duration. The OAuth `AccessTokenDefaultValidityPeriod` in `repository/conf/deployment.toml` may need to be increased for the test instance.
 
-For that, first, log in to the WSO2 server and then log out so that the logout action is traced by ZAP. Then, find the **GET:logout_action.jsp**, right-click, and exclude it from Spider.
+**OIDC flows (Single Sign-On).** Use the [Authentication scripts](https://www.zaproxy.org/docs/desktop/start/features/authmethods/) Add-on which supports OAuth 2.0 authorization-code flow. Configure once interactively, export the context for CI reuse.
 
-The logout action is listed under **<server_url\>** &rarr; **carbon** &rarr; **admin** in the Sites tree.
+### Scaling the JVM
 
-![Placeholder](../../assets/images/secure-coding-guidelines/zap-08.png)
+The default heap is `Xmx512m`. Active scans against Carbon products typically need 4 GB or more. Set `JAVA_OPTS` on the container:
 
-Then in the **Session Properties** window, it will show the URL regex that ZAP is going to exclude in the spider. Click **OK**. 
+```sh
+docker run --rm -t -e JAVA_OPTS='-Xmx4g' ghcr.io/zaproxy/zaproxy:stable zap-full-scan.py ...
+```
 
-![Placeholder](../../assets/images/secure-coding-guidelines/zap-09.png)
+Run CI scans on a dedicated runner where possible — active scans are long, and pre-emption mid-scan loses the partial work.
 
+### WSO2 scan policy
 
-### Perform UI Actions Manually (or using Selenium)
-With the above steps, ZAP is tracing the sites that you visit in the browser. The next step is to manually perform UI actions in the browser so that ZAP traces all the actions which we can then use for attacking. 
+Tune the scan policy before the first run. The WSO2 default scan policy enables the rules that matter against Carbon products and disables rules that produce known false positives (such as test rules tuned for PHP applications, irrelevant CMS plugins, etc.).
 
-This helps test a specific feature. For example, if we want to identify the possible issues in the user creation flow, we can create a new user in Management Console while ZAP traces all actions through the proxy. 
+Maintain the policy file in the product repository under `.zap/policies/`. The file is plain XML and version-controllable. Adjust on each ZAP version bump (rules sometimes get added or split between releases).
 
-![Placeholder](../../assets/images/secure-coding-guidelines/zap-10.png)
+### Failing the build
 
-On the URLs ZAP discovered, it can perform attacks to find possible issues. We can improve the coverage of the scan by manually performing all actions in the browser (i.e in Management Console) so that ZAP discovers each flow that it can try attacking. 
+The exit code conventions for the packaged scans:
 
-You can also automate this by having selenium scripts for all UI actions. After setting the ZAP to act as the proxy, you can run selenium scripts so that in the browser, it automatically plays the actions you would do manually. For every action, ZAP will discover the URLs. 
+* `0` — no findings above the configured threshold.
+* `1` — findings exceeding the threshold.
+* `2` — at least one finding at `WARN` level (configurable to be treated as failure).
 
+CI gates on exit code. The HTML report and JSON report are uploaded as workflow artefacts on every run, regardless of pass / fail.
 
-### Removing Unnecessary Sites from Scan
-When the ZAP is acting as the proxy, all the URLs that the browser calls will be traced under the Sites in ZAP. We need to remove external websites and select only the WSO2 Server’s scope for the scan. 
+### Triage and false positives
 
-Right-click the **Site** that should be included in the scan and select **Include in Context** &rarr; **New Context** .
+Two layers of suppression:
 
-![Placeholder](../../assets/images/secure-coding-guidelines/zap-11.png)
+1. **Rule-level suppression** in the `.zap/baseline-rules.tsv` (or `full-scan-rules.tsv`) file — applies the same action (`IGNORE`/`WARN`) to every alert of that rule across the scan.
 
-Then it will show the **Session Properties** window with the regex for including the URL patterns in the scan. Provide a name for the context so that we can identify the site uniquely when we have multiple sites added as different contexts. For example, when you are testing a product like WSO2 API Manager, the Management Console, API Store, and API Publisher can be three major sites where you can add each as a different context.
+    ```tsv
+    # Rule ID    Action    Comment
+    10202       IGNORE    Anti-CSRF tokens managed by CSRFGuard; rule does not detect the X-CSRF-Token header.
+    10038       WARN      CSP nonces are present but rule expects hashes; manual review confirmed compliant.
+    ```
 
-![Placeholder](../../assets/images/secure-coding-guidelines/zap-12.png)
+2. **Alert-instance suppression** via the ZAP alert-filter feature, configured in the context. Applies to a specific URL + rule combination, surfaced in the report as an explicit "accepted" mark rather than silently dropped.
 
-Once the site is added to the Context for scan, the icon image for each entry under the tree of the site will be changed showing that it is added to the context.
+Each suppression carries a rationale. Review the suppression list quarterly — rules and the product both change.
 
-![Placeholder](../../assets/images/secure-coding-guidelines/zap-13.png)
+## Interactive scans
 
-Under the Sites list, you can click the **Show all URLs** button to view only the sites that are added to the contexts. All other sites will be hidden from the Sites panel with this option. 
+Useful when developing a new feature whose paths the automated baseline does not yet exercise, or when triaging a finding from a CI run.
 
-![Placeholder](../../assets/images/secure-coding-guidelines/zap-14.png)
+### Install
 
-Once you have added the site/s to the context, you can filter the scan results (after running a scan) easily. In the History tab, **Show only URLs in Scope** filters the results and shows only the URLs that belong to the context. 
+[Download ZAP](https://www.zaproxy.org/download/) for the host platform. ZAP ships its own bundled JVM since 2.14; the older "install a JRE separately" guidance no longer applies.
 
-![Placeholder](../../assets/images/secure-coding-guidelines/zap-15.png)
+### Browser proxy configuration
 
-When searching also you can search URLs that belong only to the context with the **Search all URLs** option enabled. 
+ZAP runs as an HTTP proxy. Configure the browser to send traffic through it, then drive the application and ZAP records everything it sees.
 
-![Placeholder](../../assets/images/secure-coding-guidelines/zap-16.png)
+1. In ZAP: **Tools → Options → Network → Local Servers/Proxies** (newer UI) or **Tools → Options → Local Proxies** (older). Pick a port (the default `8080` is fine; some environments use `7777` to avoid conflicting with development servers).
+2. In the browser: set the manual HTTP / HTTPS proxy to the ZAP host and port. Remove any `localhost` exception so traffic to the local server is captured. Firefox: **Settings → Network Settings → Manual proxy configuration**. Chrome: use the system proxy or [SwitchyOmega](https://chrome.google.com/webstore/detail/proxy-switchyomega-3-zero/pfnededegaaopdmhkdmcofjmoldfiped) — Chrome's built-in proxy switching is awkward.
+3. Trust the ZAP root certificate so HTTPS to the product works without warnings. In ZAP: **Tools → Options → Network → Dynamic SSL Certificate → Save**; import the saved file into the browser's certificate store.
+4. Set ZAP's mode to **Protected**. In Protected mode, only sites added to the active **Context** are attacked — important when developer browsers also visit external sites.
 
-You can also filter the alerts that belong only to the contexts you have added with the **Show all URLs** option enabled.
+### Context setup
 
-![Placeholder](../../assets/images/secure-coding-guidelines/zap-17.png)
+A **Context** groups URLs that belong to the same application. Right-click the site in the **Sites** tree → **Include in Context → New Context**. Name it (e.g., `WSO2 Publisher`). Adjust the regex to match the URL prefix.
 
+For a WSO2 product with multiple browser surfaces (Carbon Management Console, APIM Publisher, DevPortal, Console), define one context per surface; configurations are surface-specific.
 
-### Globally Excluding URL Patterns
-When the ZAP tool starts crawling the site, it will increase the network traffic heavily. We can reduce the traffic by excluding the URL patterns globally so that ZAP will ignore such URLs when crawling. For example, if we exclude URLs of .mp4 video files, the ZAP tool will not download mp4 video files which saves network bandwidth.
+### Authentication setup
 
-Go to **Tools** &rarr; **Options** and select the Global Exclude URL option. By default, there are some patterns already added to ZAP. You can select all of them for exclusion. Additionally, if there is any URL pattern you need to exclude, you can add the regex for the URL as a new entry. 
+Configure **Session Properties → Authentication** for the context. For Carbon Management Console:
 
-![Placeholder](../../assets/images/secure-coding-guidelines/zap-18.png)
+* **Authentication method**: Form-Based Authentication.
+* **Login form target URL**: the login servlet URL (varies per product).
+* **POST data**: include the ZAP authentication placeholders for the username and password fields. ZAP uses `{` followed by `%username%` and `%password%}` style placeholders that the configuration UI inserts; consult ZAP's authentication documentation for the exact form.
+* **Logged In / Logged Out indicators**: regex patterns that distinguish authenticated from unauthenticated responses. Often `\Qhome.jsp\E` for "logged in" and the login form's title for "logged out".
+* **Users**: add the test user(s); credentials are stored in the ZAP session file (don't commit it).
 
+For OIDC flows, install the **Authentication Helper** add-on (formerly **Authentication scripts**) and select OAuth 2.0 Authorization Code with PKCE.
 
-### Creating the Logged in User Session
-When running the spider to crawl the site, we have to let ZAP discover the URLs that are accessible only by logged-in users as well. For that, we need to create a logged-in user session in ZAP, so that in the same way that a logged-in user can browse the URLs in a web browser, ZAP will be able to crawl through those URLs. 
+### Exclude the logout endpoint
 
-Click  **Show All Tabs** in the toolbox so that it will display all the tabs. 
+The Spider follows links indiscriminately and will eventually hit the logout endpoint, after which everything else fails because the session is gone. Exclude the logout URL:
 
-![Placeholder](../../assets/images/secure-coding-guidelines/zap-19.png)
+* Trigger a logout in the browser so ZAP records the URL.
+* Find the URL in the Sites tree, right-click → **Exclude from → Spider** and **Exclude from → Active Scan**.
 
-Go to the **Http Sessions** tab. If there are already created sessions listed, you can remove them. 
+### Run the AJAX Spider and Spider
 
-![Placeholder](../../assets/images/secure-coding-guidelines/zap-20.png)
+ZAP has two crawlers:
 
-Now, while the ZAP proxy is tracing the traffic, go to the browser and log in to the site you need to scan. Note that when ZAP performs the scan, it will attack the URLs with the associated privileges of the user you logged in as. Once you log in, the session ID should be listed in the **HTTP Sessions** tab. Right-click the session and click **Set as Active**. 
+* **AJAX Spider** — runs a headless browser, executes JavaScript, follows links generated by client-side code. Required for any SPA-style interface (Publisher, DevPortal). Configure the browser driver in **Tools → Options → Selenium**.
+* **Traditional Spider** — fetches HTML and follows static links. Faster; useful as a second pass to catch URLs the AJAX Spider missed.
 
-![Placeholder](../../assets/images/secure-coding-guidelines/zap-21.png)
+Set max crawl depth and max duration to `0` on the AJAX Spider to disable the limits (rely on Protected mode to keep it in scope). Set Traditional Spider depth to 5.
 
-The above should be done only if the authentication to the site is tracked via the **JSESSIONID**. In a scenario like Single Sign On (*i.e. when testing Identity Server Dashboard*), the session is maintained using the **commonAuthId** cookie. In such a case, go to the Params tab, right-click the **JSESSIONID** and select **Unflag as session Token**.
+For surfaces with substantial client-side state (multi-step wizards, conditional rendering), supplement the spider with Selenium scripts that drive the UI through the flows. Run the scripts with ZAP as the proxy; ZAP records every request.
 
-![Placeholder](../../assets/images/secure-coding-guidelines/zap-22.png)
+### Run the Active Scan
 
-After that, right-click **commonAuthId** and **Flag as Session Token**. With this ZAP will take commonAuthId value for maintaining the session. 
+After the spider has populated the URL tree, **Attack → Active Scan** on the context (or right-click the site). Select the imported WSO2 scan policy. The active scan probes each URL it discovered with the rules in the policy.
 
-![Placeholder](../../assets/images/secure-coding-guidelines/zap-23.png)
+Active scans against a full Carbon product run for hours. Plan accordingly — a dedicated VM or container is preferable to a laptop. Save the session (`File → Save Session`) periodically.
 
-In both cases above, the browser should have an active user *(logged in)* session with the particular session value traced in ZAP which should then be flagged as the session token.
+### Manage alerts
 
+After the scan completes, work through the **Alerts** panel. For each:
 
-### Configuring and Running AJAX Spider
-When you have multiple sites added to the context and when you need all the sites to have the same configuration, you can set them globally. Go to **Tools** &rarr; **Options** and select **AJAX Spider**. 
+* If it's a real finding — file the issue against the product team. Severity and recommended remediation are in the alert details.
+* If it's a false positive — open the alert, set **Confidence: False Positive**. Better still, add an alert filter in **Session Properties → Alert Filters** so the same alert is auto-suppressed on the next run.
 
-Set the maximum crawl depth, maximum crawl states and maximum duration to **0** so that the AJAX Spider will go on crawling completely without any limitations. 
+Export the report via **Report → Generate Report**. The HTML report is the customer-facing artefact; the JSON / SARIF formats feed pipelines.
 
-![Placeholder](../../assets/images/secure-coding-guidelines/zap-24.png)
+## Scanning Go services
 
-You can choose the browser to be used for crawling by the AJAX spider. If your browser is not listed in the dropdown, go to **Tools** &rarr; **Options** and in the **Selenium** option, browse and provide the selenium driver for the particular browser. (You can download the selenium driver for the particular web browser from the internet) . Once you have provided the driver, in AJAX Spider configuration’s browser dropdown the browser will be listed.
+The Go-based WSO2 products serve HTTP surfaces in the same shape as the Carbon products — ZAP doesn't care what language is on the server side. Use the same baseline / full-scan / API-scan flows; point ZAP at the Go service URL or its OpenAPI spec.
 
-![Placeholder](../../assets/images/secure-coding-guidelines/zap-25.png)
-
-If you have multiple sites added to the context but need to have separate ajax spider configurations for a particular site, you cannot use global settings. In such a case, right-click the particular site and go to **Attack** &rarr; **AJAX Spider**.
-
-Also, you need to select **Protected Mode** (*from the dropdown in the toolbox*) for running the AJAX spider so that it will crawl through the sites added to the context and will skip any URL that is out of scope. 
-
-![Placeholder](../../assets/images/secure-coding-guidelines/zap-26.png)
-
-Select **Show advanced options** in the **Scope** tab which will make the **Options** tab visible. 
-
-![Placeholder](../../assets/images/secure-coding-guidelines/zap-27.png)
-
-In the **Options** tab of AJAX Spider, you can set the configuration specific to this particular site. 
-
-![Placeholder](../../assets/images/secure-coding-guidelines/zap-28.png)
-
-Once the configuration is set, you can **Start Scan**. 
-
-Before starting the scan, you need to make sure that you have an active user session set in ZAP (Follow the steps in *[Creating the Logged in User Session](#creating-the-logged-in-user-session) section*) so that the AJAX spider can crawl URLs that are accessible by the logged-in user. 
-
-
-### Running Spider
-The global configuration for Spider is in **Tools** &rarr; **Options** under Spider option which applies to all the sites added to the context. 
-
-You can set the maximum depth to crawl to 5. At this point, we have already run the AJAX Spider and discovered most of the URLs with crawling. Therefore, crawling up to a depth of 5 levels would provide sufficient coverage. 
-
-![Placeholder](../../assets/images/secure-coding-guidelines/zap-29.png)
-
-When you have multiple sites added to the context and need to have separate Spider configurations for a particular site, you cannot use Global Settings. In such a case, you can right-click the site and go to **Attack** &rarr; **Spider**. 
-
-![Placeholder](../../assets/images/secure-coding-guidelines/zap-30.png)
-
-In the **Spider** window, select **Show Advanced options** and go to the **Advanced** tab.
-
-![Placeholder](../../assets/images/secure-coding-guidelines/zap-31.png)
-
-Since we have run the AJAX Spider previously, it should have crawled most of the URLs of the server. Therefore having only **5** as the maximum depth to crawl would be sufficient to complete crawling and covering the URLs of the server. 
-
-![Placeholder](../../assets/images/secure-coding-guidelines/zap-32.png)
-
-With the above configuration, start the scan to complete URL discovery.
-
-
-### Removing False Positives before Scanning
-Before running the Active Scan, we can configure the Session Properties such that when reporting alerts, it would avoid known false positive URLs. 
-
-Go to **File** &rarr; **Session Properties** and under the particular context, select **Alert Filters**. 
-
-![Placeholder](../../assets/images/secure-coding-guidelines/zap-33.png)
-
-Then click the **Add** button to define the URLs that we have already identified to be reporting false positive alerts. 
-
-![Placeholder](../../assets/images/secure-coding-guidelines/zap-34.png)
-
-In the Add **Alert Filter** window, select the type of **Alert** and set it as a **False Positive** in the **New Risk Level** dropdown. If the URL is a direct URL, it can be given in the **URL** textbox. If there are multiple URLs following the same pattern, select the **URL is Regex**? checkbox and define the regular expression for the URL. Finally, **Confirm** the alert filter. 
-
-The alerts generated for these URLs would  be ignored by ZAP during the scanning time and also would not appear in the identified security vulnerabilities. 
-
-
-### Running Active Scan
-When you have multiple sites in the context and need to have a similar active scan configuration for all the sites, you can use the global settings. Go to **Tools** &rarr; **Options** and select **Active Scan**. 
-
-As the default active scan policy and attack mode scan policy, select the WSO2Policy file which you imported in the section [Fine Tune ZAP Tool with Pre-Configured Policy](#fine-tune-zap-tool-with-pre-configured-policy).  
-
-![Placeholder](../../assets/images/secure-coding-guidelines/zap-35.png)
-
-When you have multiple sites added to the context, but need to have a specific active scan configuration for a particular site, you can right-click the particular site and go to **Attack** &rarr; **Active Scan**. 
-
-![Placeholder](../../assets/images/secure-coding-guidelines/zap-36.png)
-
-It will show the **Active Scan** window. Select **Show advanced options** and go to the **Policy tab**. 
-
-![Placeholder](../../assets/images/secure-coding-guidelines/zap-37.png)
-
-As the **Policy**, select the WSO2Policy file which you imported previously. 
-
-![Placeholder](../../assets/images/secure-coding-guidelines/zap-38.png)
-
-Finally, start the scan. Note that you need to have a logged-in user session when running the active scan.(*follow the steps in [Creating the Logged in User Session](#creating-the-logged-in-user-session)*)
-
-Then the scan will begin and you can see the progress in the **Active Scan** tab. 
-
-![Placeholder](../../assets/images/secure-coding-guidelines/zap-39.png)
-
-
-## Report Generation
-
-### Removing False Positives Before Report Generation
-Once the **Active Scan** is completed and the alerts are generated, if there are false positive alerts, they can be removed from appearing in the reports generated. For that, go to the **Alerts** tab and double-click the particular alert that should be marked as a false positive. 
-
-![Placeholder](../../assets/images/secure-coding-guidelines/zap-40.png)
-
-Then the **Edit Alert** window will appear. In the **Confidence** dropdown, select **False Positive**. 
-
-![Placeholder](../../assets/images/secure-coding-guidelines/zap-41.png)
-
-
-### Generating Reports
-Once the **Active Scan** is complete, you can generate the reports for exporting the results of the scan. Go to **Report** &rarr; **Generate HTML Report** from the menu. 
-
-![Placeholder](../../assets/images/secure-coding-guidelines/zap-42.png)
-
-Then it will prompt where to save the report. Once you provide a file path, it will export the ZAP scan report. By examining the report, you will be able to identify possible security threats and get them fixed. 
-
-![Placeholder](../../assets/images/secure-coding-guidelines/zap-43.png)
-
-
-## Scanning RESTful APIs with ZAP
-WSO2 products have APIs that are secured with OAuth. In order to consume such APIs, we need to provide an access token in the request. When ZAP is scanning the URLs, since the access token is not passed when making the requests, it will fail to scan the APIs completely. In such cases, we can manually test the APIs using a REST client which can be configured to send traffic through a proxy. Here we can configure the proxy host and port to the same host and port that ZAP is running so that ZAP can trace and record traffic for all the API requests.
-
-OAuth access tokens have a fixed expiration time, which is set to 60 minutes by default in WSO2 products (*i.e Identity Server*). This expiration time is not sufficient when running the active scan. Therefore you have to increase the token expiration time in `<AccessTokenDefaultValidityPeriod>` element in *<CARBON_HOME\>/repository/conf/identity.xml* file. 
-
-1. Configure the proxies in the browser as you do in the usual scenario, since the REST client runs on top of the browser ZAP is intelligent enough to identify the process.
-2. Configure the authentication headers in the REST client
-
-    ![Placeholder](../../assets/images/secure-coding-guidelines/zap-44.png)
-
-Now run the requests in the REST client, ZAP can now scan as it does for the web UI. You will be able to do the active scan, spider and ajax spider after that, as you do in the usual way.
-
-If you see any certificate-based errors like the below in your REST client, allow the certificate when pops up when trying to login to the carbon console (In firefox you won’t get any response)
-
-![Placeholder](../../assets/images/secure-coding-guidelines/zap-45.png)
-
+Authentication for Go services typically uses bearer tokens (see [Bearer-token REST APIs](#authenticated-scans) above).
 
 ## References
-[^1]: [https://www.owasp.org/index.php/OWASP_Zed_Attack_Proxy_Project](https://www.owasp.org/index.php/OWASP_Zed_Attack_Proxy_Project)
-[^2]: [https://github.com/thariyarox/SecurityTools/blob/master/OWASP_ZAP/policies/WSO2Policy.policy](https://github.com/thariyarox/SecurityTools/blob/master/OWASP_ZAP/policies/WSO2Policy.policy)
+
+* [OWASP ZAP](https://www.zaproxy.org/) — project home.
+* [ZAP Docker documentation](https://www.zaproxy.org/docs/docker/) — packaged scans, configuration options.
+* [ZAP GitHub Actions](https://github.com/zaproxy/action-baseline) — `zaproxy/action-baseline`, `zaproxy/action-full-scan`, `zaproxy/action-api-scan`.
+* [ZAP rule reference](https://www.zaproxy.org/docs/alerts/) — every alert ID and what it means; useful when authoring the rules file.
+* [Authentication in ZAP](https://www.zaproxy.org/docs/desktop/start/features/authmethods/) — form, JSON, script, OAuth 2.0.
+* [OWASP Web Security Testing Guide](https://owasp.org/www-project-web-security-testing-guide/) — the testing approach ZAP automates.

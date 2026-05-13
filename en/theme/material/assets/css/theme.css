@@ -487,6 +487,20 @@
     border-radius: 0 0 var(--md-code-block-radius) var(--md-code-block-radius);
 }
 
+.md-typeset .tabbed-content {
+    background: var(--md-default-fg-color--lightest);
+    padding: 0.8rem 1.2rem;
+    border-radius: 0 0 var(--md-code-block-radius) var(--md-code-block-radius);
+}
+
+.md-typeset .tabbed-content > :first-child {
+    margin-top: 0;
+}
+
+.md-typeset .tabbed-content > :last-child {
+    margin-bottom: 0;
+}
+
 .md-nav__list hr {
     border: 1px solid var(--md-divider-color);
     opacity: 0.3;

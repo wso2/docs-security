@@ -12,19 +12,11 @@ ___
 
 This section is the entry point to the **Secure Coding Guidelines** that WSO2 Engineers follow while implementing WSO2 products and applications. The guidelines exist to make sure WSO2 products and applications are inherently secure, by codifying the practices that apply throughout the Software Development Life Cycle.
 
-The guidelines are split by engineering stack, because the Java/Carbon-based products and the new Go-based products live under different constraints. Start with the principles document, then read the stack guide that applies to the codebase you are working in.
+The guide is a single document with stack-specific content in tabs. Each section starts with shared principles, references, and rules that apply across all WSO2 products, then provides Java-stack and Go-stack implementation details in tabs. Click the tab for the stack you work in — Material remembers the choice across the site.
 
-* [Secure Coding Principles](principles.md)
+* [Secure Coding Guide](secure-coding-guide.md)
 
-     Language-agnostic principles every WSO2 engineer applies, plus the public references (OWASP, NIST, RFCs, SLSA) every engineer is expected to know. Read this first.
-
-* [Java Stack Secure Coding Guide](java-stack.md)
-
-     WSO2-specific secure coding guidance for the established Java-based products (the Carbon-framework codebase). Reflects the constraints of working inside a long-running codebase: existing helpers, existing conventions, cross-bundle constraints.
-
-* [Go Stack Secure Coding Guide](go-stack.md)
-
-     WSO2-specific secure coding guidance for the new Go-based products. Reflects greenfield expectations: adopt the modern pattern by default.
+     The canonical secure coding guide. Covers the OWASP Top 10 - 2025 categories with shared principles + stack-specific implementation for the established Java/Carbon-based products and the new Go-based products.
 
 * [General Recommendations for React Secure Coding](general-recommendations-for-react-secure-coding.md)
 

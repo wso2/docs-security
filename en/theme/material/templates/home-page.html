@@ -41,11 +41,35 @@
     <div class="description-section"
       style="display: flex; flex-direction: row; align-items: flex-start; margin-top: 30px;">
       <p>
-        Security is our top priority. We continuously improve the security of WSO2 products, services, and
-        infrastructure, and we publish our security program openly so customers can run WSO2 software in
-        mission-critical environments with confidence. Contributions from researchers, developers, and the wider
-        community are welcome — eligible reports are recognized in our Security Hall of Fame.
+        Security and compliance resources for WSO2 products and cloud services — secure engineering practices,
+        deployment hardening guidance, vulnerability management processes, and public security advisories.
       </p>
+    </div>
+
+    <div class="trust-strip">
+      <a href="{{ 'security-announcements/security-advisories/' | url }}" class="trust-item">
+        <div class="trust-item-icon">{{ home_card_icon("octicons/verified-16") }}</div>
+        <div class="trust-item-text">
+          <span class="trust-item-title">CVE Numbering Authority (CNA)</span>
+          <span class="trust-item-desc">WSO2 assigns and publishes CVE IDs for vulnerabilities in its
+            products.</span>
+        </div>
+      </a>
+      <a href="{{ 'security-processes/secure-software-development-process/' | url }}" class="trust-item">
+        <div class="trust-item-icon">{{ home_card_icon("octicons/workflow-16") }}</div>
+        <div class="trust-item-text">
+          <span class="trust-item-title">Documented Security Program</span>
+          <span class="trust-item-desc">Defined SDLC, vulnerability management, and cloud security
+            processes.</span>
+        </div>
+      </a>
+      <a href="{{ 'security-reporting/reward-and-acknowledgement-program/' | url }}" class="trust-item">
+        <div class="trust-item-icon">{{ home_card_icon("octicons/people-16") }}</div>
+        <div class="trust-item-text">
+          <span class="trust-item-title">Responsible Disclosure</span>
+          <span class="trust-item-desc">Reward and acknowledgement program for security researchers.</span>
+        </div>
+      </a>
     </div>
 
     {{ page.content }}
@@ -56,8 +80,8 @@
       </div>
       <div class="cta-content">
         <span class="cta-title">Found a security issue?</span>
-        <span class="cta-desc">Report it through our private, confidential security mailing list. We triage every
-          report and recognize eligible findings in our Security Hall of Fame.</span>
+        <span class="cta-desc">Report it privately through the appropriate WSO2 security reporting channel. See
+          the vulnerability reporting guidelines for what to include.</span>
       </div>
     </a>
 
@@ -68,7 +92,8 @@
         <div>
           <div class="components-section-header">
             <h2>Security Processes</h2>
-            <p>How WSO2 builds, maintains, and responds to security across the product lifecycle.</p>
+            <p>Organizational security workflows, governance, incident handling, and vulnerability management
+              practices.</p>
           </div>
           <div class="components-card">
             <div>
@@ -77,8 +102,8 @@
               </div>
               <h3>Processes &amp; Programs</h3>
               <div class="components-card-content">
-                The processes behind how we develop, release, and operate WSO2 software — covering secure software
-                development, vulnerability management, cloud security, and customer notification for SaaS incidents.
+                Secure software development lifecycle, vulnerability management workflow, cloud security controls
+                aligned with the CSA DevSecOps pillars, and the SaaS incident notification process.
               </div>
             </div>
             <div class="components-card-footer">
@@ -101,7 +126,7 @@
         <div>
           <div class="components-section-header">
             <h2>Security Guidelines</h2>
-            <p>Engineering and operational practices that build security into WSO2 products and deployments.</p>
+            <p>Technical implementation guidance for secure engineering and hardened deployments.</p>
           </div>
           <div class="components-card">
             <div>
@@ -110,22 +135,19 @@
               </div>
               <h3>Engineering &amp; Operations</h3>
               <div class="components-card-content">
-                Reference material for developers and operators: secure coding patterns, OWASP Top 10 prevention,
-                static and dynamic analysis tooling, and hardening guidance for production deployments.
+                Secure coding standards, OWASP Top 10 prevention, and security analysis tooling for WSO2 product
+                teams — plus hardening guidance for production deployments.
               </div>
             </div>
             <div class="components-card-footer">
-              <a href="{{ 'security-guidelines/secure-engineering-guidelines/secure-coding-guidlines/general-recommendations-for-secure-coding/' | url }}" class="components-resource-link">
-                General Secure Coding Recommendations <span>&rarr;</span>
+              <a href="{{ 'security-guidelines/secure-engineering-guidelines/secure-coding-guidlines/secure-coding-guide/' | url }}" class="components-resource-link">
+                Secure Coding Guide <span>&rarr;</span>
               </a>
-              <a href="{{ 'security-guidelines/secure-engineering-guidelines/secure-coding-guidlines/general-recommendations-for-react-secure-coding/' | url }}" class="components-resource-link">
-                React Secure Coding <span>&rarr;</span>
+              <a href="{{ 'security-guidelines/secure-engineering-guidelines/secure-coding-guidlines/owasp-t10-2025-prevention/' | url }}" class="components-resource-link">
+                OWASP Top 10 — 2025 Prevention <span>&rarr;</span>
               </a>
               <a href="{{ 'security-guidelines/security-guidelines-for-production-deployment/' | url }}" class="components-resource-link">
-                Production Deployment Guidelines <span>&rarr;</span>
-              </a>
-              <a href="{{ 'security-guidelines/' | url }}" class="components-resource-link">
-                All Security Guidelines <span>&rarr;</span>
+                Production Deployment Hardening <span>&rarr;</span>
               </a>
             </div>
           </div>
@@ -134,8 +156,8 @@
 
       <div class="components-section-header">
         <h2>Security Announcements</h2>
-        <p>Authoritative WSO2 publications: product advisories, CVE analysis, periodic cloud bulletins, and
-          responses to industry incidents.</p>
+        <p>Product advisories, CVE analysis, cloud security bulletins, and clarifications on industry incidents
+          relevant to WSO2 products and customers.</p>
       </div>
 
       <div class="components-grid-2">
@@ -146,8 +168,8 @@
             </div>
             <h3>Security Advisories</h3>
             <div class="components-card-content">
-              Advisories for confirmed vulnerabilities in WSO2 products. Each advisory lists the affected products
-              and versions, CVSS severity, and the recommended fix or mitigation.
+              Public advisories for confirmed vulnerabilities in WSO2 products — affected versions, CVSS severity,
+              assigned CVE IDs, and the recommended fix or mitigation.
             </div>
           </div>
           <div class="components-card-footer">
@@ -163,16 +185,16 @@
             <div class="md-column-grid-item-header-icon icon-color-4">
               {{ home_card_icon("octicons/file-badge-16") }}
             </div>
-            <h3>CVE Justifications</h3>
+            <h3>Third-Party CVE Analysis</h3>
             <div class="components-card-content">
-              Analysis of third-party CVEs that appear in scans of WSO2 products — whether the vulnerable code path
-              is actually reachable and whether any action is required from customers.
+              Assessment of third-party CVEs flagged against WSO2 products — whether each CVE is exploitable in
+              the WSO2 context, the reasoning, and any required customer action or mitigation.
             </div>
           </div>
           <div class="components-card-footer">
             <a href="{{ 'security-announcements/cve-justifications/' | url }}"
               class="components-resource-link">
-              CVE Justifications <span>&rarr;</span>
+              Third-Party CVE Analysis <span>&rarr;</span>
             </a>
           </div>
         </div>
@@ -186,8 +208,8 @@
             </div>
             <h3>Cloud Security Bulletins</h3>
             <div class="components-card-content">
-              Half-yearly bulletins summarizing the security posture and notable events for WSO2 cloud services —
-              Asgardeo, Choreo, and the WSO2 API Platform.
+              Periodic bulletins for WSO2 cloud services — Asgardeo, Choreo, and the WSO2 API Platform —
+              summarizing security events and changes within each reporting period.
             </div>
           </div>
           <div class="components-card-footer">
@@ -205,8 +227,8 @@
             </div>
             <h3>Incident Clarifications</h3>
             <div class="components-card-content">
-              WSO2's official position on public security incidents and supply-chain events — what is and is not
-              impacted, and what customers should do.
+              Analysis and clarifications for public security incidents and supply-chain events relevant to WSO2
+              products and services — what is or is not impacted, and any action customers should take.
             </div>
           </div>
           <div class="components-card-footer">
@@ -220,8 +242,8 @@
 
       <div class="components-section-header">
         <h2>Reporting</h2>
-        <p>How to report a vulnerability, abuse, or malicious content responsibly — and how we recognize the
-          researchers who help us.</p>
+        <p>Channels for reporting vulnerabilities, abuse, and malicious content, plus the researcher reward and
+          acknowledgement program.</p>
       </div>
 
       <div class="components-grid-2">
@@ -232,8 +254,8 @@
             </div>
             <h3>Report an Issue</h3>
             <div class="components-card-content">
-              Private channels for reporting vulnerabilities in WSO2 products and infrastructure, along with
-              guidance on what details to include so we can triage and fix the issue quickly.
+              Private mailing lists (with GPG keys) for reporting vulnerabilities in WSO2 products and
+              infrastructure, and guidance on what to include in a report.
             </div>
           </div>
           <div class="components-card-footer">
@@ -259,8 +281,8 @@
             </div>
             <h3>Reward &amp; Acknowledgement</h3>
             <div class="components-card-content">
-              Researchers who disclose vulnerabilities responsibly may qualify for a reward and are recognized in
-              our Security Hall of Fame.
+              Eligibility criteria for the reward program and the Security Hall of Fame listing researchers
+              acknowledged for past disclosures.
             </div>
           </div>
           <div class="components-card-footer">
