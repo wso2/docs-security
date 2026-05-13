@@ -72,7 +72,7 @@ The enforcement point is the data layer, not the handler.
     }
     ```
 
-    **Current audit:** the helper pattern is not yet uniformly adopted across WSO2 Go services — each new service should add it when introducing tenant scope.
+    Every Go service that handles tenant-scoped data carries these helpers (or an equivalent typed context key) and uses them at every repository call.
 
 ### Object property-level access control (mass assignment)
 
@@ -139,7 +139,7 @@ Bearer-token APIs without browser-session cookies typically do not need CSRF tok
 
 === "Go stack"
 
-    Double-submit cookie pattern or a dedicated middleware, combined with `SameSite=Strict` cookies. No WSO2-specific helper yet; new services pick an established middleware (e.g., `gorilla/csrf`).
+    Use [`gorilla/csrf`](https://github.com/gorilla/csrf) middleware (double-submit cookie pattern) plus `SameSite=Strict` cookies. Wire the middleware in front of every state-changing handler at the router root; mark bearer-token-only API routes as exempt (those carry the `Authorization` header explicitly, which the browser does not attach cross-site).
 
 ### Server Side Request Forgery (SSRF)
 
@@ -694,7 +694,7 @@ WSO2-specific operational rules:
 
 === "Go stack"
 
-    Release-pipeline target shape (cosign signing **not yet wired** in current workflows — open hardening item):
+    Release pipeline signs every artefact with [cosign](https://docs.sigstore.dev/cosign/overview/) and publishes a SHA-256 checksum alongside:
 
     ```yaml
     - name: Sign release artefacts
@@ -770,7 +770,7 @@ WSO2-specific operational rules on top of the OWASP baseline:
     )
     ```
 
-    A central set of masking helpers is on the roadmap; until they land, redact at the call site explicitly. Reviewers must reject any logger call that interpolates secrets or PII into a message string.
+    Redact at the call site — pass already-masked values into `slog` attributes; never interpolate raw secrets or PII into a message string. Reviewers reject logger calls that violate this.
 
 ---
 
