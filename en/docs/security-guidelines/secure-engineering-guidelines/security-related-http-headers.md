@@ -13,21 +13,25 @@ When you build a WSO2 product or service that serves HTTP, this is the security 
 
 ## The header set
 
-| Header | Value | Set on |
+Identify whether the surface you're building is an **admin-only UI**, a **customer-facing or themable UI**, or a **JSON API**. The header defaults differ.
+
+| Header | Engineer default | Per-surface tuning |
 |---|---|---|
-| `Strict-Transport-Security` | `max-age=31536000; includeSubDomains; preload` (add `preload` only after the hostname tree is fully HTTPS) | Every TLS-terminating response |
-| `Content-Security-Policy` | Nonce-based `script-src 'self' 'nonce-{n}'`; no `'unsafe-inline'`, no `'unsafe-eval'`; `frame-ancestors 'none'`; `object-src 'none'`; `base-uri 'none'`; `form-action 'self'` | Every HTML response |
-| `X-Content-Type-Options` | `nosniff` | Every response |
-| `Referrer-Policy` | `strict-origin-when-cross-origin` (stricter for admin / token-bearing surfaces) | Every response |
-| `Permissions-Policy` | `geolocation=(), microphone=(), camera=(), payment=(), interest-cohort=()` (deny features the app doesn't use) | Every response |
-| `Cross-Origin-Opener-Policy` | `same-origin` | Every HTML response; mandatory on auth UIs |
-| `Cross-Origin-Embedder-Policy` | `require-corp` | Every HTML response |
-| `Cross-Origin-Resource-Policy` | `same-site` | Every response |
-| `Cache-Control` | `no-store` | Responses carrying tokens, session identifiers, or PII |
-| `Clear-Site-Data` | `"cache", "cookies", "storage"` | Logout response only |
-| `X-Frame-Options` | `DENY` (legacy fallback while CSP `frame-ancestors` is being rolled out) | Every HTML response |
+| `X-Content-Type-Options` | `nosniff` on every response | Same for all surfaces. |
+| `Referrer-Policy` | `strict-origin-when-cross-origin` on every response | Stricter (`no-referrer`) for token-bearing endpoints. |
+| `Permissions-Policy` | `geolocation=(), microphone=(), camera=(), payment=(), interest-cohort=()` on every response | Add directives for any other features the surface doesn't use. |
+| `X-Frame-Options` | `DENY` on every HTML response | Same for all HTML-serving surfaces. Inert on JSON. |
+| `Content-Security-Policy` | Nonce-based on every HTML response: `script-src 'self' 'nonce-{n}'`; no `'unsafe-inline'`, no `'unsafe-eval'`; `frame-ancestors 'none'`; `object-src 'none'`; `base-uri 'none'`; `form-action 'self'`. | Customer-facing UIs that load customer-hosted images / scripts: extend `img-src` / `script-src` with the customer allow-list (operator-configurable). Inert on JSON. |
+| `Cross-Origin-Opener-Policy` | Admin UI: `same-origin`. Customer-facing: `same-origin` (still safe). JSON: omit. | — |
+| `Cross-Origin-Embedder-Policy` | Admin UI: `require-corp`. **Customer-facing: omit** (would break customer-hosted logos / images / fonts). JSON: omit. | — |
+| `Cross-Origin-Resource-Policy` | Admin UI: `same-site`. Customer-facing: `cross-origin` on resources customers may embed; omit on document responses. JSON: omit. | — |
+| `Strict-Transport-Security` | **Off by default in the shipped code.** Operator enables per deployment. | Engineers ship the wiring; operators choose `max-age`, `includeSubDomains`, and `preload`. **Never hardcode `preload`** — it's an irreversible per-hostname commitment that the engineer can't make on behalf of every future deployment. |
+| `Cache-Control` | `no-store` on token / session / PII responses | Set at the handler, not globally. |
+| `Clear-Site-Data` | `"cache", "cookies", "storage"` on the logout response only | Engineer-time, at the logout handler. |
 
 **Cookies carrying authentication or session state:** `HttpOnly; Secure; SameSite=Strict; Path=<narrow>`. Set `Domain` only when cross-subdomain sharing is required.
+
+**Note on surface classification.** Admin-only UIs are Carbon Console, APIM Publisher (admin role), IS Console. Customer-facing or themable UIs are IS authentication endpoints (login / consent), IS My Account, APIM DevPortal, and any UI that loads a customer logo or other customer-controlled assets. JSON APIs are everything that returns `application/json` (or similar) and isn't rendered as HTML by a browser.
 
 ## Headers your code must not emit
 
@@ -44,17 +48,19 @@ Deprecated, ignored, or actively harmful. If you find existing code emitting one
 
 === "Carbon / Tomcat (Java products)"
 
-    **HSTS, `X-Frame-Options`, `X-Content-Type-Options`** — wire the standard Tomcat `org.apache.catalina.filters.HttpHeaderSecurityFilter`. Two equivalent ways to wire it:
+    **`X-Frame-Options`, `X-Content-Type-Options`** — wire the standard Tomcat `org.apache.catalina.filters.HttpHeaderSecurityFilter` for your webapp. The init-params `antiClickJackingEnabled` / `antiClickJackingOption` (for `X-Frame-Options`) and `blockContentTypeSniffingEnabled` (for `X-Content-Type-Options`) are safe to enable in the shipped default. Do **not** enable `xssProtectionEnabled` — `X-XSS-Protection` is deprecated.
 
-    * Product-wide via `deployment.toml` (applies to every Tomcat webapp). Syntax: [APIM — Enable HSTS Headers](https://apim.docs.wso2.com/en/latest/install-and-setup/setup/deployment-best-practices/security-guidelines-for-production-deployment/#enable-http-strict-transport-security-hsts-headers).
-    * Per-webapp via `web.xml` at `<PRODUCT_HOME>/repository/deployment/server/webapps/<WEBAPP>/WEB-INF/web.xml`. Syntax: [IS — Enable HSTS Headers](https://is.docs.wso2.com/en/latest/deploy/security/enable-hsts/).
+    **HSTS** — also wired through `HttpHeaderSecurityFilter`, but **ship it off by default**. HSTS pins HTTPS in the browser cache for `max-age` seconds and is irreversible during that window; enabling it on a developer's local instance with a self-signed cert breaks the browser until cache expiry, and submitting `preload` is impossible to undo. Make sure HSTS can be turned on per deployment and document the operator action — two equivalent ways:
 
-    The init-params include `antiClickJackingEnabled` / `antiClickJackingOption` (for `X-Frame-Options`) and `blockContentTypeSniffingEnabled` (for `X-Content-Type-Options`) — leave them at their secure defaults. Do **not** enable `xssProtectionEnabled` — `X-XSS-Protection` is deprecated. HSTS is off by default so local development is not pinned to HTTPS by self-signed certificates; turn it on for production builds.
+    * Product-wide via `deployment.toml`: [APIM — Enable HSTS Headers](https://apim.docs.wso2.com/en/latest/install-and-setup/setup/deployment-best-practices/security-guidelines-for-production-deployment/#enable-http-strict-transport-security-hsts-headers).
+    * Per-webapp via `web.xml` at `<PRODUCT_HOME>/repository/deployment/server/webapps/<WEBAPP>/WEB-INF/web.xml`: [IS — Enable HSTS Headers](https://is.docs.wso2.com/en/latest/deploy/security/enable-hsts/).
 
-    **CSP, COOP, COEP, CORP, `Permissions-Policy`, `Cache-Control` on token / PII responses, `Clear-Site-Data` on logout** — not covered by `HttpHeaderSecurityFilter`. When you add a new Carbon webapp, ship a project-local servlet filter that runs after `HttpHeaderSecurityFilter` so the built-in filter's HSTS and `X-Frame-Options` are preserved alongside. Recommended shape:
+    **CSP, COOP, COEP, CORP, `Permissions-Policy`, `Cache-Control` on token / PII responses, `Clear-Site-Data` on logout** — not covered by `HttpHeaderSecurityFilter`. When you add a new Carbon webapp, ship a project-local servlet filter that runs after `HttpHeaderSecurityFilter` so the built-in filter's `X-Frame-Options` is preserved alongside.
+
+    For a new **admin-only UI** (one that customers don't theme or embed — Carbon Console, Publisher Admin, IS Console), the strict default is:
 
     ```java
-    public class ModernSecurityHeadersFilter implements Filter {
+    public class AdminUiSecurityHeadersFilter implements Filter {
         @Override
         public void doFilter(ServletRequest req, ServletResponse res, FilterChain chain)
                 throws IOException, ServletException {
@@ -79,17 +85,30 @@ Deprecated, ignored, or actively harmful. If you find existing code emitting one
     }
     ```
 
-    Add a sibling filter that sets `Cache-Control: no-store` for token / PII endpoints, and one that sets `Clear-Site-Data` on the logout response.
+    Add a sibling filter that sets `Cache-Control: no-store` on token / PII endpoints and one that sets `Clear-Site-Data` on the logout response.
+
+    For **customer-themable surfaces** (IS authentication endpoints / login pages, IS My Account, APIM DevPortal) the same filter is wrong by default — customers theme these UIs with their own logos and may embed them. Use a relaxed variant that:
+
+    * Drops `Cross-Origin-Embedder-Policy: require-corp` so customer-hosted images and fonts load.
+    * Sets `Cross-Origin-Resource-Policy: cross-origin` (or omits CORP) on resources customers may embed.
+    * Keeps strict CSP (`frame-ancestors`, `object-src`, `base-uri`) and `Permissions-Policy`.
+    * Makes the embedded-image-origin allow-list configurable so operators can extend it for their customers.
+
+    **CSP nonce migration shape.** New admin UIs ship the strict nonce-based policy from day one — the bundler must emit no inline scripts and no inline event handlers. The legacy `/carbon/*` admin console still uses `unsafe-inline` in places that have not been migrated; when wiring CSP into a product that includes the legacy console, scope the strict policy to your new paths and apply a per-URL relaxed override to `/carbon/*` as a tracked hardening item until the legacy pages are migrated. Don't relax CSP globally to accommodate legacy.
 
     **Preventing browser caching of dynamic pages** — Carbon ships `URLBasedCachePreventionFilter` and `ContentTypeBasedCachePreventionFilter` in `org.wso2.carbon.ui.filters.cache`. Wire them into your webapp's `web.xml` when adding any dynamic page that carries sensitive content. Reference: [IS — Prevent Browser Caching](https://is.docs.wso2.com/en/latest/deploy/security/prevent-browser-caching/).
 
     **Server header** — override via `[transport.https.properties]` in `deployment.toml` so the response doesn't return `Server: WSO2 Carbon Server`. Reference: [IS — Configure Transport-Level Security](https://is.docs.wso2.com/en/latest/deploy/security/configure-transport-level-security/).
 
-    **Legacy considerations.** The legacy `/carbon/*` admin console emits `unsafe-inline` style and script in places that haven't been migrated. When migrating one of these pages, drop the per-URL override; until then, scope a looser CSP filter to that URL pattern as a tracked hardening item rather than relaxing the policy globally. New WSO2 features should not ship Jaggery applications; existing Jaggery surfaces should be migrated.
+    **Jaggery.** Jaggery is deprecated. New WSO2 features should not ship Jaggery applications; existing Jaggery surfaces should be migrated.
 
 === "Go services"
 
-    Ship the security-headers middleware from day one. Apply at the router root so every `http.Handler` is wrapped; per-route overrides (looser CSP for embedded widgets) live in the handler.
+    Ship the security-headers middleware at the router root from day one, with the headers that are always safe to default on, and operator-configurable settings for the ones that aren't.
+
+    * **Always default on** (no per-deployment decision needed): `X-Content-Type-Options`, `Referrer-Policy`, `Permissions-Policy`, `X-Frame-Options` for HTML responses, nonce-based CSP for HTML responses.
+    * **HSTS — off by default; operator opts in per deployment.** HSTS pins HTTPS in the browser cache for `max-age` seconds and is irreversible during that window; hardcoding it on breaks local dev. **Never hardcode `preload`** — it's a per-hostname commitment to the global preload list that no engineer can make on behalf of every future deployment.
+    * **COOP / COEP / CORP — depend on the surface.** Strict policy is correct for admin-only services; it breaks customer integrations on customer-themable surfaces and is inert on JSON-only APIs. Make the caller pick a surface profile.
 
     ```go
     package web
@@ -101,29 +120,79 @@ Deprecated, ignored, or actively harmful. If you find existing code emitting one
         "net/http"
     )
 
-    func SecurityHeaders(next http.Handler) http.Handler {
+    // HSTSConfig is operator-tunable. Defaults to disabled.
+    type HSTSConfig struct {
+        Enabled           bool
+        MaxAgeSeconds     int  // typical production: 31536000
+        IncludeSubDomains bool
+        Preload           bool // only enable with preload-list submission discipline
+    }
+
+    // SurfaceProfile picks the COOP/COEP/CORP shape.
+    type SurfaceProfile int
+
+    const (
+        AdminUI         SurfaceProfile = iota // strict: COOP same-origin, COEP require-corp, CORP same-site
+        CustomerFacing                        // relaxed COEP/CORP for customer theming/embedding
+        JSONAPI                               // COOP/COEP/CORP not set (don't apply to JSON responses)
+    )
+
+    type Config struct {
+        HSTS    HSTSConfig
+        Surface SurfaceProfile
+    }
+
+    func SecurityHeaders(cfg Config, next http.Handler) http.Handler {
         return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-            nonce := generateNonce()
             h := w.Header()
-            h.Set("Strict-Transport-Security", "max-age=31536000; includeSubDomains; preload")
-            h.Set("Content-Security-Policy", fmt.Sprintf(
-                "default-src 'self'; "+
-                    "script-src 'self' 'nonce-%s'; "+
-                    "style-src 'self' 'nonce-%s'; "+
-                    "object-src 'none'; frame-ancestors 'none'; "+
-                    "base-uri 'none'; form-action 'self'",
-                nonce, nonce))
+
+            // Always-on headers
             h.Set("X-Content-Type-Options", "nosniff")
             h.Set("Referrer-Policy", "strict-origin-when-cross-origin")
             h.Set("Permissions-Policy",
                 "geolocation=(), microphone=(), camera=(), payment=(), interest-cohort=()")
-            h.Set("Cross-Origin-Opener-Policy", "same-origin")
-            h.Set("Cross-Origin-Embedder-Policy", "require-corp")
-            h.Set("Cross-Origin-Resource-Policy", "same-site")
-            h.Set("X-Frame-Options", "DENY")
 
-            ctx := contextWithNonce(r.Context(), nonce)
-            next.ServeHTTP(w, r.WithContext(ctx))
+            // HSTS only when operator opts in
+            if cfg.HSTS.Enabled {
+                v := fmt.Sprintf("max-age=%d", cfg.HSTS.MaxAgeSeconds)
+                if cfg.HSTS.IncludeSubDomains {
+                    v += "; includeSubDomains"
+                }
+                if cfg.HSTS.Preload {
+                    v += "; preload"
+                }
+                h.Set("Strict-Transport-Security", v)
+            }
+
+            // Surface-typed COOP / COEP / CORP
+            switch cfg.Surface {
+            case AdminUI:
+                h.Set("Cross-Origin-Opener-Policy", "same-origin")
+                h.Set("Cross-Origin-Embedder-Policy", "require-corp")
+                h.Set("Cross-Origin-Resource-Policy", "same-site")
+            case CustomerFacing:
+                h.Set("Cross-Origin-Opener-Policy", "same-origin")
+                // COEP require-corp deliberately dropped — customer-hosted images/fonts must load.
+                h.Set("Cross-Origin-Resource-Policy", "cross-origin")
+            case JSONAPI:
+                // COOP/COEP/CORP don't apply to JSON responses; omit.
+            }
+
+            // CSP + X-Frame-Options for HTML-serving handlers; skip on JSON APIs.
+            if cfg.Surface != JSONAPI {
+                nonce := generateNonce()
+                h.Set("Content-Security-Policy", fmt.Sprintf(
+                    "default-src 'self'; "+
+                        "script-src 'self' 'nonce-%s'; "+
+                        "style-src 'self' 'nonce-%s'; "+
+                        "object-src 'none'; frame-ancestors 'none'; "+
+                        "base-uri 'none'; form-action 'self'",
+                    nonce, nonce))
+                h.Set("X-Frame-Options", "DENY")
+                next.ServeHTTP(w, r.WithContext(contextWithNonce(r.Context(), nonce)))
+                return
+            }
+            next.ServeHTTP(w, r)
         })
     }
 
@@ -144,29 +213,31 @@ Deprecated, ignored, or actively harmful. If you find existing code emitting one
     }
     ```
 
-    Reject any new Go service code that doesn't compose `SecurityHeaders` at the router root at review.
+    Reject at review: a router root that doesn't compose `SecurityHeaders`; middleware that hardcodes HSTS `preload` rather than reading it from config; admin profile applied to a customer-themable surface.
 
 === "WSO2 API Gateway"
 
     For APIs published through the gateway, set headers at two levels:
 
-    * **Globally** in the gateway's transport handler — HSTS, `X-Content-Type-Options`, `Referrer-Policy`, COOP, COEP, CORP, `Permissions-Policy`. Applied to every response served through the gateway.
-    * **Per-API or per-resource** — CSP (HTML-serving APIs differ from JSON-only APIs), `Cache-Control: no-store` on token endpoints, `Clear-Site-Data` on logout endpoints.
+    * **Globally** in the gateway's transport handler — `X-Content-Type-Options`, `Referrer-Policy`, `Permissions-Policy`. These are safe defaults across every surface. HSTS belongs here but only if the operator has enabled it for the deployment.
+    * **Per-API or per-resource** — everything that depends on surface type: CSP (HTML-serving APIs vs JSON-only APIs), COOP / COEP / CORP (admin-facing vs customer-facing), `Cache-Control: no-store` on token endpoints, `Clear-Site-Data` on logout endpoints.
 
-    The pattern is a Synapse `class` mediator (or a sequence) in the OutSequence that appends the headers to the outgoing response; attach the mediator per-API for per-API control. When publishing a new API, the API definition should include a security-headers policy attachment by default.
+    Avoid setting COOP / COEP / CORP globally on the gateway — the gateway fronts a mix of admin APIs and customer-facing APIs, and a strict global policy will break legitimate customer integrations on the customer-facing ones. Choose per-API.
+
+    The wiring pattern is a Synapse `class` mediator (or a sequence) in the OutSequence that appends the headers; attach the mediator per-API for per-API control. When publishing a new API, the API definition should include a security-headers policy attachment that picks the right surface profile.
 
 === "Reverse proxy / Kubernetes ingress"
 
-    When the WSO2 product is fronted by an nginx reverse proxy or a Kubernetes ingress, that layer can also emit the same header set. This is the path for hardening an existing deployment where the product hasn't yet wired the full set itself. Decide once per deployment which layer owns each header — don't double-set.
+    This is an operator path, not an engineer path — included here so you know what to document for operators. The reverse proxy or ingress can emit the header set on behalf of a deployment that the product hasn't fully wired itself; operators decide once per deployment which layer owns each header (don't double-set). The same surface-type rule applies — strict policy for admin-only deployments; relaxed COEP/CORP for customer-themable ones.
 
-    **nginx** — `add_header` in the `server { }` block:
+    **nginx — admin-only deployment**: `add_header` in the `server { }` block:
 
     ```nginx
     server {
         listen 443 ssl http2;
         server_name example.wso2.com;
 
-        add_header Strict-Transport-Security "max-age=31536000; includeSubDomains; preload" always;
+        add_header Strict-Transport-Security "max-age=31536000; includeSubDomains" always;
         add_header X-Content-Type-Options "nosniff" always;
         add_header Referrer-Policy "strict-origin-when-cross-origin" always;
         add_header Permissions-Policy "geolocation=(), microphone=(), camera=(), payment=(), interest-cohort=()" always;
@@ -178,39 +249,23 @@ Deprecated, ignored, or actively harmful. If you find existing code emitting one
     }
     ```
 
+    For a **customer-themable surface** (IS authentication endpoints, IS My Account, APIM DevPortal), drop `Cross-Origin-Embedder-Policy: require-corp` and set `Cross-Origin-Resource-Policy: cross-origin` on resources customers may embed. Extend `img-src` / `script-src` in the CSP to include the customer asset domain. HSTS `preload` is only safe once the operator has submitted the hostname tree to the [preload list](https://hstspreload.org/).
+
     The `always` parameter is required so headers also appear on 4xx / 5xx — exactly when they matter. `add_header` directives **do not inherit** into nested `location` blocks that have their own `add_header`; declare headers at the `server` level.
 
-    **`ingress-nginx`** — use `server-snippet` (or `configuration-snippet` on older versions):
+    **`ingress-nginx`** — use `server-snippet` (or `configuration-snippet` on older versions) with the same surface-type choice as above.
 
-    ```yaml
-    apiVersion: networking.k8s.io/v1
-    kind: Ingress
-    metadata:
-      name: example
-      annotations:
-        nginx.ingress.kubernetes.io/server-snippet: |
-          add_header Strict-Transport-Security "max-age=31536000; includeSubDomains; preload" always;
-          add_header X-Content-Type-Options "nosniff" always;
-          add_header Referrer-Policy "strict-origin-when-cross-origin" always;
-          add_header Permissions-Policy "geolocation=(), microphone=(), camera=(), payment=(), interest-cohort=()" always;
-          add_header Cross-Origin-Opener-Policy "same-origin" always;
-          add_header Cross-Origin-Embedder-Policy "require-corp" always;
-          add_header Cross-Origin-Resource-Policy "same-site" always;
-          add_header X-Frame-Options "DENY" always;
-          add_header Content-Security-Policy "default-src 'self'; object-src 'none'; frame-ancestors 'none'; base-uri 'none'; form-action 'self'" always;
-    ```
+    For Envoy-based ingresses (Istio, Contour, Gloo), use the gateway resource's `responseHeadersToAdd`. An OPA Gatekeeper / Kyverno policy that fails apply when an `Ingress` is missing the security-snippet annotation enforces the operator discipline cluster-wide.
 
-    For Envoy-based ingresses (Istio, Contour, Gloo), use the gateway resource's `responseHeadersToAdd`. Enforce cluster-wide with an OPA Gatekeeper / Kyverno policy that fails apply when an `Ingress` is missing the security-snippet annotation.
-
-## Rollout notes
+## Rollout notes you should document for operators
 
 ### HSTS
 
-Roll out incrementally: `max-age=300` → `max-age=86400` (one week) → `max-age=31536000; includeSubDomains` → add `preload` and submit to the [HSTS preload list](https://hstspreload.org/). **Preload submission is hard to reverse** — confirm HTTPS coverage on every subdomain, including ones not yet built, before submitting. Once a browser caches HSTS, it refuses HTTP for the `max-age` duration.
+HSTS is engineer-wired, operator-enabled. Document the recommended incremental rollout in the operator-facing security guideline for your product, since the engineer can't know which `max-age` is right for each deployment: `max-age=300` → `max-age=86400` (one week) → `max-age=31536000; includeSubDomains` → add `preload` and submit to the [HSTS preload list](https://hstspreload.org/). **Preload submission is hard to reverse** — operators must confirm HTTPS coverage on every subdomain, including ones not yet built, before submitting. Once a browser caches HSTS, it refuses HTTP for the `max-age` duration.
 
 ### CSP
 
-Adopt `Content-Security-Policy-Report-Only` first, fix violations for a sprint, then switch to enforcing `Content-Security-Policy`. Nonces are per-request, generated server-side, and inserted into every `<script>` / `<style>` tag served by the same response. For SPAs, the bundler's runtime nonce configuration (Vite, Webpack `__webpack_nonce__`, Next.js CSP) is the supported way to thread the nonce into client bundles — see [React Secure Coding Guide]({{#base_path#}}/security-guidelines/secure-engineering-guidelines/secure-coding-guidlines/general-recommendations-for-react-secure-coding/).
+If you're rolling out CSP onto a webapp that doesn't currently emit one, start with `Content-Security-Policy-Report-Only` (controlled by your filter's mode), fix violations for a sprint, then flip to enforcing `Content-Security-Policy`. Nonces are per-request, generated server-side, and inserted into every `<script>` / `<style>` tag served by the same response. For SPAs, use the bundler's runtime nonce configuration (Vite, Webpack `__webpack_nonce__`, Next.js CSP) to thread the nonce into client bundles — see [React Secure Coding Guide]({{#base_path#}}/security-guidelines/secure-engineering-guidelines/secure-coding-guidlines/general-recommendations-for-react-secure-coding/).
 
 ### Cache-Control on sensitive responses
 

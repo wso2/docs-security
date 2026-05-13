@@ -524,7 +524,7 @@ Strip CR/LF from any user-controlled value before logging; see [Logging and Aler
 
 === "Java stack"
 
-    Carbon 4.4.3+ supports `%K` in the log4j pattern — appends a per-entry UUID so forged entries lack a valid UUID. **Current audit:** `%K` is not consistently set in shipped log layouts; include it in your product's `log4j2.properties` pattern.
+    Carbon 4.4.3+ supports the `%K` token in the log4j pattern, which appends a per-entry UUID so forged log lines from log-injection attempts lack a valid UUID. **Don't enable `%K` in the default `log4j2.properties` you ship** — appending a UUID to every log line carries real cost (CPU per line, larger log volume) and most deployments don't need it. Make sure `%K` works in your product's log4j layout and document it as an operator-enabled hardening option for deployments whose security or compliance requirements call for tamper-evident log lines.
 
 ### Server-Side Template Injection (SSTI)
 
@@ -750,7 +750,7 @@ WSO2 baselines to:
 WSO2-specific operational rules on top of the OWASP baseline:
 
 * **Operational logs and audit logs are different sinks.** Operational logs: short-retention, standard log aggregator. Audit logs: long-retention, append-only sink, stable schema, no stack traces or framework chatter. In Carbon products the audit log uses the `AUDIT_LOG` logger wired to a separate appender. In Go services it's a dedicated `*slog.Logger` (e.g., a separate `audit` package) with its own handler.
-* **`source_ip` is resolved against trusted proxies**, never the raw `X-Forwarded-For`. When your product runs behind a load balancer, document the trust chain explicitly in `deployment.toml` / equivalent config.
+* **`source_ip` is resolved through a proxy-aware extraction**, never read raw from `X-Forwarded-For`. The engineer's job is to use the proxy-aware helper (which consults the trusted-proxy list); the operator's job is to populate that trusted-proxy list per deployment. Make the trusted-proxy setting operator-configurable in your product (e.g., a `[transport.proxy]` block in `deployment.toml`) and document it.
 * **Tenant id comes from the authenticated context**, never from request input — same rule as everywhere else in the Carbon stack.
 * **Events that should trigger alerts** beyond the OWASP Logging Cheat Sheet baseline — emit audit events for these, and wire the alerts into whatever monitors the deployment:
     * Cross-tenant deny attempts.
@@ -763,7 +763,7 @@ WSO2-specific operational rules on top of the OWASP baseline:
 
 === "Java stack"
 
-    `log.error(message, throwable)` — the two-arg form captures the full stack. `log.error("..." + e.getMessage())` is lossy. Carbon log layout should include the `%K` UUID token (Carbon 4.4.3+) so forged entries from log-injection attempts lack a valid UUID. Sensitive values are masked with local helpers — extend those rather than building ad-hoc redactors.
+    `log.error(message, throwable)` — the two-arg form captures the full stack. `log.error("..." + e.getMessage())` is lossy. Make sure the `%K` UUID token (Carbon 4.4.3+) works in your product's log4j layout and document it as an operator-enabled hardening option — see the rule in [Injection — Log Injection / Log Forging](#log-injection-log-forging) for why this is off in the shipped default. Sensitive values are masked with local helpers — extend those rather than building ad-hoc redactors.
 
 === "Go stack"
 
