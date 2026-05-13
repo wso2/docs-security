@@ -13,23 +13,19 @@ This document covers **how** to apply the security header set across the deploym
 
 The companion section in the Secure Coding Guide is [Security Misconfiguration]({{#base_path#}}/security-guidelines/secure-engineering-guidelines/secure-coding-guidlines/secure-coding-guide/#security-misconfiguration).
 
-## WSO2 baseline values
+## Baseline values
 
-| Header | Value | Set on |
-|---|---|---|
-| `Strict-Transport-Security` | `max-age=31536000; includeSubDomains; preload` (add `preload` only after the hostname tree is fully HTTPS) | Every TLS-terminating response |
-| `Content-Security-Policy` | Nonce-based `script-src 'self' 'nonce-{n}'`; no `'unsafe-inline'`, no `'unsafe-eval'`; `frame-ancestors 'none'`; `object-src 'none'`; `base-uri 'none'` | Every HTML response |
-| `X-Content-Type-Options` | `nosniff` | Every response |
-| `Referrer-Policy` | `strict-origin-when-cross-origin` (stricter for admin / token-bearing surfaces) | Every response |
-| `Permissions-Policy` | `geolocation=(), microphone=(), camera=(), payment=(), interest-cohort=()` (deny features the app does not use) | Every response |
-| `Cross-Origin-Opener-Policy` | `same-origin` | Every HTML response; mandatory on auth UIs |
-| `Cross-Origin-Embedder-Policy` | `require-corp` | Every HTML response |
-| `Cross-Origin-Resource-Policy` | `same-site` | Every response |
-| `Cache-Control` | `no-store` | Responses carrying tokens, session identifiers, or PII |
-| `Clear-Site-Data` | `"cache", "cookies", "storage"` | Logout response only |
-| `X-Frame-Options` | `DENY` (legacy fallback to `frame-ancestors`) | Every HTML response during CSP rollout |
+WSO2 baselines to the **[OWASP HTTP Security Response Headers Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/HTTP_Headers_Cheat_Sheet.html)** for the recommended header set and their values. Browser and spec changes land there first; we use the current cheat-sheet values rather than maintaining our own list.
 
-**Cookies carrying authentication or session state:** `HttpOnly; Secure; SameSite=Strict; Path=<narrow>`. Set `Domain` only when cross-subdomain sharing is required.
+Per-header semantics, browser support, and edge cases are on [MDN](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers).
+
+WSO2-specific applications of the baseline:
+
+* **Every WSO2 admin-UI HTML response** (Carbon Console, APIM Publisher/DevPortal/Console, IS Console) sets the full set including COOP/COEP/CORP — not only pages that need cross-origin isolation.
+* **CSP target shape** for WSO2 admin UIs: nonce-based `script-src 'self' 'nonce-{n}'`; no `'unsafe-inline'`; no `'unsafe-eval'`; `frame-ancestors 'none'` (or explicit allow-list); `object-src 'none'`; `base-uri 'none'`. Configure the bundler so inline scripts and event handlers are not generated.
+* **`Cache-Control: no-store`** on every response carrying tokens, session identifiers, or PII (OAuth token endpoints, profile endpoints, audit-log responses).
+* **`Clear-Site-Data: "cache", "cookies", "storage"`** on the logout response, paired with server-side session invalidation and RFC 7009 token revocation.
+* **Cookies carrying authentication or session state:** `HttpOnly; Secure; SameSite=Strict; Path=<narrow>`. Set `Domain` only when cross-subdomain sharing is required.
 
 ### Headers that must not be set
 

@@ -313,16 +313,19 @@ Every upstream response is untrusted. Validate status, content-type, schema, and
 
 ## Cryptographic Failures
 
-External: [OWASP Cryptographic Storage Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/Cryptographic_Storage_Cheat_Sheet.html) · [Password Storage Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/Password_Storage_Cheat_Sheet.html) · [NIST SP 800-131A](https://csrc.nist.gov/publications/detail/sp/800-131a/rev-2/final) (approved algorithms and transitions) · [RFC 8725 — JWT BCP](https://datatracker.ietf.org/doc/html/rfc8725).
+WSO2 baselines to:
 
-WSO2 baseline:
+* **[NIST SP 800-131A](https://csrc.nist.gov/publications/detail/sp/800-131a/rev-2/final)** — approved algorithms and the transition schedule. Anything NIST currently marks as legacy / disallowed (MD5, SHA-1, 3DES, RC4, RSA without padding, AES without a mode, etc.) is banned in WSO2 product code.
+* **[OWASP Cryptographic Storage Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/Cryptographic_Storage_Cheat_Sheet.html)** — symmetric / asymmetric primitives, nonce handling, key management.
+* **[OWASP Password Storage Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/Password_Storage_Cheat_Sheet.html)** — current Argon2id / PBKDF2 / bcrypt parameters. These move over time; use the cheat-sheet values current at implementation time, store the algorithm name and parameters alongside the hash, and re-evaluate at every release.
+* **[Mozilla TLS configuration generator](https://ssl-config.mozilla.org/)** — TLS versions, cipher suites, OCSP, HSTS at the terminator. Pick the "Intermediate" or "Modern" profile and pin to the generated config.
+* **[RFC 8725 — JWT BCP](https://datatracker.ietf.org/doc/html/rfc8725)** — JWT algorithm allow-listing, alg-confusion defence, `kid`/`jwk` header handling, claim validation.
 
-* Symmetric: **AES-128/256-GCM** with a fresh random 96-bit nonce per encryption.
-* Asymmetric: **RSA 2048+ with OAEP-SHA-256**, or **ECDSA P-256+**, or **Ed25519**.
-* Password hashing: **Argon2id** (memory ≥ 19 MiB, iterations ≥ 2, parallelism ≥ 1, 32-byte key) or **PBKDF2-HMAC-SHA256** (≥ 600 000 iterations, 32-byte salt). Store algorithm + parameters with the hash.
-* TLS: **minimum TLS 1.2** (TLS 1.3 preferred), strict hostname verification.
-* JWT: per-verifier algorithm allow-list (typically RS256/RS384/ES256); reject `alg: none`; reject HMAC where the verifier holds an asymmetric key (alg-confusion); validate `iss`, `aud`, `exp`, `nbf`, `iat`; look up keys by `kid` from a JWKS cache; never honour an inline `jwk` header.
-* Banned: MD5, SHA-1, 3DES, RC4, AES-ECB, `RSA/ECB/PKCS1Padding`, `Cipher.getInstance("AES")` without a mode, `Cipher.getInstance("RSA")` without padding, `AllowAllHostnameVerifier`, `NoopHostnameVerifier.INSTANCE`, `tls.Config{InsecureSkipVerify: true}` hardcoded in production paths.
+WSO2-specific additions:
+
+* **Per-verifier JWT algorithm allow-list is data, not code.** Configured via deployment.toml in Carbon products; embedded in the keyfunc switch in Go services. Reject `alg: none` and reject HMAC where the verifier holds an asymmetric key.
+* **Never honour an inline `jwk` header.** Always look up keys by `kid` from a JWKS cache pinned to the trusted issuer.
+* **Hardcoded TLS verification bypasses are defects.** `AllowAllHostnameVerifier`, `NoopHostnameVerifier.INSTANCE`, `tls.Config{InsecureSkipVerify: true}` literal in production paths fail review. Operator-configurable bypasses are acceptable only with a secure default of `false` and a deployment-time warning.
 
 === "Java stack"
 
@@ -609,18 +612,21 @@ WSO2 enforcement order: container size limit → handler size limit → content-
 
 ## Authentication Failures
 
-External: [OWASP A07](https://owasp.org/Top10/A07_2021-Identification_and_Authentication_Failures/) · [Authentication Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/Authentication_Cheat_Sheet.html) · [Session Management Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/Session_Management_Cheat_Sheet.html) · [NIST SP 800-63B](https://pages.nist.gov/800-63-3/sp800-63b.html) · [RFC 9700 — OAuth 2.0 Security BCP](https://datatracker.ietf.org/doc/html/rfc9700).
+WSO2 baselines to:
 
-WSO2 baseline:
+* **[NIST SP 800-63B](https://pages.nist.gov/800-63-3/sp800-63b.html)** — memorised-secret (password) requirements, lifecycle, recovery, MFA assurance levels. Follow current NIST guidance for length, composition, rotation, and breached-password checking; do **not** impose mandatory composition rules ("at least one of each character class"), which NIST explicitly disallows.
+* **[OWASP Authentication Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/Authentication_Cheat_Sheet.html)** and **[Session Management Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/Session_Management_Cheat_Sheet.html)** — operational rules.
+* **[RFC 9700 — OAuth 2.0 Security BCP](https://datatracker.ietf.org/doc/html/rfc9700)** — PKCE (`S256` only), exact `redirect_uri` matching, refresh-token rotation, public-client constraints, prohibited grant types.
+* **[OWASP Top 10 A07](https://owasp.org/Top10/A07_2021-Identification_and_Authentication_Failures/)** — threat model.
 
-* **Password policy** on every credential write: minimum length 12, all four character classes, no whitespace, no upper bound below 64. For products handling personal data, also reject passwords on a breached-password list ([HIBP k-Anonymity API](https://haveibeenpwned.com/API/v3#PwnedPasswords) or a local mirror).
-* **Lockout** after a small number of failed attempts in a sliding window. **Honoured by every authentication path** — interactive login, OAuth `password` grant, token endpoint, SCIM provisioning. Enforced on one path but not another is the pattern that lets attackers move sideways.
-* **MFA** is default for any account with administrative or sensitive-data access. TOTP and FIDO2 / WebAuthn primary; SMS/email OTP step-up or fallback only.
-* **OAuth/OIDC**: PKCE with `S256` for every public client (reject `plain`); validate `state` on every authz code flow and `nonce` on every OIDC flow; **exact** `redirect_uri` matching with no fragment; rotate refresh tokens on every refresh and detect reuse.
-* **Token storage**: browsers — `HttpOnly; Secure; SameSite=Strict` cookies or BFF pattern, never `localStorage`/`sessionStorage` for refresh tokens. Mobile — platform secret store (Keychain / Android Keystore), device-bound where supported.
-* **Logout** invalidates the session server-side and revokes the associated refresh token. Implement RFC 7009 revocation and OIDC back-channel logout. "Log out everywhere" revokes every active token family for the principal.
-* **Account recovery** does not use security questions. MFA factor or magic link to a verified address, rate-limited per principal and per IP. Force MFA re-enrollment after recovery.
-* **Step-up** for password change, MFA config changes, email change, key issuance, role grant. Email change notifies the *old* email and requires verification of the *new* email.
+WSO2-specific additions:
+
+* **Breached-password check is required for products that handle personal data** (Identity Server, on-prem APIM with end-user accounts). Use the [HIBP k-Anonymity API](https://haveibeenpwned.com/API/v3#PwnedPasswords) or a locally hosted mirror; consult at password-set time.
+* **Lockout is honoured by every authentication path.** Interactive login, OAuth `password` grant, token endpoint, SCIM provisioning. Enforced on one path but not another is the bug pattern that lets attackers move sideways; reviewers explicitly check parity across paths.
+* **MFA defaults on for administrative or sensitive-data access.** TOTP and FIDO2 / WebAuthn as primary factors; SMS/email OTP as step-up or fallback only — never as sole factor for privileged accounts.
+* **Token storage on clients.** Browsers: `HttpOnly; Secure; SameSite=Strict` cookies or BFF; never `localStorage` / `sessionStorage` for refresh tokens. Mobile: platform secret store (Keychain / Android Keystore), device-bound where supported.
+* **"Log out everywhere"** revokes every active token family for the principal; implement RFC 7009 revocation and OIDC back-channel logout. Account recovery forces MFA re-enrollment.
+* **Step-up for sensitive actions** — password change, MFA config changes, email change, key issuance, role grant. Email change notifies the *old* address and requires verification of the *new* one.
 
 === "Java stack"
 
@@ -733,46 +739,20 @@ External: [OWASP Deserialization Cheat Sheet](https://cheatsheetseries.owasp.org
 
 ## Logging and Alerting Failures
 
-External: [OWASP A09](https://owasp.org/Top10/A09_2021-Security_Logging_and_Monitoring_Failures/) · [Logging Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/Logging_Cheat_Sheet.html) · [Logging Vocabulary](https://cheatsheetseries.owasp.org/cheatsheets/Logging_Vocabulary_Cheat_Sheet.html).
+WSO2 baselines to:
 
-WSO2-specific:
+* **[OWASP Logging Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/Logging_Cheat_Sheet.html)** — the audit-event field schema, the "what to log" / "what never to log" guidance, and the retention and integrity model.
+* **[OWASP Logging Vocabulary Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/Logging_Vocabulary_Cheat_Sheet.html)** — the canonical event-name registry (`auth.login`, `iam.role.grant`, `key.rotate`, …). Use these names in WSO2 audit events.
+* **[OWASP Top 10 A09](https://owasp.org/Top10/A09_2021-Security_Logging_and_Monitoring_Failures/)** — threat model.
 
-**Operational logs vs audit logs are two different sinks.** Operational logs are short-retention, standard log aggregator. Audit logs are long-retention, append-only sink, stable schema, no stack traces. In Carbon products the audit log uses the `AUDIT_LOG` logger wired to a separate appender. In new Go services it's a dedicated `*slog.Logger` (e.g., a separate `audit` package) with its own handler.
+WSO2-specific operational rules on top of the OWASP baseline:
 
-### Required audit fields
-
-| Field | Source |
-|---|---|
-| `timestamp` | RFC 3339 with timezone; server clocks NTP-synchronised |
-| `correlation_id` | Propagated across services |
-| `tenant_id` | From authenticated context, not request input |
-| `principal_id` | `null` / `anonymous` is a valuable signal |
-| `principal_type` | `user` / `service_account` / `system` |
-| `source_ip` | Resolved against trusted proxies, not raw `X-Forwarded-For` |
-| `action` | Stable enum: `auth.login`, `iam.role.grant`, `key.rotate`, … |
-| `target` | Object class and id (`api:foo`, `user:u-abc`) |
-| `decision` | `allow` / `deny` / `error` |
-| `reason` | Short code for deny/error (`mfa_required`, `account_locked`) |
-
-### Never log
-
-Regardless of log level or intent: passwords, recovery answers, access/refresh/ID tokens, OAuth `code`/`state`/client secrets, session ids, CSRF tokens, signed-URL signatures, API keys, webhook secrets, encryption keys, private keys, keystore passwords, MFA secrets (TOTP seeds), backup codes, plaintext PII beyond the principal id required for audit, full request/response bodies for credential-handling endpoints, stack traces in user-facing responses, internal hostnames/IPs/file paths, environment variables.
-
-Where a value needs to appear for correlation (e.g., a token id), log its **hash** or **truncated prefix** with explicit ellipsis (`abcd1234…`) — never the full value.
-
-### Required security events (alerts marked **alert**)
-
-* Authentication: success, failure, lockout (**alert** on N failures from one source in a window), MFA challenge issued, MFA failure, MFA success.
-* Authorisation: deny (**alert** on cross-tenant deny attempts), grant of a privileged role (**alert**).
-* Password change, MFA enrol/remove, email change, account recovery.
-* Token: issue, refresh, revoke, reuse-detection trigger (**alert**).
-* Key: read of a privileged key, rotate, revoke (**alert**).
-* Configuration: change to a security setting (CORS allow-list, lockout thresholds, JWT issuers, federated IdPs) (**alert**).
-* Administrative: tenant create/delete, user create/delete, role grant/revoke.
-
-### Retention and integrity
-
-Audit logs are append-only at the sink during the retention window. Forward to a dedicated audit sink — separate from operational logs — and consider signing or hash-chaining log batches for tamper evidence. Retention: at least the SOC investigation window plus the compliance horizon (commonly 1 year for security events, longer for regulated data).
+* **Operational logs and audit logs are different sinks.** Operational logs: short-retention, standard log aggregator. Audit logs: long-retention, append-only sink, stable schema, no stack traces or framework chatter. In Carbon products the audit log uses the `AUDIT_LOG` logger wired to a separate appender. In Go services it's a dedicated `*slog.Logger` (e.g., a separate `audit` package) with its own handler.
+* **`source_ip` is resolved against trusted proxies**, never the raw `X-Forwarded-For`. WSO2 deployments are commonly behind a load balancer; document the trust chain explicitly in `deployment.toml` / equivalent config.
+* **Tenant id comes from the authenticated context**, never from request input — same rule as everywhere else in the Carbon stack.
+* **WSO2 alerts SOC on**: cross-tenant deny attempts, refresh-token reuse-detection trigger, privileged-key read, change to a security-relevant setting (CORS allow-list, lockout thresholds, JWT issuers, federated IdPs). Beyond the OWASP "required security events" list, these are the patterns WSO2's SOC has tuned alerts around.
+* **Retention** is at least the SOC investigation window plus the compliance horizon — commonly 1 year for security events, longer for regulated data. Forward to a dedicated audit sink; consider signing or hash-chaining log batches for tamper evidence.
+* **Where a value needs to appear for correlation** (e.g., a token id), log its **hash** or **truncated prefix** with explicit ellipsis (`abcd1234…`) — never the full value. WSO2-shipped masking helpers are extended for this; reviewers reject ad-hoc redactors.
 
 === "Java stack"
 
