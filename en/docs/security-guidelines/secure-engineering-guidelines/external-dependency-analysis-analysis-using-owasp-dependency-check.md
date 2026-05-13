@@ -13,7 +13,7 @@ This document covers WSO2's policy for finding and triaging **known-vulnerable t
 
 ## The WSO2 rule
 
-**A known-vulnerable component never ships in a release.** Either the vulnerable code path is not reachable from product code (documented and approved by the WSO2 Security and Compliance Team) or the component is upgraded / replaced / removed. A finding that is neither fixed nor formally accepted **blocks the release**. Defer is not an option.
+**A known-vulnerable component never ships in a release.** Either the vulnerable code path is not reachable from product code (documented and approved by a designated security reviewer for the product) or the component is upgraded / replaced / removed. A finding that is neither fixed nor formally accepted **blocks the release**. Defer is not an option.
 
 ## When dependency scans run
 
@@ -111,14 +111,14 @@ When a new finding lands above the severity threshold:
 
 1. **Severity ≥ High blocks the merge** until either fixed or formally accepted.
 2. **Fix path**: upgrade the dependency; or pin a known-good earlier version if upstream has no fixed release yet; or remove the dependency if the project no longer needs it.
-3. **Accept path**: the WSO2 Security and Compliance Team reviews, confirms the vulnerable code path is not reachable from product code (or that impact is otherwise mitigated), records the rationale in the suppression file / allow-list, and links to the review record. **Every acceptance carries an expiry date** — re-review at expiry.
+3. **Accept path**: a designated security reviewer for the product confirms that the vulnerable code path is not reachable from product code (or that impact is otherwise mitigated), records the rationale in the suppression file / allow-list, and links to the review record. **Every acceptance carries an expiry date** — re-review at expiry.
 4. **Defer is not an option.** A finding without an explicit accept is not "deferred", it is "blocking".
 
 ### Suppression rules
 
 * Each suppression names a specific CVE / GHSA, a specific GAV (or package), and a rationale that points at a review record.
 * Wildcard suppressions on entire packages are not acceptable.
-* Every accepted finding has a named accept-er from the WSO2 Security and Compliance Team and an expiry date.
+* Every accepted finding names the security reviewer who approved it and an expiry date.
 
 Example WSO2 Dependency Check suppression:
 

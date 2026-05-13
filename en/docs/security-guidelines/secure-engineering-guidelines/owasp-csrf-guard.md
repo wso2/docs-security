@@ -26,7 +26,7 @@ Operational rules:
 1. **State-changing actions use POST / PUT / DELETE only.** CSRFGuard does not validate GET (`UnprotectedMethods=GET`); GET must not have side effects.
 2. **Session cookies are `HttpOnly; Secure; SameSite=Strict`** — see [HTTP Security Headers]({{#base_path#}}/security-guidelines/secure-engineering-guidelines/security-related-http-headers/).
 3. **Tokens injected into POST forms via the JavaScript injection mechanism** (hidden input). Token in URL is forbidden — leaks via referer, browser history, and access logs.
-4. **AJAX POSTs carry the token in a header**, set automatically by the CSRFGuard JavaScript. Manual injection with the JSP taglib only in the narrow cases listed below, with Security and Compliance Team approval.
+4. **AJAX POSTs carry the token in a header**, set automatically by the CSRFGuard JavaScript. Manual injection with the JSP taglib only in the narrow cases listed below, with explicit security-review approval.
 5. **Per-product exclusions are appended to `Owasp.CsrfGuard.Carbon.properties`** during the distribution build; every exclusion has a reason.
 6. **Bearer-token-only REST APIs skip CSRFGuard.** Document this in the API specification rather than via the exclusion mechanism.
 

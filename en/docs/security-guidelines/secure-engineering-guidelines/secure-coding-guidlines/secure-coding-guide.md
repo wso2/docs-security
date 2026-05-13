@@ -200,7 +200,7 @@ External: [OWASP XXE Prevention Cheat Sheet](https://cheatsheetseries.owasp.org/
     dbf.setExpandEntityReferences(false);
     ```
 
-    Apply the equivalent flags to every parser family. Centralise in a `SecureXmlFactories` helper rather than repeating per call site.
+    Apply the equivalent flags to every parser family (`DocumentBuilderFactory`, `SAXParserFactory`, `XMLInputFactory`, `TransformerFactory`, `SchemaFactory`, `Validator`). Where the same parser is constructed in multiple places, centralise the configuration in a project-local helper so the flags can't drift between call sites.
 
 === "Go stack"
 
@@ -293,7 +293,7 @@ WSO2-specific operational rules:
 
 ### Using Known Vulnerable Components
 
-Operational scanning (Dependency Check / govulncheck / npm audit), suppression policy, and the Security and Compliance Team review workflow are in [Dependency Vulnerability Analysis]({{#base_path#}}/security-guidelines/secure-engineering-guidelines/external-dependency-analysis-analysis-using-owasp-dependency-check/).
+Operational scanning (Dependency Check / govulncheck / npm audit), suppression policy, and the security-review workflow are in [Dependency Vulnerability Analysis]({{#base_path#}}/security-guidelines/secure-engineering-guidelines/external-dependency-analysis-analysis-using-owasp-dependency-check/).
 
 ### Unsafe consumption of upstream APIs
 
@@ -602,7 +602,7 @@ WSO2-specific:
 
 External: [OWASP API6:2023](https://owasp.org/API-Security/editions/2023/en/0xa6-unrestricted-access-to-sensitive-business-flows/).
 
-WSO2 sensitive flows to identify at STRIDE-LM review: signup, password reset, OTP send, MFA enrolment, gift-code redemption, refund initiation, free-tier resource creation. Apply layered budgets (per-user, per-device, per-IP, per-tenant, global) plus behavioural signals (CAPTCHA after first few failures, device fingerprinting). Every invocation emits an audit event; the SOC alerts on velocity anomalies for the highest-value flows.
+WSO2 sensitive flows to identify at STRIDE-LM review: signup, password reset, OTP send, MFA enrolment, gift-code redemption, refund initiation, free-tier resource creation. Apply layered budgets (per-user, per-device, per-IP, per-tenant, global) plus behavioural signals (CAPTCHA after first few failures, device fingerprinting). Every invocation emits an audit event so that velocity anomalies for high-value flows are observable to whoever monitors security events for the deployment.
 
 ### Unrestricted File Upload
 
@@ -692,23 +692,11 @@ WSO2-specific operational rules:
 
 === "Java stack"
 
-    Maven release pipelines run `maven-gpg-plugin` (or sigstore equivalent) producing `.asc` signatures next to each artefact. Release notes publish SHA-256 checksums. Container images signed with cosign before push. HMAC verification uses `MessageDigest.isEqual(byte[], byte[])` — never `Arrays.equals`.
+    WSO2 Maven artefacts on Maven Central carry `.asc` (GPG) signatures per Maven Central's signing requirement. Verification instructions for consumers belong in the product's install guide. HMAC verification on inbound payloads uses `MessageDigest.isEqual(byte[], byte[])` — never `Arrays.equals` (not constant-time in older JDKs).
 
 === "Go stack"
 
-    Release pipeline signs every artefact with [cosign](https://docs.sigstore.dev/cosign/overview/) and publishes a SHA-256 checksum alongside:
-
-    ```yaml
-    - name: Sign release artefacts
-      run: |
-        for f in dist/*.zip; do
-          cosign sign-blob --yes --bundle "${f}.cosign.bundle" "${f}"
-          sha256sum "${f}" > "${f}.sha256"
-        done
-        cosign sign --yes "ghcr.io/.../${IMAGE}:${VERSION}"
-    ```
-
-    Webhook HMAC verification uses `hmac.Equal` — never `==`:
+    Sign release artefacts with [cosign](https://docs.sigstore.dev/cosign/overview/) (or the project's equivalent supply-chain signing tool); publish the signature alongside the artefact and document verification in the install guide. Webhook HMAC verification uses `hmac.Equal` — never `==`:
 
     ```go
     mac := hmac.New(sha256.New, sharedSecret)
@@ -752,8 +740,8 @@ WSO2-specific operational rules on top of the OWASP baseline:
 * **Operational logs and audit logs are different sinks.** Operational logs: short-retention, standard log aggregator. Audit logs: long-retention, append-only sink, stable schema, no stack traces or framework chatter. In Carbon products the audit log uses the `AUDIT_LOG` logger wired to a separate appender. In Go services it's a dedicated `*slog.Logger` (e.g., a separate `audit` package) with its own handler.
 * **`source_ip` is resolved against trusted proxies**, never the raw `X-Forwarded-For`. WSO2 deployments are commonly behind a load balancer; document the trust chain explicitly in `deployment.toml` / equivalent config.
 * **Tenant id comes from the authenticated context**, never from request input — same rule as everywhere else in the Carbon stack.
-* **WSO2 alerts SOC on**: cross-tenant deny attempts, refresh-token reuse-detection trigger, privileged-key read, change to a security-relevant setting (CORS allow-list, lockout thresholds, JWT issuers, federated IdPs). Beyond the OWASP "required security events" list, these are the patterns WSO2's SOC has tuned alerts around.
-* **Retention** is at least the SOC investigation window plus the compliance horizon — commonly 1 year for security events, longer for regulated data. Forward to a dedicated audit sink; consider signing or hash-chaining log batches for tamper evidence.
+* **Events worth alerting on** beyond the OWASP Logging Cheat Sheet baseline: cross-tenant deny attempts, refresh-token reuse-detection trigger, privileged-key read, change to a security-relevant setting (CORS allow-list, lockout thresholds, JWT issuers, federated IdPs). Whether and how to alert is owned by the team operating the deployment — emit the audit events so they have the signal.
+* **Retention** is set per deployment — long enough for security investigation and any applicable compliance horizon. Forward to a dedicated audit sink; consider signing or hash-chaining log batches for tamper evidence.
 * **Where a value needs to appear for correlation** (e.g., a token id), log its **hash** or **truncated prefix** with explicit ellipsis (`abcd1234…`) — never the full value. WSO2-shipped masking helpers are extended for this; reviewers reject ad-hoc redactors.
 
 === "Java stack"
