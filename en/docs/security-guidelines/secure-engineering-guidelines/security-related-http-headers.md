@@ -1,38 +1,19 @@
 ---
 title: HTTP Security Headers — Configuration Reference
 category: security-guidelines
-version: 3.3
+version: 3.4
 ---
 
 # HTTP Security Headers — Configuration Reference
 
-<p class="doc-info">Version: 3.3</p>
+<p class="doc-info">Version: 3.4</p>
 ___
 
-This document covers HTTP security headers for WSO2 products. It is split into two parts:
+When you build a WSO2 product or service that serves HTTP, this is the security header set your code should emit and how to wire it. The companion section in the Secure Coding Guide is [Security Misconfiguration]({{#base_path#}}/security-guidelines/secure-engineering-guidelines/secure-coding-guidlines/secure-coding-guide/#security-misconfiguration); the operator-facing per-product reference is [Security Guidelines for Production Deployment]({{#base_path#}}/security-guidelines/security-guidelines-for-production-deployment/).
 
-1. **What WSO2 products ship today** — the configuration current product docs prescribe, with the canonical per-product link for each setting.
-2. **Practical desired state** — the broader modern header set we want WSO2 deployments to converge to, with the configuration shape on each deployment surface. This is direction for new code and for hardening existing deployments; not all of it ships enabled-by-default in current product versions.
+## The header set
 
-The companion section in the Secure Coding Guide is [Security Misconfiguration]({{#base_path#}}/security-guidelines/secure-engineering-guidelines/secure-coding-guidlines/secure-coding-guide/#security-misconfiguration).
-
-## What WSO2 products ship today
-
-The Carbon-based products use Tomcat's `org.apache.catalina.filters.HttpHeaderSecurityFilter`, which covers HSTS, `X-Frame-Options`, and `X-Content-Type-Options`. **HSTS is disabled by default** so development environments are not pinned to HTTPS by self-signed certificates — production deployments enable it per webapp.
-
-* **HSTS via `deployment.toml`** (applies to every Tomcat webapp): [APIM — Enable HSTS Headers](https://apim.docs.wso2.com/en/latest/install-and-setup/setup/deployment-best-practices/security-guidelines-for-production-deployment/#enable-http-strict-transport-security-hsts-headers).
-* **HSTS via per-webapp `web.xml`**: [IS — Enable HSTS Headers](https://is.docs.wso2.com/en/latest/deploy/security/enable-hsts/).
-* **CSP for framing / clickjacking** (set at the Load Balancer): [APIM — Configure CSP headers](https://apim.docs.wso2.com/en/latest/install-and-setup/setup/deployment-best-practices/security-guidelines-for-production-deployment/) — the documented value is `Content-Security-Policy: frame-src 'self'; frame-ancestors 'self';`.
-* **Prevent browser caching** of dynamic pages: `URLBasedCachePreventionFilter` / `ContentTypeBasedCachePreventionFilter` from `org.wso2.carbon.ui.filters.cache`. See [IS — Prevent Browser Caching](https://is.docs.wso2.com/en/latest/deploy/security/prevent-browser-caching/).
-* **Server header override** to hide `WSO2 Carbon Server`: [IS — Configure Transport-Level Security](https://is.docs.wso2.com/en/latest/deploy/security/configure-transport-level-security/).
-
-For the full per-product / per-version baseline, see [Security Guidelines for Production Deployment]({{#base_path#}}/security-guidelines/security-guidelines-for-production-deployment/).
-
-## Practical desired state
-
-The header set above is the existing baseline. The desired state for new WSO2 deployments — and for hardening existing ones — is the modern set below. Adopt at the deployment layer first (LB / reverse proxy / ingress) for headers that don't yet have product-default support; track product-side defaults as a hardening item per product.
-
-| Header | Target value | Set on |
+| Header | Value | Set on |
 |---|---|---|
 | `Strict-Transport-Security` | `max-age=31536000; includeSubDomains; preload` (add `preload` only after the hostname tree is fully HTTPS) | Every TLS-terminating response |
 | `Content-Security-Policy` | Nonce-based `script-src 'self' 'nonce-{n}'`; no `'unsafe-inline'`, no `'unsafe-eval'`; `frame-ancestors 'none'`; `object-src 'none'`; `base-uri 'none'`; `form-action 'self'` | Every HTML response |
@@ -48,9 +29,9 @@ The header set above is the existing baseline. The desired state for new WSO2 de
 
 **Cookies carrying authentication or session state:** `HttpOnly; Secure; SameSite=Strict; Path=<narrow>`. Set `Domain` only when cross-subdomain sharing is required.
 
-### Headers that must not be set
+## Headers your code must not emit
 
-These are deprecated and either ignored or actively harmful. Remove them from any deployment that still emits them, and update any tooling that flags their absence as a finding.
+Deprecated, ignored, or actively harmful. If you find existing code emitting one of these, remove it.
 
 | Header | Status |
 |---|---|
@@ -59,63 +40,56 @@ These are deprecated and either ignored or actively harmful. Remove them from an
 | `Feature-Policy` | Replaced by `Permissions-Policy`. Same intent, different syntax. |
 | `Expect-CT` | Deprecated by the IETF in 2024; CT enforcement is unconditional in modern browsers. |
 
-### Where to set the headers
+## Wiring it up
 
-Headers can be set at any layer between the client and the origin. The rule is **set once, as close to the edge as practical**, and document which layer owns each header.
+=== "Carbon / Tomcat (Java products)"
 
-Layers, edge to origin:
+    **HSTS, `X-Frame-Options`, `X-Content-Type-Options`** — wire the standard Tomcat `org.apache.catalina.filters.HttpHeaderSecurityFilter`. Two equivalent ways to wire it:
 
-1. **Edge / CDN** (Cloudflare, CloudFront) — best for static, site-wide headers (HSTS, CORP).
-2. **Reverse proxy or Kubernetes ingress** (nginx, Envoy, ingress-nginx) — owns the bulk of headers in cloud deployments.
-3. **WSO2 API Gateway** — for headers that must be set per-API or per-resource.
-4. **App server** — Carbon / Tomcat (Java), HTTP middleware (Go).
+    * Product-wide via `deployment.toml` (applies to every Tomcat webapp). Syntax: [APIM — Enable HSTS Headers](https://apim.docs.wso2.com/en/latest/install-and-setup/setup/deployment-best-practices/security-guidelines-for-production-deployment/#enable-http-strict-transport-security-hsts-headers).
+    * Per-webapp via `web.xml` at `<PRODUCT_HOME>/repository/deployment/server/webapps/<WEBAPP>/WEB-INF/web.xml`. Syntax: [IS — Enable HSTS Headers](https://is.docs.wso2.com/en/latest/deploy/security/enable-hsts/).
 
-Don't double-set; if the edge owns HSTS, the app server doesn't. Verify the response after each release.
+    The init-params include `antiClickJackingEnabled` / `antiClickJackingOption` (for `X-Frame-Options`) and `blockContentTypeSniffingEnabled` (for `X-Content-Type-Options`) — leave them at their secure defaults. Do **not** enable `xssProtectionEnabled` — `X-XSS-Protection` is deprecated. HSTS is off by default so local development is not pinned to HTTPS by self-signed certificates; turn it on for production builds.
 
-## Applying the desired state by deployment surface
+    **CSP, COOP, COEP, CORP, `Permissions-Policy`, `Cache-Control` on token / PII responses, `Clear-Site-Data` on logout** — not covered by `HttpHeaderSecurityFilter`. When you add a new Carbon webapp, ship a project-local servlet filter that runs after `HttpHeaderSecurityFilter` so the built-in filter's HSTS and `X-Frame-Options` are preserved alongside. Recommended shape:
 
-=== "Carbon / Tomcat"
+    ```java
+    public class ModernSecurityHeadersFilter implements Filter {
+        @Override
+        public void doFilter(ServletRequest req, ServletResponse res, FilterChain chain)
+                throws IOException, ServletException {
+            HttpServletResponse r = (HttpServletResponse) res;
+            String nonce = generatePerRequestNonce(); // 16 bytes, base64
+            req.setAttribute("cspNonce", nonce);
 
-    **Already shipped.** Tomcat's `HttpHeaderSecurityFilter` covers HSTS, `X-Frame-Options`, and `X-Content-Type-Options`. Enable HSTS via either the `deployment.toml` block or the per-webapp `web.xml` shown in [What WSO2 products ship today](#what-wso2-products-ship-today). The same filter's init-params include `antiClickJackingEnabled` / `antiClickJackingOption` and `blockContentTypeSniffingEnabled` — leave them at their secure defaults. Do not enable `xssProtectionEnabled` (`X-XSS-Protection`) — see the deprecated-headers list above.
-
-    **Not yet a product default.** CSP (nonce-based), `Cross-Origin-Opener-Policy`, `Cross-Origin-Embedder-Policy`, `Cross-Origin-Resource-Policy`, `Permissions-Policy`, `Cache-Control: no-store` on token/PII responses, and `Clear-Site-Data` on logout are not covered by the standard `HttpHeaderSecurityFilter`. Two paths to apply them today:
-
-    1. **Set at the deployment layer** (reverse proxy or ingress — the recommended path for existing deployments). See the *nginx* and *Kubernetes ingress* tabs below.
-    2. **Wire a project-local servlet filter** that runs after `HttpHeaderSecurityFilter` so the built-in filter's HSTS and `X-Frame-Options` are preserved alongside. Recommended shape:
-
-        ```java
-        public class ModernSecurityHeadersFilter implements Filter {
-            @Override
-            public void doFilter(ServletRequest req, ServletResponse res, FilterChain chain)
-                    throws IOException, ServletException {
-                HttpServletResponse r = (HttpServletResponse) res;
-                String nonce = generatePerRequestNonce(); // 16 bytes, base64
-                req.setAttribute("cspNonce", nonce);
-
-                r.setHeader("Content-Security-Policy",
-                    "default-src 'self'; "
-                    + "script-src 'self' 'nonce-" + nonce + "'; "
-                    + "style-src 'self' 'nonce-" + nonce + "'; "
-                    + "object-src 'none'; frame-ancestors 'none'; "
-                    + "base-uri 'none'; form-action 'self'");
-                r.setHeader("Cross-Origin-Opener-Policy", "same-origin");
-                r.setHeader("Cross-Origin-Embedder-Policy", "require-corp");
-                r.setHeader("Cross-Origin-Resource-Policy", "same-site");
-                r.setHeader("Permissions-Policy",
-                    "geolocation=(), microphone=(), camera=(), payment=(), interest-cohort=()");
-                r.setHeader("Referrer-Policy", "strict-origin-when-cross-origin");
-                chain.doFilter(req, res);
-            }
+            r.setHeader("Content-Security-Policy",
+                "default-src 'self'; "
+                + "script-src 'self' 'nonce-" + nonce + "'; "
+                + "style-src 'self' 'nonce-" + nonce + "'; "
+                + "object-src 'none'; frame-ancestors 'none'; "
+                + "base-uri 'none'; form-action 'self'");
+            r.setHeader("Cross-Origin-Opener-Policy", "same-origin");
+            r.setHeader("Cross-Origin-Embedder-Policy", "require-corp");
+            r.setHeader("Cross-Origin-Resource-Policy", "same-site");
+            r.setHeader("Permissions-Policy",
+                "geolocation=(), microphone=(), camera=(), payment=(), interest-cohort=()");
+            r.setHeader("Referrer-Policy", "strict-origin-when-cross-origin");
+            chain.doFilter(req, res);
         }
-        ```
+    }
+    ```
 
-        This is the target shape; the class doesn't ship in any current WSO2 product. Per-URL overrides (looser policy for the legacy `/carbon/*` admin console that hasn't been migrated off `unsafe-inline` yet) live as a second filter instance scoped to that URL pattern.
+    Add a sibling filter that sets `Cache-Control: no-store` for token / PII endpoints, and one that sets `Clear-Site-Data` on the logout response.
 
-    **Note on Jaggery.** Jaggery is deprecated. New WSO2 features should not ship Jaggery applications; existing Jaggery surfaces should be migrated.
+    **Preventing browser caching of dynamic pages** — Carbon ships `URLBasedCachePreventionFilter` and `ContentTypeBasedCachePreventionFilter` in `org.wso2.carbon.ui.filters.cache`. Wire them into your webapp's `web.xml` when adding any dynamic page that carries sensitive content. Reference: [IS — Prevent Browser Caching](https://is.docs.wso2.com/en/latest/deploy/security/prevent-browser-caching/).
 
-=== "Go service middleware"
+    **Server header** — override via `[transport.https.properties]` in `deployment.toml` so the response doesn't return `Server: WSO2 Carbon Server`. Reference: [IS — Configure Transport-Level Security](https://is.docs.wso2.com/en/latest/deploy/security/configure-transport-level-security/).
 
-    Go services are new — apply the full desired-state header set in middleware from day one. The middleware wraps every `http.Handler`; per-route overrides (looser CSP for embedded widgets, for instance) live in the handler.
+    **Legacy considerations.** The legacy `/carbon/*` admin console emits `unsafe-inline` style and script in places that haven't been migrated. When migrating one of these pages, drop the per-URL override; until then, scope a looser CSP filter to that URL pattern as a tracked hardening item rather than relaxing the policy globally. New WSO2 features should not ship Jaggery applications; existing Jaggery surfaces should be migrated.
+
+=== "Go services"
+
+    Ship the security-headers middleware from day one. Apply at the router root so every `http.Handler` is wrapped; per-route overrides (looser CSP for embedded widgets) live in the handler.
 
     ```go
     package web
@@ -146,7 +120,7 @@ Don't double-set; if the edge owns HSTS, the app server doesn't. Verify the resp
             h.Set("Cross-Origin-Opener-Policy", "same-origin")
             h.Set("Cross-Origin-Embedder-Policy", "require-corp")
             h.Set("Cross-Origin-Resource-Policy", "same-site")
-            h.Set("X-Frame-Options", "DENY") // legacy fallback for CSP frame-ancestors
+            h.Set("X-Frame-Options", "DENY")
 
             ctx := contextWithNonce(r.Context(), nonce)
             next.ServeHTTP(w, r.WithContext(ctx))
@@ -170,9 +144,22 @@ Don't double-set; if the edge owns HSTS, the app server doesn't. Verify the resp
     }
     ```
 
-=== "nginx reverse proxy"
+    Reject any new Go service code that doesn't compose `SecurityHeaders` at the router root at review.
 
-    For existing Carbon deployments, the reverse proxy is the easiest place to apply the desired-state headers that aren't yet product defaults. `add_header` in the `server { }` block:
+=== "WSO2 API Gateway"
+
+    For APIs published through the gateway, set headers at two levels:
+
+    * **Globally** in the gateway's transport handler — HSTS, `X-Content-Type-Options`, `Referrer-Policy`, COOP, COEP, CORP, `Permissions-Policy`. Applied to every response served through the gateway.
+    * **Per-API or per-resource** — CSP (HTML-serving APIs differ from JSON-only APIs), `Cache-Control: no-store` on token endpoints, `Clear-Site-Data` on logout endpoints.
+
+    The pattern is a Synapse `class` mediator (or a sequence) in the OutSequence that appends the headers to the outgoing response; attach the mediator per-API for per-API control. When publishing a new API, the API definition should include a security-headers policy attachment by default.
+
+=== "Reverse proxy / Kubernetes ingress"
+
+    When the WSO2 product is fronted by an nginx reverse proxy or a Kubernetes ingress, that layer can also emit the same header set. This is the path for hardening an existing deployment where the product hasn't yet wired the full set itself. Decide once per deployment which layer owns each header — don't double-set.
+
+    **nginx** — `add_header` in the `server { }` block:
 
     ```nginx
     server {
@@ -191,11 +178,9 @@ Don't double-set; if the edge owns HSTS, the app server doesn't. Verify the resp
     }
     ```
 
-    The `always` parameter is required so headers also appear on 4xx / 5xx responses — which is exactly when they matter. nginx `add_header` directives **do not inherit** into nested `location` blocks that have their own `add_header`; declare headers at the `server` level and avoid `add_header` inside `location` blocks.
+    The `always` parameter is required so headers also appear on 4xx / 5xx — exactly when they matter. `add_header` directives **do not inherit** into nested `location` blocks that have their own `add_header`; declare headers at the `server` level.
 
-=== "Kubernetes ingress"
-
-    For `ingress-nginx`, use `server-snippet` (or `configuration-snippet` on older versions):
+    **`ingress-nginx`** — use `server-snippet` (or `configuration-snippet` on older versions):
 
     ```yaml
     apiVersion: networking.k8s.io/v1
@@ -217,20 +202,11 @@ Don't double-set; if the edge owns HSTS, the app server doesn't. Verify the resp
 
     For Envoy-based ingresses (Istio, Contour, Gloo), use the gateway resource's `responseHeadersToAdd`. Enforce cluster-wide with an OPA Gatekeeper / Kyverno policy that fails apply when an `Ingress` is missing the security-snippet annotation.
 
-=== "WSO2 API Gateway"
-
-    Set headers at two levels:
-
-    * **Globally** in the gateway's transport handler — HSTS, `X-Content-Type-Options`, `Referrer-Policy`, COOP, COEP, CORP, `Permissions-Policy`. Applied to every response served through the gateway.
-    * **Per-API or per-resource** — CSP (HTML-serving APIs differ from JSON-only APIs), `Cache-Control: no-store` on token endpoints, `Clear-Site-Data` on logout endpoints.
-
-    The recommended shape is a Synapse `class` mediator (or a sequence) in the OutSequence that appends the headers to the outgoing response; attach the mediator per-API for per-API control. New APIs should include a security-headers policy attachment by default.
-
 ## Rollout notes
 
 ### HSTS
 
-Roll out incrementally: `max-age=300` → `max-age=86400` (one week) → `max-age=31536000; includeSubDomains` → add `preload` and submit to the [HSTS preload list](https://hstspreload.org/). **Preload submission is hard to reverse** — confirm HTTPS coverage on every subdomain, including subdomains not yet built, before submitting. Once a browser caches HSTS, it refuses HTTP for the `max-age` duration.
+Roll out incrementally: `max-age=300` → `max-age=86400` (one week) → `max-age=31536000; includeSubDomains` → add `preload` and submit to the [HSTS preload list](https://hstspreload.org/). **Preload submission is hard to reverse** — confirm HTTPS coverage on every subdomain, including ones not yet built, before submitting. Once a browser caches HSTS, it refuses HTTP for the `max-age` duration.
 
 ### CSP
 
@@ -240,15 +216,15 @@ Adopt `Content-Security-Policy-Report-Only` first, fix violations for a sprint, 
 
 Set `Cache-Control: no-store` (and `Pragma: no-cache` for HTTP/1.0 caches still in the wild) on:
 
-* OAuth token endpoint responses
-* Endpoints returning user PII
-* Authenticated API responses where intermediary caches (CDN, browser, corporate proxy) are not under WSO2 control
+* OAuth token endpoint responses.
+* Endpoints returning user PII.
+* Authenticated API responses where intermediary caches (CDN, browser, corporate proxy) are not under WSO2 control.
 
 `no-cache` is not the same as `no-store`: `no-cache` allows storage with revalidation; `no-store` forbids storage entirely.
 
 ## Verification
 
-After any header configuration change, verify the response headers end-to-end.
+After any header change to your code, verify the response shape end-to-end.
 
 ### `curl` check
 
@@ -267,7 +243,7 @@ Each expected header should appear exactly once. `X-XSS-Protection` (or, if pres
 
 ### CI gate
 
-Recommended PR-builder smoke-test against a running instance:
+The PR builder runs a header smoke-test against a running instance:
 
 ```sh
 HEADERS=$(curl -sI "$URL")
@@ -298,11 +274,11 @@ echo "header check passed"
 
 ## External references
 
-Per-header semantics, browser support, and edge cases:
+Per-header semantics, browser support, edge cases:
 
 * MDN: [Strict-Transport-Security](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Strict-Transport-Security) · [Content-Security-Policy](https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP) · [X-Content-Type-Options](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Content-Type-Options) · [Referrer-Policy](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Referrer-Policy) · [Permissions-Policy](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Permissions-Policy) · [COOP](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Cross-Origin-Opener-Policy) · [COEP](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Cross-Origin-Embedder-Policy) · [CORP](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Cross-Origin-Resource-Policy) · [Clear-Site-Data](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Clear-Site-Data) · [SameSite cookies](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Set-Cookie/SameSite).
 * [OWASP HTTP Security Response Headers Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/HTTP_Headers_Cheat_Sheet.html).
 * [HSTS Preload List](https://hstspreload.org/).
 * [Mozilla SSL Configuration Generator](https://ssl-config.mozilla.org/) — TLS configuration; complements the header set.
 * [Tomcat 10.1 `HttpHeaderSecurityFilter` documentation](https://tomcat.apache.org/tomcat-10.1-doc/config/filter.html#HTTP_Header_Security_Filter).
-* WSO2 product production-deployment guides — index: [Security Guidelines for Production Deployment]({{#base_path#}}/security-guidelines/security-guidelines-for-production-deployment/).
+* [Security Guidelines for Production Deployment]({{#base_path#}}/security-guidelines/security-guidelines-for-production-deployment/) — operator-facing per-product reference.
