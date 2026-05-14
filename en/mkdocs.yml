@@ -78,7 +78,6 @@ validation:
 nav:
   - 'Home': 'index.md'
   - 'Security Processes':
-    - '': 'security-processes/index.md'
     - 'Secure Software Development Process': 'security-processes/secure-software-development-process.md'
     - 'Vulnerability Management Process': 'security-processes/vulnerability-management-process.md'
     - 'Cloud Security Process': 'security-processes/cloud-security-process.md'
@@ -605,6 +604,8 @@ plugins:
         'security-announcements/security-advisories/2023/WSO2-2023-2617.md': 'security-announcements/security-advisories/2023/2023-advisories.md'
         # public-artifacts section retired; point to docs root
         'public-artifacts/index.md': 'index.md'
+        # security-processes hub retired; sub-pages remain reachable from nav and home cards
+        'security-processes/index.md': 'index.md'
         # Secure-coding guide history: original stack-split → unified guide with content tabs
         'security-guidelines/secure-engineering-guidelines/secure-coding-guidlines/general-recommendations-for-secure-coding.md': 'security-guidelines/secure-engineering-guidelines/secure-coding-guidlines/secure-coding-guide.md'
         'security-guidelines/secure-engineering-guidelines/secure-coding-guidlines/principles.md': 'security-guidelines/secure-engineering-guidelines/secure-coding-guidlines/secure-coding-guide.md'
