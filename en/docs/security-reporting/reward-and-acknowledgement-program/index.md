@@ -13,53 +13,74 @@ WSO2 maintains a reward and acknowledgement programme to recognise security rese
 
 ## Products and services in scope
 
-The programme covers the following products and services:
+The programme covers the following WSO2 products and services.
+
+**Self-managed software products** — latest released version, within three years of release. Supported versions are documented in the [WSO2 Support Matrix](https://wso2.com/products/support-matrix/).
 
 * [WSO2 API Manager](https://wso2.com/api-management/)
-* [WSO2 Identity Server](https://wso2.com/identity-and-access-management)
-* [WSO2 Enterprise Integrator](https://wso2.com/integration)
+* [WSO2 Identity Server](https://wso2.com/identity-and-access-management/)
+* [WSO2 Integrator](https://wso2.com/integration/) — Micro Integrator (MI), Streaming Integrator (SI), and Business Integrator (BI)
 * [Ballerina](https://ballerina.io/) — limited to the scope defined in [ballerina.io/security-policy](https://ballerina.io/security-policy/)
+
+**Cloud services** — the current production deployment.
+
 * [Choreo](https://wso2.com/choreo/)
 * [Asgardeo](https://wso2.com/asgardeo/)
+* [Bijira](https://wso2.com/api-platform/) — WSO2's SaaS API management offering
+* [Devant](https://wso2.com/integration-platform/) — WSO2's SaaS integration platform offering
 
-Only the [latest released version](http://wso2.com/products/carbon/release-matrix/) of each product is in scope, and only if its release date falls within the last three years. Any other live deployment of a WSO2 product, and any WSO2-operated website (e.g. wso2.com), is out of scope.
+Internal staging environments, demo sites, WSO2-operated websites (e.g. wso2.com), and any customer-owned deployment of WSO2 software are out of scope.
 
 ## Qualifying vulnerabilities
 
-Any security issue with moderate or higher impact on the confidentiality, integrity, or availability of an in-scope product or service. Common qualifying categories:
+A security issue qualifies for reward consideration when it has a moderate or higher impact on the confidentiality, integrity, or availability of an in-scope product or service. Common qualifying categories:
 
-* SQL or LDAP injection
-* Cross-site scripting (XSS)
-* Broken authentication or authorisation
-* Broken session management
-* Remote code execution
-* OS command execution
+* Remote code execution (RCE)
+* OS command injection
+* SQL injection
+* LDAP injection
+* Server-side request forgery (SSRF)
 * XML external entity (XXE) or XML entity expansion
-* Path traversal
-* Insecure direct object references
-* Confidential information leakage (credentials, PII)
+* Insecure deserialisation
+* Path traversal and arbitrary file read or write
+* Authentication or session-management bypass
+* Privilege escalation
+* Broken object-level authorisation, also known as insecure direct object references (IDOR / BOLA)
+* Cross-site scripting (XSS) — reflected, stored, or DOM-based
+* Confidential information leakage (credentials, tokens, personally identifiable information)
 
 Impact assessment is at WSO2's discretion.
 
 ## Non-qualifying vulnerabilities
 
-Reports in the following categories are reviewed but typically do not qualify for a reward:
+Reports in the following categories are reviewed but typically do not qualify for a reward.
 
-* Denial of service (DoS) or distributed denial of service (DDoS)
-* Logout cross-site request forgery (CSRF)
-* Missing CSRF token in login forms
-* Cross-domain referer leakage
-* Self-XSS
-* Missing `HttpOnly` flag on cookies
-* SSL/TLS configuration issues
-* Missing HTTP security headers
-* Account enumeration
-* Lack of rate limiting or brute-force protection
-* DNS-related issues
-* Automated-scanner output, theoretical findings, or "best-practice" reports without a proof of concept
-* Out-of-date third-party libraries or frameworks without a proof of concept
-* Findings in third-party assets, demos, staging, or other domains not owned by WSO2
-* Non-critical information leakage (server identification, stack traces)
+**Low-impact or theoretical findings:**
+
+* Denial of service (DoS) and distributed denial of service (DDoS).
+* Self-XSS (requires the victim to paste content into their own browser).
+* Clickjacking and tabnabbing without a demonstrated security impact.
+* Cross-site request forgery (CSRF) on logout, on login forms, or on other actions without significant security impact.
+* Cross-domain referer leakage without exposure of sensitive data.
+* Open redirects without a chained security impact (e.g., credential disclosure or token theft).
+* Account or username enumeration on login, registration, or password-reset endpoints.
+* Findings produced by automated scanners, or theoretical / "best-practice" reports without a working proof of concept.
+* Out-of-date third-party libraries or frameworks without a proof of concept against an in-scope product.
+* Non-critical information leakage (server identification headers, stack traces, software version disclosure).
+
+**Configuration and hardening recommendations** (without a demonstrated exploit):
+
+* Missing or weak HTTP security headers (CSP, HSTS, X-Frame-Options, Permissions-Policy, and similar).
+* SSL/TLS configuration weaknesses (cipher-suite preference, protocol versions, HSTS preload, certificate-transparency).
+* Missing `Secure`, `HttpOnly`, or `SameSite` flags on cookies that do not carry session or authentication state.
+* Lack of rate limiting or brute-force protection on non-authentication endpoints.
+* DNS or email-authentication misconfiguration (SPF, DKIM, DMARC, NS records) on WSO2 domains, unless it enables practical impersonation.
+
+**Out of scope by policy:**
+
+* Social-engineering or phishing attempts against WSO2 employees, customers, partners, or community members.
+* Physical attacks against WSO2 offices, infrastructure, or personnel.
+* Findings in third-party assets, demos, staging environments, or domains not owned by WSO2.
 
 A finding in one of these categories may still qualify if the security impact justifies it.
 
