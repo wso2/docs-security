@@ -81,14 +81,3 @@ Disclosure and announcement timing — which determine when the reward is issued
 * All security testing must be carried out against a standalone WSO2 product running locally or a deployment owned by the reporter.
 * All communications about a report must use the channels documented in [Report Security Issues]({{#base_path#}}/security-reporting/report-security-issues/).
 * The decision to issue a reward and to provide credit is at WSO2's discretion.
-
-## Reporting a finding for reward consideration
-
-Submit the finding through the channels in [Vulnerability Reporting Guidelines]({{#base_path#}}/security-reporting/vulnerability-reporting-guidelines/), and include:
-
-- [x] Vulnerable WSO2 product(s) and version(s).
-- [x] List of URL(s) and affected parameter(s).
-- [x] Browser, operating system, or app version where applicable.
-- [x] Self-assessed impact.
-- [x] Steps to exploit the vulnerability.
-- [x] Any proposed solution.
