@@ -1,18 +1,20 @@
 ---
 title: Security Incident Notification Process for SaaS
 category: security-processes
-published: 22nd Jan 2025
-version: 1.0
+version: 1.1
 ---
 
 # Security Incident Notification Process for SaaS
 
-Security incident notifications will be issued in a timely and accurate manner while maintaining transparency. This approach enables impacted customers to take any necessary actions.
+<p class="doc-info">Version: 1.1</p>
+___
 
-## Paid Subscriber Notification Process
+WSO2 notifies SaaS subscribers of confirmed security incidents so impacted customers can take any necessary action. This page documents the notification commitments by subscription tier. The broader cloud incident-management process — protocols, response teams, severity-driven escalation, and stakeholder communication — is documented in [Cloud Security Process — Incident Management]({{#base_path#}}/security-processes/cloud-security-process/#incident-management).
 
-We will provide timely and comprehensive communication to subscribers regarding any confirmed security incidents within 48 hours.
+## Paid Subscribers
 
-## Free Subscriber Notification Process
+Paid SaaS subscribers receive notification of confirmed security incidents **within 48 hours** of confirmation, with the information needed to assess impact and act.
 
-Free subscribers will be notified of security incident on a case-by-case basis upon the determination of WSO2.
+## Free Subscribers
+
+Free-tier subscribers are notified of security incidents at WSO2's discretion, on a case-by-case basis.
