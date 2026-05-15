@@ -83,7 +83,6 @@ nav:
     - 'Cloud Security Process': 'security-processes/cloud-security-process.md'
     - 'Security Incident Notification Process for SaaS': 'security-processes/saas-incident-notification-process.md'
   - 'Security Guidelines':
-    - '': 'security-guidelines/index.md'
     - 'Secure Engineering Guidelines':
       - '': 'security-guidelines/secure-engineering-guidelines/index.md'
       - 'Secure Coding Guidelines':
@@ -100,7 +99,6 @@ nav:
       - 'External Dependency Analysis using OWASP Dependency Check': 'security-guidelines/secure-engineering-guidelines/external-dependency-analysis-analysis-using-owasp-dependency-check.md'
     - 'Security Guidelines for Production Deployment': 'security-guidelines/security-guidelines-for-production-deployment.md'
   - 'Security Announcements':
-    - '': 'security-announcements/index.md'
     - 'WSO2 Security Advisories':
       - '': 'security-announcements/security-advisories/index.md'
       - '2026 Advisories':
@@ -606,6 +604,10 @@ plugins:
         'public-artifacts/index.md': 'index.md'
         # security-processes hub retired; sub-pages remain reachable from nav and home cards
         'security-processes/index.md': 'index.md'
+        # security-guidelines top-level hub retired; sub-sections remain reachable
+        'security-guidelines/index.md': 'index.md'
+        # security-announcements top-level hub retired; sub-sections remain reachable and are linked from wso2.com/security
+        'security-announcements/index.md': 'index.md'
         # Secure-coding guide history: original stack-split → unified guide with content tabs
         'security-guidelines/secure-engineering-guidelines/secure-coding-guidlines/general-recommendations-for-secure-coding.md': 'security-guidelines/secure-engineering-guidelines/secure-coding-guidlines/secure-coding-guide.md'
         'security-guidelines/secure-engineering-guidelines/secure-coding-guidlines/principles.md': 'security-guidelines/secure-engineering-guidelines/secure-coding-guidlines/secure-coding-guide.md'
