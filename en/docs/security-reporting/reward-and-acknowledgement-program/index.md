@@ -1,119 +1,94 @@
 ---
 title: Reward and Acknowledgement Program
 category: security-reporting
-published: 14th Sep 2021
-version: 2.1
+version: 2.2
 ---
 
 # Reward and Acknowledgement Program
 
-We have been recognizing the efforts of the security research community for helping us make WSO2 products safer. To honor all such external contributions, we maintain a reward and acknowledgement program for WSO2-owned software products. This document describes the various aspects of this program:
+<p class="doc-info">Version: 2.2</p>
+___
 
+WSO2 maintains a reward and acknowledgement programme to recognise security researchers who responsibly disclose vulnerabilities in WSO2-owned software products. This page describes the scope, qualifying and non-qualifying findings, rewards, and rules. To submit a finding for reward consideration, follow the [Vulnerability Reporting Guidelines]({{#base_path#}}/security-reporting/vulnerability-reporting-guidelines/).
 
-* [Products & Services in Scope](#products-services-in-scope)
-* [Qualifying Vulnerabilities](#qualifying-vulnerabilities)
-* [Non-qualifying Vulnerabilities](#non-qualifying-vulnerabilities)
-* [Rewards and Acknowledgement](#rewards-and-acknowledgement)
-* [Exceptions & Rules](#exceptions-rules)
-* [Investigating and Reporting Bugs](#investigating-and-reporting-bugs)
+## Products and services in scope
 
-### Products & Services in Scope
-At this time, the scope of this program is limited to security vulnerabilities found on Choreo, Asgardeo and the software products developed by WSO2.
-
-This includes the following:
+The programme covers the following products and services:
 
 * [WSO2 API Manager](https://wso2.com/api-management/)
 * [WSO2 Identity Server](https://wso2.com/identity-and-access-management)
 * [WSO2 Enterprise Integrator](https://wso2.com/integration)
-* [Ballerina](https://ballerina.io/) (limited to the scope mentioned in [https://ballerina.io/security-policy/](https://ballerina.io/security-policy/))
+* [Ballerina](https://ballerina.io/) — limited to the scope defined in [ballerina.io/security-policy](https://ballerina.io/security-policy/)
 * [Choreo](https://wso2.com/choreo/)
 * [Asgardeo](https://wso2.com/asgardeo/)
 
-Out of the above-listed products, only the [latest released version](http://wso2.com/products/carbon/release-matrix/) of each product is included in the scope of this program. In addition to that, the release date of the product version should be within 3 years from the date of the report.
+Only the [latest released version](http://wso2.com/products/carbon/release-matrix/) of each product is in scope, and only if its release date falls within the last three years. Any other live deployment of a WSO2 product, and any WSO2-operated website (e.g. wso2.com), is out of scope.
 
-!!! info
-    Any other live deployment of a WSO2 product, or a website (e.g. wso2.com) would not be included in the scope of this program.
+## Qualifying vulnerabilities
 
+Any security issue with moderate or higher impact on the confidentiality, integrity, or availability of an in-scope product or service. Common qualifying categories:
 
-### Qualifying Vulnerabilities
-Any security issue that has a moderate or higher security impact on the confidentiality, integrity, or availability of Choreo, Asgardeo, or a WSO2 product would be included in the scope of the program. 
-
-Following are a few common issues that we typically consider for rewarding.
-
-* SQL or LDAP Injection
-* Cross-site Scripting (XSS)
-* Broken authentication and authorization
+* SQL or LDAP injection
+* Cross-site scripting (XSS)
+* Broken authentication or authorisation
 * Broken session management
 * Remote code execution
 * OS command execution
-* XML External Entity (XXE) or XML Entity Expansion
+* XML external entity (XXE) or XML entity expansion
 * Path traversal
-* Insecure Direct Object References
-* Confidential information leakages (such as credentials, PII)
+* Insecure direct object references
+* Confidential information leakage (credentials, PII)
 
-!!! info
-    Kindly note that the impact calculation is solely at the discretion of WSO2.
+Impact assessment is at WSO2's discretion.
 
+## Non-qualifying vulnerabilities
 
-### Non-qualifying Vulnerabilities
-We review reported security issues case-by-case. Generally, we do not consider the following common issues for rewarding.
+Reports in the following categories are reviewed but typically do not qualify for a reward:
 
-* Denial of Service (DoS) or Distributed Denial of Service (DDoS) vulnerabilities
-* Logout Cross-site Request Forgery (CSRF)
+* Denial of service (DoS) or distributed denial of service (DDoS)
+* Logout cross-site request forgery (CSRF)
 * Missing CSRF token in login forms
-* Cross domain referer leakage
-* Self-XSS issues
-* Missing HttpOnly flags
-* SSL/TLS related issues
+* Cross-domain referer leakage
+* Self-XSS
+* Missing `HttpOnly` flag on cookies
+* SSL/TLS configuration issues
 * Missing HTTP security headers
 * Account enumeration
-* Lack of rate-limiting or brute-force protections
-* DNS related issues
-* Automated-scanner, theoretical, or “best-practice” reports without POCs
-* Out-of-date third-party libraries or frameworks without POC
+* Lack of rate limiting or brute-force protection
+* DNS-related issues
+* Automated-scanner output, theoretical findings, or "best-practice" reports without a proof of concept
+* Out-of-date third-party libraries or frameworks without a proof of concept
 * Findings in third-party assets, demos, staging, or other domains not owned by WSO2
-* Non-critical Information Leakages (such as server information, stack trace)
+* Non-critical information leakage (server identification, stack traces)
 
-!!! info
-    However, based on the security impact, we would still consider rewarding the issues from the above categories.
+A finding in one of these categories may still qualify if the security impact justifies it.
 
+## Rewards
 
-### Rewards and Acknowledgement
-To show our appreciation, we provide a reward and an acknowledgement to eligible reporters after the reported issues are fixed and announced to the WSO2 customers and the community users.
+Once the reported issue is fixed and announced to customers and the community, and subject to the reporter's consent, WSO2:
 
-!!! tip
-    See our [Vulnerability Management Process](../../security-processes/vulnerability-management-process.md) for more details about how we disclose security vulnerabilities.
+1. Lists the reporter on the [Security Hall of Fame]({{#base_path#}}/security-reporting/reward-and-acknowledgement-program/hall-of-fame/).
+2. Sends a certificate of appreciation.
+3. Provides a **USD 50 reward**, either as an Amazon gift voucher (any Amazon storefront) or a PayPal transfer, at the reporter's choice.
 
-Based on the consent of the reporter, we will do the following:
+Disclosure and announcement timing — which determine when the reward is issued — are documented in [Vulnerability Management Process]({{#base_path#}}/security-processes/vulnerability-management-process/).
 
-1. Include the reporter's name on the [Security Hall of Fame](hall-of-fame.md) web page.
-2. Email a certificate of appreciation to the reporter.
-3. Provide one of the following preferred by the reporter: 
-    1. Amazon gift voucher worth 50 USD (from: Amazon.com / Amazon.ca / Amazon.cn / Amazon.fr / Amazon.de / Amazon.in / Amazon.it / Amazon.co.jp / Amazon.co.uk / Amazon.es / Amazon.com.au)
-    2. PayPal transfer worth 50 USD.
+## Rules
 
+* Rewards are granted only to the **first** person to responsibly disclose a previously unknown issue.
+* WSO2 issues a first response within seven days. A fix may take up to 90 days depending on severity, with additional time required to announce the fix to customers and the community across all affected product versions.
+* Public posts that violate responsible disclosure, or that reflect negatively on the programme or the WSO2 brand, disqualify the reporter from reward consideration.
+* All security testing must be carried out against a standalone WSO2 product running locally or a deployment owned by the reporter.
+* All communications about a report must use the channels documented in [Report Security Issues]({{#base_path#}}/security-reporting/report-security-issues/).
+* The decision to issue a reward and to provide credit is at WSO2's discretion.
 
-### Exceptions & Rules
-The following exceptions and rules apply in this program:
+## Reporting a finding for reward consideration
 
-* You will qualify for a reward only if you are the first person to responsibly disclose an unknown issue. 
-* WSO2  has 7 days to provide the first response to the report. It could take up to 90 days to implement a fix based on the severity of the report, and further time might be needed to announce the fix to our customers and community users of all the affected product versions. WSO2 will keep the reporter up to date with the progress of the process. 
-* Posting details or conversations about the report that violates responsible disclosure, or posting details that reflect negatively on the program and the WSO2 brand, will disqualify you from consideration for rewards and credits. 
-* All security testing must be carried out in a standalone WSO2 product running locally or a hosted deployment owned by the reporter. 
-* All communications must be conducted through security mailing lists only.
-* Offering a reward or giving credits has to be entirely at WSO2’s discretion.
+Submit the finding through the channels in [Vulnerability Reporting Guidelines]({{#base_path#}}/security-reporting/vulnerability-reporting-guidelines/), and include:
 
-
-### Investigating and Reporting Bugs
-If you have found a vulnerability, please contact us via channels mentioned in [WSO2 Security Vulnerability Reporting Guidelines](../vulnerability-reporting-guidelines.md).
-
-A good bug report should include the following information at a minimum:
-
-- [x] Vulnerable WSO2 product(s) and their version(s)
-- [x] List of URL(s) and affected parameter(s)
-- [x] Describe the browser, OS, and/or app version
-- [x] Describe the self-assessed impact
-- [x] Describe the steps to exploit the vulnerability
-- [x] Any proposed solution
-
-We thank you for helping us keep WSO2 products and services safe!
+- [x] Vulnerable WSO2 product(s) and version(s).
+- [x] List of URL(s) and affected parameter(s).
+- [x] Browser, operating system, or app version where applicable.
+- [x] Self-assessed impact.
+- [x] Steps to exploit the vulnerability.
+- [x] Any proposed solution.

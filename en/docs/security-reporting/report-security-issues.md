@@ -5,17 +5,13 @@ category: security-reporting
 
 # Report Security Issues
 
-This section explains how to report security issues in WSO2 products and 
-[get rewarded](reward-and-acknowledgement-program/index.md) for your contributions.
+To report a security issue in a WSO2 product, service, or open-source project, use the confidential mailing list that matches the scope of your finding. Reports are reviewed by a small internal security team and treated with the highest priority and confidentiality.
 
-We welcome all contributions from our user community, developers, customers, and security researchers to reinforce the 
-security of our products and services. We strongly encourage you to report security issues to our private and highly confidential security mailing
-lists mentioned below before disclosing them in any forums, sites, or other groups - public or private.
+Before reporting, see the [Vulnerability Reporting Guidelines]({{#base_path#}}/security-reporting/vulnerability-reporting-guidelines/) for what to include in the report and what not to send. Eligible reporters may receive recognition and a reward through the [Reward and Acknowledgement Program]({{#base_path#}}/security-reporting/reward-and-acknowledgement-program/).
 
-For more information, see [Vulnerability Reporting Guidelines](vulnerability-reporting-guidelines.md).
+## Mailing lists
 
-!!! note 
-    If you wish to send secure messages to our security mailing lists, use the GPG keys mentioned below.
+Each list accepts encrypted submissions; use the GPG key listed alongside.
 
 | Scope | Email Address | GPG Key |
 | ----- | ------------- | ------- |
@@ -25,9 +21,6 @@ For more information, see [Vulnerability Reporting Guidelines](vulnerability-rep
 | Security issues relevant to <a href="https://ballerina.io/security-policy/" target="_blank" rel="noopener noreferrer" class=" externalLink">Ballerina</a>| <a href="mailto:security@ballerina.io" target="_blank" rel="noopener noreferrer" class=" externalLink">security@ballerina.io</a> | 0168 DA26 2989 0DB9 4ACD 8367 E683 061E 2F85 C381 <br> <a class="md-button externalLink" href="https://pgp.mit.edu/pks/lookup?search=security%40ballerina.io+&amp;op=index" target="_blank" rel="noopener noreferrer">PUBLIC KEY</a> |
 | Any other security issues relevant to WSO2 | <a href="mailto:security@wso2.com" target="_blank" rel="noopener noreferrer" class=" externalLink">security@wso2.com</a> | CB9B 0914 3E92 AE33 DFEA 5026 E251 CB08 CB61 38F2 <br> <a class="md-button externalLink" href="https://keys.openpgp.org/search?q=CB9B+0914+3E92+AE33+DFEA++5026+E251+CB08+CB61+38F2" target="_blank" rel="noopener noreferrer">PUBLIC KEY</a> |
 
-!!! warning
-    The above Security mailing lists are highly confidential internal mailing lists and are only visible to a selected 
-    group within WSO2. This includes the Security and Compliance Team members, Security Champions of product, service, 
-    and open source project teams, and people who hold leadership roles within WSO2. 
+## Confidentiality
 
-    All the vulnerability reports are treated with the highest priority and confidentiality.
+These mailing lists are restricted to WSO2's internal security team, the security champions of product, service, and open-source project teams, and a small set of leadership roles. All reports are handled in confidence.

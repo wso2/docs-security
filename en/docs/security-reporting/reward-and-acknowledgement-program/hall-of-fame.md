@@ -5,13 +5,9 @@ category: security-reporting
 
 # Security Hall of Fame
 
-WSO2 is pleased to recognize the security researchers who have helped in making WSO2 products and services safer by 
-finding and responsibly reporting security vulnerabilities. Each name listed here represents an individual or a company 
-that has reported one or more security vulnerabilities in our products or services and worked with us to rectify the issue.
+The researchers and companies listed below have helped make WSO2 products and services safer by responsibly disclosing security vulnerabilities. Each entry represents one or more reports against WSO2 products or services that the reporter worked with WSO2 to resolve.
 
-However, please note that WSO2-maintained websites (including wso2.com) are currently not considered for proceeding 
-with acknowledgement. Refer to our [Security Reward and Acknowledgement Program](index.md) to learn more about our 
-security researcher community relationship.
+For the in-scope products and services, qualifying criteria, and reward terms, see the [Reward and Acknowledgement Program](index.md).
 
 ## 2026
 
