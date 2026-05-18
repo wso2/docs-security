@@ -37,7 +37,7 @@ Reports in the following categories are reviewed but typically do not qualify fo
 
 **Findings without demonstrated security impact:**
 
-* Denial of service (DoS) and distributed denial of service (DDoS).
+* Network-level or volumetric denial-of-service (DoS / DDoS) attacks against WSO2 services or infrastructure. (Application-level DoS caused by a product code path — XML parser memory exhaustion, regular-expression denial of service (ReDoS), algorithmic-complexity attacks, deserialisation-driven exhaustion — **is** in scope as a product vulnerability; report it with reproduction steps against a self-hosted instance, not against a cloud service.)
 * Self-XSS (requires the victim to paste content into their own browser).
 * Clickjacking and tabnabbing without a demonstrated security impact.
 * Cross-site request forgery (CSRF) on logout, on login forms, or on other actions without significant security impact.
@@ -46,7 +46,7 @@ Reports in the following categories are reviewed but typically do not qualify fo
 * Account or username enumeration on login, registration, or password-reset endpoints.
 * Findings produced by automated scanners, or theoretical / "best-practice" reports without a working proof of concept.
 * Out-of-date third-party libraries or frameworks without a proof of concept against an in-scope product.
-* Non-critical information leakage (server identification headers, stack traces, software version disclosure).
+* Server identification headers, stack-trace exposure, and software version disclosure on their own. These are fixed when reported but do not earn a reward unless they enable a higher-impact exploit.
 
 **Hardening and configuration recommendations** (no demonstrated exploit):
 
@@ -79,6 +79,6 @@ Disclosure and announcement timing — which determine when the reward is issued
 * Rewards are granted only to the **first** person to responsibly disclose a previously unknown issue.
 * WSO2 issues a first response within seven days. A fix may take up to 90 days depending on severity, with additional time required to announce the fix to customers and the community across all affected product versions.
 * Public posts that violate responsible disclosure, or that reflect negatively on the programme or the WSO2 brand, disqualify the reporter from reward consideration.
-* All security testing must be carried out against a standalone WSO2 product running locally or a deployment owned by the reporter.
+* Security testing must be carried out against a self-hosted WSO2 product running on infrastructure you control, or a deployment owned by you. Active exploitation against WSO2 cloud services — including denial-of-service or resource-exhaustion testing, even within your own tenant — is not permitted, because the impact extends to shared infrastructure. Where possible, reproduce a cloud-service finding against the self-managed equivalent product before reporting.
 * All communications about a report must use the channels documented in [Report Security Issues]({{#base_path#}}/security-reporting/report-security-issues/).
 * The decision to issue a reward and to provide credit is at WSO2's discretion.
