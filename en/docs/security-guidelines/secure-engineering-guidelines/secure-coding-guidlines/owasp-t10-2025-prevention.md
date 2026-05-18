@@ -1,13 +1,9 @@
 ---
 title: OWASP Top 10 - 2025 Prevention
 category: security-guidelines
-version: 3.0
 ---
 
 # OWASP Top 10 - 2025 Prevention
-
-<p class="doc-info">Version: 3.0</p>
-___
 
 This page maps the OWASP Top 10 - 2025 categories to the [Secure Coding Guide]({{#base_path#}}/security-guidelines/secure-engineering-guidelines/secure-coding-guidlines/secure-coding-guide/). Each section there has a shared block of principles plus stack-specific implementation in tabs — click **Java stack** or **Go stack** once and the choice sticks across the site.
 

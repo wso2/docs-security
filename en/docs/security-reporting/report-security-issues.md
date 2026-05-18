@@ -1,13 +1,9 @@
 ---
 title: Report Security Issues
 category: security-reporting
-version: 2.0
 ---
 
 # Report Security Issues
-
-<p class="doc-info">Version: 2.0</p>
-___
 
 To report a security issue in a WSO2 product, service, or open-source project, use one of the confidential channels below. Reports are reviewed by a small internal security team and treated with the highest priority and confidentiality.
 

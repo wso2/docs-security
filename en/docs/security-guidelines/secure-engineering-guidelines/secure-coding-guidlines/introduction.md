@@ -1,12 +1,9 @@
 ---
 title: Secure Coding Guidelines
 category: security-guidelines
-version: 3.0
 ---
 
 # Secure Coding Guidelines
-<p class="doc-info">Version: 3.0</p>
-___
 
 ## Introduction
 
