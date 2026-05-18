@@ -33,9 +33,9 @@ Internal staging environments, demo sites, WSO2-operated websites (e.g. wso2.com
 
 ## Non-qualifying findings
 
-Reports in the following categories are reviewed but typically do not qualify for a reward.
+Reports in the following categories are reviewed but typically do not qualify for a reward under this programme. WSO2 may still address these findings as security improvements or hardening work where appropriate; reward eligibility is a separate decision from whether the finding is fixed.
 
-**Low-impact or theoretical findings:**
+**Findings without demonstrated security impact:**
 
 * Denial of service (DoS) and distributed denial of service (DDoS).
 * Self-XSS (requires the victim to paste content into their own browser).
@@ -48,10 +48,10 @@ Reports in the following categories are reviewed but typically do not qualify fo
 * Out-of-date third-party libraries or frameworks without a proof of concept against an in-scope product.
 * Non-critical information leakage (server identification headers, stack traces, software version disclosure).
 
-**Configuration and hardening recommendations** (without a demonstrated exploit):
+**Hardening and configuration recommendations** (no demonstrated exploit):
 
 * Missing or weak HTTP security headers (CSP, HSTS, X-Frame-Options, Permissions-Policy, and similar).
-* SSL/TLS configuration weaknesses (cipher-suite preference, protocol versions, HSTS preload, certificate-transparency).
+* SSL/TLS configuration weaknesses (cipher-suite preference, protocol versions, HSTS preload, certificate transparency).
 * Missing `Secure`, `HttpOnly`, or `SameSite` flags on cookies that do not carry session or authentication state.
 * Lack of rate limiting or brute-force protection on non-authentication endpoints.
 * DNS or email-authentication misconfiguration (SPF, DKIM, DMARC, NS records) on WSO2 domains, unless it enables practical impersonation.
@@ -62,7 +62,7 @@ Reports in the following categories are reviewed but typically do not qualify fo
 * Physical attacks against WSO2 offices, infrastructure, or personnel.
 * Findings in third-party assets, demos, staging environments, or domains not owned by WSO2.
 
-A finding in one of these categories may still qualify if the security impact justifies it.
+A finding in one of these categories may still qualify for a reward if the demonstrated security impact justifies it.
 
 ## Rewards
 
