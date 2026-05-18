@@ -9,7 +9,7 @@ version: 2.2
 <p class="doc-info">Version: 2.2</p>
 ___
 
-WSO2 maintains a reward and acknowledgement programme to recognise security researchers who responsibly disclose vulnerabilities in WSO2-owned software products. This page describes the scope, qualifying and non-qualifying findings, rewards, and rules. To submit a finding for reward consideration, follow the [Vulnerability Reporting Guidelines]({{#base_path#}}/security-reporting/vulnerability-reporting-guidelines/).
+WSO2 maintains a reward and acknowledgement programme to recognise security researchers who responsibly disclose vulnerabilities in WSO2-owned software products. A finding qualifies for reward consideration when it has a moderate or higher impact on the confidentiality, integrity, or availability of an in-scope product or service; impact assessment is at WSO2's discretion. To submit a finding, follow the [Vulnerability Reporting Guidelines]({{#base_path#}}/security-reporting/vulnerability-reporting-guidelines/).
 
 ## Products and services in scope
 
@@ -31,27 +31,7 @@ The programme covers the following WSO2 products and services.
 
 Internal staging environments, demo sites, WSO2-operated websites (e.g. wso2.com), and any customer-owned deployment of WSO2 software are out of scope.
 
-## Qualifying vulnerabilities
-
-A security issue qualifies for reward consideration when it has a moderate or higher impact on the confidentiality, integrity, or availability of an in-scope product or service. Common qualifying categories:
-
-* Remote code execution (RCE)
-* OS command injection
-* SQL injection
-* LDAP injection
-* Server-side request forgery (SSRF)
-* XML external entity (XXE) or XML entity expansion
-* Insecure deserialisation
-* Path traversal and arbitrary file read or write
-* Authentication or session-management bypass
-* Privilege escalation
-* Broken object-level authorisation, also known as insecure direct object references (IDOR / BOLA)
-* Cross-site scripting (XSS) — reflected, stored, or DOM-based
-* Confidential information leakage (credentials, tokens, personally identifiable information)
-
-Impact assessment is at WSO2's discretion.
-
-## Non-qualifying vulnerabilities
+## Non-qualifying findings
 
 Reports in the following categories are reviewed but typically do not qualify for a reward.
 
