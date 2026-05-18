@@ -98,8 +98,6 @@ Static Code Analysis is used to identify possible vulnerabilities within source 
 
 Apart from the [Find Security Bugs](https://find-sec-bugs.github.io/) Spotbugs plugin which is used in the development phase, WSO2 uses the [Veracode](https://www.veracode.com/products/binary-static-analysis-sast) commercial static analyzer for this purpose.
 
-WSO2 uses the [Trivy](https://aquasecurity.github.io/trivy/) Open-source image scanner for finding OS level vulnerabilities in WSO2 docker images.
-
 !!! note
     The security issues relevant to the third-party dependencies are covered separately with the [Third-Party Dependency Analysis](#third-party-dependency-analysis) effort. Therefore, the source code of the third-party dependencies is excluded from the static code analysis.
 
