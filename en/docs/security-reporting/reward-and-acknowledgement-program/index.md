@@ -40,9 +40,8 @@ Reports in the following categories are reviewed but typically do not qualify fo
 * Network-level or volumetric denial-of-service (DoS / DDoS) attacks against WSO2 services or infrastructure. (Application-level DoS caused by a specific product code path **is** in scope as a product vulnerability; report it with reproduction steps against a self-hosted instance, not against a cloud service.)
 * Self-XSS, where the payload can only be triggered by the same user who introduces it.
 * Clickjacking and tabnabbing without a demonstrated security impact.
-* Cross-site request forgery (CSRF) on logout, login forms, or actions without significant security impact.
+* Cross-site request forgery (CSRF) on actions without significant security impact, such as logout.
 * Cross-domain referer leakage without exposure of sensitive data.
-* Account or username enumeration.
 * Findings without a working proof of concept that demonstrates the security impact.
 * Out-of-date third-party libraries or frameworks without a proof of concept against an in-scope product.
 * Server identification headers, stack-trace exposure, and software version disclosure on their own. These are fixed when reported but do not earn a reward unless they enable a higher-impact exploit.
