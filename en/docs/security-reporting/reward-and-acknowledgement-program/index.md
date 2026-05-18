@@ -37,7 +37,7 @@ Reports in the following categories are reviewed but typically do not qualify fo
 
 **Findings without demonstrated security impact:**
 
-* Network-level or volumetric denial-of-service (DoS / DDoS) attacks against WSO2 services or infrastructure. (Application-level DoS caused by a product code path — XML parser memory exhaustion, regular-expression denial of service (ReDoS), algorithmic-complexity attacks, deserialisation-driven exhaustion — **is** in scope as a product vulnerability; report it with reproduction steps against a self-hosted instance, not against a cloud service.)
+* Network-level or volumetric denial-of-service (DoS / DDoS) attacks against WSO2 services or infrastructure. (Application-level DoS caused by a specific product code path **is** in scope as a product vulnerability; report it with reproduction steps against a self-hosted instance, not against a cloud service.)
 * Self-XSS (requires the victim to paste content into their own browser).
 * Clickjacking and tabnabbing without a demonstrated security impact.
 * Cross-site request forgery (CSRF) on logout, on login forms, or on other actions without significant security impact.
