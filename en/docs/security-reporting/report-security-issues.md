@@ -27,7 +27,7 @@ Independent security researchers and community users should submit through the c
 
 ## WSO2 Support Portal
 
-WSO2 subscription customers may submit security issues either through the mailing list above or by opening a confidential ticket on the WSO2 Support Portal.
+WSO2 subscription customers may submit security issues either through the mailing list above or by opening a confidential ticket on the [WSO2 Support Portal](https://support.wso2.com/).
 
 ## Confidentiality
 
