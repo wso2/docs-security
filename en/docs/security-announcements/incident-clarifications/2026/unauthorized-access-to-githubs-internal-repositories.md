@@ -20,7 +20,7 @@ On May 20, 2026, WSO2 was informed of a security incident announced by GitHub re
 GitHub has said on their security announcement, "Our current assessment is that the activity involved exfiltration of GitHub-internal repositories only. The attacker’s current claims of ~3,800 repositories are directionally consistent with our investigation so far.
 We have no evidence of impact to customer information stored outside of GitHub’s internal repositories, such as our customer’s own enterprises, organizations, and repositories. Some of GitHub’s internal repositories contain information from customers, for example, excerpts of support interactions. If any impact is discovered, we will notify customers via established incident response and notification channels."
 
-So far, WSO2 has not received any communication from GitHub indicating that WSO2 managed GitHub organizations or repositories have been impacted by this exposure.
+So far, WSO2 has not received any communication from GitHub indicating that WSO2-managed GitHub organizations or repositories have been impacted by this exposure.
 
 We will update this announcement if we receive such communications from GitHub or find any evidence of unauthorized access. 
 
