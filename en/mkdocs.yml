@@ -441,7 +441,7 @@ nav:
         - 'CVE-2020-11022': 'security-announcements/cve-justifications/2026/CVE-2020-11022.md'
         - 'CVE-2020-7656': 'security-announcements/cve-justifications/2026/CVE-2020-7656.md'
         - 'CVE-2019-11358': 'security-announcements/cve-justifications/2026/CVE-2019-11358.md'
-        - 'Bluebird v3.7.2 Vulnerabilities': 'security-announcements/cve-justifications/2026/Bluebird v3.7.2 Vulnerabilities.md'
+        - 'Bluebird v3.7.2 Vulnerabilities': 'security-announcements/cve-justifications/2026/bluebird-v3.7.2-vulnerabilities.md'
         - 'CVE-2015-9251': 'security-announcements/cve-justifications/2026/CVE-2015-9251.md'
         - 'CVE-2012-6708': 'security-announcements/cve-justifications/2026/CVE-2012-6708.md'
       - '2025':
