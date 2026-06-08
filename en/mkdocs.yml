@@ -497,6 +497,7 @@ nav:
       - '2026':
         - '': 'security-announcements/incident-clarifications/2026/index.md'
         - 'Axios NPM Supply Chain Compromise': 'security-announcements/incident-clarifications/2026/axios-npm-supply-chain-compromise.md'
+        - "Unauthorized access to GitHub's internal repositories": 'security-announcements/incident-clarifications/2026/unauthorized-access-to-githubs-internal-repositories.md'
       - '2025':
         - '': 'security-announcements/incident-clarifications/2025/index.md'
         - 'NPM Packages Compromised in Supply Chain Attack': 'security-announcements/incident-clarifications/2025/npm-packages-compromised-in-supply-chain-attack.md'
