@@ -22,10 +22,13 @@ security researcher community relationship.
 | [Alex Williams from Pellera Technologies](https://www.linkedin.com/in/alexanderwilliamscyber)                        |
 | [Claire Wang](https://clairewang.net/)                                                                               |
 | [Lasantha Karunarathne](https://www.linkedin.com/in/lasakaru/)                                                       |
+| [Maneesha Dewmina](https://www.linkedin.com/in/maneesha-dewmina/)                                             |
 | [Manisha Dilshan](https://www.linkedin.com/in/manisha-dilshan-b08ba3215)                                             |
 | [Michał Majchrowicz, Marcin Wyczechowski, and Paweł Zdunek — members of the AFINE Team](https://afine.com/)          |
 | **Omri Inbar**                                                                                                       |
 | [Robert C. Raducioiu](https://it.linkedin.com/in/rbct)                                                               |
+| [Suraj Theekshana and Ishan Nim (株式会社CyberCrew)](https://cyber.spool.co.jp/)                                      |
+| [Thinh Dang](https://www.linkedin.com/in/thinh-dang-bb4b72170/)                                                      |
 
 
 
@@ -44,7 +47,9 @@ security researcher community relationship.
 |                                                                                                                      |
 | :------------------------------------------------------------------------------------------------------------------- |
 | [AGS Lakpahana](https://www.linkedin.com/in/lakpahana)                                                               |
-| [Alex Roger from Laburity](https://laburity.com)                                                               |
+| [Alex Roger from Laburity](https://laburity.com)                                                                     |
+| **Omri Inbar**                                                                                                       |
+
 
 ## 2025
 

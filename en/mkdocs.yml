@@ -456,11 +456,17 @@ nav:
         - '2025':
           - '': 'security-announcements/cloud-security-bulletins/asgardeo/2025/index.md'
           - '2025 H1': 'security-announcements/cloud-security-bulletins/asgardeo/2025/asgardeo-2025-h1.md'
+          - '2025 H2': 'security-announcements/cloud-security-bulletins/asgardeo/2025/asgardeo-2025-h2.md'
       - 'Choreo':
         - '': 'security-announcements/cloud-security-bulletins/choreo/index.md'
         - '2025':
           - '': 'security-announcements/cloud-security-bulletins/choreo/2025/index.md'
           - '2025 H1': 'security-announcements/cloud-security-bulletins/choreo/2025/choreo-2025-h1.md'        
+      - 'WSO2 API Platform':
+        - '': 'security-announcements/cloud-security-bulletins/wso2-api-platform/index.md'
+        - '2025':
+          - '': 'security-announcements/cloud-security-bulletins/wso2-api-platform/2025/index.md'
+          - '2025 H2': 'security-announcements/cloud-security-bulletins/wso2-api-platform/2025/wso2-api-platform-2025-h2.md'
     - 'CVE Justifications':
       - '': 'security-announcements/cve-justifications/index.md'
       - '2026':
@@ -468,7 +474,9 @@ nav:
         - 'GHSA-72hv-8253-57qq': 'security-announcements/cve-justifications/2026/GHSA-72hv-8253-57qq.md'
         - 'CVE-2026-2332': 'security-announcements/cve-justifications/2026/CVE-2026-2332.md'
         - 'CVE-2025-11143': 'security-announcements/cve-justifications/2026/CVE-2025-11143.md'
+        - 'CVE-2023-49735': 'security-announcements/cve-justifications/2026/CVE-2023-49735.md'
         - 'CVE-2021-28490': 'security-announcements/cve-justifications/2026/CVE-2021-28490.md'
+        - 'CVE-2023-39017': 'security-announcements/cve-justifications/2026/CVE-2023-39017.md'
         - 'CVE-2020-11023': 'security-announcements/cve-justifications/2026/CVE-2020-11023.md'
         - 'CVE-2020-11022': 'security-announcements/cve-justifications/2026/CVE-2020-11022.md'
         - 'CVE-2020-7656': 'security-announcements/cve-justifications/2026/CVE-2020-7656.md'
@@ -530,6 +538,7 @@ nav:
       - '2026':
         - '': 'security-announcements/incident-clarifications/2026/index.md'
         - 'Axios NPM Supply Chain Compromise': 'security-announcements/incident-clarifications/2026/axios-npm-supply-chain-compromise.md'
+        - "Unauthorized access to GitHub's internal repositories": 'security-announcements/incident-clarifications/2026/unauthorized-access-to-githubs-internal-repositories.md'
       - '2025':
         - '': 'security-announcements/incident-clarifications/2025/index.md'
         - 'NPM Packages Compromised in Supply Chain Attack': 'security-announcements/incident-clarifications/2025/npm-packages-compromised-in-supply-chain-attack.md'
