@@ -15,19 +15,10 @@ WSO2 maintains a reward and acknowledgement programme to recognise security rese
 
 The programme covers the following WSO2 products and services.
 
-**Self-managed software products** — latest released version, within three years of release. Supported versions are documented in the [WSO2 Support Matrix](https://wso2.com/products/support-matrix/).
-
-* [WSO2 API Manager](https://wso2.com/api-management/)
-* [WSO2 Identity Server](https://wso2.com/identity-and-access-management/)
-* [WSO2 Integrator](https://wso2.com/integration/) — Micro Integrator (MI), Streaming Integrator (SI), and Business Integrator (BI)
-* [Ballerina](https://ballerina.io/) — limited to the scope defined in [ballerina.io/security-policy](https://ballerina.io/security-policy/)
-
-**Cloud services** — the current production deployment.
-
-* [Choreo](https://wso2.com/choreo/)
-* [Asgardeo](https://wso2.com/asgardeo/)
-* [Bijira](https://wso2.com/api-platform/) — WSO2's SaaS API management offering
-* [Devant](https://wso2.com/integration-platform/) — WSO2's SaaS integration platform offering
+* API Platform
+* Identity Platform
+* Integration Platform
+* Developer Platform
 
 Internal staging environments, demo sites, WSO2-operated websites (e.g. wso2.com), and any customer-owned deployment of WSO2 software are out of scope.
 
@@ -70,12 +61,12 @@ Once the reported issue is fixed and announced to customers and the community, a
 2. Sends a certificate of appreciation.
 3. Provides a monetary reward, either as an Amazon gift voucher (any Amazon storefront) or a PayPal transfer, at the reporter's choice. The amount depends on the severity of the confirmed finding:
 
-    | Severity            | CVSS Score   | Reward    |
-    | :------------------ | :----------- | :-------- |
-    | Critical            | 9.0 – 10.0   | USD 1,000 |
-    | High                | 7.0 – 8.9    | USD 500   |
-    | Medium              | 4.0 – 6.9    | USD 100   |
-    | Low / Informational | 3.9 or below | USD 50    |
+    | Severity            | CVSS Score   | Reward  |
+    | :------------------ | :----------- | :------ |
+    | Critical            | 9.0 – 10.0   | USD 500 |
+    | High                | 7.0 – 8.9    | USD 250 |
+    | Medium              | 4.0 – 6.9    | USD 100 |
+    | Low / Informational | 3.9 or below | USD 50  |
 
 Disclosure and announcement timing — which determine when the reward is issued — are documented in [Vulnerability Management Process]({{#base_path#}}/security-processes/vulnerability-management-process/).
 
