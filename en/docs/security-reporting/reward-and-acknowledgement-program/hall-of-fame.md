@@ -31,7 +31,6 @@ security researcher community relationship.
 | [Thinh Dang](https://www.linkedin.com/in/thinh-dang-bb4b72170/)                                             |
 | [Maneesha Dewmine]()                                                                                        |
 | [Hacktron Team](https://www.hacktron.ai/)                                                                   |
-| [Alex Williams from Pellera Technologies](https://www.linkedin.com/in/alexanderwilliamscyber)               |
 
 
 
