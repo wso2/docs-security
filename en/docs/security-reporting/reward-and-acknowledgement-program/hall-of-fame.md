@@ -17,67 +17,69 @@ security researcher community relationship.
 
 ### WSO2 Products and Infrastructure
 
-|                                                                                                                      |
-| :------------------------------------------------------------------------------------------------------------------- |
-| [Alex Williams from Pellera Technologies](https://www.linkedin.com/in/alexanderwilliamscyber)                        |
-| [Claire Wang](https://clairewang.net/)                                                                               |
-| [Lasantha Karunarathne](https://www.linkedin.com/in/lasakaru/)                                                       |
-| [Maneesha Dewmina](https://www.linkedin.com/in/maneesha-dewmina/)                                             |
-| [Manisha Dilshan](https://www.linkedin.com/in/manisha-dilshan-b08ba3215)                                             |
-| [Michał Majchrowicz, Marcin Wyczechowski, and Paweł Zdunek — members of the AFINE Team](https://afine.com/)          |
-| **Omri Inbar**                                                                                                       |
-| [Robert C. Raducioiu](https://it.linkedin.com/in/rbct)                                                               |
-| [Suraj Theekshana and Ishan Nim (株式会社CyberCrew)](https://cyber.spool.co.jp/)                                      |
-| [Thinh Dang](https://www.linkedin.com/in/thinh-dang-bb4b72170/)                                                      |
+|                                                                                                             |
+| :---------------------------------------------------------------------------------------------------------- |
+| [Alex Williams from Pellera Technologies](https://www.linkedin.com/in/alexanderwilliamscyber)               |
+| [Claire Wang](https://clairewang.net/)                                                                      |
+| [Lasantha Karunarathne](https://www.linkedin.com/in/lasakaru/)                                              |
+| [Maneesha Dewmina](https://www.linkedin.com/in/maneesha-dewmina/)                                           |
+| [Manisha Dilshan](https://www.linkedin.com/in/manisha-dilshan-b08ba3215)                                    |
+| [Michał Majchrowicz, Marcin Wyczechowski, and Paweł Zdunek — members of the AFINE Team](https://afine.com/) |
+| **Omri Inbar**                                                                                              |
+| [Robert C. Raducioiu](https://it.linkedin.com/in/rbct)                                                      |
+| [Suraj Theekshana and Ishan Nim (株式会社CyberCrew)](https://cyber.spool.co.jp/)                             |
+| [Thinh Dang](https://www.linkedin.com/in/thinh-dang-bb4b72170/)                                             |
+| [Maneesha Dewmine]()                                                                                        |
+| [Hacktron Team](https://www.hacktron.ai/)                                                                   |
 
 
 
 ### Asgardeo
 
-|                                                                                       |
-| :------------------------------------------------------------------------------------ |
-| [Hamed Elnwasani from DeepStrike](https://deepstrike.io/)                             |
-| [Lakshitha Perera](https://www.linkedin.com/in/lakshitha-perera-687857352/)           |
-| [Mahmoud Osama](https://www.linkedin.com/in/mahmoud0x00/)                             |
+|                                                                             |
+| :-------------------------------------------------------------------------- |
+| [Hamed Elnwasani from DeepStrike](https://deepstrike.io/)                   |
+| [Lakshitha Perera](https://www.linkedin.com/in/lakshitha-perera-687857352/) |
+| [Mahmoud Osama](https://www.linkedin.com/in/mahmoud0x00/)                   |
 
 
 
 ### Choreo
 
-|                                                                                                                      |
-| :------------------------------------------------------------------------------------------------------------------- |
-| [AGS Lakpahana](https://www.linkedin.com/in/lakpahana)                                                               |
-| [Alex Roger from Laburity](https://laburity.com)                                                                     |
-| **Omri Inbar**                                                                                                       |
+|                                                        |
+| :----------------------------------------------------- |
+| [AGS Lakpahana](https://www.linkedin.com/in/lakpahana) |
+| [Alex Roger from Laburity](https://laburity.com)       |
+| **Omri Inbar**                                         |
 
 
 ## 2025
 
 ### WSO2 Products and Infrastructure
 
-|                                                                                                                      |
-| :------------------------------------------------------------------------------------------------------------------- |
-| [AGS Lakpahana](https://www.linkedin.com/in/lakpahana)                                                               |
-| [crnkovic](https://crnkovic.dev)                                                                                     |
-| **CyberMavi**                                                                                                        |
-| [Danh Nguyen (k4it0) from VIB Pentest Team](https://www.linkedin.com/in/k4it0)                                       |
-| [Deepanshu Devaliya](https://linkedin.com/in/deepanshu-devaliya369)                                                  |
-| [Dũng x Bắc from VNPT Cyber Immunity](https://x.com/onsra_03)                                                        |
-| **devme4f**                                                                                                          |
-| **Gaurang Maheta**                                                                                                   |
-| [Keyur Maheta](https://www.linkedin.com/in/keyur-maheta-342720256/)                                                  |
-| [Kumar Gaurav](https://www.linkedin.com/in/k10gaurav)                                                                |
-| [LUU HONG QUAN](https://www.linkedin.com/in/hong-quan-3a3b93224/)                                                    |
-| [Manisha Dilshan](https://www.linkedin.com/in/manisha-dilshan-b08ba3215)                                             |
-| **Marcos Vinicius from CyberMavi**                                                                                   |
-| [Milan Katwal](https://x.com/milankatwal99)                                                                          |
-| **Nikhil Mittal**                                                                                                    |
-| [Noël Maccary](https://fr.linkedin.com/in/nmaccary)                                                                  |
-| **Omri Inbar**                                                                                                       |
-| [Rohan Hotkar](https://www.linkedin.com/in/rohanhotkar/)                                                             |
-| [Suraj Theekshana](https://www.linkedin.com/in/suraj-theekshana-10171023a/)                                          |
-| [Vaibhav Shinde](https://www.linkedin.com/in/vaibhav-shinde-28b811242/)                                              |
-| **Viral Maniar**                                                                                                     |
+|                                                                                |
+| :----------------------------------------------------------------------------- |
+| [AGS Lakpahana](https://www.linkedin.com/in/lakpahana)                         |
+| [crnkovic](https://crnkovic.dev)                                               |
+| **CyberMavi**                                                                  |
+| [Danh Nguyen (k4it0) from VIB Pentest Team](https://www.linkedin.com/in/k4it0) |
+| [Deepanshu Devaliya](https://linkedin.com/in/deepanshu-devaliya369)            |
+| [Dũng x Bắc from VNPT Cyber Immunity](https://x.com/onsra_03)                  |
+| **devme4f**                                                                    |
+| **Gaurang Maheta**                                                             |
+| [Keyur Maheta](https://www.linkedin.com/in/keyur-maheta-342720256/)            |
+| [Kumar Gaurav](https://www.linkedin.com/in/k10gaurav)                          |
+| [LUU HONG QUAN](https://www.linkedin.com/in/hong-quan-3a3b93224/)              |
+| [Manisha Dilshan](https://www.linkedin.com/in/manisha-dilshan-b08ba3215)       |
+| **Marcos Vinicius from CyberMavi**                                             |
+| [Milan Katwal](https://x.com/milankatwal99)                                    |
+| **Nikhil Mittal**                                                              |
+| [Noël Maccary](https://fr.linkedin.com/in/nmaccary)                            |
+| **Omri Inbar**                                                                 |
+| [Rohan Hotkar](https://www.linkedin.com/in/rohanhotkar/)                       |
+| [Suraj Theekshana](https://www.linkedin.com/in/suraj-theekshana-10171023a/)    |
+| [Vaibhav Shinde](https://www.linkedin.com/in/vaibhav-shinde-28b811242/)        |
+| **Viral Maniar**                                                               |
 
 
 
