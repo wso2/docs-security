@@ -27,7 +27,6 @@ security researcher community relationship.
 | [Manisha Dilshan](https://www.linkedin.com/in/manisha-dilshan-b08ba3215)                                             |
 | [Michał Majchrowicz, Marcin Wyczechowski, and Paweł Zdunek — members of the AFINE Team](https://afine.com/)          |
 | **Omri Inbar**                                                                                                       |
-| [Pasindu Dilshan](https://www.linkedin.com/in/pasindu-dilshaan/)                                                     |
 | [Robert C. Raducioiu](https://it.linkedin.com/in/rbct)                                                               |
 | [Suraj Theekshana and Ishan Nim (株式会社CyberCrew)](https://cyber.spool.co.jp/)                                      |
 | [Thinh Dang](https://www.linkedin.com/in/thinh-dang-bb4b72170/)                                                      |
