@@ -36,18 +36,18 @@ The general principles (defence in depth, fail secure, least privilege, deny by 
 
 1. **Tenant identity rides in context, never in caller input.** Carbon's `PrivilegedCarbonContext` in Java; a typed `context.Context` key in Go. Reading tenant id from a header, query parameter, or request body is wrong by construction.
 2. **Re-check authorisation at the data layer.** The store layer carries tenant and owner predicates on every query and refuses to return non-matching rows; handler-level checks alone are insufficient.
-3. **Centralise crypto behind audited helpers.** Carbon's `CryptoUtil`; the project's central `pkg/encryption/manager.go` shape in Go. Never call `Cipher.getInstance` / `crypto/aes` directly from product code.
+3. **Centralise crypto behind audited helpers.** Carbon's `CryptoUtil`; a central encryption package (dispatcher + per-algorithm providers) in Go. Never call `Cipher.getInstance` / `crypto/aes` directly from product code.
 4. **Configuration is code.** Security-relevant settings (CORS allow-lists, lockout thresholds, JWT issuers, federated IdPs, log layouts) are version-controlled and reviewed.
 
 ---
 
 ## Broken Access Control
 
-External: [OWASP A01](https://owasp.org/Top10/A01_2021-Broken_Access_Control/) · [Authorization Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/Authorization_Cheat_Sheet.html) · [Access Control Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/Access_Control_Cheat_Sheet.html).
+Read these for the access-control model and enforcement patterns: [OWASP A01](https://owasp.org/Top10/A01_2021-Broken_Access_Control/) · [Authorization Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/Authorization_Cheat_Sheet.html) · [Access Control Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/Access_Control_Cheat_Sheet.html).
 
 ### Object-level access control (IDOR)
 
-External: [OWASP API1:2023](https://owasp.org/API-Security/editions/2023/en/0xa1-broken-object-level-authorization/).
+For the attack pattern and test cases, see [OWASP API1:2023](https://owasp.org/API-Security/editions/2023/en/0xa1-broken-object-level-authorization/).
 
 The enforcement point is the data layer, not the handler.
 
@@ -76,7 +76,7 @@ The enforcement point is the data layer, not the handler.
 
 ### Object property-level access control (mass assignment)
 
-External: [OWASP API3:2023](https://owasp.org/API-Security/editions/2023/en/0xa3-broken-object-property-level-authorization/).
+For the mass-assignment attack pattern, see [OWASP API3:2023](https://owasp.org/API-Security/editions/2023/en/0xa3-broken-object-property-level-authorization/).
 
 Never serialise a persistence entity directly. Never accept an open property bag on update.
 
@@ -107,9 +107,14 @@ Never serialise a persistence entity directly. Never accept an open property bag
 
 External: [OWASP Path Traversal](https://owasp.org/www-community/attacks/Path_Traversal) · [Zip Slip](https://snyk.io/research/zip-slip-vulnerability).
 
+Do not accept absolute paths or path fragments from the end user; build paths against a fixed base directory and normalise before use.
+
+!!! danger "Approval required"
+    Any component that must accept an absolute path from the end user (outside administrative configuration) must be reviewed and approved by the Security and Compliance Team before release.
+
 === "Java stack"
 
-    `new File(base, untrusted).getCanonicalFile()` and compare to `baseCanonical.toPath()`. Or `Path.toRealPath` with `LinkOption.NOFOLLOW_LINKS` where symlinks must not be followed.
+    Resolve untrusted paths through the WSO2 `SecurityUtil.resolvePath(baseDir, userPath)` helper, which joins, normalises, and rejects any path that escapes the base directory. Or `new File(base, untrusted).getCanonicalFile()` and compare to `baseCanonical.toPath()`; `Path.toRealPath` with `LinkOption.NOFOLLOW_LINKS` where symlinks must not be followed.
 
 === "Go stack"
 
@@ -117,7 +122,7 @@ External: [OWASP Path Traversal](https://owasp.org/www-community/attacks/Path_Tr
 
 ### Missing Function Level Access Control
 
-External: [OWASP API5:2023](https://owasp.org/API-Security/editions/2023/en/0xa5-broken-function-level-authorization/).
+For the attack pattern, see [OWASP API5:2023](https://owasp.org/API-Security/editions/2023/en/0xa5-broken-function-level-authorization/).
 
 === "Java stack"
 
@@ -147,19 +152,37 @@ External: [OWASP SSRF Prevention Cheat Sheet](https://cheatsheetseries.owasp.org
 
 WSO2 surfaces that take URLs from input: webhook destinations, OIDC discovery, federated-IdP metadata. Validate the *resolved* address, not the host string (DNS rebinding bypasses host-string checks).
 
+Prevention techniques:
+
+* Avoid using user input in backend requests — URLs, IP addresses, and file paths used in back-channel operations where the product acts as the client.
+* Strict error handling: return an identical generic error whether the backend request fails or invalid data is returned, so responses cannot be used as an open/closed-port oracle.
+* Strict response handling: validate the response server-side (expected content-type, schema) before processing or returning it.
+
 === "Java stack"
 
-    `HttpClient` with a custom `DnsResolver` that validates resolved addresses.
+    Enable the Java Security Manager in production and grant only a `SocketPermission` allow-list to trusted hosts/subnets:
+
+    ```java
+    grant signedBy "wso2carbon" {
+        permission java.net.SocketPermission "internal.example.com:1234", "connect, accept";
+    };
+    ```
 
 === "Go stack"
 
-    Custom `http.Transport.DialContext` that calls `net.DefaultResolver.LookupIPAddr` and rejects private / link-local / loopback ranges.
+    Custom `http.Transport.DialContext` that calls `net.DefaultResolver.LookupIPAddr` and rejects private / link-local / loopback ranges — validate the resolved IP, not the host string.
 
 ### Unvalidated Redirects and Forwards
 
 External: [OWASP Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/Unvalidated_Redirects_and_Forwards_Cheat_Sheet.html).
 
-Match against a registered allow-list of relative paths (or fully-qualified URLs for OAuth `redirect_uri`). The same exact-match rule that applies to OAuth `redirect_uri` (see [Authentication Failures](#authentication-failures)) applies here.
+Match against a registered allow-list of relative paths (or fully-qualified URLs for OAuth `redirect_uri`). The same exact-match rule that applies to OAuth `redirect_uri` (see [Authentication Failures](#authentication-failures)) applies here. Where an absolute URL must be accepted, validate it against the allow-list through the WSO2 `SecurityUtil.validateRedirectUrl(allowList, url)` helper before redirecting; where a fragment is expected, validate it is only the expected type of value.
+
+!!! danger "Approval required"
+    Accepting an absolute forward URL from the end user must be reviewed and approved by the Security and Compliance Team before release.
+
+!!! danger "Approval required"
+    Accepting an absolute redirect URL from the end user, outside administrative configuration, must be reviewed and approved by the Security and Compliance Team before release.
 
 ---
 
@@ -186,6 +209,9 @@ WSO2-specific:
 
 External: [OWASP XXE Prevention Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/XML_External_Entity_Prevention_Cheat_Sheet.html).
 
+!!! danger "Approval required"
+    Unsetting any of the recommended XXE-prevention flags on an XML parser must be reviewed and approved by the Security and Compliance Team before release.
+
 === "Java stack"
 
     Every parser instance — `DocumentBuilderFactory`, `SAXParserFactory`, `XMLInputFactory`, `TransformerFactory`, `SchemaFactory`, `Validator` — has DTD and external-entity processing disabled before use:
@@ -202,6 +228,8 @@ External: [OWASP XXE Prevention Cheat Sheet](https://cheatsheetseries.owasp.org/
 
     Apply the equivalent flags to every parser family (`DocumentBuilderFactory`, `SAXParserFactory`, `XMLInputFactory`, `TransformerFactory`, `SchemaFactory`, `Validator`). Where the same parser is constructed in multiple places, centralise the configuration in a project-local helper so the flags can't drift between call sites.
 
+    Guard against entity-expansion (billion-laughs) DoS as well: enable `XMLConstants.FEATURE_SECURE_PROCESSING` and cap entity expansion (a Xerces `SecurityManager` with `setEntityExpansionLimit(0)`, or the equivalent JAXP limit).
+
 === "Go stack"
 
     `encoding/xml` does not expand external entities by default — standard parsing is safe. Where a third-party library wraps another parser (libxml2 bindings, for instance), check its default settings explicitly.
@@ -212,11 +240,17 @@ External: [OWASP Clickjacking Defense Cheat Sheet](https://cheatsheetseries.owas
 
 Admin consoles must ship with `frame-ancestors` set in production. Values in [HTTP Security Headers]({{#base_path#}}/security-guidelines/secure-engineering-guidelines/security-related-http-headers/).
 
+!!! danger "Approval required"
+    Allowing global framing of an admin console must be reviewed and approved by the Security and Compliance Team before release.
+
 ### Cross-Origin Resource Sharing
 
 External: [MDN — CORS](https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS).
 
-Reject `Access-Control-Allow-Origin: *` combined with `Access-Control-Allow-Credentials: true` at code review.
+Reject `Access-Control-Allow-Origin: *` combined with `Access-Control-Allow-Credentials: true` at code review. If a product exposes a wildcard `Access-Control-Allow-Origin` option, an admin must be able to switch it to domain restriction.
+
+!!! danger "Approval required"
+    Shipping a wildcard `Access-Control-Allow-Origin` without an admin option to switch to domain-level restriction must be reviewed and approved by the Security and Compliance Team before release.
 
 ### API inventory, versioning, deprecation
 
@@ -224,7 +258,7 @@ External: [OWASP API9:2023](https://owasp.org/API-Security/editions/2023/en/0xa9
 
 === "Java stack"
 
-    Gateway inventory in the APIM Publisher portal. Identity Server federated trust list reviewed quarterly. `Sunset:` header set at the JAX-RS layer for deprecated resources.
+    Gateway inventory in the APIM Publisher portal. Identity Server federated trust list reviewed regularly. `Sunset:` header set at the JAX-RS layer for deprecated resources.
 
 === "Go stack"
 
@@ -273,7 +307,7 @@ WSO2-specific operational rules:
     </repositories>
     ```
 
-    Inherit from the parent POM so trust additions go through one diff. **Current audit:** `<checksumPolicy>ignore</checksumPolicy>` is set in two `msf4j` POMs — open hardening items.
+    Inherit from the parent POM so trust additions go through one diff.
 
 === "Go stack"
 
@@ -340,7 +374,7 @@ WSO2-specific additions:
 
     Any new code that handles a secret (refresh tokens, IdP credentials, vault-managed configuration) goes through `CryptoUtil` or an injected `CryptoService`. Do not call `Cipher.getInstance` directly from product code.
 
-    Where a code path must instantiate a `Cipher` directly (legacy or framework boundary), use modern transformations explicitly: `AES/GCM/NoPadding` (96-bit IV, persist `iv || ciphertext`, never reuse `iv` with the same key); `RSA/ECB/OAEPWithSHA-256AndMGF1Padding` for asymmetric. **Current audit:** `Cipher.getInstance("RSA")` without padding remains in `carbon-registry/CipherInitializer`, `carbon-identity-framework/SecondaryUserStoreConfigurator`, and the user-store deployer utility — open hardening items.
+    Where a code path must instantiate a `Cipher` directly (legacy or framework boundary), use modern transformations explicitly: `AES/GCM/NoPadding` (96-bit IV, persist `iv || ciphertext`, never reuse `iv` with the same key); `RSA/ECB/OAEPWithSHA-256AndMGF1Padding` for asymmetric.
 
     **JWT verification** uses Nimbus JOSE through the gateway's `JWTValidator` with an explicit algorithm switch:
 
@@ -364,7 +398,7 @@ WSO2-specific additions:
 
 === "Go stack"
 
-    **Use the central crypto package** — never call `crypto/aes`, `crypto/rsa`, or `crypto/sha256` directly from product code. For the API platform, `pkg/encryption/manager.go` (dispatcher) plus `pkg/encryption/<alg>/` providers is the established shape. New services should follow the same shape.
+    **Use the central crypto package** — never call `crypto/aes`, `crypto/rsa`, or `crypto/sha256` directly from product code. A central encryption package (a dispatcher plus per-algorithm providers) is the established shape. New services should follow the same shape.
 
     AES-GCM with a fresh random nonce per call:
 
@@ -401,7 +435,7 @@ WSO2-specific additions:
     })
     ```
 
-    **TLS** — `tls.Config{MinVersion: tls.VersionTLS12, ServerName: host}` on every outbound client and every server config. `InsecureSkipVerify: true` is acceptable only when operator-configured with a secure default of `false`; hardcoded `true` is a defect. **Current audit:** ~48 production occurrences across multiple Go services; each must be reviewed.
+    **TLS** — `tls.Config{MinVersion: tls.VersionTLS12, ServerName: host}` on every outbound client and every server config. `InsecureSkipVerify: true` is acceptable only when operator-configured with a secure default of `false`; hardcoded `true` is a defect.
 
     **Constant-time comparison** with `crypto/subtle.ConstantTimeCompare` (or `hmac.Equal` for MACs). `crypto/rand.Read` for nonces, salts, IVs, session ids — never `math/rand`. Keep secret material in `[]byte` from the point of read (Go strings are immutable and cannot be zeroed).
 
@@ -409,7 +443,10 @@ WSO2-specific additions:
 
 External: [OWASP Session Management Cheat Sheet — Cookies](https://cheatsheetseries.owasp.org/cheatsheets/Session_Management_Cheat_Sheet.html#cookies).
 
-WSO2 baseline for session and authentication cookies: `HttpOnly; Secure; SameSite=Lax` (or `Strict` for high-sensitivity flows). `Path` set to the narrowest scope that works. `Domain` only when cross-subdomain sharing is required.
+WSO2 baseline for session and authentication cookies: `HttpOnly; Secure; SameSite=Lax` (or `Strict` for high-sensitivity flows). `Path` set to the narrowest scope that works. `Domain` only when cross-subdomain sharing is required. Sensitive cookies must be session cookies — no `expires` / `max-age`.
+
+!!! danger "Approval required"
+    Omitting `Secure` or `HttpOnly` on a sensitive cookie must be reviewed and approved by the Security and Compliance Team before release.
 
 ---
 
@@ -474,6 +511,9 @@ External: [OWASP OS Command Injection Defense Cheat Sheet](https://cheatsheetser
 
 Argument array, no shell. Never the single-string form; never `sh -c "…"` with interpolated input.
 
+!!! danger "Approval required"
+    Any code path that must append user input to an OS command, or interpret user input as an OS command, must be reviewed and approved by the Security and Compliance Team before release.
+
 === "Java stack"
 
     ```java
@@ -485,8 +525,6 @@ Argument array, no shell. Never the single-string form; never `sh -c "…"` with
     new ProcessBuilder("convert", userFilename, "out.png")
             .redirectErrorStream(true).start();
     ```
-
-    **Current audit:** `Runtime.getRuntime().exec(command.toString())` style invocations remain in carbon-kernel's tooling (`tools/SPIProviderTool.java`, `tools/ICFProviderTool.java`, `tools/NativeLibraryProvider.java`) — open hardening items.
 
 === "Go stack"
 
@@ -506,7 +544,12 @@ External: [OWASP XSS Prevention Cheat Sheet](https://cheatsheetseries.owasp.org/
 
 === "Java stack"
 
-    [OWASP Java Encoder](https://owasp.org/www-project-java-encoder/) per output context: `Encode.forHtml`, `Encode.forHtmlAttribute`, `Encode.forJavaScript`, `Encode.forUriComponent`. JSPs: encoder taglib (`<e:forHtml/>`) preferred over JSTL `<c:out/>`. Never write user-supplied data into a JSP with raw `<%= %>`.
+    **Output encoding.** [OWASP Java Encoder](https://owasp.org/www-project-java-encoder/) per output context: `Encode.forHtml`, `Encode.forHtmlAttribute`, `Encode.forJavaScript`, `Encode.forUriComponent`. JSPs: encoder taglib (`<e:forHtml/>`) preferred over JSTL `<c:out/>`. Never write user-supplied data into a JSP with raw `<%= %>`.
+
+    **Output sanitization** (distinct from encoding — for fields that must accept HTML rather than have it escaped). Use the [OWASP Java HTML Sanitizer](https://owasp.org/www-project-java-html-sanitizer/) with a pre-packaged policy (`Sanitizers.FORMATTING`, optionally combined with `LINKS` / `IMAGES` / `TABLES`).
+
+    !!! danger "Approval required"
+        Defining a custom sanitizer policy or rule, rather than using the pre-packaged policies, must be reviewed and approved by the Security and Compliance Team before release.
 
 === "Go stack"
 
@@ -518,6 +561,9 @@ External: [OWASP HTTP Response Splitting](https://owasp.org/www-community/attack
 
 Modern servlet containers and `net/http` reject raw CR/LF, but code that builds headers manually (downstream HTTP clients, proxy filters) must also strip.
 
+!!! danger "Approval required"
+    Any transport or component that relies on a custom-written CRLF-filtering filter must have that filter reviewed and approved by the Security and Compliance Team before release.
+
 ### Log Injection / Log Forging
 
 Strip CR/LF from any user-controlled value before logging; see [Logging and Alerting Failures](#logging-and-alerting-failures).
@@ -528,19 +574,19 @@ Strip CR/LF from any user-controlled value before logging; see [Logging and Aler
 
 ### Server-Side Template Injection (SSTI)
 
-External: [OWASP SSTI](https://owasp.org/www-community/attacks/Server-Side_Template_Injection).
+For the attack pattern across template engines, see [OWASP SSTI](https://owasp.org/www-community/attacks/Server-Side_Template_Injection).
 
 User input is substituted into pre-defined parameters of an already-compiled template — never into the template *source*. Anti-pattern: `engine.evaluate(userSuppliedTemplate, context)`.
 
 ### NoSQL and XPath injection
 
-External: [OWASP — Testing for NoSQL Injection](https://owasp.org/www-project-web-security-testing-guide/latest/4-Web_Application_Security_Testing/07-Input_Validation_Testing/05.6-Testing_for_NoSQL_Injection) · [OWASP XPath Injection](https://owasp.org/www-community/attacks/XPATH_Injection).
+For test cases and payloads, see [OWASP — Testing for NoSQL Injection](https://owasp.org/www-project-web-security-testing-guide/latest/4-Web_Application_Security_Testing/07-Input_Validation_Testing/05.6-Testing_for_NoSQL_Injection) · [OWASP XPath Injection](https://owasp.org/www-community/attacks/XPATH_Injection).
 
 Construct queries with the driver's structured API (MongoDB filters, BSON documents, XPath with bound variables) — never by concatenating user input into a query string.
 
 ### Regex denial of service (ReDoS)
 
-External: [OWASP ReDoS](https://owasp.org/www-community/attacks/Regular_expression_Denial_of_Service_-_ReDoS).
+For how catastrophic backtracking arises, see [OWASP ReDoS](https://owasp.org/www-community/attacks/Regular_expression_Denial_of_Service_-_ReDoS).
 
 Never compile user-supplied regex patterns. Cap input length before matching.
 
@@ -554,7 +600,7 @@ Never compile user-supplied regex patterns. Cap input length before matching.
 
 ### Email header injection
 
-External: [OWASP Email Injection](https://owasp.org/www-community/attacks/Email_Injection).
+For the attack pattern, see [OWASP Email Injection](https://owasp.org/www-community/attacks/Email_Injection).
 
 Code that sends email and substitutes input into RFC 5322 headers must strip CR/LF and validate per-header. Prefer libraries that build headers programmatically over string formatting.
 
@@ -562,7 +608,7 @@ Code that sends email and substitutes input into RFC 5322 headers must strip CR/
 
 ## Insecure Design
 
-External: [OWASP A04](https://owasp.org/Top10/A04_2021-Insecure_Design/) · [OWASP Threat Modeling Process](https://owasp.org/www-community/Threat_Modeling_Process) · [OWASP Proactive Controls](https://owasp.org/www-project-proactive-controls/). WSO2 review process: [Secure Software Development Process]({{#base_path#}}/security-processes/secure-software-development-process/).
+For threat-modelling method and proactive design controls, read [OWASP A04](https://owasp.org/Top10/A04_2021-Insecure_Design/) · [OWASP Threat Modeling Process](https://owasp.org/www-community/Threat_Modeling_Process) · [OWASP Proactive Controls](https://owasp.org/www-project-proactive-controls/). WSO2 review process: [Secure Software Development Process]({{#base_path#}}/security-processes/secure-software-development-process/).
 
 Any feature introducing a new external attack surface, authentication/authorisation surface, credential or secret store, or privilege grant goes through STRIDE-LM design review with the security lead before code review begins.
 
@@ -588,7 +634,7 @@ WSO2-specific design rules:
 
 ### Pagination, list limits, and resource ceilings
 
-External: [OWASP API4:2023](https://owasp.org/API-Security/editions/2023/en/0xa4-unrestricted-resource-consumption/).
+For the resource-consumption attack pattern, see [OWASP API4:2023](https://owasp.org/API-Security/editions/2023/en/0xa4-unrestricted-resource-consumption/).
 
 WSO2-specific:
 
@@ -600,13 +646,13 @@ WSO2-specific:
 
 ### Sensitive business flows and anti-automation
 
-External: [OWASP API6:2023](https://owasp.org/API-Security/editions/2023/en/0xa6-unrestricted-access-to-sensitive-business-flows/).
+For how attackers automate high-value flows, see [OWASP API6:2023](https://owasp.org/API-Security/editions/2023/en/0xa6-unrestricted-access-to-sensitive-business-flows/).
 
 WSO2 sensitive flows to identify at STRIDE-LM review: signup, password reset, OTP send, MFA enrolment, gift-code redemption, refund initiation, free-tier resource creation. Apply layered budgets (per-user, per-device, per-IP, per-tenant, global) plus behavioural signals (CAPTCHA after first few failures, device fingerprinting). Every invocation emits an audit event so that velocity anomalies are observable; alerts on the highest-value flows are wired into the deployment's security monitoring.
 
 ### Unrestricted File Upload
 
-External: [OWASP File Upload Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/File_Upload_Cheat_Sheet.html).
+For the full set of upload checks and bypasses, see [OWASP File Upload Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/File_Upload_Cheat_Sheet.html).
 
 WSO2 enforcement order: container size limit → handler size limit → content-type allow-list (validated against magic bytes, not the `Content-Type` header) → filename sanitisation → storage outside any web-served directory. Files served back: separate hostname (or at minimum a separate path), no execute permissions, `Content-Type` set explicitly.
 
@@ -632,7 +678,7 @@ WSO2-specific additions:
 
 === "Java stack"
 
-    Password policies through `PolicyEnforcer` registered against `IdentityMgtEventListener.doPreUpdateCredential()`. **The shipped `DefaultPasswordLengthPolicy` defaults (`MIN_LENGTH=6`, `MAX_LENGTH=10`) are demo defaults — your product must register a stronger policy.** For products handling personal data, add a custom `PolicyEnforcer` that consults the HIBP k-Anonymity API at password-set time.
+    Password policies through `PolicyEnforcer` registered against `IdentityMgtEventListener.doPreUpdateCredential()`. **The shipped default password policy is weak, demo-grade — your product must register a stronger policy.** For products handling personal data, add a custom `PolicyEnforcer` that consults the HIBP k-Anonymity API at password-set time.
 
     MFA authenticators in `carbon-identity-framework/components/authenticator/` (TOTP, FIDO2, SMS-OTP, Email-OTP). Adaptive authentication scripts select the second factor based on ACR / enrolled factors / risk signals.
 
@@ -670,17 +716,17 @@ WSO2-specific additions:
 
 === "Java stack"
 
-    Carbon 4 pattern: `session.invalidate()`, then `request.getSession()` for a fresh session, then set the authenticated attribute on the new session.
+    Login: Carbon 4 pattern: `session.invalidate()`, then `request.getSession()` for a fresh session, then set the authenticated attribute on the new session. Logout: call `session.invalidate()` — do not merely `removeAttribute` the user-specific attributes.
 
 === "Go stack"
 
-    Issue a fresh session token after authentication; invalidate any prior token associated with the principal.
+    Issue a fresh session token after authentication; invalidate any prior token associated with the principal. On logout, invalidate the session token rather than only clearing its attributes.
 
 ---
 
 ## Software and Data Integrity Failures
 
-External: [OWASP A08](https://owasp.org/Top10/A08_2021-Software_and_Data_Integrity_Failures/) · [SLSA](https://slsa.dev/) · [sigstore / cosign](https://docs.sigstore.dev/).
+For the integrity threat model and signing tooling, read [OWASP A08](https://owasp.org/Top10/A08_2021-Software_and_Data_Integrity_Failures/) · [SLSA](https://slsa.dev/) · [sigstore / cosign](https://docs.sigstore.dev/).
 
 WSO2-specific operational rules:
 
@@ -723,13 +769,11 @@ WSO2-specific operational rules:
 
 ### Insecure Deserialization
 
-External: [OWASP Deserialization Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/Deserialization_Cheat_Sheet.html).
+For gadget chains and language-specific defences, see [OWASP Deserialization Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/Deserialization_Cheat_Sheet.html).
 
 === "Java stack"
 
-    Use `ObjectInputFilter` (JEP 290, Java 9+) — e.g. `-Djdk.serialFilter=com.wso2.expected.**;!*` — to restrict deserialisable classes. On older Java, subclass `ObjectInputStream` and override `resolveClass()` to allow-list. Mark sensitive fields `transient`. Prefer JSON/XML over Java serialisation for any cross-trust-boundary payload. Audit dependencies for known gadget libraries (Commons Collections, Spring Beans, Groovy).
-
-    **Current audit:** multiple sites in identity-framework and registry components construct `ObjectInputStream` without `ObjectInputFilter` or `resolveClass()` override (workflow-mgt DAO, application-mgt DAO, `JavaSessionSerializer`, registry common utilities) — open hardening items.
+    Use `ObjectInputFilter` (JEP 290, Java 9+) — e.g. `-Djdk.serialFilter=com.wso2.expected.**;!*` — to restrict deserialisable classes; this is the modern preferred approach. `SerialKiller` was the runtime class-allowlisting library WSO2 historically referenced, swapped here for `ObjectInputFilter` as a deliberate modernisation. On older Java, subclass `ObjectInputStream` and override `resolveClass()` to allow-list. Mark sensitive fields `transient`. Prefer JSON/XML over Java serialisation for any cross-trust-boundary payload. Audit dependencies for known gadget libraries (Commons Collections, Spring Beans, Groovy).
 
     For inbound payloads that must remain dynamic (webhooks, plug-in config), require the producer to sign the payload, verify the signature, then construct the typed object.
 
@@ -783,7 +827,7 @@ WSO2-specific operational rules on top of the OWASP baseline:
 
 ## Mishandling of Exceptional Conditions
 
-External: [OWASP Improper Error Handling](https://owasp.org/www-community/Improper_Error_Handling) · [CWE-703](https://cwe.mitre.org/data/definitions/703.html).
+For the error-handling failure modes, read [OWASP Improper Error Handling](https://owasp.org/www-community/Improper_Error_Handling) · [CWE-703](https://cwe.mitre.org/data/definitions/703.html).
 
 WSO2-specific:
 

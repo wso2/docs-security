@@ -9,7 +9,7 @@ category: security-guidelines
 Find Security Bugs[^2], FindBugs plugin is the recommended tool for performing static security analysis.
 
 !!! tip hint important "WSO2 Document Reference"
-    Further information on using OWASP Zed Attack Proxy (ZAP) with WSO2 recommended security policies are available in the [Engineering Guidelines - Tooling - Static Code Analysis using FindSecurityBugs](../static-code-analysis-using-findsecuritybugs.md) document.
+    Further information on using Find Security Bugs with WSO2 recommended security policies are available in the [Engineering Guidelines - Tooling - Static Code Analysis using FindSecurityBugs](../static-code-analysis-using-findsecuritybugs.md) document.
 
 
 ## Security Related Dynamic Analysis
