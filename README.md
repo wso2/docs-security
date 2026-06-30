@@ -7,29 +7,31 @@ To see the **latest released documentation** for the WSO2 Security & Compliance 
 
 ### Step 1 - Install Python
 
-This project requires **Python 3.12**. You can verify the version installed on your machine by running the following command.
+If you are using MacOS, you probably already have a version of Python installed on your machine. You can verify this by running the following command.
 
 ```shell
-$ python3 --version
-Python 3.12.x
+$ python --version
+Python 2.7.2
 ```
 
-If Python 3.12 is not installed, download it from [python.org/downloads](https://www.python.org/downloads/) or use your platform's package manager. Newer releases (Python 3.13 and above) are not yet supported by the pinned dependencies in `requirements.txt`.
+If your version of Python is Python 2.x.x, you also need to install Python3. This is because the PDF plugin only supports Python3. Follow the instructions in [this guide](https://docs.python-guide.org/starting/install3/osx/) to install Python3 properly.
+
+After completing the above, you will have two versions of Python on your machine; a version of python2 and a version of python3.
 
 ### Step 2 - Install Pip
 >
 > **INFO**
 >
-> Python 3.12 includes pip by default. If pip is missing, download `get-pip.py` and run the following command to install it:
+> If pip is not already installed on your machine, download `get-pip.py` to install pip for the first time. Then run the following command to install it:
 > ```shell
-> $ python3 get-pip.py
+> $ python get-pip.py
 > ```
 >
 
 Pip is most likely installed by default. However, you may need to upgrade pip to the latest version:
 
 ```shell
-$ pip3 install --upgrade pip
+$ pip install --upgrade pip
 ```
 
 ### Step 3 - Install the pip packages
@@ -44,9 +46,17 @@ $ pip3 install --upgrade pip
 
     This will install MkDocs and the required theme, extensions, and plugins.
 
-    ```shell
-    $ pip3 install -r requirements.txt
-    ```
+    - If you are using Python2, use the following command:
+
+      ```shell
+      $ pip install -r requirements.txt
+      ```
+
+    - If you are using Python3, use the following command:
+
+      ```shell
+      $ pip3 install -r requirements.txt
+      ```
 
 ### Step 4 - Run MkDocs
 

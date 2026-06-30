@@ -1,147 +1,270 @@
 ---
-title: Dependency Vulnerability Analysis
+title: External Dependency Analysis Analysis using OWASP Dependency Check
 category: security-guidelines
-version: 3.1
+published: October 22, 2018
+version: 1.1
 ---
 
-# Dependency Vulnerability Analysis
-
-<p class="doc-info">Version: 3.1</p>
+# External Dependency Analysis using OWASP Dependency Check
+<p class="doc-info">Version: 1.2</p>
 ___
 
-When you build a WSO2 product, wire in the dependency-vulnerability scans described below. Tool-by-tool tutorials are in the tools' own documentation, linked below. This page covers the policy, the CI wiring, and the triage workflow. The supply-chain framing (version pinning, lock files, manifest guards, release signing) is in [Secure Coding Guide: Software Supply Chain Failures]({{#base_path#}}/security-guidelines/secure-engineering-guidelines/secure-coding-guidlines/secure-coding-guide/#software-supply-chain-failures).
+## Introduction
+This document provides details of all necessary steps for using OWASP Dependency Check Command Line Client (CLI)[^1] tool and the Maven plugin[^2] for analyzing 3rd party dependencies used in projects for identifying known security vulnerabilities.
 
-## The rule
 
-**A known-vulnerable component never ships in a release.** Either the vulnerable code path is not reachable from product code (documented and approved by a designated security reviewer for the product) or the component is upgraded / replaced / removed. A finding that is neither fixed nor formally accepted **blocks the release**. Defer is not an option.
+## OWASP Dependency Check CLI
 
-## When scans run
+This is useful when you have the external dependencies (libraries/jar files) downloaded and put in a folder, where you can run the CLI tool against the folder for analyzing the libraries in it and generate the vulnerability assessment report. 
 
-Configure your CI to run scans at three points:
+![Placeholder](../../assets/images/secure-coding-guidelines/dc-cli-01.png)
 
-* **Every pull request**: fast subset; build fails on any new high-severity finding.
-* **Daily on `main`**: full database refresh that surfaces findings discovered overnight.
-* **Before every release**: full scan with the latest vulnerability database, with the report attached to the release artifact.
+Download the CLI tool[^3] and extract the zip file. In the **bin** directory of the **dependency-check** tool, you can find the executable script **dependency-check.bat** file which is for running the tool on Windows operating system and the **dependency-check.sh** file which is for running on Linux. 
+If you just execute the script without providing any parameters, you can see the list of parameters that you need to provide for performing the vulnerability analysis and generating reports. 
 
-CI owns the scan; manual runs are for local debugging only.
+![Placeholder](../../assets/images/secure-coding-guidelines/dc-cli-02.png)
 
-## Tooling by stack
+Following are the basic parameters that are required when running a vulnerability analysis.
 
-* **Java (Maven, Ivy, Gradle)**: [OWASP Dependency Check](https://owasp.org/www-project-dependency-check/) ([Maven plugin reference](https://jeremylong.github.io/DependencyCheck/dependency-check-maven/), [releases](https://github.com/jeremylong/DependencyCheck/releases)).
-* **Go**: [`govulncheck`](https://pkg.go.dev/golang.org/x/vuln/cmd/govulncheck) reading the [Go vulnerability database](https://pkg.go.dev/vuln/). Call-path analysis means findings reflect what is actually reachable from product code, not every vulnerable function in the dependency graph.
-* **JavaScript / npm**: [`npm audit`](https://docs.npmjs.com/cli/v10/commands/npm-audit) or [`pnpm audit`](https://pnpm.io/cli/audit) for React portals and admin UIs shipped with WSO2 products.
+| Parameter       | Description                                                                                                 |
+|-----------------|-------------------------------------------------------------------------------------------------------------|
+| `--project`     | You can specify a name for the project and this would appear in the report                                  |
+| `--scan`        | The folder which contains the 3rd party dependency libraries                                                |
+| `--out`         | The folder where the vulnerability analysis reports should be generated                                     |
+| `--suppression` | An XML file that contains the known vulnerabilities that should be hidden from the report (false positives) |
 
-Output format: use **SARIF** wherever the tool supports it. SARIF uploads cleanly to the GitHub Security tab and integrates with the SAST dashboard. See the [SARIF specification](https://docs.oasis-open.org/sarif/sarif/v2.1.0/sarif-v2.1.0.html) and [GitHub's SARIF support](https://docs.github.com/en/code-security/code-scanning/integrating-with-code-scanning/sarif-support-for-code-scanning).
+Now let's do an analysis using OWASP Dependency Check. First, download commons-httpclient-3.1[^4] and httpclient-4.5.2[^5] libraries and put them in a folder. 
 
-## CI configuration
+Following is the sample command to run for performing the vulnerability analysis.
 
-### Java (Dependency Check Maven plugin)
+```bash
+./dependency-check.sh  --project "<myproject>" --scan <folder containing 3rd party libraries> --out <folder to generate reports> --suppression <xml file containing suppressions>
+```
 
-Pin the plugin version in the parent POM. Recommended configuration:
+!!! example
+    Here, let's skip the suppression and just do the analysis. Put the above downloaded 2 libraries into a folder (*i.e. /home/tharindu/dependencies/mydependencies*) and then create another folder to save the scan reports (*i.e. /home/tharindu/dependencies/reports*). Command would be as following,
+
+    ```bash
+    ./dependency-check.sh  --project "myproject" --scan /home/tharindu/dependencies/mydependencies --out /home/tharindu/dependencies/reports
+    ```
+
+When you run the OWASP Dependency Check for the very first time, it would download the known vulnerabilities from the National Vulnerability Database (NVD)[^6] and it would maintain this information in a local database. So, when running this for the very first time, it would take some time as it has to download all the vulnerability details.
+
+![Placeholder](../../assets/images/secure-coding-guidelines/dc-cli-03.png)
+
+By default, the duration for syncing the local database and NVD is 4 hours. If you have run the Dependency Check within 4 hours, it will just use the data in the local database without trying to update the local database with NVD.
+
+![Placeholder](../../assets/images/secure-coding-guidelines/dc-cli-04.png)
+
+Once you run the Dependency Check against the folder where your project dependencies are, it would generate the vulnerability analysis report. 
+
+
+## OWASP Dependency Check Maven Plugin
+In the previous chapter, the usage of OWASP Dependency Check CLI tool was explained which requires the user to download the external dependencies to a folder and run the tool against the folder for performing the vulnerability analysis. However, in practice, this approach does not scale as we would introduce new dependencies as and when we code. In such cases, the maven plugin of OWASP Dependency Check does the job where every time we build the project, it would analyze all the external dependencies of the project and generate the vulnerability report. This section explains how to use this maven plugin for analyzing the project dependencies and how to identify any reported vulnerabilities. 
+
+In the pom.xml file of your maven project, add the following plugin.
+
+```xml
+<build>
+    <plugins>
+        <plugin>
+        <groupId>org.owasp</groupId>
+        <artifactId>dependency-check-maven</artifactId>
+        <version>1.4.5</version>
+        <configuration>
+            <cveValidForHours>12</cveValidForHours>
+            <failBuildOnCVSS>7</failBuildOnCVSS>
+        </configuration>
+        <executions>
+            <execution>
+                <goals>
+                    <goal>check</goal>
+                </goals>
+            </execution>
+        </executions>
+        </plugin>
+    </plugins>
+</build>
+```
+
+
+Now you can build the project (`mvn clean install`) and it will generate the dependency check report in the target directory.
+
+In the maven plugin under the configuration section, from the **`cveValidForHours`** parameter you can control the duration to check for newly reported vulnerabilities in the National Vulnerability Database (NVD) when the maven project is being built. From the **`failBuildOnCVSS`** parameter, we can define a CVSS score where if any known vulnerability is found in a dependent library which has a CVE with CVSS score equal to or greater than the value we define, it will fail the build no matter even if the project has no syntax errors. This is a useful feature for an organization which has automated building the codebase using tools like Jenkins, so that the threats can be identified and rectified as and when they are introduced.
+
+There is more configuration like the above which you can refer to the official documentation[^7] to find out. In addition to that, there are few references[^8][^9], useful for finding more information on the plugin. 
+
+You can test the plugin by adding the following two dependencies to your project. There, the 3.1 version of commons-httpclient has known vulnerabilities which will be indicated in the vulnerability report. The 4.5.3 version of httpclient has no reported vulnerabilities and therefore it will not be indicated in the report. 
+
+```xml
+<dependencies>
+
+    <dependency>
+        <groupId>commons-httpclient</groupId>
+        <artifactId>commons-httpclient</artifactId>
+        <version>3.1</version>
+    </dependency>
+    
+    <dependency>
+        <groupId>org.apache.httpcomponents</groupId>
+        <artifactId>httpclient</artifactId>
+        <version>4.5.3</version>
+    </dependency>
+
+</dependencies>
+```
+
+The generated report would look as the same which is the same as using the CLI tool[^10].
+
+
+## OWASP Dependency Check Maven Plugin - Without POM Modification
+We can run OWASP Dependency Check without doing any changes to the maven pom.xml file. We can just run using the mvn command as follows.
+
+```bash
+mvn org.owasp:dependency-check-maven:check
+```
+
+Then it will build the product with the dependency-check-maven. Thus, it will generate the dependency check report for 3rd party dependencies of your product.
+
+In any case of false positive issues that you want to remove from the generated report, you can suppress those by creating a suppression.xml file. Then, you can give that suppression file as an argument in the `mvn` command.
+
+```bash
+-DsuppressionFile="\${path.to.suppression.file}/suppression.xml"
+```
+
+
+This is an example suppression.xml file.
+
+!!! example ""
+    ```
+    <?xml version="1.0" encoding="UTF-8"?>
+    <suppressions xmlns="https://jeremylong.github.io/DependencyCheck/dependency-suppression.1.1.xsd">
+        <suppress>
+            <notes><![CDATA[
+            CVE-2016-7051 is only relevant to jackson-dataformat-xml according to NVD [1] and original bug report [2].
+            [1] https://github.com/FasterXML/jackson-dataformat-xml/issues/211
+            ]]></notes>
+            <cve>CVE-2016-7051</cve>
+        </suppress>
+        <suppress>
+            <notes><![CDATA[
+            CVE-2012-4232 is only valid for "a:jcore:jcore" JCore is not used within Ballerina.
+            ]]></notes>
+            <cve>CVE-2012-4232</cve>
+        </suppress>
+    </suppressions>
+    ```
+
+
+## Analyzing the Reports
+Given below is an example of analyzing the vulnerability report.
+
+![Placeholder](../../assets/images/secure-coding-guidelines/dc-cli-05.png)
+
+Based on the analysis, we can see that the **commons-httpclient-3.1.jar**[^4] has 3 known security vulnerabilities, but **httpclient-4.5.2.jar**[^5] does not have any reported security vulnerability. 
+
+Following are the 3 known security vulnerabilities reported against **commons-httpclient-3.1.jar**[^4]. 
+
+![Placeholder](../../assets/images/secure-coding-guidelines/dc-cli-06.png)
+
+![Placeholder](../../assets/images/secure-coding-guidelines/dc-cli-07.png)
+
+![Placeholder](../../assets/images/secure-coding-guidelines/dc-cli-08.png)
+
+A known security vulnerability would have a unique identification number (CVE)[^11] and a score (CVSS[^12], a scale from 0 to 10) and the severity. The severity is decided based on the CVSS score. The identification number follows the format "CVE-`<reported year>`-`sequence number`".
+
+When we identify that there is a known security vulnerability in a 3rd party library, we can check if that library has a higher version where this issue is fixed. In the above example, httpclient 3.1’s[^4] vulnerabilities are fixed in its latest version.
+
+If the latest version of a 3rd party library also has known vulnerabilities, you can try to use an alternative which has no reported vulnerabilities so you can make sure your project is not dependent on any external library that is not safe to use. 
+
+However there comes situations where you have no option other than using a particular 3rd party library, but still, that library has some known vulnerabilities. In such a case, you can go through each vulnerability and check if it has any impact on your project. For example, the 3 known issues in httpclient 3.1 are related to SSL, hostname and certificate validation. Let’s say your project uses this library just to call some URL (API) via HTTP (not HTTPS), then your project has no impact from the reported vulnerabilities of httpclient. So these issues become false positives in your case. 
+
+In such a situation, you might need to get a vulnerability analysis report for 3rd party dependencies that clearly reflects the actual vulnerabilities and hides false positives. Then you can use the suppress option in Dependency Check. 
+
+
+## Vulnerability Suppressions - Marking False Positives
+
+When you get the Dependency Check report, next to each vulnerability in the report, there is a button named **suppress**. If you want to hide that vulnerability from the report, click on this button and it will pop up a message that contains some XML content. 
+
+![Placeholder](../../assets/images/secure-coding-guidelines/dc-cli-09.png)
+
+You can create an XML file with the below content and put the XML content you got by clicking on the suppress button as child elements under the `<suppressions>` tag.
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<suppressions xmlns="https://www.owasp.org/index.php/OWASP_Dependency_Check_Suppression">
+
+<!-- add each vulnerability suppression here-->
+
+</suppressions>
+```
+
+A sample is below. 
+
+!!! example ""
+    ```xml
+    <?xml version="1.0" encoding="UTF-8"?>
+    <suppressions xmlns="https://www.owasp.org/index.php/OWASP_Dependency_Check_Suppression">
+        <suppress>
+            <notes><![CDATA[file name: commons-httpclient-3.1.jar]]></notes>
+            <sha1>964cd74171f427720480efdec40a7c7f6e58426a</sha1>
+            <cve>CVE-2015-5262</cve>
+        </suppress>
+    </suppressions>
+    ```
+
+When you are using the Dependency Check CLI, you can run it with the `--suppression` parameter where you provide the file path to the XML file that contains the suppressions. 
+
+```bash
+./dependency-check.sh  --project "myproject" --scan /home/tharindu/dependencies/mydependencies --out /home/tharindu/dependencies/reports --suppression /home/user/dc/suppress.xml
+```
+
+When you are using the Dependency Check Maven plugin, you can add the suppressionFile property to the configuration and point to the XML file which contains the suppressions.
 
 ```xml
 <plugin>
     <groupId>org.owasp</groupId>
     <artifactId>dependency-check-maven</artifactId>
-    <version>10.0.4</version>
+    <version>1.4.5</version>
     <configuration>
-        <failBuildOnCVSS>7</failBuildOnCVSS>
-        <suppressionFiles>
-            <suppressionFile>dependency-check-suppressions.xml</suppressionFile>
-        </suppressionFiles>
-        <formats>
-            <format>HTML</format>
-            <format>SARIF</format>
-        </formats>
-        <nvdApiKey>${env.NVD_API_KEY}</nvdApiKey>
+        <cveValidForHours>12</cveValidForHours>
+        <failBuildOnCVSS>8</failBuildOnCVSS>
+   	    <suppressionFile>/home/user/dc/suppress.xml</suppressionFile>
     </configuration>
     <executions>
-        <execution><goals><goal>check</goal></goals></execution>
+        <execution>
+            <goals>
+              	<goal>check</goal>
+            </goals>
+        </execution>
     </executions>
 </plugin>
 ```
 
-* `failBuildOnCVSS=7` fails on High and Critical. Your build should aim for zero unsuppressed findings at this threshold.
-* `nvdApiKey` is required for non-throttled runs. Obtain a [free NVD API key](https://nvd.nist.gov/developers/request-an-api-key) and store as the `NVD_API_KEY` CI secret.
-* Never use Maven version ranges (`[1.0,)`), `LATEST`, or `RELEASE` in product POMs. Dependency Check can only assess what Maven resolves at build time; a moving version target makes findings unreproducible.
+Then the report would show how many vulnerabilities are suppressed. 
 
-### Go (`govulncheck`)
+![Placeholder](../../assets/images/secure-coding-guidelines/dc-cli-10.png)
 
-```yaml
-- name: govulncheck
-  run: |
-    go install golang.org/x/vuln/cmd/govulncheck@latest
-    govulncheck -format sarif ./... > govulncheck.sarif
-- name: Upload SARIF
-  uses: github/codeql-action/upload-sarif@v3
-  with:
-    sarif_file: govulncheck.sarif
-```
+Also, the report would contain a new section called **Suppressed Vulnerabilities** and you can make this section hidden or visible in the report. 
 
-`govulncheck` does not support a suppression file. Track accepted findings in the project's `SECURITY.md` using the same rationale-and-review pattern as Java. The Go security team's recommendation is to fix or upgrade rather than suppress.
+![Placeholder](../../assets/images/secure-coding-guidelines/dc-cli-11.png)
 
-For release-validation against a built binary: `govulncheck -mode binary ./bin/your-binary`.
 
-### JavaScript (`npm audit` / `pnpm audit`)
+## Summary
+In conclusion, before using an external library as a dependency for your project, it is important to know those are safe to use. You can simply use a tool like OWASP Dependency Check and do a vulnerability analysis for the 3rd party dependencies. You can follow this as a process in your organization to ensure that you do not use components with known vulnerabilities in your projects. This is one major software security risk listed under OWASP Top 10[^13] as well. 
 
-```sh
-npm audit --audit-level=high
-pnpm audit --audit-level high
-```
 
-CI fails on any unsuppressed high or critical advisory. The audit allow-list lives in `.audit-ignore.json` with one entry per accepted advisory:
-
-```json
-{
-  "frontend": {
-    "GHSA-XXXX-XXXX-XXXX": {
-      "reason": "Transitive of eslint; dev-only, not shipped to production bundle.",
-      "accepted_by": "security-team@wso2.com",
-      "review_date": "2026-04-01"
-    }
-  }
-}
-```
-
-The PR-builder workflow reads the allow-list and exits non-zero on any high/critical advisory not present in it.
-
-Lock files must be committed (`package-lock.json`, `pnpm-lock.yaml`). CI installs with `npm ci` / `pnpm install --frozen-lockfile`. Never use semver ranges (`^`, `~`) in production `package.json`; pin exactly, lock the transitives.
-
-## Triage workflow
-
-When a new finding lands above the severity threshold:
-
-1. **Severity ≥ High blocks the merge** until either fixed or formally accepted.
-2. **Fix path**: upgrade the dependency; or pin a known-good earlier version if upstream has no fixed release yet; or remove the dependency if the project no longer needs it.
-3. **Accept path**: a designated security reviewer for the product confirms that the vulnerable code path is not reachable from product code (or that impact is otherwise mitigated), records the rationale in the suppression file / allow-list, and links to the review record. **Every acceptance carries an expiry date**, and you re-review at expiry.
-4. **Defer is not an option.** A finding without an explicit accept is not "deferred", it is "blocking".
-
-### Suppression rules
-
-* Each suppression names a specific CVE / GHSA, a specific GAV (or package), and a rationale that points at a review record.
-* Wildcard suppressions on entire packages are not acceptable.
-* Every accepted finding names the security reviewer who approved it and an expiry date.
-
-Example Dependency Check suppression:
-
-```xml
-<suppressions xmlns="https://jeremylong.github.io/DependencyCheck/dependency-suppression.1.3.xsd">
-    <suppress>
-        <notes>
-            CVE-2024-XXXXX applies only to the FTP server functionality of
-            commons-net, which this product does not use. Confirmed by
-            security review YYYY-MM-DD.
-        </notes>
-        <gav regex="true">^commons-net:commons-net:.*$</gav>
-        <cve>CVE-2024-XXXXX</cve>
-    </suppress>
-</suppressions>
-```
-
-## PR-builder steps recap
-
-* **Java**: `mvn dependency-check:check` (fails on CVSS ≥ 7).
-* **Go**: `govulncheck ./...` (fails on any reachable vulnerability).
-* **JS**: `npm audit --audit-level=high` (with `.audit-ignore.json` filter).
-
-Each step uploads its SARIF output for the GitHub Security tab and attaches the human-readable report as a build artifact.
+## References
+[^1]: [https://www.owasp.org/index.php/OWASP_Dependency_Check](https://www.owasp.org/index.php/OWASP_Dependency_Check)
+[^2]: [http://jeremylong.github.io/DependencyCheck/dependency-check-maven/](http://jeremylong.github.io/DependencyCheck/dependency-check-maven/)
+[^3]: [https://github.com/jeremylong/DependencyCheck/releases/download/v7.1.1/dependency-check-7.1.1-release.zip](https://github.com/jeremylong/DependencyCheck/releases/download/v7.1.1/dependency-check-7.1.1-release.zip)
+[^4]: [https://mvnrepository.com/artifact/commons-httpclient/commons-httpclient/3.1](https://mvnrepository.com/artifact/commons-httpclient/commons-httpclient/3.1)
+[^5]: [https://mvnrepository.com/artifact/org.apache.httpcomponents/httpclient/4.5.2](https://mvnrepository.com/artifact/org.apache.httpcomponents/httpclient/4.5.2)
+[^6]: [https://nvd.nist.gov/](https://nvd.nist.gov/)
+[^7]: [https://jeremylong.github.io/DependencyCheck/dependency-check-maven/configuration.html](https://jeremylong.github.io/DependencyCheck/dependency-check-maven/configuration.html)
+[^8]: [https://blog.lanyonm.org/articles/2015/12/22/continuous-security-owasp-java-vulnerability-check.html](https://blog.lanyonm.org/articles/2015/12/22/continuous-security-owasp-java-vulnerability-check.html)
+[^9]: [http://www.securityinternal.com/2017/06/identifying-vulnerable-software.html](http://www.securityinternal.com/2017/06/identifying-vulnerable-software.html)
+[^10]: [http://www.securityinternal.com/2016/10/owasp-dependency-check-cli-analyzing.html](http://www.securityinternal.com/2016/10/owasp-dependency-check-cli-analyzing.html)
+[^11]: [https://cve.mitre.org/](https://cve.mitre.org/)
+[^12]: [https://www.first.org/cvss/specification-document](https://www.first.org/cvss/specification-document)
+[^13]: [https://www.owasp.org/index.php/Top_10_2013-Top_10](https://www.owasp.org/index.php/Top_10_2013-Top_10)
