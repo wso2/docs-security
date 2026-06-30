@@ -14,7 +14,7 @@ $ python3 --version
 Python 3.12.x
 ```
 
-If Python 3.12 is not installed, follow the instructions in [this guide](https://docs.python-guide.org/starting/install3/osx/) to install it. Newer releases (Python 3.13 and above) are not yet supported by the pinned dependencies in `requirements.txt`.
+If Python 3.12 is not installed, download it from [python.org/downloads](https://www.python.org/downloads/) or use your platform's package manager. Newer releases (Python 3.13 and above) are not yet supported by the pinned dependencies in `requirements.txt`.
 
 ### Step 2 - Install Pip
 >

@@ -180,7 +180,11 @@ Deprecated, ignored, or actively harmful. If you find existing code emitting one
 
             // CSP + X-Frame-Options for HTML-serving handlers; skip on JSON APIs.
             if cfg.Surface != JSONAPI {
-                nonce := generateNonce()
+                nonce, err := generateNonce()
+                if err != nil {
+                    http.Error(w, "internal server error", http.StatusInternalServerError)
+                    return
+                }
                 h.Set("Content-Security-Policy", fmt.Sprintf(
                     "default-src 'self'; "+
                         "script-src 'self' 'nonce-%s'; "+
@@ -196,10 +200,12 @@ Deprecated, ignored, or actively harmful. If you find existing code emitting one
         })
     }
 
-    func generateNonce() string {
+    func generateNonce() (string, error) {
         b := make([]byte, 16)
-        _, _ = rand.Read(b)
-        return base64.RawStdEncoding.EncodeToString(b)
+        if _, err := rand.Read(b); err != nil {
+            return "", fmt.Errorf("csprng failure: %w", err)
+        }
+        return base64.RawStdEncoding.EncodeToString(b), nil
     }
     ```
 
@@ -295,37 +301,6 @@ Each expected header should appear exactly once. `X-XSS-Protection` (or, if pres
 * [Mozilla Observatory](https://observatory.mozilla.org/): aim for grade A or A+.
 * [securityheaders.com](https://securityheaders.com/): quick external scan.
 * OWASP ZAP passive scan. See [Dynamic Analysis with OWASP ZAP]({{#base_path#}}/security-guidelines/secure-engineering-guidelines/dynamic-analysis-with-owasp-zap/). Tune the ZAP policy to expect the modern header set; by default ZAP still flags missing `X-XSS-Protection`, which is no longer the right signal.
-
-### CI gate
-
-The PR builder runs a header smoke-test against a running instance:
-
-```sh
-HEADERS=$(curl -sI "$URL")
-required=(
-  "strict-transport-security"
-  "content-security-policy"
-  "x-content-type-options"
-  "referrer-policy"
-  "permissions-policy"
-  "cross-origin-opener-policy"
-  "cross-origin-embedder-policy"
-  "cross-origin-resource-policy"
-)
-for h in "${required[@]}"; do
-  echo "$HEADERS" | grep -iq "^$h:" || { echo "missing: $h"; exit 1; }
-done
-forbidden=(
-  "x-xss-protection: 1"
-  "public-key-pins"
-  "feature-policy"
-  "expect-ct"
-)
-for h in "${forbidden[@]}"; do
-  echo "$HEADERS" | grep -iq "^$h" && { echo "forbidden header present: $h"; exit 1; }
-done
-echo "header check passed"
-```
 
 ## External references
 
