@@ -9,11 +9,11 @@ version: 3.0
 <p class="doc-info">Version: 3.0</p>
 ___
 
-WSO2 maintains a reward and acknowledgement programme to recognise security researchers who responsibly disclose vulnerabilities in WSO2-owned software products. A finding qualifies for reward consideration when it has a demonstrated security impact on the confidentiality, integrity, or availability of an in-scope product or service; severity is assessed by WSO2 using [CVSS v3.1](https://www.first.org/cvss/specification-document). To submit a finding, follow the [Vulnerability Reporting Guidelines]({{#base_path#}}/security-reporting/vulnerability-reporting-guidelines/).
+WSO2 maintains a reward and acknowledgement program to recognize security researchers who responsibly disclose vulnerabilities in WSO2-owned software products. A finding qualifies for reward consideration when it has a demonstrated security impact on the confidentiality, integrity, or availability of an in-scope product or service; severity is assessed by WSO2 using [CVSS v3.1](https://www.first.org/cvss/specification-document). To submit a finding, follow the [Vulnerability Reporting Guidelines]({{#base_path#}}/security-reporting/vulnerability-reporting-guidelines/).
 
 ## Products and services in scope
 
-The programme covers the following WSO2 products and services.
+The program covers the following WSO2 products and services.
 
 * API Platform
 * Identity Platform
@@ -24,7 +24,7 @@ Internal staging environments, demo sites, WSO2-operated websites (e.g. wso2.com
 
 ## Non-qualifying findings
 
-Reports in the following categories are reviewed but typically do not qualify for a reward under this programme. WSO2 may still address these findings as security improvements or hardening work where appropriate; reward eligibility is a separate decision from whether the finding is fixed.
+Reports in the following categories are reviewed but typically do not qualify for a reward under this program. WSO2 may still address these findings as security improvements or hardening work where appropriate; reward eligibility is a separate decision from whether the finding is fixed.
 
 **Findings without demonstrated security impact:**
 
@@ -63,18 +63,18 @@ Once the reported issue is fixed and announced to customers and the community, a
 
     | Severity            | CVSS Score   | Reward  |
     | :------------------ | :----------- | :------ |
-    | Critical            | 9.0 – 10.0   | USD 500 |
-    | High                | 7.0 – 8.9    | USD 250 |
-    | Medium              | 4.0 – 6.9    | USD 100 |
+    | Critical            | 9.0 to 10.0   | USD 500 |
+    | High                | 7.0 to 8.9    | USD 250 |
+    | Medium              | 4.0 to 6.9    | USD 100 |
     | Low / Informational | 3.9 or below | USD 50  |
 
-Disclosure and announcement timing — which determine when the reward is issued — are documented in [Vulnerability Management Process]({{#base_path#}}/security-processes/vulnerability-management-process/).
+Disclosure and announcement timing (which determine when the reward is issued) are documented in [Vulnerability Management Process]({{#base_path#}}/security-processes/vulnerability-management-process/).
 
 ## Rules
 
 * Rewards are granted only to the **first** person to responsibly disclose a previously unknown issue.
 * WSO2 issues a first response within seven days. A fix may take up to 90 days depending on severity, with additional time required to announce the fix to customers and the community across all affected product versions.
-* Public posts that violate responsible disclosure, or that reflect negatively on the programme or the WSO2 brand, disqualify the reporter from reward consideration.
-* Security testing must be carried out against a self-hosted WSO2 product on infrastructure you control, a deployment owned by you, or your own tenant within a WSO2 cloud service — and only in ways that do not affect other tenants or shared infrastructure. Denial-of-service or resource-exhaustion testing, fuzzing at scale, and attempts to access other tenants' data are not permitted against cloud services. Where a finding in a cloud service can be reproduced against the self-hosted equivalent product, do that before reporting.
+* Public posts that violate responsible disclosure, or that reflect negatively on the program or the WSO2 brand, disqualify the reporter from reward consideration.
+* Security testing must be carried out against a self-hosted WSO2 product on infrastructure you control, a deployment owned by you, or your own tenant within a WSO2 cloud service. Test only in ways that do not affect other tenants or shared infrastructure. Denial-of-service or resource-exhaustion testing, fuzzing at scale, and attempts to access other tenants' data are not permitted against cloud services. Where a finding in a cloud service can be reproduced against the self-hosted equivalent product, do that before reporting.
 * All communications about a report must use the channels documented in [Report Security Issues]({{#base_path#}}/security-reporting/report-security-issues/).
 * The decision to issue a reward and to provide credit is at WSO2's discretion.

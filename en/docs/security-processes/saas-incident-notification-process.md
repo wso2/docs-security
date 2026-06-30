@@ -9,7 +9,7 @@ version: 1.1
 <p class="doc-info">Version: 1.1</p>
 ___
 
-WSO2 notifies SaaS subscribers of confirmed security incidents so impacted customers can take any necessary action. This page documents the notification commitments by subscription tier. The broader cloud incident-management process — protocols, response teams, severity-driven escalation, and stakeholder communication — is documented in [Cloud Security Process — Incident Management]({{#base_path#}}/security-processes/cloud-security-process/#incident-management).
+WSO2 notifies SaaS subscribers of confirmed security incidents so impacted customers can take any necessary action. This page documents the notification commitments by subscription tier. The broader cloud incident-management process, covering protocols, response teams, severity-driven escalation, and stakeholder communication, is documented in [Cloud Security Process: Incident Management]({{#base_path#}}/security-processes/cloud-security-process/#incident-management).
 
 ## Paid Subscribers
 

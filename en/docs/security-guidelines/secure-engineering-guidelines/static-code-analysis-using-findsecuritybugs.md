@@ -9,7 +9,7 @@ version: 3.1
 <p class="doc-info">Version: 3.1</p>
 ___
 
-When you set up the build for a WSO2 product, wire in the static analysis tooling described below. Tool-by-tool tutorials, install steps, and configuration references are in the tools' own documentation — linked below; this page covers what to run, the thresholds to gate on, and the WSO2-specific patterns worth encoding as custom rules.
+When you set up the build for a WSO2 product, wire in the static analysis tooling described below. Tool-by-tool tutorials, install steps, and configuration references live in the tools' own documentation, linked below. This page covers what to run, the thresholds to gate on, and the WSO2-specific patterns worth encoding as custom rules.
 
 Static analysis complements [Dynamic Analysis with OWASP ZAP]({{#base_path#}}/security-guidelines/secure-engineering-guidelines/dynamic-analysis-with-owasp-zap/) and [Dependency Vulnerability Analysis]({{#base_path#}}/security-guidelines/secure-engineering-guidelines/external-dependency-analysis-analysis-using-owasp-dependency-check/).
 
@@ -20,10 +20,10 @@ Static analysis complements [Dynamic Analysis with OWASP ZAP]({{#base_path#}}/se
 
 Wire all four into the PR builder:
 
-* **OWASP-Top-10-focused SAST** — SpotBugs + Find Security Bugs (Java); `gosec` (Go).
-* **General-purpose static analyzer** — SpotBugs core (Java); `staticcheck` (Go).
-* **Semantic-rules engine** for codebase-specific patterns — [Semgrep](https://semgrep.dev/) or [GitHub CodeQL](https://codeql.github.com/). These catch what generic tools cannot — usage of internal WSO2 helpers, secrets in source, anti-patterns from past audits.
-* **Vulnerable-dependency scanner** — covered in [Dependency Vulnerability Analysis]({{#base_path#}}/security-guidelines/secure-engineering-guidelines/external-dependency-analysis-analysis-using-owasp-dependency-check/).
+* **OWASP-Top-10-focused SAST**: SpotBugs + Find Security Bugs (Java); `gosec` (Go).
+* **General-purpose static analyzer**: SpotBugs core (Java); `staticcheck` (Go).
+* **Semantic-rules engine** for codebase-specific patterns, either [Semgrep](https://semgrep.dev/) or [GitHub CodeQL](https://codeql.github.com/). These catch what generic tools cannot: usage of internal WSO2 helpers, secrets in source, and anti-patterns from past audits.
+* **Vulnerable-dependency scanner**: covered in [Dependency Vulnerability Analysis]({{#base_path#}}/security-guidelines/secure-engineering-guidelines/external-dependency-analysis-analysis-using-owasp-dependency-check/).
 
 Findings above the agreed severity threshold fail the PR build. Suppressions go in an audited allow-list with a documented rationale; blanket suppressions are rejected at review.
 
@@ -42,7 +42,7 @@ Findings above the agreed severity threshold fail the PR build. Suppressions go 
 When wiring these into your product's CI:
 
 * Pin the Maven SpotBugs plugin in the parent POM with `<effort>Max</effort>`, `<threshold>Low</threshold>`, and `<failOnError>true</failOnError>`. New code should be quiet at this setting. Pin both the SpotBugs and Find Security Bugs plugin versions; check their sites for current releases.
-* `gosec` in CI: `gosec -severity high -confidence medium -exclude-dir=vendor ./...` — fails on any high-severity finding.
+* `gosec` in CI: `gosec -severity high -confidence medium -exclude-dir=vendor ./...`, which fails on any high-severity finding.
 * SARIF output from each tool uploaded to the GitHub Security tab. Semgrep and CodeQL produce SARIF natively; `gosec` supports it directly; SpotBugs XML can be converted via a reviewdog adapter or `spotbugs-sarif`.
 * SAST runs as a parallel step alongside build/test in the PR builder. `reviewdog` surfaces findings as inline PR comments rather than a single "build failed" line.
 * Track findings over time. A SAST tool producing 1000 findings on first run with no follow-up is doing nothing. Either fix or formally accept each.

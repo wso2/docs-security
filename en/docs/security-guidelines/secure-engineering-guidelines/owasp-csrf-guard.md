@@ -1,31 +1,31 @@
 ---
-title: CSRF Defence — Carbon / CSRFGuard Configuration
+title: "CSRF Defense: Carbon / CSRFGuard Configuration"
 category: security-guidelines
 version: 3.1
 ---
 
-# CSRF Defence — Carbon / CSRFGuard Configuration
+# CSRF Defense: Carbon / CSRFGuard Configuration
 
 <p class="doc-info">Version: 3.1</p>
 ___
 
-When you build a browser-rendered Carbon webapp that authenticates via session cookies, wire OWASP CSRFGuard in front of it as described here. The CSRF threat model, when CSRF tokens are required vs. when `SameSite` cookies suffice, and bearer-token-API exemptions are covered by the external references below and in [Secure Coding Guide — Cross-Site Request Forgery (CSRF)]({{#base_path#}}/security-guidelines/secure-engineering-guidelines/secure-coding-guidlines/secure-coding-guide/#cross-site-request-forgery-csrf).
+When you build a browser-rendered Carbon webapp that authenticates via session cookies, wire OWASP CSRFGuard in front of it as described here. The CSRF threat model, when CSRF tokens are required vs. when `SameSite` cookies suffice, and bearer-token-API exemptions are covered by the external references below and in [Secure Coding Guide: Cross-Site Request Forgery (CSRF)]({{#base_path#}}/security-guidelines/secure-engineering-guidelines/secure-coding-guidlines/secure-coding-guide/#cross-site-request-forgery-csrf).
 
 **External references:**
 
-* [OWASP CSRF Prevention Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/Cross-Site_Request_Forgery_Prevention_Cheat_Sheet.html) — general principles.
-* [MDN — SameSite cookies](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Set-Cookie/SameSite) — the primary modern defence.
-* [OWASP CSRFGuard project](https://owasp.org/www-project-csrfguard/) · [GitHub](https://github.com/OWASP/www-project-csrfguard) — current releases, release notes, and upstream configuration reference.
+* [OWASP CSRF Prevention Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/Cross-Site_Request_Forgery_Prevention_Cheat_Sheet.html): general principles.
+* [MDN: SameSite cookies](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Set-Cookie/SameSite): the primary modern defense.
+* [OWASP CSRFGuard project](https://owasp.org/www-project-csrfguard/) · [GitHub](https://github.com/OWASP/www-project-csrfguard): current releases, release notes, and upstream configuration reference.
 
 ## Approach
 
-For browser-rendered Carbon surfaces that authenticate via session cookies — Carbon Management Console, IS My Account / Console, APIM Publisher / DevPortal — apply both layers: **`SameSite=Strict` on the session cookie *plus* CSRFGuard tokens** (defence in depth). Either alone is acceptable in some configurations; both together matches the existing Carbon shape.
+For browser-rendered Carbon surfaces that authenticate via session cookies (Carbon Management Console, IS My Account / Console, APIM Publisher / DevPortal), apply both layers: **`SameSite=Strict` on the session cookie *plus* CSRFGuard tokens** (defense in depth). Either alone is acceptable in some configurations; both together matches the existing Carbon shape.
 
 Engineering rules:
 
 1. **State-changing actions use POST / PUT / DELETE only.** CSRFGuard does not validate GET (`UnprotectedMethods=GET`); GET must not have side effects.
-2. **Session cookies are `HttpOnly; Secure; SameSite=Strict`** — see [HTTP Security Headers]({{#base_path#}}/security-guidelines/secure-engineering-guidelines/security-related-http-headers/).
-3. **Tokens injected into POST forms via the JavaScript injection mechanism** (hidden input). Token in URL is forbidden — leaks via referer, browser history, and access logs.
+2. **Session cookies are `HttpOnly; Secure; SameSite=Strict`.** See [HTTP Security Headers]({{#base_path#}}/security-guidelines/secure-engineering-guidelines/security-related-http-headers/).
+3. **Tokens injected into POST forms via the JavaScript injection mechanism** (hidden input). Token in URL is forbidden, because it leaks via referer, browser history, and access logs.
 4. **AJAX POSTs carry the token in a header**, set automatically by the CSRFGuard JavaScript. Manual injection with the JSP taglib only in the narrow cases listed below, with explicit security-review approval.
 5. **Per-product exclusions are appended to `Owasp.CsrfGuard.Carbon.properties`** during the distribution build; every exclusion has a reason.
 6. **Bearer-token-only REST APIs skip CSRFGuard.** Document this in the API specification rather than via the exclusion mechanism.
@@ -81,13 +81,13 @@ Include the JavaScriptServlet as the **first** script in `<head>` of every prote
 
 ## Carbon configuration overrides
 
-`Owasp.CsrfGuard.Carbon.properties` — the property overrides Carbon applies on top of the upstream CSRFGuard default. Each entry below documents the reason; do not change these in your product without a documented rationale.
+`Owasp.CsrfGuard.Carbon.properties` holds the property overrides Carbon applies on top of the upstream CSRFGuard default. Each entry below documents the reason; do not change these in your product without a documented rationale.
 
 ```properties
 # State-changing operations don't go through GET, so skip GET validation.
 org.owasp.csrfguard.UnprotectedMethods=GET
 
-# Per-page tokens have a runtime overhead and the upstream pre-4.x behaviour
+# Per-page tokens have a runtime overhead and the upstream pre-4.x behavior
 # after blocking a CSRF attempt was problematic for our flows.
 # Re-evaluate when adopting CSRFGuard 4.x.
 org.owasp.csrfguard.TokenPerPage=false
@@ -118,7 +118,7 @@ org.owasp.csrfguard.JavascriptServlet.injectIntoAttributes=false
 # Replace the default "OWASP CSRFGuard Project" XHR identifier.
 org.owasp.csrfguard.JavascriptServlet.xRequestedWith=WSO2 CSRF Protection
 
-# PRNG provider — set per the JVM. SUN on OpenJDK / Oracle, IBMJCE on IBM JDK.
+# PRNG provider - set per the JVM. SUN on OpenJDK / Oracle, IBMJCE on IBM JDK.
 # Verify the value matches the JVM the product ships with.
 org.owasp.csrfguard.PRNG.Provider=SUN
 
@@ -143,7 +143,7 @@ Rules for exclusions:
 * **No additional `.` characters in the alias suffix.** CSRFGuard's property loader splits on `.`:
 
     ```properties
-    # WRONG — period in alias suffix
+    # WRONG - period in alias suffix
     org.owasp.csrfguard.unprotected.auth.example=%servletContext%/auth
     # RIGHT
     org.owasp.csrfguard.unprotected.authExample=%servletContext%/auth
@@ -151,7 +151,7 @@ Rules for exclusions:
 
 ### Optional hardening
 
-* `org.owasp.csrfguard.action.Invalidate=...` — invalidates the session entirely on a blocked CSRF attempt; forces re-authentication. Strong defence; tune UX so this doesn't appear after a benign expired-token mid-session.
+* `org.owasp.csrfguard.action.Invalidate=...` invalidates the session entirely on a blocked CSRF attempt, forcing re-authentication. This is a strong defense, so tune UX so it doesn't appear after a benign expired-token mid-session.
 * `org.owasp.csrfguard.TokenLength=32` and `org.owasp.csrfguard.PRNG=SHA1PRNG` defaults are appropriate for most deployments; only override when there's a specific threat-model or platform reason.
 
 ## Integration checklist
@@ -160,7 +160,7 @@ Walk these in order when wiring CSRFGuard into a Carbon webapp:
 
 ### 1. State-changing operations use POST / PUT / DELETE only
 
-Audit the product's request mapping. State-changing actions reachable over HTTP GET must be migrated. Some HTML form `submit` defaults are GET — confirm the explicit method attribute on every form.
+Audit the product's request mapping. State-changing actions reachable over HTTP GET must be migrated. Some HTML form `submit` defaults are GET, so confirm the explicit method attribute on every form.
 
 ### 2. Allow unauthenticated requests through the filter
 
@@ -179,7 +179,7 @@ Add the product's known-safe URLs to `Owasp.CsrfGuard.Carbon.properties` during 
 
 ### 4. Wire CSRFGuard into product web applications beyond Carbon Console
 
-Follow [Servlet wiring](#servlet-wiring). Duplicate `Owasp.CsrfGuard.Carbon.properties` for the application, customise as needed, and point the `Owasp.CsrfGuard.Config` context-param at the new file.
+Follow [Servlet wiring](#servlet-wiring). Duplicate `Owasp.CsrfGuard.Carbon.properties` for the application, customize as needed, and point the `Owasp.CsrfGuard.Config` context-param at the new file.
 
 ### 5. Include the CSRFGuard JavaScript first on every protected page
 
@@ -201,7 +201,7 @@ input.setAttribute('value', '<csrf:tokenvalue/>');
 form.appendChild(input);
 ```
 
-(The original integration documentation had a typo here — both calls set `name`. The second sets `value`. Verify before copying.)
+(The original integration documentation had a typo here: both calls set `name`. The second sets `value`. Verify before copying.)
 
 ### 7. AJAX requests to relative URLs containing `:`
 
@@ -236,7 +236,7 @@ Attach the token as a request header (or as a form parameter where the endpoint 
 
 ### 9. Multipart file uploads
 
-For multipart uploads (`/fileupload` and similar), inject the token into the form `action` as a query parameter — multipart boundaries make hidden-field injection unreliable:
+For multipart uploads (`/fileupload` and similar), inject the token into the form `action` as a query parameter, because multipart boundaries make hidden-field injection unreliable:
 
 ```jsp
 <%@ taglib uri="http://www.owasp.org/index.php/Category:OWASP_CSRFGuard_Project/Owasp.CsrfGuard.tld" prefix="csrf" %>
@@ -246,7 +246,7 @@ For multipart uploads (`/fileupload` and similar), inject the token into the for
 </form>
 ```
 
-Multipart upload endpoints must additionally enforce file size limits and content-type validation at the handler — see [Secure Coding Guide — Unrestricted File Upload]({{#base_path#}}/security-guidelines/secure-engineering-guidelines/secure-coding-guidlines/secure-coding-guide/#unrestricted-file-upload).
+Multipart upload endpoints must additionally enforce file size limits and content-type validation at the handler. See [Secure Coding Guide: Unrestricted File Upload]({{#base_path#}}/security-guidelines/secure-engineering-guidelines/secure-coding-guidlines/secure-coding-guide/#unrestricted-file-upload).
 
 ### 10. Bearer-token REST APIs do not need CSRFGuard
 
@@ -254,6 +254,6 @@ Document the bearer-token model in the API specification rather than excluding t
 
 ## Out of scope
 
-* **REST API authentication / authorisation.** See [Secure Coding Guide — Authentication Failures]({{#base_path#}}/security-guidelines/secure-engineering-guidelines/secure-coding-guidlines/secure-coding-guide/#authentication-failures).
-* **Go stack CSRF.** Use `SameSite=Strict` plus a double-submit cookie middleware (e.g., `gorilla/csrf`). See [Secure Coding Guide — Cross-Site Request Forgery (CSRF)]({{#base_path#}}/security-guidelines/secure-engineering-guidelines/secure-coding-guidlines/secure-coding-guide/#cross-site-request-forgery-csrf).
+* **REST API authentication / authorization.** See [Secure Coding Guide: Authentication Failures]({{#base_path#}}/security-guidelines/secure-engineering-guidelines/secure-coding-guidlines/secure-coding-guide/#authentication-failures).
+* **Go stack CSRF.** Use `SameSite=Strict` plus a double-submit cookie middleware (e.g., `gorilla/csrf`). See [Secure Coding Guide: Cross-Site Request Forgery (CSRF)]({{#base_path#}}/security-guidelines/secure-engineering-guidelines/secure-coding-guidlines/secure-coding-guide/#cross-site-request-forgery-csrf).
 * **Jaggery applications.** Jaggery is deprecated. New WSO2 features should not ship Jaggery surfaces; existing applications follow the same CSRFGuard shape (replace `web.xml` with equivalent `jaggery.conf` entries) but should plan migration.
