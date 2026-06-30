@@ -133,8 +133,6 @@ nav:
         - 'WSO2-2022-2281': 'security-announcements/security-advisories/2026/WSO2-2022-2281.md'
         - 'WSO2-2021-1582': 'security-announcements/security-advisories/2026/WSO2-2021-1582.md'
         - 'WSO2-2021-1493': 'security-announcements/security-advisories/2026/WSO2-2021-1493.md'
-
-
       - '2025 Advisories':
         - '': 'security-announcements/security-advisories/2025/2025-advisories.md'
         - 'WSO2-2025-4603': 'security-announcements/security-advisories/2025/WSO2-2025-4603.md'
@@ -598,8 +596,6 @@ plugins:
         'security-announcements/security-advisories/2024/CVE-2024-0392.md': 'security-announcements/security-advisories/2024/WSO2-2023-2987.md'
         # CVE-2010-4208 superseded by CVE-2013-6780 in-depth analysis
         'security-announcements/cve-justifications/2025/CVE-2010-4208.md': 'security-announcements/cve-justifications/2025/CVE-2013-6780.md'
-        # WSO2-2023-2617 was withdrawn; point to year index
-        'security-announcements/security-advisories/2023/WSO2-2023-2617.md': 'security-announcements/security-advisories/2023/2023-advisories.md'
         # public-artifacts section retired; point to docs root
         'public-artifacts/index.md': 'index.md'
         # security-processes hub retired; sub-pages remain reachable from nav and home cards
@@ -639,7 +635,6 @@ plugins:
   - exclude:
       glob:
         - wip/*
-        - '*.j2'
 
 # Extra
 extra_css:
