@@ -1,32 +1,46 @@
 ---
 title: Secure Coding Guidelines
 category: security-guidelines
+published: October 22, 2018
+updated: August 09, 2022
+version: 2.2
 ---
 
 # Secure Coding Guidelines
+<p class="doc-info">Version: 2.2</p>
+___
 
 ## Introduction
+This page summarizes the **Secure Coding Guidelines** that WSO2 Engineers follow while implementing WSO2 products 
+and applications within the organization.
 
-This section is the entry point to the **Secure Coding Guidelines** that WSO2 Engineers follow while implementing WSO2 products and applications. The guidelines exist to make sure WSO2 products and applications are inherently secure, by codifying the practices that apply throughout the Software Development Life Cycle.
+The purpose of this document is to increase security awareness and make sure the products and the applications 
+developed by WSO2 are inherently secure, by ensuring that security best practices are followed throughout the 
+Software Development Life Cycle.
 
-The guide is a single document with stack-specific content in tabs. Each section starts with shared principles, references, and rules that apply across all WSO2 products, then provides Java-stack and Go-stack implementation details in tabs. Click the tab for the stack you work in — Material remembers the choice across the site.
+* [General Recommendations for Secure Coding](general-recommendations-for-secure-coding.md)
 
-* [Secure Coding Guide](secure-coding-guide.md)
+     Explains different attacks or security threats that the engineers must focus on while implementing a product or an 
+     application. Prevention techniques are discussed in generic form, and some sections discuss programming language-specific prevention techniques.
 
-     The canonical secure coding guide. Covers the OWASP Top 10 - 2025 categories with shared principles + stack-specific implementation for the established Java/Carbon-based products and the new Go-based products.
+* [General Recommendations for React Secure Coding](general-recommendations-for-react-secure-coding.md) 
 
-* [General Recommendations for React Secure Coding](general-recommendations-for-react-secure-coding.md)
+      Explains secure coding best practices for React.
 
-     Secure coding best practices for React frontends.
+* [OWASP Top 10 - 2017 Prevention](owasp-t10-2017-prevention.md) 
 
-* [OWASP Top 10 - 2025 Prevention](owasp-t10-2025-prevention.md)
+      Lists OWASP Top 10 2017 list of the most critical application security risks.
 
-     Maps the OWASP Top 10 - 2025 categories to the matching sections in the Java and Go stack guides.
+* [OWASP Top 10 - 2013 Prevention](owasp-t10-2013-prevention.md)
 
-* [OWASP API Security Top 10 - 2023 Prevention](owasp-api-top10-2023-prevention.md)
+      Lists OWASP Top 10 2013 list of the most critical application security risks.
 
-     Maps the OWASP API Security Top 10 - 2023 categories to the matching sections in the Java and Go stack guides.
+* [OWASP Mobile Top 10 Prevention](owasp-mobile-t10-prevention.md) 
 
-* [Tooling Recommendations for Secure Coding](tooling-recommendations-for-secure-coding.md)
+      Explains different attacks or security threats that the engineers must focus when developing mobile applications. 
+      Prevention techniques are discussed in generic form, and some sections discuss mobile platform-specific prevention techniques.
 
-     Documentation on security-related tooling used within WSO2 and recommendations for such tools in the engineering process.
+- [Tooling Recommendations for Secure Coding](tooling-recommendations-for-secure-coding.md) 
+
+      Lists all documentation on security-related tooling that is used within WSO2 and recommendations for such tools 
+      in the engineering process.

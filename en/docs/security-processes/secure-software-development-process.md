@@ -12,7 +12,7 @@ Security is not an afterthought at WSO2. It's an integral part of each phase in 
 ![secure-software-development-process](../assets/images/product-security/secure-software-development-process-overall-v2.png)
 
 
-[WSO2 Secure Engineering Guidelines](../security-guidelines/secure-engineering-guidelines/index.md) provide the overall security guidance during the design, development and code review phases. A group of security leads review designs of new features and also review the code to make sure that engineers are adhering to the guidelines set forth. Some security checks are further enforced when engineers commit the code to the WSO2-maintained code repositories. 
+[WSO2 Secure Engineering Guidelines](../security-guidelines/index.md) provide the overall security guidance during the design, development and code review phases. A group of security leads review designs of new features and also review the code to make sure that engineers are adhering to the guidelines set forth. Some security checks are further enforced when engineers commit the code to the WSO2-maintained code repositories. 
 
 Furthermore, before a product release, there are mandatory security scans that look at the security aspect of the release candidate from different perspectives. All the security findings are securely stored in a centralized system for future reference. 
 
@@ -39,7 +39,7 @@ The software architects and security leads of the respective product domains mus
 
 #### Developer Self-review
 
-Before any code review, all the engineers must do a self-code review. During development tasks and also during the self-code reviews, it is essential to follow the guidelines set forth by [WSO2 Secure Engineering Guidelines](../security-guidelines/secure-engineering-guidelines/index.md).
+Before any code review, all the engineers must do a self-code review. During development tasks and also during the self-code reviews, it is essential to follow the guidelines set forth by [WSO2 Secure Engineering Guidelines](../security-guidelines/index.md).
 
 The [Find Security Bugs SpotBugs](https://find-sec-bugs.github.io/) plugin is recommended to be used in development environments.
 
@@ -58,7 +58,7 @@ Relevant checks are further enforced by the GitHub PR template:
 
 Each new component must go through a set of code reviews. The participation of one or more security leads is a must for each code review. Once a code review is done, all the findings related to the security aspects must be resolved before merging the component into the code base. 
 
-[WSO2 Secure Engineering Guidelines](../security-guidelines/secure-engineering-guidelines/index.md) should be followed when reviewing the security aspect of the code. 
+[WSO2 Secure Engineering Guidelines](../security-guidelines/index.md) should be followed when reviewing the security aspect of the code. 
 
 During a code review, two types of vulnerabilities are taken into consideration:
 
@@ -98,6 +98,8 @@ Static Code Analysis is used to identify possible vulnerabilities within source 
 
 Apart from the [Find Security Bugs](https://find-sec-bugs.github.io/) Spotbugs plugin which is used in the development phase, WSO2 uses the [Veracode](https://www.veracode.com/products/binary-static-analysis-sast) commercial static analyzer for this purpose.
 
+WSO2 uses the [Trivy](https://aquasecurity.github.io/trivy/) Open-source image scanner for finding OS level vulnerabilities in WSO2 docker images.
+
 !!! note
     The security issues relevant to the third-party dependencies are covered separately with the [Third-Party Dependency Analysis](#third-party-dependency-analysis) effort. Therefore, the source code of the third-party dependencies is excluded from the static code analysis.
 
@@ -109,7 +111,7 @@ WSO2 uses [Qualys Web Application Scanner (Qualys WAS)](https://www.qualys.com/a
 #### Third-Party Dependency Analysis
 Security vulnerabilities identified in third-party dependencies may affect the security of the product. WSO2 prevents such security impacts that could occur due to third-party dependencies at a few stages.  
 
-It is essential to prevent the introduction of new third-party dependencies with known security vulnerabilities. Therefore, with any _third-party dependency approval request_ it is essential to attach the [OWASP Dependency Check](https://owasp.org/www-project-dependency-check/) report, adhering to the **[Software Supply Chain Failures]({{#base_path#}}/security-guidelines/secure-engineering-guidelines/secure-coding-guidlines/secure-coding-guide/#using-known-vulnerable-components)** section of the [WSO2 Secure Coding Guidelines]({{#base_path#}}/security-guidelines/secure-engineering-guidelines/secure-coding-guidlines/introduction/). 
+It is essential to prevent the introduction of new third-party dependencies with known security vulnerabilities. Therefore, with any _third-party dependency approval request_ it is essential to attach the [OWASP Dependency Check](https://owasp.org/www-project-dependency-check/) report, adhering to the **[Introducing New External Dependencies]({{#base_path#}}/security-guidelines/secure-engineering-guidelines/secure-coding-guidlines/general-recommendations-for-secure-coding/#introducing-new-external-dependencies)** section of the [WSO2 Secure Coding Guidelines]({{#base_path#}}/security-guidelines/secure-engineering-guidelines/secure-coding-guidlines/introduction/). 
 
 New security vulnerabilities related to third-party dependencies may get identified and fixed at any given time. Therefore, it is essential to continuously monitor different sources to identify if a new vulnerability has been identified or fixed. WSO2 uses the following tools for this analysis: 
 - [FOSSA](https://fossa.com/) for scanning product distributions and application dependencies in cloud pipelines

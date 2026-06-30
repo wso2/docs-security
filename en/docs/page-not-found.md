@@ -1,5 +1,5 @@
 ---
-template: templates/no-navbars.html
+template: templates/single-column.html
 ---
 
 <!--
