@@ -1,79 +1,92 @@
 ---
-title: Static Code Analysis using FindSecurityBugs
+title: Static Code Analysis
 category: security-guidelines
-published: October 22, 2018
-version: 1.2
+version: 3.1
 ---
 
-# Static Code Analysis using FindSecurityBugs
-<p class="doc-info">Version: 1.2</p>
+# Static Code Analysis
+
+<p class="doc-info">Version: 3.1</p>
 ___
 
-## Introduction
-This document provides details of all necessary steps for configuring FindBugs[^1] and Find Security Bugs[^2] for scanning source code in order to discover security threats. 
+When you set up the build for a WSO2 product, wire in the static analysis tooling described below. Tool-by-tool tutorials, install steps, and configuration references live in the tools' own documentation, linked below. This page covers what to run, the thresholds to gate on, and the WSO2-specific patterns worth encoding as custom rules.
 
+Static analysis complements [Dynamic Analysis with OWASP ZAP]({{#base_path#}}/security-guidelines/secure-engineering-guidelines/dynamic-analysis-with-owasp-zap/) and [Dependency Vulnerability Analysis]({{#base_path#}}/security-guidelines/secure-engineering-guidelines/external-dependency-analysis-analysis-using-owasp-dependency-check/).
 
-## Installation - IntelliJ Idea - FindBugs Plugin
-1. Once you open IntelliJ IDEA, go to **Configure** &rarr; **Plugins** in the opening window.
+!!! note "FindBugs is defunct"
+    Earlier versions of this document referenced FindBugs and `FindBugs-IDEA`. **FindBugs has been unmaintained since 2015** and is formally archived; the project moved to [SpotBugs](https://spotbugs.github.io/) in 2017, and Find Security Bugs now runs on SpotBugs. Use SpotBugs + Find Security Bugs for new work; migrate any legacy build that still references FindBugs.
 
-    ![Placeholder](../../assets/images/secure-coding-guidelines/fsb-01.png)
+## What every product build should run
 
-2. If you have already opened a project in IntelliJ IDEA, go to **File** &rarr; **Settings** and in the left panel of the Settings window, select **Plugins**.
+Wire all four into the PR builder:
 
-    ![Placeholder](../../assets/images/secure-coding-guidelines/fsb-02.png) 
+* **OWASP-Top-10-focused SAST**: SpotBugs + Find Security Bugs (Java); `gosec` (Go).
+* **General-purpose static analyzer**: SpotBugs core (Java); `staticcheck` (Go).
+* **Semantic-rules engine** for codebase-specific patterns, either [Semgrep](https://semgrep.dev/) or [GitHub CodeQL](https://codeql.github.com/). These catch what generic tools cannot: usage of internal WSO2 helpers, secrets in source, and anti-patterns from past audits.
+* **Vulnerable-dependency scanner**: covered in [Dependency Vulnerability Analysis]({{#base_path#}}/security-guidelines/secure-engineering-guidelines/external-dependency-analysis-analysis-using-owasp-dependency-check/).
 
-3. You can install the FindBugs plugin in two ways. 
-     1. If you have an internet connection, you can click the **Browser repositories** button and get the plugin installed. Search for the findbugs plugin and select **FindBugs-IDEA** and get it installed.
-     2. If not you can download the FindBugs plugin for IntelliJ IDEA[^3] and go with the **Install plugin from disk** option where you can browse and provide the already downloaded plugin.
+Findings above the agreed severity threshold fail the PR build. Suppressions go in an audited allow-list with a documented rationale; blanket suppressions are rejected at review.
 
-         ![Placeholder](../../assets/images/secure-coding-guidelines/fsb-03.png)
+## Tool references
 
+* **SpotBugs**: [project site](https://spotbugs.github.io/) · [Maven plugin](https://spotbugs.github.io/spotbugs-maven-plugin/) · [SpotBugs-IDEA IntelliJ plugin](https://plugins.jetbrains.com/plugin/14014-spotbugs) (the legacy `FindBugs-IDEA` is unmaintained; uninstall and replace).
+* **Find Security Bugs** (SpotBugs plugin, ~120 security rules): [project site](https://find-sec-bugs.github.io/).
+* **`gosec`**: [github.com/securego/gosec](https://github.com/securego/gosec).
+* **`staticcheck`**: [staticcheck.dev](https://staticcheck.dev/).
+* **Semgrep**: [semgrep.dev](https://semgrep.dev/).
+* **CodeQL**: [codeql.github.com](https://codeql.github.com/).
+* **`reviewdog`** (surface SAST findings as inline PR comments): [github.com/reviewdog/reviewdog](https://github.com/reviewdog/reviewdog).
 
-## Installation - IntelliJ Idea - Find Security Bug Plugin
-1. Once you have installed the FindBugs plugin in IntelliJ IDEA, at the bottom of the IDE you will see the **FindBugs-IDEA** button. Upon clicking on it, you can see all its settings, in a panel.  
+## Thresholds and CI integration
 
-    ![Placeholder](../../assets/images/secure-coding-guidelines/fsb-04.png)
+When wiring these into your product's CI:
 
-2. Enable the **FindSecurityBugs** plugin which comes with FindBugs. This is for finding the security bugs in your code. Click the **Plugin Preferences** button.
+* Pin the Maven SpotBugs plugin in the parent POM with `<effort>Max</effort>`, `<threshold>Low</threshold>`, and `<failOnError>true</failOnError>`. New code should be quiet at this setting. Pin both the SpotBugs and Find Security Bugs plugin versions; check their sites for current releases.
+* `gosec` in CI: `gosec -severity high -confidence medium -exclude-dir=vendor ./...`, which fails on any high-severity finding.
+* SARIF output from each tool uploaded to the GitHub Security tab. Semgrep and CodeQL produce SARIF natively; `gosec` supports it directly; SpotBugs XML can be converted via a reviewdog adapter or `spotbugs-sarif`.
+* SAST runs as a parallel step alongside build/test in the PR builder. `reviewdog` surfaces findings as inline PR comments rather than a single "build failed" line.
+* Track findings over time. A SAST tool producing 1000 findings on first run with no follow-up is doing nothing. Either fix or formally accept each.
 
-    ![Placeholder](../../assets/images/secure-coding-guidelines/fsb-05.png)
+### Suppressions
 
-3. Under the **Plugins** section of the **General** tab, click the **+** button and select **Add Find Security Bugs**.
+Narrow, with rationale, in the tool-native suppression format:
 
-    ![Placeholder](../../assets/images/secure-coding-guidelines/fsb-06.png)
+```xml
+<!-- spotbugs-exclude.xml -->
+<FindBugsFilter>
+    <Match>
+        <Bug pattern="EI_EXPOSE_REP"/>
+        <Class name="org.wso2.example.legacy.LegacyDTO"/>
+        <!-- Reason: public mutable internal array is the existing contract;
+             rewrite tracked in WSO2-XXXX. -->
+    </Match>
+</FindBugsFilter>
+```
 
-4. Once the FindSecurityBugs plugin is added, click **Apply** and then **OK**.
+Annotation-based suppression (`@SuppressFBWarnings`) is acceptable on a single method or field; both forms must include a rationale comment.
 
-    ![Placeholder](../../assets/images/secure-coding-guidelines/fsb-07.png)
+## WSO2-specific Semgrep rules to author
 
-5. Now we have successfully installed the FindBugs plugin in IntelliJ IDEA and also have enabled the FindSecurityBugs plugin in it. Let’s perform a static code analysis and get to know all the bugs we have in the code.
+These are anti-patterns from the WSO2 [Secure Coding Guide]({{#base_path#}}/security-guidelines/secure-engineering-guidelines/secure-coding-guidlines/secure-coding-guide/) that generic SAST tools do not catch. They are high-value to encode as Semgrep (or CodeQL) rules in a shared WSO2 ruleset:
 
+**Java:**
 
-## Code Analysis
-To analyze the project, right-click the project and go to **FindBugs** -> **Analyze Scope Files**. With this, the scanning will happen only under the selected folder. You can also go with **Analyze Module Files** which would scan the particular module you have selected and also **Analyze Project Files** which would scan the entire project. 
+* `Cipher.getInstance("RSA")` or `"AES"` without explicit mode and padding.
+* `MessageDigest.getInstance("MD5")` and `"SHA-1"` for security purposes.
+* `NoopHostnameVerifier.INSTANCE` or `AllowAllHostnameVerifier`.
+* `ObjectInputStream` construction without `ObjectInputFilter`.
+* `Runtime.getRuntime().exec(<single String arg>)` outside test code.
+* Missing `PrivilegedCarbonContext.endTenantFlow()` after `startTenantFlow()`.
+* Direct `Cipher.getInstance` calls outside the central `CryptoUtil` facade.
 
-   ![Placeholder](../../assets/images/secure-coding-guidelines/fsb-08.png)
+**Go:**
 
-Once the static scan is completed, you can see the identified bugs in the **FindBugs-IDEA** panel. Since we have enabled the FindSecurityBugs plugin, it will list all the identified security issues under the **Security** category. 
+* `tls.Config{InsecureSkipVerify: true}` outside `_test.go`.
+* `aes.NewCipher` called from anywhere outside the project's central crypto helper package.
+* `==` comparison of MAC / HMAC byte slices (must be `hmac.Equal`).
+* `text/template` used to render HTML (must be `html/template`).
+* `panic(` in handlers / services (panic is reserved for init failures).
+* `json.Unmarshal` without `DisallowUnknownFields` on inbound request bodies.
+* `os/exec` invocations of `sh -c` with interpolated input.
 
-   ![Placeholder](../../assets/images/secure-coding-guidelines/fsb-09.png)
-
-
-## Report Generation 
-You can export the reported bugs for further analysis. For that, click the **Export Bug Collection** to **XML/HTML** button.
-
-![Placeholder](../../assets/images/secure-coding-guidelines/fsb-10.png)
-
-A generated report is as follows:
-
-![Placeholder](../../assets/images/secure-coding-guidelines/fsb-11.png)
-
-If you go to the **Security Warnings** section, you can see a detailed explanation for each identified security issue.
-
-![Placeholder](../../assets/images/secure-coding-guidelines/fsb-12.png)
-
-
-## References
-[^1]: [http://findbugs.sourceforge.net/](http://findbugs.sourceforge.net/)
-[^2]: [http://find-sec-bugs.github.io/](http://find-sec-bugs.github.io/)
-[^3]: [https://plugins.jetbrains.com/plugin/3847?pr=id](https://plugins.jetbrains.com/plugin/3847?pr=id)
+Each rule lives in the shared WSO2 Semgrep ruleset with a short description, the canonical example, and a link to the Secure Coding Guide entry that motivated it.

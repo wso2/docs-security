@@ -16,7 +16,7 @@
 
 # Project information
 site_name: WSO2 Security and Compliance Documentation
-site_description: Documentation for WSO2 Security and Compliance
+site_description: WSO2 security advisories, CVE justifications, cloud security bulletins, secure coding and deployment guidelines, and how to report a vulnerability.
 site_author: WSO2
 site_url: https://security.docs.wso2.com/en/latest/
 
@@ -31,37 +31,66 @@ copyright: WSO2 Security and Compliance - Documentation
 # Configuration
 theme:
   name: material
-  palette:
-    primary: deep-orange
-    accent: deep-orange
   custom_dir: theme/material
-  logo: images/logo.svg
-  favicon: images/favicon.png
-  highlightjs: true
-  feature:
-    tabs: true
+  logo: assets/images/logo.svg
+  logo_light: assets/images/logo-for-light.svg
+  favicon: assets/images/favicon.png
   language: 'en'
+  font: false
+  palette:
+    # Palette toggle for light mode
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: deep orange
+      accent: deep orange
+      toggle:
+        icon: assets/libs/oxygen-ui-icons/1.7.3/crescent-bright-16.svg
+        name: Switch to dark mode
+    # Palette toggle for dark mode
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: deep orange
+      accent: deep orange
+      toggle:
+        icon: assets/libs/oxygen-ui-icons/1.7.3/sun-16.svg
+        name: Switch to light mode
+  features:
+    - navigation.indexes
+    - navigation.path
+    - navigation.top
+    - navigation.footer
+    - navigation.instant.progress
+    - content.code.copy
+    - content.action.edit
+    - content.action.view
+    - content.tabs.link
+    - search.suggest
+    - search.share
+
+# Breaks build if there's a warning
+strict: false
+
+validation:
+  absolute_links: ignore
+  unrecognized_links: ignore
 
 # Navigation
 nav:
-  - 'WSO2 Security and Compliance Documentation': 'index.md'
+  - 'Home': 'index.md'
   - 'Security Processes':
-    - '': 'security-processes/index.md'
     - 'Secure Software Development Process': 'security-processes/secure-software-development-process.md'
     - 'Vulnerability Management Process': 'security-processes/vulnerability-management-process.md'
     - 'Cloud Security Process': 'security-processes/cloud-security-process.md'
     - 'Security Incident Notification Process for SaaS': 'security-processes/saas-incident-notification-process.md'
   - 'Security Guidelines':
-    - '': 'security-guidelines/index.md'
     - 'Secure Engineering Guidelines':
       - '': 'security-guidelines/secure-engineering-guidelines/index.md'
       - 'Secure Coding Guidelines':
         - 'Introduction': 'security-guidelines/secure-engineering-guidelines/secure-coding-guidlines/introduction.md'
-        - 'General Recommendations for Secure Coding': 'security-guidelines/secure-engineering-guidelines/secure-coding-guidlines/general-recommendations-for-secure-coding.md'
-        - 'General Recommendations for React Secure Coding': 'security-guidelines/secure-engineering-guidelines/secure-coding-guidlines/general-recommendations-for-react-secure-coding.md'
-        - 'OWASP Top 10 - 2017 Prevention': 'security-guidelines/secure-engineering-guidelines/secure-coding-guidlines/owasp-t10-2017-prevention.md'
-        - 'OWASP Top 10 - 2013 Prevention': 'security-guidelines/secure-engineering-guidelines/secure-coding-guidlines/owasp-t10-2013-prevention.md'
-        - 'OWASP Mobile Top 10 Prevention': 'security-guidelines/secure-engineering-guidelines/secure-coding-guidlines/owasp-mobile-t10-prevention.md'
+        - 'Secure Coding Guide': 'security-guidelines/secure-engineering-guidelines/secure-coding-guidlines/secure-coding-guide.md'
+        - 'React': 'security-guidelines/secure-engineering-guidelines/secure-coding-guidlines/general-recommendations-for-react-secure-coding.md'
+        - 'OWASP Top 10 - 2025 Prevention': 'security-guidelines/secure-engineering-guidelines/secure-coding-guidlines/owasp-t10-2025-prevention.md'
+        - 'OWASP API Security Top 10 - 2023 Prevention': 'security-guidelines/secure-engineering-guidelines/secure-coding-guidlines/owasp-api-top10-2023-prevention.md'
         - 'Tooling Recommendations for Secure Coding': 'security-guidelines/secure-engineering-guidelines/secure-coding-guidlines/tooling-recommendations-for-secure-coding.md'
       - 'Security Related HTTP Headers': 'security-guidelines/secure-engineering-guidelines/security-related-http-headers.md'
       - 'OWASP CSRFGuard': 'security-guidelines/secure-engineering-guidelines/owasp-csrf-guard.md'
@@ -70,7 +99,6 @@ nav:
       - 'External Dependency Analysis using OWASP Dependency Check': 'security-guidelines/secure-engineering-guidelines/external-dependency-analysis-analysis-using-owasp-dependency-check.md'
     - 'Security Guidelines for Production Deployment': 'security-guidelines/security-guidelines-for-production-deployment.md'
   - 'Security Announcements':
-    - '': 'security-announcements/index.md'
     - 'WSO2 Security Advisories':
       - '': 'security-announcements/security-advisories/index.md'
       - '2026 Advisories':
@@ -151,8 +179,6 @@ nav:
         - 'WSO2-2022-2281': 'security-announcements/security-advisories/2026/WSO2-2022-2281.md'
         - 'WSO2-2021-1582': 'security-announcements/security-advisories/2026/WSO2-2021-1582.md'
         - 'WSO2-2021-1493': 'security-announcements/security-advisories/2026/WSO2-2021-1493.md'
-
-
       - '2025 Advisories':
         - '': 'security-announcements/security-advisories/2025/2025-advisories.md'
         - 'WSO2-2025-4603': 'security-announcements/security-advisories/2025/WSO2-2025-4603.md'
@@ -567,19 +593,16 @@ nav:
       - 'Reward and Acknowledgement Program': 'security-reporting/reward-and-acknowledgement-program/index.md'
       - 'Security Hall of Fame': 'security-reporting/reward-and-acknowledgement-program/hall-of-fame.md'
     - 'Reporting Service Abuse or Malicious Content': 'security-reporting/abuse-report.md'
-  - '404 - Not found': 'page-not-found.md'
 
 # Extensions
 markdown_extensions:
-  - markdown.extensions.admonition
-  - markdown.extensions.codehilite:
-      linenums: true
-      use_pygments: false
+  - admonition
   - markdown.extensions.def_list
   - markdown.extensions.footnotes
   - markdown.extensions.meta
   - markdown.extensions.toc:
       permalink: true
+      toc_depth: 3
   - markdown_include.include:
       base_path: docs
   - pymdownx.arithmatex
@@ -594,50 +617,128 @@ markdown_extensions:
   - pymdownx.keys
   - pymdownx.mark
   - pymdownx.smartsymbols
+  - pymdownx.highlight:
+      anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
   - pymdownx.superfences
+  - pymdownx.tabbed:
+      alternate_style: true
   - pymdownx.tasklist:
       custom_checkbox: true
   - pymdownx.tilde
   - pymdownx.snippets:
       base_path: docs
   - attr_list
-  - pymdownx.highlight
-  - pymdownx.emoji:
-      emoji_index: !!python/name:materialx.emoji.twemoji
-      emoji_generator: !!python/name:materialx.emoji.to_svg
 
 # Plugin
 plugins:
-  - search
+  - search:
+      separator: '[\s\-,:!=\[\]()"`/]+|\.(?!\d)|&[lg]t;|(?!\b)(?=[A-Z][a-z])'
   - markdownextradata:
       jinja_options:
         variable_start_string: '{{#'
         variable_end_string: '#}}'
+  - redirects:
+      redirect_maps:
+        # Asgardeo H1 filename case normalization
+        'security-announcements/cloud-security-bulletins/asgardeo/2025/Asgardeo-2025-H1.md': 'security-announcements/cloud-security-bulletins/asgardeo/2025/asgardeo-2025-h1.md'
+        # CVE-2024-0392 reassigned to WSO2-2023-2987
+        'security-announcements/security-advisories/2024/CVE-2024-0392.md': 'security-announcements/security-advisories/2024/WSO2-2023-2987.md'
+        # CVE-2010-4208 superseded by CVE-2013-6780 in-depth analysis
+        'security-announcements/cve-justifications/2025/CVE-2010-4208.md': 'security-announcements/cve-justifications/2025/CVE-2013-6780.md'
+        # public-artifacts section retired; point to docs root
+        'public-artifacts/index.md': 'index.md'
+        # security-processes hub retired; sub-pages remain reachable from nav and home cards
+        'security-processes/index.md': 'index.md'
+        # security-guidelines top-level hub retired; sub-sections remain reachable
+        'security-guidelines/index.md': 'index.md'
+        # security-announcements top-level hub retired; sub-sections remain reachable and are linked from wso2.com/security
+        'security-announcements/index.md': 'index.md'
+        # Secure-coding guide history: original stack-split → unified guide with content tabs
+        'security-guidelines/secure-engineering-guidelines/secure-coding-guidlines/general-recommendations-for-secure-coding.md': 'security-guidelines/secure-engineering-guidelines/secure-coding-guidlines/secure-coding-guide.md'
+        'security-guidelines/secure-engineering-guidelines/secure-coding-guidlines/principles.md': 'security-guidelines/secure-engineering-guidelines/secure-coding-guidlines/secure-coding-guide.md'
+        'security-guidelines/secure-engineering-guidelines/secure-coding-guidlines/java-stack.md': 'security-guidelines/secure-engineering-guidelines/secure-coding-guidlines/secure-coding-guide.md'
+        'security-guidelines/secure-engineering-guidelines/secure-coding-guidlines/go-stack.md': 'security-guidelines/secure-engineering-guidelines/secure-coding-guidlines/secure-coding-guide.md'
+        'security-guidelines/secure-engineering-guidelines/secure-coding-guidlines/owasp-t10-2017-prevention.md': 'security-guidelines/secure-engineering-guidelines/secure-coding-guidlines/owasp-t10-2025-prevention.md'
+        'security-guidelines/secure-engineering-guidelines/secure-coding-guidlines/owasp-t10-2013-prevention.md': 'security-guidelines/secure-engineering-guidelines/secure-coding-guidlines/owasp-t10-2025-prevention.md'
+        'security-guidelines/secure-engineering-guidelines/secure-coding-guidlines/owasp-mobile-t10-prevention.md': 'security-guidelines/secure-engineering-guidelines/secure-coding-guidlines/owasp-t10-2025-prevention.md'
+  - minify:
+      minify_html: true
+      minify_js: true
+      minify_css: true
+      htmlmin_opts:
+        remove_comments: true
+  - glightbox:
+      touchNavigation: true
+      loop: false
+      effect: zoom
+      slide_effect: slide
+      width: 100%
+      height: auto
+      zoomable: true
+      draggable: true
+      skip_classes:
+        - skip-lightbox
+      auto_caption: false
+      caption_position: bottom
+  - include-markdown
+  - exclude:
+      glob:
+        - wip/*
 
 # Extra
 extra_css:
-  - assets/lib/highlightjs/default.min.css
   - assets/css/theme.css
-extra_javascript:
-  - assets/lib/highlightjs/highlight.min.js
-  - assets/js/theme.js
-  - assets/lib/backtotop/js/util.js
-  - assets/lib/backtotop/js/main.js
 extra:
   social:
-    - type: github
+    - icon: fontawesome/brands/github
       link: https://github.com/wso2
-    - type: twitter
+    - icon: fontawesome/brands/twitter
       link: https://twitter.com/wso2
-    - type: linkedin
+    - icon: fontawesome/brands/linkedin
       link: https://www.linkedin.com/company/wso2
   site_version: 1.0.0
   cp_timeframe: 2015-2023
-  base_path: 'https://security.docs.wso2.com/en/latest'    # base path prod
-  # base_path: ''                                             # base path dev
+  # Root-relative so links resolve under both prod (security.docs.wso2.com/en/latest/)
+  # and the local dev server, which mkdocs serves under /en/latest/ because of site_url.
+  base_path: '/en/latest'
   nav_list:
-    - WSO2 Security and Compliance Documentation
+    - Home
     - Security Processes
     - Security Guidelines
     - Security Announcements
     - Security Reporting
+
+  nav_icons:
+    Home:
+      icon: octicons/home-16
+      level: 1
+    Security Processes:
+      icon: octicons/workflow-16
+      level: 1
+    Security Guidelines:
+      icon: octicons/book-16
+      level: 1
+    Security Reporting:
+      icon: octicons/megaphone-16
+      level: 1
+    Security Announcements:
+      icon: octicons/shield-check-16
+      level: 1
+
+  expanded_navs:
+    - title: Security Processes
+      options:
+        - verticle-line
+    - title: Security Guidelines
+      options:
+        - verticle-line
+        - divider
+    - title: Security Reporting
+      options:
+        - verticle-line
+    - title: Security Announcements
+      options:
+        - verticle-line
+        - divider
