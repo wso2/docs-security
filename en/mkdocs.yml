@@ -476,6 +476,8 @@ nav:
       - '': 'security-announcements/cve-justifications/index.md'
       - '2026':
         - '': 'security-announcements/cve-justifications/2026/index.md'
+        - 'CVE-2026-41851': 'security-announcements/cve-justifications/2026/CVE-2026-41851.md'
+        - 'CVE-2026-41848': 'security-announcements/cve-justifications/2026/CVE-2026-41848.md'
         - 'GHSA-72hv-8253-57qq': 'security-announcements/cve-justifications/2026/GHSA-72hv-8253-57qq.md'
         - 'CVE-2026-2332': 'security-announcements/cve-justifications/2026/CVE-2026-2332.md'
         - 'CVE-2025-11143': 'security-announcements/cve-justifications/2026/CVE-2025-11143.md'
