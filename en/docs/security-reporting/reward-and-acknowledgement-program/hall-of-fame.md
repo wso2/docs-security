@@ -18,6 +18,7 @@ For the in-scope products and services, qualifying criteria, and reward terms, s
 | [Abhishek Karle](https://linktr.ee/abhishekkarle)                                                           |
 | [Alex Williams from Pellera Technologies](https://www.linkedin.com/in/alexanderwilliamscyber)               |
 | [Claire Wang](https://clairewang.net/)                                                                      |
+| [crnkovic](https://crnkovic.dev/?__mt=19dde3abd10654-0e2881c76f74f4-18525631-1d73c0)                        |
 | **Ethan Havinga**                                                                                           |
 | [Hacktron Team](https://www.hacktron.ai/)                                                                   |
 | [Lasantha Karunarathne](https://www.linkedin.com/in/lasakaru/)                                              |
@@ -27,7 +28,7 @@ For the in-scope products and services, qualifying criteria, and reward terms, s
 | **Nishant Lungare**                                                                                         |
 | **Omri Inbar**                                                                                              |
 | [Robert C. Raducioiu](https://it.linkedin.com/in/rbct)                                                      |
-| [San Gil from Security Office](https://securityoffice.io/)                                              |
+| [San Gil from Security Office](https://securityoffice.io/)                                                  |
 | [Suraj Theekshana and Ishan Nim (株式会社CyberCrew)](https://cyber.spool.co.jp/)                             |
 | [Thinh Dang](https://www.linkedin.com/in/thinh-dang-bb4b72170/)                                             |
 
