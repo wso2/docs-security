@@ -13,7 +13,9 @@ WSO2 maintains a reward and acknowledgement program to recognize security resear
 
 ## Products and services in scope
 
-The program covers WSO2 platforms and any product within a platform, along with WSO2 Solutions. A product is in scope only when it has an Available or Deprecated version that is within Full Support in the [WSO2 Support Matrix](https://wso2.com/products/support-matrix/); versions outside Full Support are out of scope.
+The program covers the products listed under the [WSO2 platforms](https://wso2.com/#all-products). A product is in scope only when it has an Available or Deprecated version that is within Full Support according to the [WSO2 Support Matrix](https://wso2.com/products/support-matrix/); versions outside of Full Support are strictly out of scope. 
+In addition to these products, WSO2 Solutions are also in scope for the acknowledgement program.
+
 
 The platforms are:
 
@@ -23,7 +25,7 @@ The platforms are:
 * Identity Platform
 * Engineering Platform
 
-See [WSO2 Products](https://wso2.com/products/) for the current products, platforms, and Solutions.
+See [WSO2 Products](https://wso2.com/products/downloads/) for the current products, platforms, and Solutions. For Ballerina, vulnerability scope is governed by the [Ballerina Security Policy](https://ballerina.io/security-policy/).
 
 Internal staging environments, demo sites, WSO2-operated websites (e.g. wso2.com), and any customer-owned deployment of WSO2 software are out of scope.
 

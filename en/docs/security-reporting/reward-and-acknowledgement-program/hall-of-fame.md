@@ -13,23 +13,25 @@ For the in-scope products and services, qualifying criteria, and reward terms, s
 
 ### WSO2 Products and Infrastructure
 
-|                                                                                                             |
-| :---------------------------------------------------------------------------------------------------------- |
-| [Abhishek Karle](https://linktr.ee/abhishekkarle)                                                           |
-| [Alex Williams from Pellera Technologies](https://www.linkedin.com/in/alexanderwilliamscyber)               |
-| [Claire Wang](https://clairewang.net/)                                                                      |
-| **Ethan Havinga**                                                                                           |
-| [Hacktron Team](https://www.hacktron.ai/)                                                                   |
-| [Lasantha Karunarathne](https://www.linkedin.com/in/lasakaru/)                                              |
-| [Maneesha Dewmina](https://www.linkedin.com/in/maneesha-dewmina/)                                           |
-| [Manisha Dilshan](https://www.linkedin.com/in/manisha-dilshan-b08ba3215)                                    |
-| [Michał Majchrowicz, Marcin Wyczechowski, and Paweł Zdunek — members of the AFINE Team](https://afine.com/) |
-| **Nishant Lungare**                                                                                         |
-| **Omri Inbar**                                                                                              |
-| [Robert C. Raducioiu](https://it.linkedin.com/in/rbct)                                                      |
+|                                                                                                                      |
+| :------------------------------------------------------------------------------------------------------------------- |
+| [Abhishek Karle](https://linktr.ee/abhishekkarle)                                                                    |
+| [Alex Williams from Pellera Technologies](https://www.linkedin.com/in/alexanderwilliamscyber)                        |
+| [Claire Wang](https://clairewang.net/)                                                                               |
+| [Damir](https://github.com/Evelynkaz)                                                                               |
+| **Ethan Havinga**                                                                                                    |
+| [Hacktron Team](https://www.hacktron.ai/)                                                                            |
+| [Lasantha Karunarathne](https://www.linkedin.com/in/lasakaru/)                                                       |
+| [Maneesha Dewmina](https://www.linkedin.com/in/maneesha-dewmina/)                                                    |
+| [Manisha Dilshan](https://www.linkedin.com/in/manisha-dilshan-b08ba3215)                                             |
+| [Michał Majchrowicz, Marcin Wyczechowski, and Paweł Zdunek — members of the AFINE Team](https://afine.com/)          |
+| **Nishant Lungare**                                                                                                  |
+| **Omri Inbar**                                                                                                       |
+| **Rock Jein**                                                                                                        |
+| [Robert C. Raducioiu](https://it.linkedin.com/in/rbct)                                                               |
 | [San Gil from Security Office](https://securityoffice.io/)                                              |
-| [Suraj Theekshana and Ishan Nim (株式会社CyberCrew)](https://cyber.spool.co.jp/)                             |
-| [Thinh Dang](https://www.linkedin.com/in/thinh-dang-bb4b72170/)                                             |
+| [Suraj Theekshana and Ishan Nim (株式会社CyberCrew)](https://cyber.spool.co.jp/)                                      |
+| [Thinh Dang](https://www.linkedin.com/in/thinh-dang-bb4b72170/)                                                      |
 
 
 
@@ -43,12 +45,13 @@ For the in-scope products and services, qualifying criteria, and reward terms, s
 
 
 
-### Choreo
+### WSO2 Developer Platform
 
 |                                                        |
 | :----------------------------------------------------- |
 | [AGS Lakpahana](https://www.linkedin.com/in/lakpahana) |
 | [Alex Roger from Laburity](https://laburity.com)       |
+| **Nishant Lungare**                                    |
 | **Omri Inbar**                                         |
 
 
@@ -82,7 +85,7 @@ For the in-scope products and services, qualifying criteria, and reward terms, s
 
 
 
-### Choreo
+### WSO2 Developer Platform
 
 |                                                                               |
 | :-----------------------------------------------------------------------------|
@@ -229,7 +232,7 @@ For the in-scope products and services, qualifying criteria, and reward terms, s
 | [Zakaria BRAHIMI](https://www.linkedin.com/in/zakaria-brahimi)                                                                         |
 
 
-### Choreo
+### WSO2 Developer Platform
 
 |                                                                               |
 | :-----------------------------------------------------------------------------|
