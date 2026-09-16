@@ -55,6 +55,26 @@ For the in-scope products and services, qualifying criteria, and reward terms, s
 | **Omri Inbar**                                         |
 
 
+### WSO2 Security Hackathon 2026
+
+|                             |
+| :---------------------------|
+| Anju Chamantha              |
+| Ashirwada Dayarathne        |
+| Dehami Koswatte             |
+| Dinuwan Kalubowila          |
+| Kavindu Nilshan             |
+| Ramiiyan Sriraguhan         |
+| Ranuga Gamage               |
+| Rivindu Madushan            |
+| Sanjula Madurapperuma       |
+| Sankeerthan Kasilingam      |
+| Seralahthan Vivekaananthan  |
+| Tharsanan Kurukulasingam    |
+| Vinicius Fraga              |
+| Vimukthi Rajapaksha         |
+
+
 ## 2025
 
 ### WSO2 Products and Infrastructure
@@ -103,21 +123,21 @@ For the in-scope products and services, qualifying criteria, and reward terms, s
 |                        |
 | :--------------------- |
 | Anshajanth Yoganathan  |
-| Sajith Ekanayaka       |
-| Dehami Koswatte        |
-| Samindu Cooray         |
-| Thilan Dissanayaka     |
-| Tharaka Wijekoon       |
-| Sachith Manchanayaka   |
 | Chandima Jayawickrama  |
 | Chathura Ranathunga    |
-| Mifraz Murthaja        |
-| Ushani Athukorala      |
+| Dehami Koswatte        |
+| Dinithi Amarasinghe    |
+| Hasitha Pathirana      |
 | Janitha Senevirathna   |
 | Lahiru Samaranayaka    |
-| Dinithi Amarasinghe    |
+| Mifraz Murthaja        |
 | Prabod Dunuwila        |
-| Hasitha Pathirana      |
+| Sachith Manchanayaka   |
+| Sajith Ekanayaka       |
+| Samindu Cooray         |
+| Tharaka Wijekoon       |
+| Thilan Dissanayaka     |
+| Ushani Athukorala      |
 
 
 ## 2024
