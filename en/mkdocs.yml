@@ -104,6 +104,7 @@ nav:
       - '': 'security-announcements/security-advisories/index.md'
       - '2026 Advisories':
         - '': 'security-announcements/security-advisories/2026/2026-advisories.md'
+        - 'WSO2-2026-5854': 'security-announcements/security-advisories/2026/WSO2-2026-5854.md'
         - 'WSO2-2026-5328': 'security-announcements/security-advisories/2026/WSO2-2026-5328.md'
         - 'WSO2-2026-5236': 'security-announcements/security-advisories/2026/WSO2-2026-5236.md'
         - 'WSO2-2026-5212': 'security-announcements/security-advisories/2026/WSO2-2026-5212.md'
