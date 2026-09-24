@@ -112,7 +112,7 @@ Write every date as `Month D, YYYY`, for example `September 15, 2026`. This appl
 
 Write `September 15` when the year is clear from context, and `September 2026` when the day is not needed.
 
-A pull request check fails when a date uses any other format. To run the check locally, run the following command from the repository root:
+A pull request check fails when a Markdown file that the pull request adds or changes contains a date in any other format. To check all files locally, run the following command from the repository root:
 
 ```shell
 $ python3 .github/scripts/check_date_format.py

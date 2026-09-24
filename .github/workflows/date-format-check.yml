@@ -7,6 +7,7 @@ on:
   push:
     branches:
       - main
+  workflow_dispatch:
 
 permissions:
   contents: read
@@ -23,8 +24,22 @@ jobs:
       - name: Check out code
         uses: actions/checkout@v4
         with:
+          # The merge commit and its parents, to list the files a PR changes.
+          fetch-depth: 2
           persist-credentials: false
 
-      # The script uses only the Python standard library.
+      # A pull request is checked only in the Markdown files it adds or changes,
+      # so a date that reached main some other way does not fail unrelated PRs.
+      # Pushes to main, manual runs, and PRs that change the checker check every
+      # file. The script uses only the Python standard library.
       - name: Check date format
-        run: python3 .github/scripts/check_date_format.py
+        shell: bash
+        run: |
+          checker=.github/scripts/check_date_format.py
+          if [ "$GITHUB_EVENT_NAME" = pull_request ] && git diff --quiet HEAD^1 HEAD -- "$checker"; then
+            echo "Checking the Markdown files this pull request adds or changes."
+            git diff -z --name-only --diff-filter=ACMR HEAD^1 HEAD -- 'en/docs/*.md' '.announcement-templates/*.md' \
+              | xargs -0 -r python3 "$checker" --
+          else
+            python3 "$checker"
+          fi
