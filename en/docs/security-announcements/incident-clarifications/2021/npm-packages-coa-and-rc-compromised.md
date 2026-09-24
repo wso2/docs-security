@@ -11,7 +11,7 @@ category: security-announcements
 ---
 
 ### Reported Incident
-NPM package **coa** and **rc** poissonate security breach were identified on November 04, 2021. In addition, The security advisories[^1][^2] were published on November 04, 2021.
+NPM package **coa** and **rc** poissonate security breach were identified on November 4, 2021. In addition, The security advisories[^1][^2] were published on November 4, 2021.
 
 WSO2 uses the coa and rc Javascript libraries in multiple WSO2 products and services. 
 
