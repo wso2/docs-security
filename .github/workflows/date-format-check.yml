@@ -1,0 +1,30 @@
+name: Date Format Check
+
+# No paths filter: a required check that is skipped by a filter stays pending
+# and blocks the merge.
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: read
+
+concurrency:
+  group: date-format-check-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  date-format:
+    name: Check date format
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+
+      # The script uses only the Python standard library.
+      - name: Check date format
+        run: python3 .github/scripts/check_date_format.py

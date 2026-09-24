@@ -102,6 +102,26 @@ Follow the steps below to clone the Security & Compliance documentation GitHub r
 >
 > `strict: true` 
 
+## Date format
+
+Write every date as `Month D, YYYY`, for example `September 15, 2026`. This applies to front matter fields such as `published`, `updated`, and `date`, to the `Published` and `Updated` lines, and to dates in the page body.
+
+* Spell out the month.
+* Do not zero-pad the day. Write `July 4, 2026`, not `July 04, 2026`.
+* Do not use ordinals or numeric dates, such as `4th`, `2026-09-15`, or `09/15/2026`.
+
+Write `September 15` when the year is clear from context, and `September 2026` when the day is not needed.
+
+A pull request check fails when a date uses any other format. To run the check locally, run the following command from the repository root:
+
+```shell
+$ python3 .github/scripts/check_date_format.py
+```
+
+Add `--fix` to correct the dates that can be converted without guessing. The check lists the rest, such as ambiguous numeric dates, for a manual fix.
+
+The check skips code blocks, inline code, and URLs. To keep a date in another format on purpose, such as in a quoted HTTP header, put it in inline code or between `<!-- date-check: off -->` and `<!-- date-check: on -->`.
+
 ## License
 
 Licenses this source under the Apache License, Version 2.0 ([LICENSE](LICENSE)), You may not use this file except in compliance with the License.
