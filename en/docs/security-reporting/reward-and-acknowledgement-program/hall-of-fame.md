@@ -18,9 +18,11 @@ For the in-scope products and services, qualifying criteria, and reward terms, s
 | [Abhishek Karle](https://linktr.ee/abhishekkarle)                                                                    |
 | [Alex Williams from Pellera Technologies](https://www.linkedin.com/in/alexanderwilliamscyber)                        |
 | [Claire Wang](https://clairewang.net/)                                                                               |
-| [Damir](https://github.com/Evelynkaz)                                                                               |
+| [Damir](https://github.com/Evelynkaz)                                                                                |
+| **Dnyaneshwar Chandanshiv**                                                                                          |
 | **Ethan Havinga**                                                                                                    |
 | [Hacktron Team](https://www.hacktron.ai/)                                                                            |
+| **Haoxucu**                                                                                                          |
 | [Lasantha Karunarathne](https://www.linkedin.com/in/lasakaru/)                                                       |
 | [Maneesha Dewmina](https://www.linkedin.com/in/maneesha-dewmina/)                                                    |
 | [Manisha Dilshan](https://www.linkedin.com/in/manisha-dilshan-b08ba3215)                                             |
@@ -29,7 +31,7 @@ For the in-scope products and services, qualifying criteria, and reward terms, s
 | **Omri Inbar**                                                                                                       |
 | **Rock Jein**                                                                                                        |
 | [Robert C. Raducioiu](https://it.linkedin.com/in/rbct)                                                               |
-| [San Gil from Security Office](https://securityoffice.io/)                                              |
+| [San Gil from Security Office](https://securityoffice.io/)                                                           |
 | [Suraj Theekshana and Ishan Nim (株式会社CyberCrew)](https://cyber.spool.co.jp/)                                      |
 | [Thinh Dang](https://www.linkedin.com/in/thinh-dang-bb4b72170/)                                                      |
 
@@ -53,6 +55,16 @@ For the in-scope products and services, qualifying criteria, and reward terms, s
 | [Alex Roger from Laburity](https://laburity.com)       |
 | **Nishant Lungare**                                    |
 | **Omri Inbar**                                         |
+| **Rock Jein**                                          |
+
+
+### WSO2 Integration Platform
+
+|                                                                                                   |
+| :------------------------------------------------------------------------------------------------ |
+| [Lakshitha perera](https://www.linkedin.com/in/lakshitha-perera-687857352)                        |
+| [Mykhailo Kholiev](https://www.linkedin.com/in/mykhailo-kholiev-41b43b3b1/)                       |
+| [Sanjula Lakpahana](https://www.linkedin.com/in/lakpahana)                                        |
 
 
 ### WSO2 Security Hackathon 2026
