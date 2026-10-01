@@ -62,7 +62,7 @@ For the in-scope products and services, qualifying criteria, and reward terms, s
 
 |                                                                                                   |
 | :------------------------------------------------------------------------------------------------ |
-| [Lakshitha perera](https://www.linkedin.com/in/lakshitha-perera-687857352)                        |
+| [Lakshitha Perera](https://www.linkedin.com/in/lakshitha-perera-687857352)                        |
 | [Mykhailo Kholiev](https://www.linkedin.com/in/mykhailo-kholiev-41b43b3b1/)                       |
 | [Sanjula Lakpahana](https://www.linkedin.com/in/lakpahana)                                        |
 
