@@ -1,0 +1,49 @@
+name: Broken Link Checker
+
+on:
+  workflow_dispatch:
+    inputs:
+      siteUrl:
+        description: 'Site URL to check'
+        default: 'https://security.docs.wso2.com/en/latest/'
+        required: true
+  schedule:
+    - cron: '30 2 * * *'  # daily at 02:30 UTC
+
+env:
+  DEFAULT_URL: 'https://security.docs.wso2.com/en/latest/'
+
+jobs:
+  linkchecker:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Skip on forks for scheduled runs
+        if: github.event_name == 'schedule' && github.repository != 'wso2/docs-security'
+        run: |
+          echo "Scheduled run disabled for forks."
+          exit 0
+
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install linkchecker
+        run: pip install linkchecker
+
+      - name: Run link checker
+        env:
+          SITE_URL: ${{ inputs.siteUrl || env.DEFAULT_URL }}
+        run: linkchecker -F html "$SITE_URL" --threads=100 --no-warnings
+        continue-on-error: true
+
+      - name: Upload report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: linkchecker-report
+          path: linkchecker-out.html
+          if-no-files-found: ignore

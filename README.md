@@ -7,31 +7,29 @@ To see the **latest released documentation** for the WSO2 Security & Compliance 
 
 ### Step 1 - Install Python
 
-If you are using MacOS, you probably already have a version of Python installed on your machine. You can verify this by running the following command.
+This project requires **Python 3.8.0**. You can verify the version installed on your machine by running the following command.
 
 ```shell
-$ python --version
-Python 2.7.2
+$ python3 --version
+Python 3.8.0
 ```
 
-If your version of Python is Python 2.x.x, you also need to install Python3. This is because the PDF plugin only supports Python3. Follow the instructions in [this guide](https://docs.python-guide.org/starting/install3/osx/) to install Python3 properly.
-
-After completing the above, you will have two versions of Python on your machine; a version of python2 and a version of python3.
+If Python 3.8.0 is not installed, download it from [python.org/downloads](https://www.python.org/downloads/) or use your platform's package manager. The pinned dependencies support Python 3.8 to 3.12; Python 3.13 and later are not yet supported.
 
 ### Step 2 - Install Pip
 >
 > **INFO**
 >
-> If pip is not already installed on your machine, download `get-pip.py` to install pip for the first time. Then run the following command to install it:
+> Python 3.8.0 includes pip by default. If pip is missing, download `get-pip.py` and run the following command to install it:
 > ```shell
-> $ python get-pip.py
+> $ python3 get-pip.py
 > ```
 >
 
 Pip is most likely installed by default. However, you may need to upgrade pip to the latest version:
 
 ```shell
-$ pip install --upgrade pip
+$ pip3 install --upgrade pip
 ```
 
 ### Step 3 - Install the pip packages
@@ -46,17 +44,9 @@ $ pip install --upgrade pip
 
     This will install MkDocs and the required theme, extensions, and plugins.
 
-    - If you are using Python2, use the following command:
-
-      ```shell
-      $ pip install -r requirements.txt
-      ```
-
-    - If you are using Python3, use the following command:
-
-      ```shell
-      $ pip3 install -r requirements.txt
-      ```
+    ```shell
+    $ pip3 install -r requirements.txt
+    ```
 
 ### Step 4 - Run MkDocs
 
@@ -111,6 +101,26 @@ Follow the steps below to clone the Security & Compliance documentation GitHub r
 > If you were running the `mkdocs serve --dirtyreload` command to run the MkDocs server, make sure to change the configuration in the `mkdocs.yml` file as follows before sending a pull request.
 >
 > `strict: true` 
+
+## Date format
+
+Write every date as `Month D, YYYY`, for example `September 15, 2026`. This applies to front matter fields such as `published`, `updated`, and `date`, to the `Published` and `Updated` lines, and to dates in the page body.
+
+* Spell out the month.
+* Do not zero-pad the day. Write `July 4, 2026`, not `July 04, 2026`.
+* Do not use ordinals or numeric dates, such as `4th`, `2026-09-15`, or `09/15/2026`.
+
+Write `September 15` when the year is clear from context, and `September 2026` when the day is not needed.
+
+A pull request check fails when a Markdown file that the pull request adds or changes contains a date in any other format. To check all files locally, run the following command from the repository root:
+
+```shell
+$ python3 .github/scripts/check_date_format.py
+```
+
+Add `--fix` to correct the dates that can be converted without guessing. The check lists the rest, such as ambiguous numeric dates, for a manual fix.
+
+The check skips code blocks, inline code, and URLs. To keep a date in another format on purpose, such as in a quoted HTTP header, put it in inline code or between `<!-- date-check: off -->` and `<!-- date-check: on -->`.
 
 ## License
 

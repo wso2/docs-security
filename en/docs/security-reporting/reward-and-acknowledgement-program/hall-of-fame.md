@@ -5,13 +5,9 @@ category: security-reporting
 
 # Security Hall of Fame
 
-WSO2 is pleased to recognize the security researchers who have helped in making WSO2 products and services safer by 
-finding and responsibly reporting security vulnerabilities. Each name listed here represents an individual or a company 
-that has reported one or more security vulnerabilities in our products or services and worked with us to rectify the issue.
+The researchers and companies listed below have helped make WSO2 products and services safer by responsibly disclosing security vulnerabilities. Each entry represents one or more reports against WSO2 products or services that the reporter worked with WSO2 to resolve.
 
-However, please note that WSO2-maintained websites (including wso2.com) are currently not considered for proceeding 
-with acknowledgement. Refer to our [Security Reward and Acknowledgement Program](index.md) to learn more about our 
-security researcher community relationship.
+For the in-scope products and services, qualifying criteria, and reward terms, see the [Reward and Acknowledgement Program](index.md).
 
 ## 2026
 
@@ -22,15 +18,20 @@ security researcher community relationship.
 | [Abhishek Karle](https://linktr.ee/abhishekkarle)                                                                    |
 | [Alex Williams from Pellera Technologies](https://www.linkedin.com/in/alexanderwilliamscyber)                        |
 | [Claire Wang](https://clairewang.net/)                                                                               |
+| [Damir](https://github.com/Evelynkaz)                                                                                |
+| **Dnyaneshwar Chandanshiv**                                                                                          |
 | **Ethan Havinga**                                                                                                    |
 | [Hacktron Team](https://www.hacktron.ai/)                                                                            |
+| **Haoxucu**                                                                                                          |
 | [Lasantha Karunarathne](https://www.linkedin.com/in/lasakaru/)                                                       |
 | [Maneesha Dewmina](https://www.linkedin.com/in/maneesha-dewmina/)                                                    |
 | [Manisha Dilshan](https://www.linkedin.com/in/manisha-dilshan-b08ba3215)                                             |
 | [Michał Majchrowicz, Marcin Wyczechowski, and Paweł Zdunek — members of the AFINE Team](https://afine.com/)          |
 | **Nishant Lungare**                                                                                                  |
 | **Omri Inbar**                                                                                                       |
+| **Rock Jein**                                                                                                        |
 | [Robert C. Raducioiu](https://it.linkedin.com/in/rbct)                                                               |
+| [San Gil from Security Office](https://securityoffice.io/)                                                           |
 | [Suraj Theekshana and Ishan Nim (株式会社CyberCrew)](https://cyber.spool.co.jp/)                                      |
 | [Thinh Dang](https://www.linkedin.com/in/thinh-dang-bb4b72170/)                                                      |
 
@@ -46,13 +47,44 @@ security researcher community relationship.
 
 
 
-### Choreo
+### WSO2 Developer Platform
 
 |                                                        |
 | :----------------------------------------------------- |
 | [AGS Lakpahana](https://www.linkedin.com/in/lakpahana) |
 | [Alex Roger from Laburity](https://laburity.com)       |
+| **Nishant Lungare**                                    |
 | **Omri Inbar**                                         |
+| **Rock Jein**                                          |
+
+
+### WSO2 Integration Platform
+
+|                                                                                                   |
+| :------------------------------------------------------------------------------------------------ |
+| [Lakshitha Perera](https://www.linkedin.com/in/lakshitha-perera-687857352)                        |
+| [Mykhailo Kholiev](https://www.linkedin.com/in/mykhailo-kholiev-41b43b3b1/)                       |
+| [Sanjula Lakpahana](https://www.linkedin.com/in/lakpahana)                                        |
+
+
+### WSO2 Security Hackathon 2026
+
+|                             |
+| :---------------------------|
+| Anju Chamantha              |
+| Ashirwada Dayarathne        |
+| Dehami Koswatte             |
+| Dinuwan Kalubowila          |
+| Kavindu Nilshan             |
+| Ramiiyan Sriraguhan         |
+| Ranuga Gamage               |
+| Rivindu Madushan            |
+| Sanjula Madurapperuma       |
+| Sankeerthan Kasilingam      |
+| Seralahthan Vivekaananthan  |
+| Tharsanan Kurukulasingam    |
+| Vinicius Fraga              |
+| Vimukthi Rajapaksha         |
 
 
 ## 2025
@@ -85,7 +117,7 @@ security researcher community relationship.
 
 
 
-### Choreo
+### WSO2 Developer Platform
 
 |                                                                               |
 | :-----------------------------------------------------------------------------|
@@ -103,21 +135,21 @@ security researcher community relationship.
 |                        |
 | :--------------------- |
 | Anshajanth Yoganathan  |
-| Sajith Ekanayaka       |
-| Dehami Koswatte        |
-| Samindu Cooray         |
-| Thilan Dissanayaka     |
-| Tharaka Wijekoon       |
-| Sachith Manchanayaka   |
 | Chandima Jayawickrama  |
 | Chathura Ranathunga    |
-| Mifraz Murthaja        |
-| Ushani Athukorala      |
+| Dehami Koswatte        |
+| Dinithi Amarasinghe    |
+| Hasitha Pathirana      |
 | Janitha Senevirathna   |
 | Lahiru Samaranayaka    |
-| Dinithi Amarasinghe    |
+| Mifraz Murthaja        |
 | Prabod Dunuwila        |
-| Hasitha Pathirana      |
+| Sachith Manchanayaka   |
+| Sajith Ekanayaka       |
+| Samindu Cooray         |
+| Tharaka Wijekoon       |
+| Thilan Dissanayaka     |
+| Ushani Athukorala      |
 
 
 ## 2024
@@ -232,7 +264,7 @@ security researcher community relationship.
 | [Zakaria BRAHIMI](https://www.linkedin.com/in/zakaria-brahimi)                                                                         |
 
 
-### Choreo
+### WSO2 Developer Platform
 
 |                                                                               |
 | :-----------------------------------------------------------------------------|

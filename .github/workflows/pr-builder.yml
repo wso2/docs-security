@@ -1,0 +1,37 @@
+name: PR Builder
+
+on:
+  pull_request:
+    paths:
+      - 'en/**'
+      - '.github/workflows/pr-builder.yml'
+
+concurrency:
+  group: pr-builder-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    # Python 3.8 (the WSO2 docs builder version) is not available on ubuntu-latest (24.04) runners.
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.8'
+          cache: pip
+          cache-dependency-path: en/requirements.txt
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r en/requirements.txt
+
+      - name: Build docs
+        working-directory: en
+        run: mkdocs build
