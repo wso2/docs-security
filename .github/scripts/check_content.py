@@ -31,7 +31,7 @@ Every page:
 
 Security advisories (security-advisories/<year>/WSO2-*.md):
 
-    advisory-id      the title does not name the advisory in the file name
+    advisory-id      the title or heading does not name the advisory in the file name
     repeated-info    the page repeats its heading or Published, Updated, Version,
                      Severity, CVSS, or CVE IDs lines; the build renders them from
                      front matter. --fix removes them when they match front matter,
@@ -41,6 +41,10 @@ Security advisories (security-advisories/<year>/WSO2-*.md):
                      Low, Informative, Not Applicable), cvss ("9.8 (CVSS:3.1/...)" or
                      Not Applicable)                                      (--fix for
                      N/A, lowercase severity, 1.0 versions, and stray spaces)
+    cvss-score       the cvss score differs from the base score of its CVSS 3.0 or 3.1
+                     vector (CVSS 4.0 vectors are not checked)
+    severity-score   the severity differs from the rating of the cvss score: Low 0.1
+                     to 3.9, Medium 4.0 to 6.9, High 7.0 to 8.9, Critical 9.0 to 10.0
     year-folder      the published year differs from the year folder
     duplicate-id     the advisory ID exists in more than one year folder
     listing          the advisory is missing from its yearly list or from the nav
@@ -69,6 +73,7 @@ Requires Python 3.8 or later and no third-party packages.
 import argparse
 import bisect
 import collections
+import math
 import os
 import posixpath
 import re
@@ -252,6 +257,9 @@ def check_advisory(page, site, year, advisory_id):
 
     shown = INFO_LINE.findall(page.body)
     heading = HEADING.match(page.body)
+    if heading and any(found != advisory_id for found in re.findall(r"WSO2-\d{4}-\d{4}", heading.group(1))):
+        findings.append(Finding("advisory-id", page.meta_end + heading.start(1),
+                                "the heading must name {} (found \"{}\")".format(advisory_id, heading.group(1))))
     if shown or (heading and re.match(r"(?i)security advisory\b", heading.group(1))):
         repeated = (["heading"] if heading else []) + shown
         findings.append(Finding("repeated-info", page.meta_end + (heading.start() if heading else 0),
@@ -282,6 +290,15 @@ def check_advisory(page, site, year, advisory_id):
     elif cvss != "Not Applicable" and not CVSS.match(cvss):
         findings.append(Finding("field-format", line["cvss"], "write cvss as \"9.8 (CVSS:3.1/...)\" or Not "
                                 "Applicable (found \"{}\")".format(cvss), normalize_cvss(cvss) is not None))
+    elif cvss != "Not Applicable":
+        score, vector = float(cvss.split(" ", 1)[0]), cvss.split(" ", 1)[1][1:-1]
+        computed = cvss3_base_score(vector)
+        if computed is not None and computed != score:
+            findings.append(Finding("cvss-score", line["cvss"], "the vector {} gives a score of {}, not {}; correct "
+                                    "the score or the vector".format(vector, computed, cvss.split(" ", 1)[0])))
+        if severity in SEVERITIES[:4] and severity != cvss_rating(score):
+            findings.append(Finding("severity-score", line["severity"], "a CVSS score of {} is {}, but the severity "
+                                    "is {}".format(cvss.split(" ", 1)[0], cvss_rating(score), severity)))
     for key in meta:
         if key not in ("title", "category", "published", "updated", "version", "severity", "cvss",
                        "description", "seo_title"):
@@ -354,6 +371,41 @@ def normalize_cvss(value):
         return "Not Applicable"
     match = re.match(r"^(\d{1,2}(?:\.\d)?)\s*\(?\s*(CVSS:\d\.\d/[A-Za-z:/]+)\s*\)?$", value)
     return "{} ({})".format(match.group(1), match.group(2)) if match else None
+
+
+CVSS3_WEIGHTS = {"AV": {"N": 0.85, "A": 0.62, "L": 0.55, "P": 0.2}, "AC": {"L": 0.77, "H": 0.44},
+                 "UI": {"N": 0.85, "R": 0.62}, "C": {"H": 0.56, "L": 0.22, "N": 0.0}}
+
+
+def cvss3_base_score(vector):
+    """The base score of a CVSS 3.0 or 3.1 vector, as the FIRST specification defines it, or None."""
+    match = re.match(r"^CVSS:(3\.[01])/((?:[A-Z]+:[A-Z]/?)+)$", vector)
+    if not match:
+        return None
+    metrics = dict(part.split(":") for part in match.group(2).strip("/").split("/"))
+    try:
+        changed = {"U": False, "C": True}[metrics["S"]]
+        privileges = {"N": 0.85, "L": 0.68 if changed else 0.62, "H": 0.5 if changed else 0.27}[metrics["PR"]]
+        exploitability = (8.22 * CVSS3_WEIGHTS["AV"][metrics["AV"]] * CVSS3_WEIGHTS["AC"][metrics["AC"]] *
+                          privileges * CVSS3_WEIGHTS["UI"][metrics["UI"]])
+        c, i, a = (CVSS3_WEIGHTS["C"][metrics[key]] for key in ("C", "I", "A"))
+    except KeyError:
+        return None
+    base = 1 - (1 - c) * (1 - i) * (1 - a)
+    impact = 7.52 * (base - 0.029) - 3.25 * (base - 0.02) ** 15 if changed else 6.42 * base
+    if impact <= 0:
+        return 0.0
+    score = min(1.08 * (impact + exploitability) if changed else impact + exploitability, 10)
+    if match.group(1) == "3.0":
+        return math.ceil(score * 10) / 10
+    whole = int(round(score * 100000))
+    return whole / 100000.0 if whole % 10000 == 0 else (whole // 10000 + 1) / 10.0
+
+
+def cvss_rating(score):
+    if score == 0:
+        return "None"
+    return "Low" if score < 4 else "Medium" if score < 7 else "High" if score < 9 else "Critical"
 
 
 def standard(key, value):

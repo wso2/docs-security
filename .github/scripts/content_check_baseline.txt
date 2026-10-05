@@ -2,7 +2,7 @@
 # Each line is "<path under en/docs> <rule>". Remove the line once the problem is fixed;
 # the check lists lines that are no longer needed when it runs on all files.
 
-# WSO2-2019-0432 and WSO2-2019-0486 may be swapped. See ROADMAP.md section 3A.
+# WSO2-2019-0432 and WSO2-2019-0486 have each other's title, date, and CVSS. See ROADMAP.md section 3A.
 security-announcements/security-advisories/2019/WSO2-2019-0432.md advisory-id
 security-announcements/security-advisories/2019/WSO2-2019-0486.md advisory-id
 
@@ -18,6 +18,11 @@ security-announcements/security-advisories/2023/WSO2-2023-2617.md year-folder
 
 # The reporter name is missing. See ROADMAP.md section 3A.
 security-announcements/security-advisories/2020/WSO2-2020-0734.md placeholder
+
+# A severity or CVSS score that does not match the score or vector. See ROADMAP.md section 3A.
+security-announcements/security-advisories/2019/WSO2-2019-0647.md severity-score
+security-announcements/security-advisories/2025/WSO2-2024-3149.md cvss-score
+security-announcements/security-advisories/2025/WSO2-2025-3993.md severity-score
 
 # Front matter and the page disagree, or the page uses an older layout. See ROADMAP.md section 3A.
 security-announcements/security-advisories/2017/WSO2-2017-0255.md repeated-info
