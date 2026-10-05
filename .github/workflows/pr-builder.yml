@@ -6,6 +6,7 @@ on:
       - 'en/**'
       - '.github/workflows/pr-builder.yml'
       - '.github/scripts/check_internal_links.py'
+      - '.github/scripts/check_built_pages.py'
 
 concurrency:
   group: pr-builder-${{ github.ref }}
@@ -41,3 +42,8 @@ jobs:
       # broken links have to be caught in the build output.
       - name: Check internal links
         run: python .github/scripts/check_internal_links.py en/site
+
+      # Search engines index the menu on every page. Keep it to the open section
+      # and out of search result snippets.
+      - name: Check built pages
+        run: python .github/scripts/check_built_pages.py en/site
