@@ -152,9 +152,11 @@ Use these forms:
 * `severity` must match the CVSS rating of the score: Low for 0.1 to 3.9, Medium for 4.0 to 6.9, High for 7.0 to 8.9, and Critical for 9.0 to 10.0.
 * CVE justifications: `published`, not `date`
 
+Start the OVERVIEW with one sentence of up to 100 characters that names the vulnerability and where it is, such as "Reflected Cross-Site Scripting (XSS) vulnerability in the Management Console." The search title uses this sentence. Words such as "A potential" and "has been identified" are dropped from the title and do not count. Name the component or product instead of writing "the above-listed products".
+
 Name the advisory file after its ID, such as `WSO2-2026-5328.md`, and use the same ID in the title. Add every new advisory or CVE justification to its yearly list and to the `nav` in `en/mkdocs.yml`. A yearly list entry reads `WSO2-2026-5328 (CVE-2026-5430)`.
 
-A pull request check fails when a Markdown file that the pull request adds or changes has one of these problems, or a leftover template placeholder, an empty link, a link to a retired `docs.wso2.com/display/` page, a `{{#base_path#}}` page link without a trailing slash, or an image without alt text. To check all files locally, run the following command from the repository root:
+A pull request check fails when a Markdown file that the pull request adds or changes has one of these problems, or an OVERVIEW sentence that the search title cannot use, a leftover template placeholder, an empty link, a link to a retired `docs.wso2.com/display/` page, a `{{#base_path#}}` page link without a trailing slash, or an image without alt text. To check all files locally, run the following command from the repository root:
 
 ```shell
 $ python3 .github/scripts/check_content.py

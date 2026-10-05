@@ -32,6 +32,10 @@ Every page:
 Security advisories (security-advisories/<year>/WSO2-*.md):
 
     advisory-id      the title or heading does not name the advisory in the file name
+    overview-title   the first OVERVIEW sentence cannot be the search title: it is
+                     longer than 100 characters after the build drops words such as
+                     "A potential" and "has been identified", or it refers to "the
+                     above" products (en/hooks/seo.py, title_summary)
     repeated-info    the page repeats its heading or Published, Updated, Version,
                      Severity, CVSS, or CVE IDs lines; the build renders them from
                      front matter. --fix removes them when they match front matter,
@@ -74,6 +78,7 @@ Requires Python 3.8 or later and no third-party packages.
 import argparse
 import bisect
 import collections
+import importlib.util
 import math
 import os
 import posixpath
@@ -85,6 +90,17 @@ DOCS = os.path.join(REPO_ROOT, "en", "docs")
 MKDOCS = os.path.join(REPO_ROOT, "en", "mkdocs.yml")
 BASELINE = os.path.join(REPO_ROOT, ".github", "scripts", "content_check_baseline.txt")
 SCRIPT = ".github/scripts/check_content.py"
+
+
+def load_build_hook():
+    """The build hook, so that this check judges search titles exactly as the build makes them."""
+    spec = importlib.util.spec_from_file_location("seo_hook", os.path.join(REPO_ROOT, "en", "hooks", "seo.py"))
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    return module
+
+
+SEO = load_build_hook()
 
 ADVISORY_PATH = re.compile(r"security-announcements/security-advisories/(\d{4})/(WSO2-\d{4}-\d{4})\.md$")
 ADVISORY_LIST_PATH = re.compile(r"security-announcements/security-advisories/(\d{4})/\d{4}-advisories\.md$")
@@ -261,6 +277,22 @@ def check_advisory(page, site, year, advisory_id):
     if heading and any(found != advisory_id for found in re.findall(r"WSO2-\d{4}-\d{4}", heading.group(1))):
         findings.append(Finding("advisory-id", page.meta_end + heading.start(1),
                                 "the heading must name {} (found \"{}\")".format(advisory_id, heading.group(1))))
+
+    overview = SEO.advisory_overview(page.body)
+    summary, usable = SEO.title_summary(overview, drop_cves=bool(advisory_cves(page)))
+    if not usable:
+        section = re.search(r"^#{2,4}[ \t]+OVERVIEW\b", page.body, re.M)
+        at = page.meta_end + (section.start() if section else 0)
+        if not overview:
+            message = "add an OVERVIEW section; its first sentence is the search title"
+        elif re.search(r"(?i)\babove\b", summary):
+            message = ("the first OVERVIEW sentence refers to \"the above\" products, so the search title cannot use "
+                       "it; name the vulnerability and where it is")
+        else:
+            message = ("shorten the first OVERVIEW sentence to {} characters or fewer; the search title uses it (it "
+                       "has {} after the build drops words such as \"A potential\")".format(
+                           SEO.TITLE_SUMMARY_LIMIT, len(summary)))
+        findings.append(Finding("overview-title", at, message))
     if shown or (heading and re.match(r"(?i)security advisory\b", heading.group(1))):
         repeated = (["heading"] if heading else []) + shown
         findings.append(Finding("repeated-info", page.meta_end + (heading.start() if heading else 0),
