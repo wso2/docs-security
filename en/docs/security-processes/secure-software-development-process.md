@@ -10,7 +10,7 @@ version: 2.2
 
 Security is not an afterthought at WSO2. It's an integral part of each phase in the development life cycle. This ensures that security vulnerabilities are identified and mitigated as early as possible.
 
-![secure-software-development-process](../assets/images/product-security/secure-software-development-process-overall-v2.png)
+![WSO2 secure software development process: secure design review, developer self-review, and code review guided by the WSO2 Secure Engineering Guidelines, followed by static, dynamic, and third-party dependency analysis in the product release process](../assets/images/product-security/secure-software-development-process-overall-v2.png)
 
 
 [WSO2 Secure Engineering Guidelines](../security-guidelines/secure-engineering-guidelines/index.md) provide the overall security guidance during the design, development and code review phases. A group of security leads review designs of new features and also review the code to make sure that engineers are adhering to the guidelines set forth. Some security checks are further enforced when engineers commit the code to the WSO2-maintained code repositories. 
@@ -48,11 +48,11 @@ Before sending any GitHub Pull Requests (PR), developers must confirm the follow
 
 Developer workflow before creating a pull request
 
-![secure-software-development-process](../assets/images/product-security/secure-software-development-process-overall-5.png)
+![Developer self-review: follow the WSO2 Secure Engineering Guidelines, run FindSecurityBugs, and confirm the commits contain no secrets before creating the pull request](../assets/images/product-security/secure-software-development-process-overall-5.png)
 
 Relevant checks are further enforced by the GitHub PR template:
 
-![pull-request-template](../assets/images/product-security/pull-request-template.png)
+![GitHub pull request template with automation test and security check sections](../assets/images/product-security/pull-request-template.png)
 
 
 #### Code Reviews
@@ -121,7 +121,7 @@ The [National Vulnerability Database (NVD)](https://nvd.nist.gov/vuln) and other
 
 #### Mandatory checks during releases
 
-![release-process-sec-checks](../assets/images/product-security/release-process-sec-checks.png)
+![Release process security checks: the release candidate is scanned, true positives are fixed, and justifications for other findings are recorded before the release proceeds](../assets/images/product-security/release-process-sec-checks.png)
 
 Even though security scans can be scheduled at any time, based on the requests from the product teams, it is mandatory to perform all three scan types (static scan, dynamic scan, third-party dependency scan) before a product release. This involves the following:
 

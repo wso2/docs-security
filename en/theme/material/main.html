@@ -47,6 +47,13 @@
     <link rel="next" href="{{ page.next_page.url | url }}">
   {% endif %}
   <link rel="icon" href="{{ config.theme.favicon | url }}">
+  {#- Search engines need a favicon whose size is a multiple of 48px. #}
+  <link rel="icon" type="image/png" sizes="192x192" href="{{ 'assets/images/favicon-192.png' | url }}">
+  <link rel="apple-touch-icon" href="{{ 'assets/images/apple-touch-icon.png' | url }}">
+  <link rel="alternate" type="application/rss+xml" title="WSO2 Security Announcements" href="{{ 'feed.xml' | url }}">
+  {#- The body and heading faces; preloading them avoids a late font swap. #}
+  <link rel="preload" href="{{ 'assets/fonts/gilmer/gilmer-regular.woff2' | url }}" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="{{ 'assets/fonts/gilmer/gilmer-medium.woff2' | url }}" as="font" type="font/woff2" crossorigin>
   <meta name="generator" content="mkdocs-{{ mkdocs_version }}, mkdocs-material-9.1.2">
   {% if seo %}
     <meta property="og:type" content="{{ seo.og_type }}">
