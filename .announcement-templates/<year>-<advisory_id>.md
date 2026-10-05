@@ -1,20 +1,11 @@
 ---
-title: Security Advisory {{advisory-id}}
+title: Security Advisory {{advisory-id}}/{{cve-id}}
 category: security-announcements
 published: "{{date}}"
 updated: "{{date}}"
 version: "{{version}}"
 severity: "{{severity}}"
-cvss: "{{cvss}}"
----
-
-# Security Advisory {{advisory-id}}
-
-<p class="doc-info">Published: {{date}}</p>
-<p class="doc-info">Updated: {{date}}</p>
-<p class="doc-info">Version: {{version}}</p>
-<p class="doc-info">Severity: {{severity}}</p>
-<p class="doc-info">CVSS Score: {{cvss}}</p>
+cvss: "{{cvss_score}} ({{cvss_vector}})"
 ---
 
 ### AFFECTED PRODUCTS
