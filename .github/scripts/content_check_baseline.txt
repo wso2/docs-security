@@ -2,10 +2,6 @@
 # Each line is "<path under en/docs> <rule>". Remove the line once the problem is fixed;
 # the check lists lines that are no longer needed when it runs on all files.
 
-# WSO2-2019-0432 and WSO2-2019-0486 have each other's title, date, and CVSS. See ROADMAP.md section 3A.
-security-announcements/security-advisories/2019/WSO2-2019-0432.md advisory-id
-security-announcements/security-advisories/2019/WSO2-2019-0486.md advisory-id
-
 # Advisories published in two year folders. See ROADMAP.md section 3A.
 security-announcements/security-advisories/2023/WSO2-2023-2075.md duplicate-id
 security-announcements/security-advisories/2023/WSO2-2023-2617.md duplicate-id
@@ -13,43 +9,16 @@ security-announcements/security-advisories/2024/WSO2-2023-2075.md duplicate-id
 security-announcements/security-advisories/2024/WSO2-2023-2617.md duplicate-id
 
 # Published dates that do not match the year folder. See ROADMAP.md section 3A.
-security-announcements/security-advisories/2021/WSO2-2021-1699.md year-folder
 security-announcements/security-advisories/2023/WSO2-2023-2617.md year-folder
 
-# The reporter name is missing. See ROADMAP.md section 3A.
-security-announcements/security-advisories/2020/WSO2-2020-0734.md placeholder
-
 # A severity or CVSS score that does not match the score or vector. See ROADMAP.md section 3A.
-security-announcements/security-advisories/2019/WSO2-2019-0647.md severity-score
 security-announcements/security-advisories/2025/WSO2-2024-3149.md cvss-score
-security-announcements/security-advisories/2025/WSO2-2025-3993.md severity-score
 
 # Front matter and the page disagree, or the page uses an older layout. See ROADMAP.md section 3A.
 security-announcements/security-advisories/2017/WSO2-2017-0255.md repeated-info
-security-announcements/security-advisories/2017/WSO2-2017-0257.md repeated-info
 security-announcements/security-advisories/2017/WSO2-2017-0326.md repeated-info
-security-announcements/security-advisories/2018/WSO2-2018-0462.md repeated-info
-security-announcements/security-advisories/2019/WSO2-2019-0432.md repeated-info
-security-announcements/security-advisories/2019/WSO2-2019-0486.md repeated-info
-security-announcements/security-advisories/2020/WSO2-2020-0685.md repeated-info
-security-announcements/security-advisories/2020/WSO2-2020-0687.md repeated-info
-security-announcements/security-advisories/2020/WSO2-2020-0718.md repeated-info
 security-announcements/security-advisories/2020/WSO2-2020-0864.md repeated-info
-security-announcements/security-advisories/2021/WSO2-2020-1132.md repeated-info
-security-announcements/security-advisories/2021/WSO2-2021-1289.md repeated-info
-security-announcements/security-advisories/2023/WSO2-2022-2055.md repeated-info
-security-announcements/security-advisories/2023/WSO2-2022-2177.md repeated-info
-security-announcements/security-advisories/2023/WSO2-2023-2447.md repeated-info
-security-announcements/security-advisories/2023/WSO2-2023-2617.md repeated-info
-security-announcements/security-advisories/2024/WSO2-2022-1920.md repeated-info
-security-announcements/security-advisories/2024/WSO2-2023-2308.md repeated-info
-security-announcements/security-advisories/2024/WSO2-2023-2589.md repeated-info
-security-announcements/security-advisories/2024/WSO2-2023-2617.md repeated-info
-security-announcements/security-advisories/2024/WSO2-2023-2827.md repeated-info
 security-announcements/security-advisories/2024/WSO2-2023-2987.md repeated-info
-security-announcements/security-advisories/2025/WSO2-2024-3178.md repeated-info
-security-announcements/security-advisories/2025/WSO2-2025-3993.md repeated-info
-security-announcements/security-advisories/2025/WSO2-2025-4119.md repeated-info
 security-announcements/security-advisories/2025/WSO2-2025-4503.md repeated-info
 
 # Older advisories without version, severity, or cvss, and pages with values that need a decision. See ROADMAP.md section 3A.
@@ -150,7 +119,6 @@ security-announcements/security-advisories/2019/WSO2-2019-0653.md field-format
 security-announcements/security-advisories/2019/WSO2-2019-0655.md field-format
 security-announcements/security-advisories/2019/WSO2-2019-0656.md field-format
 security-announcements/security-advisories/2019/WSO2-2019-0658.md field-format
-security-announcements/security-advisories/2020/WSO2-2018-0537.md field-format
 security-announcements/security-advisories/2020/WSO2-2019-0651.md field-format
 security-announcements/security-advisories/2020/WSO2-2019-0661.md field-format
 security-announcements/security-advisories/2020/WSO2-2019-0665.md field-format
