@@ -55,6 +55,19 @@ JUSTIFICATION_RE = re.compile(r"^security-announcements/cve-justifications/\d{4}
 ADVISORY_YEAR_RE = re.compile(r"^security-announcements/security-advisories/(\d{4})/\d{4}-advisories\.md$")
 ADVISORY_DIR = "security-announcements/security-advisories"
 ADVISORY_FILE_RE = re.compile(r"^WSO2-\d{4}-\d{4}\.md$")
+# Section pages that list their year pages: the year folder, the year page, and its label.
+YEAR_LISTS = {
+    "security-announcements/security-advisories/index.md":
+        ("security-announcements/security-advisories", "{0}/{0}-advisories.md", "{0} Advisories"),
+    "security-announcements/cve-justifications/index.md":
+        ("security-announcements/cve-justifications", "{0}/index.md", "{0} CVE Justifications"),
+    "security-announcements/incident-clarifications/index.md":
+        ("security-announcements/incident-clarifications", "{0}/index.md", "{0} Incident Clarifications"),
+}
+# Where a section page lists its year pages. The build replaces this line.
+YEAR_LIST_MARKER = "<!-- The build lists the year pages here, newest first. -->"
+YEAR_LINK_RE = re.compile(r"^[*-][ \t]+\[[^\]]*\]\(\{\{#base_path#\}\}/security-announcements/"
+                          r"(?:security-advisories|cve-justifications|incident-clarifications)/\d{4}/[^)]*\)[ \t]*\n?", re.M)
 # A yearly list line for one advisory. The build writes these; check_content.py rejects hand-written ones.
 ADVISORY_ENTRY_RE = re.compile(r"^[*-][ \t]+\[[^\]]*\]\([^)]*/security-advisories/\d{4}/WSO2-\d{4}-\d{4}/?\)[ \t]*$", re.M)
 JUSTIFICATION_YEAR_RE = re.compile(r"^security-announcements/cve-justifications/(\d{4})/index\.md$")
@@ -99,36 +112,68 @@ def on_config(config):
 
 
 def _fill_advisory_nav(items, docs_dir):
-    """Add each year's advisories to its nav section, the one whose index is the yearly list."""
+    """Write the year sections of the advisories' nav section, one per year folder with a yearly list."""
     for item in items:
         if not isinstance(item, dict):
             continue
         for value in item.values():
             if not isinstance(value, list):
                 continue
-            index = next((v for entry in value if isinstance(entry, dict)
-                          for k, v in entry.items() if k == "" and isinstance(v, str)), "")
-            year = ADVISORY_YEAR_RE.match(index)
-            if not year:
+            if _nav_index(value) != ADVISORY_DIR + "/index.md":
                 _fill_advisory_nav(value, docs_dir)
                 continue
-            # Entries written by hand are dropped; check_content.py reports them.
+            # Year sections written by hand are dropped; check_content.py reports them.
             value[:] = [entry for entry in value if not (isinstance(entry, dict) and any(
-                isinstance(v, str) and ADVISORY_RE.match(v) for v in entry.values()))]
-            value.extend({advisory_id: "{}/{}/{}.md".format(ADVISORY_DIR, year.group(1), advisory_id)}
-                         for advisory_id, _ in advisory_list(docs_dir, year.group(1)))
+                isinstance(v, list) and ADVISORY_YEAR_RE.match(_nav_index(v)) for v in entry.values()))]
+            for year, list_page, label in year_pages(docs_dir, ADVISORY_DIR + "/index.md"):
+                value.append({label: [{"": list_page}] + [
+                    {advisory_id: "{}/{}/{}.md".format(ADVISORY_DIR, year, advisory_id)}
+                    for advisory_id, _ in advisory_list(docs_dir, year)]})
+
+
+def _nav_index(entries):
+    """The page a nav section names as `'': path`, its index."""
+    return next((v for entry in entries if isinstance(entry, dict)
+                 for k, v in entry.items() if k == "" and isinstance(v, str)), "")
 
 
 def on_page_read_source(page, config):
-    """Write a yearly advisory list from the advisories in its folder."""
-    year = ADVISORY_YEAR_RE.match(page.file.src_uri)
-    if not year:
+    """Write the generated lists: a year's advisories, and a section's year pages."""
+    src = page.file.src_uri
+    year = ADVISORY_YEAR_RE.match(src)
+    if not year and src not in YEAR_LISTS:
         return None
     with open(page.file.abs_src_path, encoding="utf-8-sig") as handle:
-        source = ADVISORY_ENTRY_RE.sub("", handle.read())  # check_content.py reports these
-    entries = [advisory_list_entry(year.group(1), advisory_id, label)
-               for advisory_id, label in advisory_list(config["docs_dir"], year.group(1))]
-    return source.rstrip("\n") + "\n\n" + "\n".join(entries) + "\n"
+        source = handle.read()
+    if year:
+        source = ADVISORY_ENTRY_RE.sub("", source)  # check_content.py reports these
+        entries = [advisory_list_entry(year.group(1), advisory_id, label)
+                   for advisory_id, label in advisory_list(config["docs_dir"], year.group(1))]
+        return source.rstrip("\n") + "\n\n" + "\n".join(entries) + "\n"
+    links = "\n".join("* [" + label + "]({{#base_path#}}/" + _page_path(list_page) + ")"
+                      for _, list_page, label in year_pages(config["docs_dir"], src))
+    source = YEAR_LINK_RE.sub("", source)  # check_content.py reports these
+    if YEAR_LIST_MARKER in source:
+        return source.replace(YEAR_LIST_MARKER, links, 1)
+    return source.rstrip("\n") + "\n\n" + links + "\n"
+
+
+def year_pages(docs_dir, landing):
+    """The year pages a section page lists, newest year first, as (year, page, label).
+
+    A year is listed once its folder has its year page, so authors add a year in one
+    place. .github/scripts/check_content.py uses this too.
+    """
+    folder, page, label = YEAR_LISTS[landing]
+    root = os.path.join(docs_dir, folder)
+    years = sorted((name for name in os.listdir(root) if re.match(r"^\d{4}$", name)), reverse=True)
+    return [(year, "{}/{}".format(folder, page.format(year)), label.format(year)) for year in years
+            if os.path.isfile(os.path.join(root, page.format(year)))]
+
+
+def _page_path(src):
+    """The URL path of a page, as the site links it."""
+    return src[:-len("index.md")] if src.endswith("index.md") else src[:-len(".md")] + "/"
 
 
 def _collect_section_indexes(items):

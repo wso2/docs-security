@@ -52,16 +52,17 @@ Security advisories (security-advisories/<year>/WSO2-*.md):
                      to 3.9, Medium 4.0 to 6.9, High 7.0 to 8.9, Critical 9.0 to 10.0
     year-folder      the published year differs from the year folder
     duplicate-id     the advisory ID exists in more than one year folder
-    listing          the advisory's year folder has no yearly list page or no nav
-                     section; the build lists the advisories in both
+    listing          the advisory's year folder has no yearly list page
 
-Yearly advisory lists and en/mkdocs.yml:
+Generated lists (en/hooks/seo.py):
 
-    generated-list   an advisory written into a yearly list or the nav by hand. The
-                     build writes both from the files (en/hooks/seo.py,
-                     advisory_list), newest advisory ID first             (--fix)
+    generated-list   a list the build writes was written by hand: an advisory in a
+                     yearly list or the nav, an advisory year section in the nav, or
+                     a year link on the Security Advisories, CVE Justifications, or
+                     Incident Clarifications page; or one of those pages lost the
+                     line where the build lists its years                 (--fix)
 
-CVE justifications (cve-justifications/<year>/*.md):
+CVE justifications and incident clarifications (<year>/*.md):
 
     listing          the page is missing from its yearly list or from the nav
     field-format     no published date, or "date" instead of "published"  (--fix)
@@ -110,6 +111,7 @@ SEO = load_build_hook()
 
 ADVISORY_PATH = re.compile(r"security-announcements/security-advisories/(\d{4})/(WSO2-\d{4}-\d{4})\.md$")
 ADVISORY_LIST_PATH = re.compile(r"security-announcements/security-advisories/(\d{4})/\d{4}-advisories\.md$")
+INCIDENT_PATH = re.compile(r"security-announcements/incident-clarifications/(\d{4})/(?!index\.md$)([^/]+)\.md$")
 JUSTIFICATION_PATH = re.compile(r"security-announcements/cve-justifications/(\d{4})/(?!index\.md$)([^/]+)\.md$")
 CVE = re.compile(r"\bCVE-\d{4}-\d{4,}\b")
 DATE = re.compile(r"^(January|February|March|April|May|June|July|August|September|October|"
@@ -193,7 +195,8 @@ class Site(object):
                 match = ADVISORY_PATH.search(rel)
                 if match:
                     self.advisory_folders[match.group(2)].append(match.group(1))
-                if ADVISORY_LIST_PATH.search(rel) or re.search(r"cve-justifications/\d{4}/index\.md$", rel):
+                if ADVISORY_LIST_PATH.search(rel) or re.search(r"(cve-justifications|incident-clarifications)/\d{4}/"
+                                                               r"index\.md$", rel):
                     with open(os.path.join(root, name), encoding="utf-8") as handle:
                         self.lists[rel] = handle.read()
 
@@ -244,6 +247,11 @@ def check_page(page, site):
     justification = JUSTIFICATION_PATH.search(page.rel)
     if justification:
         findings.extend(check_justification(page, site, justification.group(1), justification.group(2)))
+    incident = INCIDENT_PATH.search(page.rel)
+    if incident:
+        findings.extend(check_listed(page, site, "incident-clarifications", incident.group(1), incident.group(2)))
+    if page.rel in SEO.YEAR_LISTS:
+        findings.extend(check_year_list(page))
     return findings
 
 
@@ -340,14 +348,12 @@ def check_advisory(page, site, year, advisory_id):
     if len(site.advisory_folders.get(advisory_id, [])) > 1:
         findings.append(Finding("duplicate-id", 0, "{} also exists in {}".format(advisory_id, ", ".join(
             y for y in sorted(site.advisory_folders[advisory_id]) if y != year))))
-    # The build lists the advisory on its year's list page and in that year's nav section.
+    # The build lists the advisory on its year's list page, and the year in the nav and on the
+    # Security Advisories page, once the year has a list page.
     list_rel = "security-announcements/security-advisories/{0}/{0}-advisories.md".format(year)
     if list_rel not in site.lists:
         findings.append(Finding("listing", 0, "add the yearly list page {} (copy last year's and change the "
                                 "year); the build lists the year's advisories on it".format(list_rel)))
-    if not re.search(r"^[ \t]*-[ \t]*''[ \t]*:[ \t]*'" + re.escape(list_rel) + r"'[ \t]*$", site.mkdocs, re.M):
-        findings.append(Finding("listing", 0, "add a '{} Advisories' section, with - '': '{}', to the nav in "
-                                "en/mkdocs.yml; the build adds the year's advisories to it".format(year, list_rel)))
     return findings
 
 
@@ -358,6 +364,20 @@ def check_advisory_list(page, site, year):
             for match in SEO.ADVISORY_ENTRY_RE.finditer(page.body)]
 
 
+def check_year_list(page):
+    """A section page whose year links the build writes."""
+    findings = [Finding("generated-list", page.meta_end + match.start(), "remove this line; the build lists every "
+                        "year that has a year page, newest first", True)
+                for match in SEO.YEAR_LINK_RE.finditer(page.body)]
+    if SEO.YEAR_LIST_MARKER not in page.body:
+        findings.append(Finding("generated-list", page.meta_end, "add the line {} where the year pages should be "
+                                "listed".format(SEO.YEAR_LIST_MARKER), bool(findings)))
+    return findings
+
+
+NAV_ADVISORY_YEAR = re.compile(r"^[ \t]*-[ \t]*['\"][^'\"\n]*['\"][ \t]*:[ \t]*\n[ \t]*-[ \t]*''[ \t]*:[ \t]*"
+                               r"['\"]security-announcements/security-advisories/\d{4}/\d{4}-advisories\.md['\"]"
+                               r"[ \t]*\n?", re.M)
 NAV_ADVISORY = re.compile(r"^[ \t]*-[ \t]*['\"][^'\"\n]*['\"][ \t]*:[ \t]*['\"]security-announcements/security-advisories/"
                           r"\d{4}/WSO2-\d{4}-\d{4}\.md['\"][ \t]*\n?", re.M)
 
@@ -369,21 +389,31 @@ def nav_block(text):
 
 
 def check_nav(site):
-    """Advisories written into the nav by hand. The build adds each year's advisories."""
+    """Advisories and advisory year sections written into the nav by hand. The build writes them."""
     start, end = nav_block(site.mkdocs)
-    return [Finding("generated-list", match.start(), "remove this line; the build adds every advisory to its "
-                    "year's section", True)
-            for match in NAV_ADVISORY.finditer(site.mkdocs, start, end)]
+    findings = [Finding("generated-list", match.start(), "remove this year section; the build adds a section "
+                        "for every year folder that has a yearly list", True)
+                for match in NAV_ADVISORY_YEAR.finditer(site.mkdocs, start, end)]
+    findings += [Finding("generated-list", match.start(), "remove this line; the build adds every advisory to its "
+                         "year's section", True)
+                 for match in NAV_ADVISORY.finditer(site.mkdocs, start, end)]
+    return findings
 
 
-def check_justification(page, site, year, name):
+def check_listed(page, site, section, year, name):
+    """A page listed by hand: it must be on its year page and in the nav."""
     findings = []
-    target = "security-announcements/cve-justifications/{}/{}".format(year, name)
-    list_rel = "security-announcements/cve-justifications/{}/index.md".format(year)
+    target = "security-announcements/{}/{}/{}".format(section, year, name)
+    list_rel = "security-announcements/{}/{}/index.md".format(section, year)
     if not site.listed(list_rel, target):
         findings.append(Finding("listing", 0, "add the page to {}".format(list_rel)))
     if target + ".md" not in site.nav:
         findings.append(Finding("listing", 0, "add {}.md to the nav in en/mkdocs.yml".format(target)))
+    return findings
+
+
+def check_justification(page, site, year, name):
+    findings = check_listed(page, site, "cve-justifications", year, name)
     if "date" in page.meta:
         findings.append(Finding("field-format", page.meta_lines["date"], "rename \"date\" to \"published\", as in "
                                 "the CVE justification template", True))
@@ -533,7 +563,12 @@ def fix(page, findings):
         head = re.sub(r"^date:", "published:", head, flags=re.M) if JUSTIFICATION_PATH.search(page.rel) else head
         head = re.sub(r"^(version:[ \t]*)\"?(\d+\.\d+)\"?[ \t]*$", r'\1"\2.0"', head, flags=re.M)
         text = head + body
-    if "generated-list" in rules:
+    if "generated-list" in rules and page.rel in SEO.YEAR_LISTS:
+        first = SEO.YEAR_LINK_RE.search(text, page.meta_end)
+        if SEO.YEAR_LIST_MARKER not in text and first:
+            text = text[:first.start()] + SEO.YEAR_LIST_MARKER + "\n" + text[first.start():]
+        text = text[:page.meta_end] + SEO.YEAR_LINK_RE.sub("", text[page.meta_end:])
+    elif "generated-list" in rules:
         text = re.sub(SEO.ADVISORY_ENTRY_RE.pattern + r"\n?", "", text, flags=re.M).rstrip("\n") + "\n"
     return text
 
@@ -618,7 +653,8 @@ def main(argv=None):
         if args.fix and findings:
             start, end = nav_block(site.mkdocs)
             with open(MKDOCS, "w", encoding="utf-8", newline="") as handle:
-                handle.write(site.mkdocs[:start] + NAV_ADVISORY.sub("", site.mkdocs[start:end]) + site.mkdocs[end:])
+                nav = NAV_ADVISORY.sub("", NAV_ADVISORY_YEAR.sub("", site.mkdocs[start:end]))
+                handle.write(site.mkdocs[:start] + nav + site.mkdocs[end:])
             fixed += 1
             site = Site()
             findings = check_nav(site)
