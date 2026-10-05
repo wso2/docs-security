@@ -31,13 +31,13 @@ jobs:
       # A pull request is checked only in the Markdown files it adds or changes,
       # so a problem that reached main some other way does not fail unrelated PRs.
       # Pushes to main, manual runs, and PRs that change the checker, its baseline,
-      # or the nav check every file. The script uses only the Python standard library.
+      # the nav, or the build hook whose title rule it applies check every file. The script uses only the Python standard library.
       - name: Check content
         shell: bash
         run: |
           checker=.github/scripts/check_content.py
           baseline=.github/scripts/content_check_baseline.txt
-          if [ "$GITHUB_EVENT_NAME" = pull_request ] && git diff --quiet HEAD^1 HEAD -- "$checker" "$baseline" en/mkdocs.yml; then
+          if [ "$GITHUB_EVENT_NAME" = pull_request ] && git diff --quiet HEAD^1 HEAD -- "$checker" "$baseline" en/mkdocs.yml en/hooks/seo.py; then
             echo "Checking the Markdown files this pull request adds or changes."
             git diff -z --name-only --diff-filter=ACMR HEAD^1 HEAD -- 'en/docs/*.md' \
               | xargs -0 -r python3 "$checker" --

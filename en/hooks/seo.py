@@ -64,6 +64,16 @@ HEADING_RE = re.compile(r"^#{2,4}[ \t]+(.+?)[ \t]*$", re.M)
 TABLE_ID_RE = re.compile(r"^\|[ \t]*([A-Z][A-Z0-9]*-\d{4}-[0-9A-Z]+)[ \t]*\|", re.M)
 BULLET_RE = re.compile(r"^[*+-][ \t]+(.+)$", re.M)
 VERSION_START_RE = re.compile(r"[\s:,(-]+(?:v(?:ersions?)?\.?\s*)?\d")
+# Words an advisory title can drop from the OVERVIEW sentence without changing what it says.
+_FOUND = r"(?:identified|detected|discovered|found|observed)"
+_PLACE = r"(?=\s+(?:in|on|at|with|within|through|during|when|via|for|while|after|before|due)\b|$)"
+TITLE_FILLER_RES = (
+    re.compile(r"^It has been " + _FOUND + r" that\s+", re.I),
+    re.compile(r"^(?:A|An)\s+(?=\S)", re.I),
+    re.compile(r"\s+(?:has|have) been " + _FOUND + _PLACE, re.I),
+    re.compile(r"\s+(?:is|are|was|were) " + _FOUND + _PLACE, re.I),
+    re.compile(r"\s+exists?" + _PLACE, re.I),
+)
 
 # Announcement pages for the RSS feed, collected during the build.
 _feed_items = []
@@ -285,18 +295,13 @@ def _advisory(name, meta, markdown, sections):
         cves = _unique(CVE_RE.findall(sections.get("OVERVIEW", "")))
     products = _product_names(sections.get("AFFECTED PRODUCTS", ""))
     overview = _first_paragraph(sections.get("OVERVIEW", ""))
-    summary = re.split(r"(?<=[.!?])\s+", overview)[0].rstrip(".")
-    if cves:
-        # The title starts with the CVE IDs, so drop a "(CVE-...)" that repeats them.
-        summary = re.sub(r"\s*\((?:CVE-\d{4}-\d{4,}[,\s]*)+\)", "", summary)
+    summary, usable = title_summary(overview, drop_cves=bool(cves))
 
     if cves:
         lead = _join(cves[:3]) + (" and Others" if len(cves) > 3 else "")
     else:
         lead = advisory_id or str(meta.get("title") or "WSO2")
-    # The overview's first sentence names the vulnerability. Long sentences and ones
-    # that lean on the page ("the above-listed products") fall back to the products.
-    if 10 <= len(summary) <= TITLE_SUMMARY_LIMIT and not re.match(r"(?i)(the )?above|it has been", summary):
+    if usable:
         title = "{}: {}".format(lead, summary)
     else:
         title = "{} Security Advisory for {}".format(lead, _product_phrase(products))
@@ -318,6 +323,34 @@ def _advisory(name, meta, markdown, sections):
 
     keywords = cves + ([advisory_id] if advisory_id else []) + products
     return title, description, keywords
+
+
+def advisory_overview(markdown):
+    """The first paragraph of an advisory's OVERVIEW section."""
+    return _first_paragraph(_sections(markdown).get("OVERVIEW", ""))
+
+
+def title_summary(overview, drop_cves=False):
+    """The search title wording of an advisory's OVERVIEW, and whether the title can use it.
+
+    The OVERVIEW's first sentence names the vulnerability. The title drops only words that
+    add nothing to it ("A potential XSS vulnerability has been identified in X" becomes
+    "Potential XSS vulnerability in X"), so it never says anything the page does not.
+    Sentences that are still long, or that lean on the page ("the above-listed products"),
+    give way to the product names. .github/scripts/check_content.py uses this function too.
+    """
+    summary = re.split(r"(?<=[.!?])\s+", overview.strip())[0].rstrip(".")
+    if drop_cves:
+        # The title starts with the CVE IDs, so drop a "(CVE-...)" that repeats them.
+        summary = re.sub(r"\s*\((?:CVE-\d{4}-\d{4,}[,\s]*)+\)", "", summary)
+    start = summary
+    for pattern in TITLE_FILLER_RES:
+        summary = pattern.sub("", summary, count=1)
+    if summary != start and not summary.startswith(start[:1]):
+        summary = summary[:1].upper() + summary[1:]
+    usable = (10 <= len(summary) <= TITLE_SUMMARY_LIMIT
+              and not re.search(r"(?i)\babove\b", summary) and not re.match(r"(?i)it has been", summary))
+    return summary, usable
 
 
 def _with_info_block(markdown, meta):
