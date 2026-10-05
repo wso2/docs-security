@@ -711,6 +711,16 @@ plugins:
 
 # Extra
 extra_css:
+  # Listed separately so browsers fetch them in parallel; an @import chain
+  # in theme.css delays the first render.
+  - assets/css/partials/_typography.css
+  - assets/css/partials/_button.css
+  - assets/css/partials/_icon.css
+  - assets/css/partials/_search.css
+  - assets/css/partials/_card.css
+  - assets/css/partials/_footer.css
+  - assets/css/partials/_sidebar.css
+  - assets/css/partials/_header.css
   - assets/css/theme.css
 extra:
   social:

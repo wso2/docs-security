@@ -27,10 +27,13 @@ Must stay compatible with Python 3.8 (the WSO2 docs builder version).
 
 import html
 import json
+import os
 import posixpath
 import re
-from datetime import date, datetime
+from datetime import date, datetime, timezone
+from email.utils import format_datetime
 from urllib.parse import urljoin
+from xml.sax.saxutils import escape
 
 ORGANIZATION = {
     "@type": "Organization",
@@ -38,6 +41,10 @@ ORGANIZATION = {
     "url": "https://wso2.com/",
 }
 DESCRIPTION_LIMIT = 300
+TITLE_SUMMARY_LIMIT = 100
+FEED_FILE = "feed.xml"
+FEED_TITLE = "WSO2 Security Announcements"
+FEED_LIMIT = 50
 SEVERITIES = ("Critical", "High", "Medium", "Low", "Informative")
 
 ADVISORY_RE = re.compile(r"^security-announcements/security-advisories/\d{4}/WSO2-[^/]+\.md$")
@@ -50,12 +57,16 @@ BULLETIN_RE = re.compile(r"^security-announcements/cloud-security-bulletins/[^/]
 INCIDENT_RE = re.compile(r"^security-announcements/incident-clarifications/\d{4}/(?!index\.md$)[^/]+\.md$")
 
 CVE_RE = re.compile(r"\bCVE-\d{4}-\d{4,}\b")
+DATE_RE = re.compile(r"\b(?:January|February|March|April|May|June|July|August|September|October|November|December) \d{1,2}, \d{4}\b")
 VULN_ID_RE = re.compile(r"\b(?:CVE-\d{4}-\d{4,}|GHSA(?:-[0-9a-z]{4}){3})\b")
 ADVISORY_ID_RE = re.compile(r"\bWSO2-\d{4}-\d{4}\b")
 HEADING_RE = re.compile(r"^#{2,4}[ \t]+(.+?)[ \t]*$", re.M)
 TABLE_ID_RE = re.compile(r"^\|[ \t]*([A-Z][A-Z0-9]*-\d{4}-[0-9A-Z]+)[ \t]*\|", re.M)
 BULLET_RE = re.compile(r"^[*+-][ \t]+(.+)$", re.M)
 VERSION_START_RE = re.compile(r"[\s:,(-]+(?:v(?:ersions?)?\.?\s*)?\d")
+
+# Announcement pages for the RSS feed, collected during the build.
+_feed_items = []
 
 # Paths of the pages written as `'': path` in `nav`. Such a page is its
 # section's index, like an index.md.
@@ -64,6 +75,7 @@ _section_index_paths = set()
 
 def on_config(config):
     _section_index_paths.clear()
+    del _feed_items[:]
     _collect_section_indexes(config.get("nav") or [])
     return config
 
@@ -87,8 +99,10 @@ def on_page_markdown(markdown, page, config, files):
 
     if ADVISORY_RE.match(src):
         title, description, keywords = _advisory(page.file.name, meta, markdown, sections)
+        seo["feed"] = "Security Advisory"
     elif JUSTIFICATION_RE.match(src):
         title, description, keywords = _justification(meta, markdown, sections)
+        seo["feed"] = "CVE Justification"
     else:
         title, keywords = None, []
         description = _listing_description(src, page)
@@ -98,12 +112,16 @@ def on_page_markdown(markdown, page, config, files):
             description = _first_paragraph(markdown)
         if BULLETIN_RE.match(src):
             keywords = _unique(TABLE_ID_RE.findall(sections.get("VULNERABILITIES ADDRESSED", "")))
+            seo["feed"] = "Cloud Security Bulletin"
         elif INCIDENT_RE.match(src):
             keywords = _unique(CVE_RE.findall(str(meta.get("title", ""))))
+            seo["feed"] = "Incident Clarification"
 
     if page.is_homepage:
         seo["type"], seo["og_type"] = "WebSite", "website"
 
+    if meta.get("seo_title"):
+        title = str(meta["seo_title"])
     if title:
         seo["title"] = title
     if description and not meta.get("description"):
@@ -111,7 +129,10 @@ def on_page_markdown(markdown, page, config, files):
     seo["keywords"] = keywords
 
     published = _iso_date(meta.get("published") or meta.get("date"))
-    modified = _iso_date(meta.get("updated")) or published
+    # Revisions are recorded in front matter, an "Updated:" line, or a change log.
+    revised = [_iso_date(meta.get("updated")), _iso_date(_doc_info(markdown, r"updated"))]
+    revised += [_iso_date(d) for d in DATE_RE.findall(sections.get("CHANGE LOG", ""))]
+    modified = max([d for d in revised + [published] if d], default=None)
     if published:
         seo["published"] = published
     if modified:
@@ -153,6 +174,14 @@ def on_page_context(context, page, config, nav):
     seo["headline"] = headline
     if "noindex" in str(page.meta.get("robots", "")):
         return context
+    if seo.get("feed") and seo.get("published"):
+        _feed_items.append({
+            "title": headline,
+            "link": url,
+            "description": page.meta.get("description", ""),
+            "category": seo["feed"],
+            "published": seo["published"],
+        })
 
     graph = []
     if seo["type"] == "WebSite":
@@ -207,6 +236,39 @@ def on_page_context(context, page, config, nav):
     return context
 
 
+def on_post_build(config):
+    """Write an RSS feed of the newest announcements next to the sitemap."""
+    site_url = config.get("site_url") or ""
+    items = sorted(_feed_items, key=lambda item: (item["published"], item["link"]), reverse=True)
+    items = items[:FEED_LIMIT]
+    entries = []
+    for item in items:
+        entries.append(
+            "<item><title>{}</title><link>{}</link><guid isPermaLink=\"true\">{}</guid>"
+            "<pubDate>{}</pubDate><category>{}</category><description>{}</description></item>".format(
+                escape(item["title"]), escape(item["link"]), escape(item["link"]),
+                _rfc822(item["published"]), escape(item["category"]), escape(item["description"])))
+    feed = (
+        '<?xml version="1.0" encoding="UTF-8"?>\n'
+        '<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel>'
+        "<title>{title}</title><link>{link}</link>"
+        '<atom:link href="{self}" rel="self" type="application/rss+xml"/>'
+        "<description>{description}</description><language>en</language>"
+        "{updated}{entries}</channel></rss>\n"
+    ).format(
+        title=escape(FEED_TITLE),
+        link=escape(site_url),
+        self=escape(urljoin(site_url, FEED_FILE)),
+        description=escape("Security advisories, CVE justifications, incident clarifications, "
+                           "and cloud security bulletins published by WSO2."),
+        # The newest entry's date rather than the build time, so rebuilds are reproducible.
+        updated="<lastBuildDate>{}</lastBuildDate>".format(_rfc822(items[0]["published"])) if items else "",
+        entries="".join(entries),
+    )
+    with open(os.path.join(config["site_dir"], FEED_FILE), "w", encoding="utf-8") as handle:
+        handle.write(feed)
+
+
 def _advisory(name, meta, markdown, sections):
     # The file name is the advisory ID the URL, nav, and yearly list use.
     advisory_id = name if ADVISORY_ID_RE.fullmatch(name) else _first(ADVISORY_ID_RE, markdown)
@@ -217,16 +279,26 @@ def _advisory(name, meta, markdown, sections):
     if not cves:
         cves = _unique(CVE_RE.findall(sections.get("OVERVIEW", "")))
     products = _product_names(sections.get("AFFECTED PRODUCTS", ""))
+    overview = _first_paragraph(sections.get("OVERVIEW", ""))
+    summary = re.split(r"(?<=[.!?])\s+", overview)[0].rstrip(".")
+    if cves:
+        # The title starts with the CVE IDs, so drop a "(CVE-...)" that repeats them.
+        summary = re.sub(r"\s*\((?:CVE-\d{4}-\d{4,}[,\s]*)+\)", "", summary)
 
     if cves:
         lead = _join(cves[:3]) + (" and Others" if len(cves) > 3 else "")
     else:
         lead = advisory_id or str(meta.get("title") or "WSO2")
-    title = "{} Security Advisory for {}".format(lead, _product_phrase(products))
+    # The overview's first sentence names the vulnerability. Long sentences and ones
+    # that lean on the page ("the above-listed products") fall back to the products.
+    if 10 <= len(summary) <= TITLE_SUMMARY_LIMIT and not re.match(r"(?i)(the )?above|it has been", summary):
+        title = "{}: {}".format(lead, summary)
+    else:
+        title = "{} Security Advisory for {}".format(lead, _product_phrase(products))
     if cves and advisory_id:
         title += " ({})".format(advisory_id)
 
-    parts = [_sentence(_first_paragraph(sections.get("OVERVIEW", "")))]
+    parts = [_sentence(overview)]
     if products:
         parts.append("Affects {}.".format(_product_list(products)))
     severity = _plain(str(meta.get("severity") or "")).capitalize()
@@ -400,6 +472,11 @@ def _doc_info(markdown, label):
         return None
     value = match.group(1).strip().rstrip(".")
     return value[:1].upper() + value[1:]
+
+
+def _rfc822(iso_date):
+    day = datetime.strptime(iso_date, "%Y-%m-%d").replace(tzinfo=timezone.utc)
+    return format_datetime(day)
 
 
 def _cvss_score(value):

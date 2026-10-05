@@ -16,15 +16,6 @@
  * under the License.
  */
  
-@import url('partials/_typography.css');
-@import url('partials/_button.css');
-@import url('partials/_icon.css');
-@import url('partials/_search.css');
-@import url('partials/_card.css');
-@import url('partials/_footer.css');
-@import url('partials/_sidebar.css');
-@import url('partials/_header.css');
-
 :root {
     --md-main-content-max-width: 1400px;
     --md-border-radius: 8px;
