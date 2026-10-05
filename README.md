@@ -162,6 +162,20 @@ $ python3 .github/scripts/check_content.py
 
 Add `--fix` to correct the problems that can be fixed without guessing. Known problems that are waiting for a decision are listed in `.github/scripts/content_check_baseline.txt`. Remove a line from that file when you fix the problem.
 
+## Build checks
+
+The pull request build runs two checks on the built site:
+
+* `check_internal_links.py` fails on links to pages or files that the build does not contain.
+* `check_built_pages.py` fails when a page's menu lists advisories or CVE justifications from other year folders, or when a sidebar is not marked `data-nosnippet`. Search engines index the menu on every page, so the theme lists only the open section and keeps the sidebars out of search result snippets.
+
+To run them locally, build the site and run the following commands from the repository root:
+
+```shell
+$ python3 .github/scripts/check_internal_links.py en/site
+$ python3 .github/scripts/check_built_pages.py en/site
+```
+
 ## License
 
 Licenses this source under the Apache License, Version 2.0 ([LICENSE](LICENSE)), You may not use this file except in compliance with the License.
