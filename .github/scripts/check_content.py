@@ -21,6 +21,8 @@
 Every page:
 
     placeholder      a template placeholder such as {{cvss}} was left in the page
+    stray-front-matter  a second front matter block in the page body, which readers see
+                     as plain text
     legacy-link      a link to the retired docs.wso2.com/display/ pages
     trailing-slash   a {{#base_path#}} link to a page does not end with "/"   (--fix)
     empty-link       a link with no text or no target
@@ -178,6 +180,10 @@ def check_page(page, site):
     if not FILE_NAME.match(name):
         findings.append(Finding("file-name", 0, "rename the file without spaces or parentheses, "
                                 "and add a redirect from the old URL"))
+    stray = re.search(r"^---[ \t]*\n(?:[A-Za-z][\w -]*:.*\n)+---[ \t]*$", page.body, re.M)
+    if stray:
+        findings.append(Finding("stray-front-matter", page.meta_end + stray.start(),
+                                "remove the second front matter block; readers see it as text"))
     for start, _, text in page.prose_spans():
         for match in PLACEHOLDER.finditer(text):
             findings.append(Finding("placeholder", start + match.start(),
