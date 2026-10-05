@@ -334,7 +334,7 @@ def _with_info_block(markdown, meta):
     updated = _display_date(meta.get("updated"))
     if published:
         lines.append(_info_line("Published", published))
-    if updated and updated != published:
+    if updated:
         lines.append(_info_line("Updated", updated))
     for label, key in (("Version", "version"), ("Severity", "severity")):
         value = str(meta.get(key) or "").strip()
