@@ -98,6 +98,7 @@ def on_page_markdown(markdown, page, config, files):
     seo = {"type": "TechArticle", "og_type": "article"}
 
     if ADVISORY_RE.match(src):
+        markdown = _with_info_block(markdown, meta)
         title, description, keywords = _advisory(page.file.name, meta, markdown, sections)
         markdown = _heading_with_cves(markdown, meta, [k for k in keywords if CVE_RE.fullmatch(k)])
         seo["feed"] = "Security Advisory"
@@ -129,9 +130,12 @@ def on_page_markdown(markdown, page, config, files):
         meta["description"] = _truncate(description, DESCRIPTION_LIMIT)
     seo["keywords"] = keywords
 
-    published = _iso_date(meta.get("published") or meta.get("date"))
-    # Revisions are recorded in front matter, an "Updated:" line, or a change log.
-    revised = [_iso_date(meta.get("updated")), _iso_date(_doc_info(markdown, r"updated"))]
+    # The date readers see wins: search engines compare structured data with the page.
+    # Some advisories moved their front matter date forward when revised, so that date
+    # counts as a revision, as do an "Updated:" line and change log entries.
+    front_matter_date = _iso_date(meta.get("published") or meta.get("date"))
+    published = _iso_date(_doc_info(markdown, r"published")) or front_matter_date
+    revised = [front_matter_date, _iso_date(meta.get("updated")), _iso_date(_doc_info(markdown, r"updated"))]
     revised += [_iso_date(d) for d in DATE_RE.findall(sections.get("CHANGE LOG", ""))]
     modified = max([d for d in revised + [published] if d], default=None)
     if published:
@@ -314,6 +318,64 @@ def _advisory(name, meta, markdown, sections):
 
     keywords = cves + ([advisory_id] if advisory_id else []) + products
     return title, description, keywords
+
+
+def _with_info_block(markdown, meta):
+    """Render an advisory's heading and info lines from its front matter.
+
+    Authors fill Published, Updated, Version, Severity, CVSS, and the CVE IDs (in the
+    title) once, in front matter. Pages that still write the info lines themselves are
+    left as they are.
+    """
+    if 'class="doc-info"' in markdown:
+        return markdown
+    lines = []
+    published = _display_date(meta.get("published"))
+    updated = _display_date(meta.get("updated"))
+    if published:
+        lines.append(_info_line("Published", published))
+    if updated and updated != published:
+        lines.append(_info_line("Updated", updated))
+    for label, key in (("Version", "version"), ("Severity", "severity")):
+        value = str(meta.get(key) or "").strip()
+        if value:
+            lines.append(_info_line(label, html.escape(value)))
+    cvss = str(meta.get("cvss") or "").strip()
+    if cvss:
+        lines.append(_info_line("CVSS Score", _cvss_link(cvss)))
+    cves = _unique(CVE_RE.findall(str(meta.get("title", ""))))
+    if cves:
+        links = ['<a href="https://www.cve.org/CVERecord?id={0}">{0}</a>'.format(cve) for cve in cves]
+        lines.append(_info_line("CVE IDs", ", ".join(links)))
+    block = "\n".join(lines) + "\n---\n" if lines else ""
+
+    heading = re.search(r"^#[ \t]+.+$", markdown, re.M)
+    if heading:
+        return markdown[:heading.end()] + "\n\n" + block + "\n" + markdown[heading.end():].lstrip("\n")
+    title = str(meta.get("title") or "").strip()
+    return "# {}\n\n{}\n{}".format(title, block, markdown.lstrip("\n"))
+
+
+def _info_line(label, value):
+    return '<p class="doc-info">{}: {}</p>'.format(label, value)
+
+
+def _cvss_link(cvss):
+    """Link a "score (CVSS:x.y/...)" value to the FIRST calculator, as the advisories do."""
+    vector = re.search(r"\((CVSS:(\d\.\d)/[^)\s]+)\)", cvss)
+    if not vector:
+        return html.escape(cvss)
+    version = vector.group(2).replace("4.0", "4-0")
+    return '<a href="https://www.first.org/cvss/calculator/{}#{}">{}</a>'.format(
+        version, vector.group(1), html.escape(cvss))
+
+
+def _display_date(value):
+    if isinstance(value, datetime):
+        value = value.date()
+    if isinstance(value, date):
+        return "{:%B} {}, {}".format(value, value.day, value.year)
+    return str(value or "").strip()
 
 
 def _heading_with_cves(markdown, meta, cves):
