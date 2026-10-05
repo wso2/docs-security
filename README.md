@@ -148,10 +148,11 @@ Use these forms:
 
 * `version`: `1.0.0`
 * `severity`: `Critical`, `High`, `Medium`, `Low`, `Informative`, or `Not Applicable`
-* `cvss`: `9.8 (CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H)` or `Not Applicable`
+* `cvss`: `9.8 (CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H)` or `Not Applicable`. The score must be the base score of the vector.
+* `severity` must match the CVSS rating of the score: Low for 0.1 to 3.9, Medium for 4.0 to 6.9, High for 7.0 to 8.9, and Critical for 9.0 to 10.0.
 * CVE justifications: `published`, not `date`
 
-Add every new advisory or CVE justification to its yearly list and to the `nav` in `en/mkdocs.yml`. A yearly list entry reads `WSO2-2026-5328 (CVE-2026-5430)`.
+Name the advisory file after its ID, such as `WSO2-2026-5328.md`, and use the same ID in the title. Add every new advisory or CVE justification to its yearly list and to the `nav` in `en/mkdocs.yml`. A yearly list entry reads `WSO2-2026-5328 (CVE-2026-5430)`.
 
 A pull request check fails when a Markdown file that the pull request adds or changes has one of these problems, or a leftover template placeholder, an empty link, a link to a retired `docs.wso2.com/display/` page, a `{{#base_path#}}` page link without a trailing slash, or an image without alt text. To check all files locally, run the following command from the repository root:
 
