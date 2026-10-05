@@ -1,5 +1,6 @@
 ---
 template: templates/no-navbars.html
+robots: noindex
 ---
 
 <!--

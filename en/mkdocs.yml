@@ -643,6 +643,10 @@ markdown_extensions:
       base_path: docs
   - attr_list
 
+# Build hooks
+hooks:
+  - hooks/seo.py
+
 # Plugin
 plugins:
   - search:
@@ -662,6 +666,9 @@ plugins:
         'security-announcements/security-advisories/2024/CVE-2024-0392.md': 'security-announcements/security-advisories/2024/WSO2-2023-2987.md'
         # CVE-2010-4208 superseded by CVE-2013-6780 in-depth analysis
         'security-announcements/cve-justifications/2025/CVE-2010-4208.md': 'security-announcements/cve-justifications/2025/CVE-2013-6780.md'
+        # Published CVE records reference these advisories under the wrong year folder
+        'security-announcements/security-advisories/2025/WSO2-2024-3566.md': 'security-announcements/security-advisories/2024/WSO2-2024-3566.md'
+        'security-announcements/security-advisories/2026/WSO2-2024-3144.md': 'security-announcements/security-advisories/2025/WSO2-2024-3144.md'
         # public-artifacts section retired; point to docs root
         'public-artifacts/index.md': 'index.md'
         # security-processes hub retired; sub-pages remain reachable from nav and home cards

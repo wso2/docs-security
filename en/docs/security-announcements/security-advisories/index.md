@@ -1,5 +1,6 @@
 ---
 title: Security Advisories
+description: "WSO2 security advisories by year. Each advisory gives the WSO2 advisory ID, the CVE ID where one is assigned, the affected products and versions, the severity, and the solution."
 summary: Overview of Security Advisories
 category: security-announcements
 ---

@@ -1,5 +1,6 @@
 ---
 title: Incident Clarifications
+description: "WSO2 clarifications on publicly reported security incidents and their relevance to WSO2 products, services, and customers, organized by year."
 category: security-announcements
 ---
 
