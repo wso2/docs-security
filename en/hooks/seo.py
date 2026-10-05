@@ -99,6 +99,7 @@ def on_page_markdown(markdown, page, config, files):
 
     if ADVISORY_RE.match(src):
         title, description, keywords = _advisory(page.file.name, meta, markdown, sections)
+        markdown = _heading_with_cves(markdown, meta, [k for k in keywords if CVE_RE.fullmatch(k)])
         seo["feed"] = "Security Advisory"
     elif JUSTIFICATION_RE.match(src):
         title, description, keywords = _justification(meta, markdown, sections)
@@ -313,6 +314,25 @@ def _advisory(name, meta, markdown, sections):
 
     keywords = cves + ([advisory_id] if advisory_id else []) + products
     return title, description, keywords
+
+
+def _heading_with_cves(markdown, meta, cves):
+    """Show an advisory's CVE IDs in its heading, as in "Security Advisory WSO2-2021-1738/CVE-2022-29464".
+
+    Some advisories list their CVE only in the "CVE IDs:" line. The heading carries
+    weight with search engines, so the build adds any CVE ID it is missing.
+    """
+    match = re.search(r"^#[ \t]+(.+?)[ \t]*$", markdown, re.M)
+    if not cves or not match:
+        return markdown
+    heading = match.group(1)
+    missing = [cve for cve in cves if cve not in heading]
+    if not missing:
+        return markdown
+    updated = heading + (", " if CVE_RE.search(heading) else "/") + ", ".join(missing)
+    if str(meta.get("title", "")).strip() == heading:
+        meta["title"] = updated
+    return markdown[:match.start(1)] + updated + markdown[match.end(1):]
 
 
 def _justification(meta, markdown, sections):
