@@ -1,5 +1,6 @@
 ---
 title: Secure Software Development Process
+description: "How WSO2 builds security into each phase of the software development life cycle: design review, developer self-review and code review, static, dynamic, and third-party dependency analysis during release, and vulnerability management."
 category: security-processes
 published: March 19, 2020
 version: 2.2

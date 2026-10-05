@@ -1,5 +1,6 @@
 ---
 title: Tooling Recommendations for Secure Coding
+description: "Tools WSO2 recommends for secure coding: Find Security Bugs for static analysis, OWASP ZAP for dynamic analysis, and OWASP Dependency Check for dependency vulnerability analysis."
 category: security-guidelines
 ---
 

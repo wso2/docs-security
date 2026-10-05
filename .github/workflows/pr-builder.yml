@@ -5,6 +5,7 @@ on:
     paths:
       - 'en/**'
       - '.github/workflows/pr-builder.yml'
+      - '.github/scripts/check_internal_links.py'
 
 concurrency:
   group: pr-builder-${{ github.ref }}
@@ -35,3 +36,8 @@ jobs:
       - name: Build docs
         working-directory: en
         run: mkdocs build
+
+      # The live site answers missing URLs with a 200 "page not found" page, so
+      # broken links have to be caught in the build output.
+      - name: Check internal links
+        run: python .github/scripts/check_internal_links.py en/site

@@ -1,5 +1,6 @@
 ---
 title: Security Guidelines for Production Deployment
+description: "Links to the security guidelines for production deployment of WSO2 API Manager, WSO2 Identity Server, WSO2 Micro Integrator, and WSO2 Enterprise Integrator, by product version."
 category: security-guidelines
 ---
 

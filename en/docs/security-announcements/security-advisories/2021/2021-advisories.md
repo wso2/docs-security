@@ -6,6 +6,7 @@ category: security-announcements
 
 # 2021 Security Advisories
 
+* [WSO2-2021-1699 (CVE-2021-44228)]({{#base_path#}}/security-announcements/security-advisories/2021/WSO2-2021-1699/)
 * [WSO2-2021-1497]({{#base_path#}}/security-announcements/security-advisories/2021/WSO2-2021-1497/)
 * [WSO2-2021-1453]({{#base_path#}}/security-announcements/security-advisories/2021/WSO2-2021-1453/)
 * [WSO2-2021-1411]({{#base_path#}}/security-announcements/security-advisories/2021/WSO2-2021-1411/)
@@ -17,17 +18,17 @@ category: security-announcements
 * [WSO2-2021-1315]({{#base_path#}}/security-announcements/security-advisories/2021/WSO2-2021-1315/)
 * [WSO2-2021-1314]({{#base_path#}}/security-announcements/security-advisories/2021/WSO2-2021-1314/)
 * [WSO2-2021-1292]({{#base_path#}}/security-announcements/security-advisories/2021/WSO2-2021-1292/)
-* [WSO2-2021-1289]({{#base_path#}}/security-announcements/security-advisories/2021/WSO2-2021-1289/)
+* [WSO2-2021-1289 (CVE-2021-42646)]({{#base_path#}}/security-announcements/security-advisories/2021/WSO2-2021-1289/)
 * [WSO2-2021-1261]({{#base_path#}}/security-announcements/security-advisories/2021/WSO2-2021-1261/)
 * [WSO2-2021-1260]({{#base_path#}}/security-announcements/security-advisories/2021/WSO2-2021-1260/)
 * [WSO2-2021-1258]({{#base_path#}}/security-announcements/security-advisories/2021/WSO2-2021-1258/)
 * [WSO2-2021-1238]({{#base_path#}}/security-announcements/security-advisories/2021/WSO2-2021-1238/)
-* [WSO2-2020-1233]({{#base_path#}}/security-announcements/security-advisories/2021/WSO2-2020-1233/)
+* [WSO2-2020-1233 (CVE-2020-27885)]({{#base_path#}}/security-announcements/security-advisories/2021/WSO2-2020-1233/)
 * [WSO2-2020-1225]({{#base_path#}}/security-announcements/security-advisories/2021/WSO2-2020-1225/)
 * [WSO2-2020-1224]({{#base_path#}}/security-announcements/security-advisories/2021/WSO2-2020-1224/)
 * [WSO2-2020-1196]({{#base_path#}}/security-announcements/security-advisories/2021/WSO2-2020-1196/)
 * [WSO2-2020-1139]({{#base_path#}}/security-announcements/security-advisories/2021/WSO2-2020-1139/)
-* [WSO2-2020-1132]({{#base_path#}}/security-announcements/security-advisories/2021/WSO2-2020-1132/)
+* [WSO2-2020-1132 (CVE-2020-17453)]({{#base_path#}}/security-announcements/security-advisories/2021/WSO2-2020-1132/)
 * [WSO2-2020-1130]({{#base_path#}}/security-announcements/security-advisories/2021/WSO2-2020-1130/)
 * [WSO2-2020-1119]({{#base_path#}}/security-announcements/security-advisories/2021/WSO2-2020-1119/)
 * [WSO2-2020-1106]({{#base_path#}}/security-announcements/security-advisories/2021/WSO2-2020-1106/)

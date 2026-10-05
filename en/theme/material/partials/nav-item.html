@@ -218,11 +218,17 @@
       {% set indexes = [] %}
       {% if "navigation.indexes" in features %}
         {% for nav_item in nav_item.children %}
-          {% if nav_item.is_index and not index is defined %}
+          {# A child written as `'': path` in nav has no title and is the section's index page. #}
+          {% if (nav_item.is_index or (nav_item.is_page and not nav_item.title)) and not index is defined %}
             {% set _ = indexes.append(nav_item) %}
           {% endif %}
         {% endfor %}
       {% endif %}
+
+      {# Leave out the children of inactive sections below level 2 that have an index page
+         (the yearly advisory and CVE lists). The index page links to them, and rendering
+         every advisory into every page made the navigation most of each page's HTML. #}
+      {% set pruned = indexes and level > 2 and not nav_item.active %}
 
       <!-- Render toggle to expand nested items -->
       {% if not indexes %}
@@ -266,7 +272,7 @@
           </a>
 
           <!-- Only render toggle if there's at least one more page -->
-          {% if nav_item.children | length > 1 %}
+          {% if nav_item.children | length > 1 and not pruned %}
             {% if not disabled and show_collapsible_icon %}
             <label for="{{ path }}">
               <span class="md-nav__icon md-icon"></span>
@@ -277,7 +283,7 @@
       {% endif %}
 
       <!-- Render nested navigation -->
-      {% if nav_item.children | length > 0 %}
+      {% if nav_item.children | length > 0 and not pruned %}
       <nav
         class="md-nav"
         data-md-level="{{ level }}"
