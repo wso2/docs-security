@@ -22,6 +22,9 @@ structured data from the front matter and the standard section headings
 the announcement templates use. theme/material/main.html and sitemap.xml
 render the values. A `description` set in front matter always wins.
 
+Also lists each year's advisories on its yearly list page and in its nav
+section, from the files in the year folder, newest advisory ID first.
+
 Must stay compatible with Python 3.8 (the WSO2 docs builder version).
 """
 
@@ -50,6 +53,10 @@ SEVERITIES = ("Critical", "High", "Medium", "Low", "Informative")
 ADVISORY_RE = re.compile(r"^security-announcements/security-advisories/\d{4}/WSO2-[^/]+\.md$")
 JUSTIFICATION_RE = re.compile(r"^security-announcements/cve-justifications/\d{4}/(?!index\.md$)[^/]+\.md$")
 ADVISORY_YEAR_RE = re.compile(r"^security-announcements/security-advisories/(\d{4})/\d{4}-advisories\.md$")
+ADVISORY_DIR = "security-announcements/security-advisories"
+ADVISORY_FILE_RE = re.compile(r"^WSO2-\d{4}-\d{4}\.md$")
+# A yearly list line for one advisory. The build writes these; check_content.py rejects hand-written ones.
+ADVISORY_ENTRY_RE = re.compile(r"^[*-][ \t]+\[[^\]]*\]\([^)]*/security-advisories/\d{4}/WSO2-\d{4}-\d{4}/?\)[ \t]*$", re.M)
 JUSTIFICATION_YEAR_RE = re.compile(r"^security-announcements/cve-justifications/(\d{4})/index\.md$")
 INCIDENT_YEAR_RE = re.compile(r"^security-announcements/incident-clarifications/(\d{4})/index\.md$")
 BULLETIN_YEAR_RE = re.compile(r"^security-announcements/cloud-security-bulletins/[^/]+/(\d{4})/index\.md$")
@@ -86,8 +93,42 @@ _section_index_paths = set()
 def on_config(config):
     _section_index_paths.clear()
     del _feed_items[:]
+    _fill_advisory_nav(config.get("nav") or [], config["docs_dir"])
     _collect_section_indexes(config.get("nav") or [])
     return config
+
+
+def _fill_advisory_nav(items, docs_dir):
+    """Add each year's advisories to its nav section, the one whose index is the yearly list."""
+    for item in items:
+        if not isinstance(item, dict):
+            continue
+        for value in item.values():
+            if not isinstance(value, list):
+                continue
+            index = next((v for entry in value if isinstance(entry, dict)
+                          for k, v in entry.items() if k == "" and isinstance(v, str)), "")
+            year = ADVISORY_YEAR_RE.match(index)
+            if not year:
+                _fill_advisory_nav(value, docs_dir)
+                continue
+            # Entries written by hand are dropped; check_content.py reports them.
+            value[:] = [entry for entry in value if not (isinstance(entry, dict) and any(
+                isinstance(v, str) and ADVISORY_RE.match(v) for v in entry.values()))]
+            value.extend({advisory_id: "{}/{}/{}.md".format(ADVISORY_DIR, year.group(1), advisory_id)}
+                         for advisory_id, _ in advisory_list(docs_dir, year.group(1)))
+
+
+def on_page_read_source(page, config):
+    """Write a yearly advisory list from the advisories in its folder."""
+    year = ADVISORY_YEAR_RE.match(page.file.src_uri)
+    if not year:
+        return None
+    with open(page.file.abs_src_path, encoding="utf-8-sig") as handle:
+        source = ADVISORY_ENTRY_RE.sub("", handle.read())  # check_content.py reports these
+    entries = [advisory_list_entry(year.group(1), advisory_id, label)
+               for advisory_id, label in advisory_list(config["docs_dir"], year.group(1))]
+    return source.rstrip("\n") + "\n\n" + "\n".join(entries) + "\n"
 
 
 def _collect_section_indexes(items):
@@ -287,12 +328,7 @@ def on_post_build(config):
 def _advisory(name, meta, markdown, sections):
     # The file name is the advisory ID the URL, nav, and yearly list use.
     advisory_id = name if ADVISORY_ID_RE.fullmatch(name) else _first(ADVISORY_ID_RE, markdown)
-    cves = _unique(CVE_RE.findall(str(meta.get("title", ""))))
-    if not cves:
-        line = re.search(r"CVE IDs?:(.*)", markdown)
-        cves = _unique(CVE_RE.findall(line.group(1))) if line else []
-    if not cves:
-        cves = _unique(CVE_RE.findall(sections.get("OVERVIEW", "")))
+    cves = advisory_cves(meta.get("title"), markdown, sections)
     products = _product_names(sections.get("AFFECTED PRODUCTS", ""))
     overview = _first_paragraph(sections.get("OVERVIEW", ""))
     summary, usable = title_summary(overview, drop_cves=bool(cves))
@@ -323,6 +359,43 @@ def _advisory(name, meta, markdown, sections):
 
     keywords = cves + ([advisory_id] if advisory_id else []) + products
     return title, description, keywords
+
+
+def advisory_cves(title, markdown, sections=None):
+    """An advisory's CVE IDs: from its title, else its CVE IDs line, else its OVERVIEW."""
+    cves = _unique(CVE_RE.findall(str(title or "")))
+    if not cves:
+        line = re.search(r"CVE IDs?:(.*)", markdown)
+        cves = _unique(CVE_RE.findall(line.group(1))) if line else []
+    if not cves:
+        sections = _sections(markdown) if sections is None else sections
+        cves = _unique(CVE_RE.findall(sections.get("OVERVIEW", "")))
+    return cves
+
+
+def advisory_list(docs_dir, year):
+    """The advisories in a year folder as (advisory ID, list label) pairs, newest ID first.
+
+    The build writes the yearly list and the year's nav entries from this, so authors
+    add an advisory in one place: its file. The label carries the CVE IDs, as in
+    "WSO2-2026-5328 (CVE-2026-5430)".
+    """
+    folder = os.path.join(docs_dir, ADVISORY_DIR, year)
+    ids = [name[:-3] for name in os.listdir(folder) if ADVISORY_FILE_RE.match(name)] if os.path.isdir(folder) else []
+    entries = []
+    for advisory_id in sorted(ids, key=lambda i: (int(i[5:9]), int(i[10:])), reverse=True):
+        with open(os.path.join(folder, advisory_id + ".md"), encoding="utf-8-sig") as handle:
+            text = handle.read()
+        front = re.match(r"\A---[ \t]*\n(.*?\n)---[ \t]*\n", text, re.S)
+        title = re.search(r"^title:[ \t]*(.*)$", front.group(1), re.M) if front else None
+        cves = advisory_cves(title.group(1) if title else "", text[front.end():] if front else text)
+        entries.append((advisory_id, "{} ({})".format(advisory_id, ", ".join(cves)) if cves else advisory_id))
+    return entries
+
+
+def advisory_list_entry(year, advisory_id, label):
+    """A yearly list line, linked the way every page links (markdownextradata fills base_path)."""
+    return "* [" + label + "]({{#base_path#}}/" + ADVISORY_DIR + "/" + year + "/" + advisory_id + "/)"
 
 
 def advisory_overview(markdown):

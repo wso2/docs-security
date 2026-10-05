@@ -52,9 +52,14 @@ Security advisories (security-advisories/<year>/WSO2-*.md):
                      to 3.9, Medium 4.0 to 6.9, High 7.0 to 8.9, Critical 9.0 to 10.0
     year-folder      the published year differs from the year folder
     duplicate-id     the advisory ID exists in more than one year folder
-    listing          the advisory is missing from its yearly list or from the nav
-    listing-label    the yearly list entry does not read "WSO2-... (CVE-...)" with
-                     the advisory's CVE IDs                                (--fix)
+    listing          the advisory's year folder has no yearly list page or no nav
+                     section; the build lists the advisories in both
+
+Yearly advisory lists and en/mkdocs.yml:
+
+    generated-list   an advisory written into a yearly list or the nav by hand. The
+                     build writes both from the files (en/hooks/seo.py,
+                     advisory_list), newest advisory ID first             (--fix)
 
 CVE justifications (cve-justifications/<year>/*.md):
 
@@ -70,7 +75,8 @@ Usage:
     python3 .github/scripts/check_content.py [--fix] [PATH ...]
 
 PATH defaults to en/docs. Cross-page rules (listing, duplicate-id) look at the
-whole docs folder but report only on the files checked.
+whole docs folder but report only on the files checked. en/mkdocs.yml is checked
+when no PATH is given.
 
 Requires Python 3.8 or later and no third-party packages.
 """
@@ -177,7 +183,8 @@ class Site(object):
 
     def __init__(self):
         with open(MKDOCS, encoding="utf-8") as handle:
-            self.nav = set(re.findall(r"'([^']+\.md)'\s*$", handle.read(), re.M))
+            self.mkdocs = handle.read()
+        self.nav = set(re.findall(r"'([^']+\.md)'\s*$", self.mkdocs, re.M))
         self.advisory_folders = collections.defaultdict(list)
         self.lists = {}
         for root, _, files in os.walk(DOCS):
@@ -253,15 +260,8 @@ def check_target(findings, at, label, target):
 
 
 def advisory_cves(page):
-    """The advisory's CVE IDs, found the way the build finds them (hooks/seo.py)."""
-    cves = CVE.findall(page.meta.get("title", ""))
-    if not cves:
-        line = re.search(r"CVE IDs?:(.*)", page.body)
-        cves = CVE.findall(line.group(1)) if line else []
-    if not cves:
-        overview = re.search(r"^#{2,4}[ \t]+OVERVIEW[ \t]*\n(.*?)(?=^#{2,4}[ \t])", page.body, re.M | re.S)
-        cves = CVE.findall(overview.group(1)) if overview else []
-    return list(collections.OrderedDict.fromkeys(cves))
+    """The advisory's CVE IDs, found by the build's own function (en/hooks/seo.py)."""
+    return SEO.advisory_cves(page.meta.get("title", ""), page.body)
 
 
 def check_advisory(page, site, year, advisory_id):
@@ -340,37 +340,40 @@ def check_advisory(page, site, year, advisory_id):
     if len(site.advisory_folders.get(advisory_id, [])) > 1:
         findings.append(Finding("duplicate-id", 0, "{} also exists in {}".format(advisory_id, ", ".join(
             y for y in sorted(site.advisory_folders[advisory_id]) if y != year))))
-    target = "security-announcements/security-advisories/{}/{}".format(year, advisory_id)
+    # The build lists the advisory on its year's list page and in that year's nav section.
     list_rel = "security-announcements/security-advisories/{0}/{0}-advisories.md".format(year)
-    if not site.listed(list_rel, target):
-        findings.append(Finding("listing", 0, "add {} to {}".format(advisory_id, list_rel)))
-    if target + ".md" not in site.nav:
-        findings.append(Finding("listing", 0, "add {}.md to the nav in en/mkdocs.yml".format(target)))
+    if list_rel not in site.lists:
+        findings.append(Finding("listing", 0, "add the yearly list page {} (copy last year's and change the "
+                                "year); the build lists the year's advisories on it".format(list_rel)))
+    if not re.search(r"^[ \t]*-[ \t]*''[ \t]*:[ \t]*'" + re.escape(list_rel) + r"'[ \t]*$", site.mkdocs, re.M):
+        findings.append(Finding("listing", 0, "add a '{} Advisories' section, with - '': '{}', to the nav in "
+                                "en/mkdocs.yml; the build adds the year's advisories to it".format(year, list_rel)))
     return findings
 
 
 def check_advisory_list(page, site, year):
-    findings = []
-    entry = re.compile(r"^\* \[([^\]]+)\]\(\{\{#base_path#\}\}/security-announcements/security-advisories/"
-                       r"(\d{4})/(WSO2-\d{4}-\d{4})/?\)", re.M)
-    for match in entry.finditer(page.body):
-        label, folder, advisory_id = match.groups()
-        at = page.meta_end + match.start()
-        path = os.path.join(DOCS, "security-announcements", "security-advisories", folder, advisory_id + ".md")
-        if not os.path.exists(path):
-            findings.append(Finding("listing", at, "{} links to {}/{}, which does not exist".format(
-                label, folder, advisory_id)))
-            continue
-        expected = expected_label(Page(path), advisory_id)
-        if label != expected:
-            findings.append(Finding("listing-label", at, "write the entry as \"{}\" (found \"{}\")".format(
-                expected, label), True))
-    return findings
+    """The build writes the list from the year folder, so an advisory listed here by hand is an error."""
+    return [Finding("generated-list", page.meta_end + match.start(), "remove this line; the build lists every "
+                    "advisory in the {} folder, newest advisory ID first".format(year), True)
+            for match in SEO.ADVISORY_ENTRY_RE.finditer(page.body)]
 
 
-def expected_label(page, advisory_id):
-    cves = advisory_cves(page)
-    return "{} ({})".format(advisory_id, ", ".join(cves)) if cves else advisory_id
+NAV_ADVISORY = re.compile(r"^[ \t]*-[ \t]*['\"][^'\"\n]*['\"][ \t]*:[ \t]*['\"]security-announcements/security-advisories/"
+                          r"\d{4}/WSO2-\d{4}-\d{4}\.md['\"][ \t]*\n?", re.M)
+
+
+def nav_block(text):
+    """The start and end of the nav in mkdocs.yml (redirect maps also name advisory files)."""
+    match = re.search(r"^nav:[ \t]*\n(?:(?:[ \t]+.*|[ \t]*#.*|[ \t]*)\n)*", text, re.M)
+    return (match.start(), match.end()) if match else (0, 0)
+
+
+def check_nav(site):
+    """Advisories written into the nav by hand. The build adds each year's advisories."""
+    start, end = nav_block(site.mkdocs)
+    return [Finding("generated-list", match.start(), "remove this line; the build adds every advisory to its "
+                    "year's section", True)
+            for match in NAV_ADVISORY.finditer(site.mkdocs, start, end)]
 
 
 def check_justification(page, site, year, name):
@@ -530,15 +533,8 @@ def fix(page, findings):
         head = re.sub(r"^date:", "published:", head, flags=re.M) if JUSTIFICATION_PATH.search(page.rel) else head
         head = re.sub(r"^(version:[ \t]*)\"?(\d+\.\d+)\"?[ \t]*$", r'\1"\2.0"', head, flags=re.M)
         text = head + body
-    if "listing-label" in rules:
-        def relabel(match):
-            path = os.path.join(DOCS, "security-announcements", "security-advisories", match.group(3),
-                                match.group(4) + ".md")
-            if not os.path.exists(path):
-                return match.group(0)
-            return match.group(1) + expected_label(Page(path), match.group(4)) + match.group(2)
-        text = re.sub(r"^(\* \[)[^\]]+(\]\(\{\{#base_path#\}\}/security-announcements/security-advisories/"
-                      r"(\d{4})/(WSO2-\d{4}-\d{4})/?\))", relabel, text, flags=re.M)
+    if "generated-list" in rules:
+        text = re.sub(SEO.ADVISORY_ENTRY_RE.pattern + r"\n?", "", text, flags=re.M).rstrip("\n") + "\n"
     return text
 
 
@@ -615,6 +611,25 @@ def main(argv=None):
             if github:
                 print("::error file={},line={},col={},title=Content check::{}".format(
                     path, line, column, escape_annotation(message)))
+            remaining[finding.rule] += 1
+
+    if whole_docs:
+        findings = check_nav(site)
+        if args.fix and findings:
+            start, end = nav_block(site.mkdocs)
+            with open(MKDOCS, "w", encoding="utf-8", newline="") as handle:
+                handle.write(site.mkdocs[:start] + NAV_ADVISORY.sub("", site.mkdocs[start:end]) + site.mkdocs[end:])
+            fixed += 1
+            site = Site()
+            findings = check_nav(site)
+        line_starts = [0] + [m.end() for m in re.finditer(r"\n", site.mkdocs)]
+        for finding in findings:
+            line = bisect.bisect_right(line_starts, finding.start)
+            message = "{} [{}]".format(finding.message, finding.rule)
+            print("{}:{}:1: {}".format(os.path.relpath(MKDOCS), line, message))
+            if github:
+                print("::error file={},line={},col=1,title=Content check::{}".format(
+                    os.path.relpath(MKDOCS), line, escape_annotation(message)))
             remaining[finding.rule] += 1
 
     if args.fix:
