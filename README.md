@@ -140,6 +140,27 @@ $ python3 .github/scripts/check_cve_links.py
 
 Add `--fix` to rewrite the links. When the text cites something that only another site shows, such as NVD's own CVSS score, add `<!-- cve-link-check: allow -->` to the end of the line that holds the link.
 
+## Content checks
+
+Write each value once. For a security advisory, fill in the front matter from the template in `.announcement-templates`: `title` (with the CVE ID), `published`, `updated`, `version`, `severity`, and `cvss`. Do not add a heading or the Published, Version, Severity, CVSS Score, and CVE IDs lines to the page; the build renders them from front matter.
+
+Use these forms:
+
+* `version`: `1.0.0`
+* `severity`: `Critical`, `High`, `Medium`, `Low`, `Informative`, or `Not Applicable`
+* `cvss`: `9.8 (CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H)` or `Not Applicable`
+* CVE justifications: `published`, not `date`
+
+Add every new advisory or CVE justification to its yearly list and to the `nav` in `en/mkdocs.yml`. A yearly list entry reads `WSO2-2026-5328 (CVE-2026-5430)`.
+
+A pull request check fails when a Markdown file that the pull request adds or changes has one of these problems, or a leftover template placeholder, an empty link, a link to a retired `docs.wso2.com/display/` page, a `{{#base_path#}}` page link without a trailing slash, or an image without alt text. To check all files locally, run the following command from the repository root:
+
+```shell
+$ python3 .github/scripts/check_content.py
+```
+
+Add `--fix` to correct the problems that can be fixed without guessing. Known problems that are waiting for a decision are listed in `.github/scripts/content_check_baseline.txt`. Remove a line from that file when you fix the problem.
+
 ## License
 
 Licenses this source under the Apache License, Version 2.0 ([LICENSE](LICENSE)), You may not use this file except in compliance with the License.

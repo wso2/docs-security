@@ -349,11 +349,19 @@ def _with_info_block(markdown, meta):
         lines.append(_info_line("CVE IDs", ", ".join(links)))
     block = "\n".join(lines) + "\n---\n" if lines else ""
 
-    heading = re.search(r"^#[ \t]+.+$", markdown, re.M)
+    heading = _leading_heading(markdown)
     if heading:
         return markdown[:heading.end()] + "\n\n" + block + "\n" + markdown[heading.end():].lstrip("\n")
     title = str(meta.get("title") or "").strip()
     return "# {}\n\n{}\n{}".format(title, block, markdown.lstrip("\n"))
+
+
+def _leading_heading(markdown):
+    """The page's H1 when it is the first line of the body.
+
+    A "# ..." line further down may be a comment inside a code block, not a heading.
+    """
+    return re.match(r"\s*^#[ \t]+(.+?)[ \t]*$", markdown, re.M)
 
 
 def _info_line(label, value):
@@ -384,7 +392,7 @@ def _heading_with_cves(markdown, meta, cves):
     Some advisories list their CVE only in the "CVE IDs:" line. The heading carries
     weight with search engines, so the build adds any CVE ID it is missing.
     """
-    match = re.search(r"^#[ \t]+(.+?)[ \t]*$", markdown, re.M)
+    match = _leading_heading(markdown)
     if not cves or not match:
         return markdown
     heading = match.group(1)
