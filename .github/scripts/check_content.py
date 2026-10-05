@@ -35,7 +35,8 @@ Security advisories (security-advisories/<year>/WSO2-*.md):
     repeated-info    the page repeats its heading or Published, Updated, Version,
                      Severity, CVSS, or CVE IDs lines; the build renders them from
                      front matter. --fix removes them when they match front matter,
-                     and first copies any value front matter lacks         (--fix)
+                     and first copies any value front matter lacks, with CVE IDs
+                     going into the title                                  (--fix)
     field-format     a front matter field is missing or not in its standard form:
                      published, version (1.0.0), severity (Critical, High, Medium,
                      Low, Informative, Not Applicable), cvss ("9.8 (CVSS:3.1/...)" or
@@ -475,6 +476,13 @@ def fix(page, findings):
         missing = ["{}: \"{}\"\n".format(key, value) for key, value in shown_values(page).items()
                    if not page.meta.get(key, "").strip()]
         head = re.sub(r"---[ \t]*\n\Z", "".join(missing) + "---\n", head)
+        # The build takes CVE IDs from the title, so move them there as the template writes them.
+        shown_cves = re.search(r'^<p class="doc-info">CVE IDs:(.*)$', body, re.M)
+        cves = list(collections.OrderedDict.fromkeys(CVE.findall(shown_cves.group(1)))) if shown_cves else []
+        if cves and not CVE.search(page.meta.get("title", "")):
+            head = re.sub(r"^(title:[ \t]*)(\"?)(.*?)\2[ \t]*$",
+                          lambda m: m.group(1) + m.group(2) + m.group(3) + "/" + ", ".join(cves) + m.group(2),
+                          head, count=1, flags=re.M)
         text = head + "\n" + body[INFO_BLOCK.match(body).end():]
     if "field-format" in rules:
         head, body = text[:page.meta_end], text[page.meta_end:]
