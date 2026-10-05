@@ -122,6 +122,24 @@ Add `--fix` to correct the dates that can be converted without guessing. The che
 
 The check skips code blocks, inline code, and URLs. To keep a date in another format on purpose, such as in a quoted HTTP header, put it in inline code or between `<!-- date-check: off -->` and `<!-- date-check: on -->`.
 
+## CVE links
+
+Link to a CVE record on the CVE Program's site, in this form:
+
+```
+https://www.cve.org/CVERecord?id=CVE-2026-5430
+```
+
+Do not link CVE IDs to NVD, CVE Details, the old MITRE CVE site, or other vulnerability directories. Links to vendor or researcher advisories, such as an Apache or Spring security page, are fine.
+
+A pull request check fails when a Markdown file that the pull request adds or changes links a CVE record anywhere else. To check all files locally, run the following command from the repository root:
+
+```shell
+$ python3 .github/scripts/check_cve_links.py
+```
+
+Add `--fix` to rewrite the links. When the text cites something that only another site shows, such as NVD's own CVSS score, add `<!-- cve-link-check: allow -->` to the end of the line that holds the link.
+
 ## License
 
 Licenses this source under the Apache License, Version 2.0 ([LICENSE](LICENSE)), You may not use this file except in compliance with the License.
