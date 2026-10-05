@@ -21,6 +21,6 @@ Solarwinds Pingdom is a cloud based website monitoring platform which WSO2 uses 
 
 
 ### References
-[^1]: [https://nvd.nist.gov/vuln/detail/CVE-2020-14005](https://nvd.nist.gov/vuln/detail/CVE-2020-14005)
+[^1]: [https://www.cve.org/CVERecord?id=CVE-2020-14005](https://www.cve.org/CVERecord?id=CVE-2020-14005)
 [^2]: [https://www.cisecurity.org/advisory/multiple-vulnerabilities-in-solarwinds-orion-could-allow-for-arbitrary-code-execution_2020-166/](https://www.cisecurity.org/advisory/multiple-vulnerabilities-in-solarwinds-orion-could-allow-for-arbitrary-code-execution_2020-166/)
 [^3]: [https://www.solarwinds.com/securityadvisory](https://www.solarwinds.com/securityadvisory)
