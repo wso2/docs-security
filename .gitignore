@@ -34,3 +34,6 @@ venv/
 # MkDocs build output
 en/site/
 site/
+
+# Local roadmap notes
+ROADMAP.md
