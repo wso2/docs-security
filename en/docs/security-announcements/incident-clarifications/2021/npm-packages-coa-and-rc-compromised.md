@@ -1,6 +1,7 @@
 ---
 title: NPM packages coa and rc Compromised
 category: security-announcements
+published: November 10, 2021
 ---
 
 <p class="doc-info">WSO2 impacted: No</p>

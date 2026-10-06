@@ -1,6 +1,7 @@
 ---
 title: SolarWinds SUNBURST breach
 category: security-announcements
+published: January 5, 2021
 ---
 
 <p class="doc-info">WSO2 impacted: No</p>
