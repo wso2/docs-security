@@ -156,11 +156,32 @@ Start the OVERVIEW with one sentence of up to 100 characters that names the vuln
 
 Name the advisory file after its ID, such as `WSO2-2026-5328.md`, use the same ID in the title, and put the file in the folder of the year it is published, such as `security-advisories/2026/`. Do not add the advisory to the yearly list or the `nav` in `en/mkdocs.yml`: the build lists every advisory in its year folder, newest advisory ID first, as `WSO2-2026-5328 (CVE-2026-5430)` with the CVE IDs from the title. For the first advisory of a new year, add the year's list page (copy last year's and change the year). The build adds the year to the `nav` and to the Security Advisories page.
 
-For a CVE justification or incident clarification, write the title once, in front matter. Do not repeat it as a heading; the build renders the heading from the title. Start the file with the front matter's `---` line: MkDocs ignores front matter that follows a blank line.
+A CVE justification and an incident clarification each have their own format. Start from the template in `.announcement-templates`, and write each value once, in front matter. Do not add a heading or info lines to the page; the build renders the heading from the title and the info lines from these fields, in this order:
+
+| CVE justification field | Shown as | Required | Values |
+| ----------------------- | -------- | -------- | ------ |
+| `published` | Published | Yes | `Month D, YYYY` |
+| `updated` | Updated | No | `Month D, YYYY`, only when the page is revised |
+| `wso2_products_impacted` | WSO2 Products impacted | Yes | `"Yes"`, `"No"`, or `"Limited"` |
+| `severity` | WSO2 Products severity | No | As for advisories |
+| `cvss` | WSO2 Products CVSS score | No | As for advisories |
+| `customer_action_required` | Customer action required | Yes | `"Yes"` or `"No"` |
+
+| Incident clarification field | Shown as | Required | Values |
+| ---------------------------- | -------- | -------- | ------ |
+| `published` | Published | Yes | `Month D, YYYY` |
+| `updated` | Updated | No | `Month D, YYYY`, only when the page is revised |
+| `version` | Version | No | `1.0.0` |
+| `wso2_impacted` | WSO2 impacted | Yes | `"Yes"` or `"No"` |
+| `evidence_of_compromise` | Evidence of compromise | Yes | `"Yes"` or `"No"` |
+| `customers_impacted` | Customers impacted | No | `"Yes"` or `"No"` |
+| `customer_action_required` | Customer action required | Yes | `"Yes"` or `"No"` |
+
+A Yes or No value may end with a short note in parentheses, such as `"No (transitive dependency)"`. Put Yes and No values in quotes: YAML reads a bare `No` as false. Start the file with the front matter's `---` line, because MkDocs ignores front matter that follows a blank line. A CVE justification goes in the folder of the year it is published; an incident clarification goes in the folder of the year of the incident.
 
 Add every new CVE justification or incident clarification to its year page and to the `nav` in `en/mkdocs.yml`. For a new year, also add the year page (copy last year's) and its `nav` section; the build lists the year on the CVE Justifications or Incident Clarifications page. Cloud security bulletins are listed by hand.
 
-A pull request check fails when a Markdown file that the pull request adds or changes has one of these problems, or an advisory, an advisory year, or a section page's year link added by hand (the build writes those), an OVERVIEW sentence that the search title cannot use, a leftover template placeholder, an empty link, a link to a retired `docs.wso2.com/display/` page, a `{{#base_path#}}` page link without a trailing slash, or an image without alt text. To check all files locally, run the following command from the repository root:
+A pull request check fails when a Markdown file that the pull request adds or changes has one of these problems, or an advisory, an advisory year, or a section page's year link added by hand (the build writes those), a CVE justification or incident clarification field that is missing or not in its form, an OVERVIEW sentence that the search title cannot use, a leftover template placeholder, an empty link, a link to a retired `docs.wso2.com/display/` page, a `{{#base_path#}}` page link without a trailing slash, or an image without alt text. To check all files locally, run the following command from the repository root:
 
 ```shell
 $ python3 .github/scripts/check_content.py

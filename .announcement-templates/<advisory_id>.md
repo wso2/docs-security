@@ -1,13 +1,9 @@
 ---
-title: "{{advisory_id}}"
+title: "{{cve_id}}"
 category: security-announcements
 published: "{{date}}"
-updated: "{{date}}"
-version: "{{version}}"
----
-
-<p class="doc-info">WSO2 Products impacted: no</p>
-<p class="doc-info">Customer action required: no</p>
+wso2_products_impacted: "No"
+customer_action_required: "No"
 ---
 
 ### REPORTED VULNERABILITY

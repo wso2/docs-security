@@ -55,6 +55,31 @@ JUSTIFICATION_RE = re.compile(r"^security-announcements/cve-justifications/\d{4}
 ADVISORY_YEAR_RE = re.compile(r"^security-announcements/security-advisories/(\d{4})/\d{4}-advisories\.md$")
 ADVISORY_DIR = "security-announcements/security-advisories"
 ADVISORY_FILE_RE = re.compile(r"^WSO2-\d{4}-\d{4}\.md$")
+# The info lines of a CVE justification and of an incident clarification: each is a front
+# matter field, shown in this order as "label: value". Older pages wrote the lines by hand,
+# under the other labels listed, which .github/scripts/check_content.py --fix moves into
+# front matter. Fields: (key, label, older labels, required, allowed values).
+YES_NO = r"^(Yes|No)( \(.+\))?$"
+JUSTIFICATION_FIELDS = (
+    ("published", "Published", (), True, "date"),
+    ("updated", "Updated", ("Last Updated",), False, "date"),
+    ("wso2_products_impacted", "WSO2 Products impacted", ("WSO2 Products Impacted",), True,
+     r"^(Yes|No|Limited)( \(.+\))?$"),
+    ("severity", "WSO2 Products severity", ("WSO2 Products Severity",), False, "severity"),
+    ("cvss", "WSO2 Products CVSS score", ("WSO2 Products CVSS Score",), False, "cvss"),
+    ("customer_action_required", "Customer action required",
+     ("Customer actions required", "Customers actions required", "Customers Actions Required"), True, YES_NO),
+)
+INCIDENT_FIELDS = (
+    ("published", "Published", (), True, "date"),
+    ("updated", "Updated", ("Last Updated",), False, "date"),
+    ("version", "Version", (), False, "version"),
+    ("wso2_impacted", "WSO2 impacted", (), True, YES_NO),
+    ("evidence_of_compromise", "Evidence of compromise", (), True, YES_NO),
+    ("customers_impacted", "Customers impacted", (), False, YES_NO),
+    ("customer_action_required", "Customer action required",
+     ("Customer actions required", "Customers actions required"), True, YES_NO),
+)
 # Section pages that list their year pages: the year folder, the year page, and its label.
 YEAR_LISTS = {
     "security-announcements/security-advisories/index.md":
@@ -199,7 +224,7 @@ def on_page_markdown(markdown, page, config, files):
         markdown = _heading_with_cves(markdown, meta, [k for k in keywords if CVE_RE.fullmatch(k)])
         seo["feed"] = "Security Advisory"
     elif JUSTIFICATION_RE.match(src):
-        markdown = _with_heading(markdown, meta)
+        markdown = _with_info_lines(_with_heading(markdown, meta), meta, JUSTIFICATION_FIELDS)
         title, description, keywords = _justification(meta, markdown, sections)
         seo["feed"] = "CVE Justification"
     else:
@@ -213,7 +238,7 @@ def on_page_markdown(markdown, page, config, files):
             keywords = _unique(TABLE_ID_RE.findall(sections.get("VULNERABILITIES ADDRESSED", "")))
             seo["feed"] = "Cloud Security Bulletin"
         elif INCIDENT_RE.match(src):
-            markdown = _with_heading(markdown, meta)
+            markdown = _with_info_lines(_with_heading(markdown, meta), meta, INCIDENT_FIELDS)
             keywords = _unique(CVE_RE.findall(str(meta.get("title", ""))))
             seo["feed"] = "Incident Clarification"
 
@@ -519,6 +544,35 @@ def _with_heading(markdown, meta):
     if _leading_heading(markdown) or not title:
         return markdown
     return "# {}\n\n{}".format(title, markdown.lstrip("\n"))
+
+
+def _with_info_lines(markdown, meta, fields):
+    """Render a CVE justification's or incident clarification's info lines from front matter.
+
+    Pages that still write the lines themselves are left as they are.
+    """
+    if 'class="doc-info"' in markdown:
+        return markdown
+    lines = []
+    for key, label, _, _, kind in fields:
+        value = meta.get(key)
+        if isinstance(value, bool):  # YAML reads an unquoted Yes or No as a boolean
+            value = "Yes" if value else "No"
+        if kind == "date":
+            shown = _display_date(value)
+        elif kind == "cvss":
+            shown = _cvss_link(str(value or "").strip())
+        else:
+            shown = html.escape(str(value if value is not None else "").strip())
+        if shown:
+            lines.append(_info_line(label, shown))
+    if not lines:
+        return markdown
+    heading = _leading_heading(markdown)
+    rest = markdown[heading.end():] if heading else markdown
+    head = markdown[:heading.end()] + "\n\n" if heading else ""
+    rule = "" if re.match(r"\s*---[ \t]*\n", rest) else "---\n"  # the page may draw its own
+    return head + "\n".join(lines) + "\n" + rule + "\n" + rest.lstrip("\n")
 
 
 def _leading_heading(markdown):

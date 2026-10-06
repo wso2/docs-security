@@ -2,16 +2,11 @@
 title: "{{incident_name}}"
 category: security-announcements
 published: "{{date}}"
-updated: "{{date}}"
-version: "{{version}}"
----
-
-<p class="doc-info">Published: {{date}}</p>
-<p class="doc-info">Updated: {{date}}</p>
-<p class="doc-info">Version: {{version}}</p>
-<p class="doc-info">WSO2 impacted: No</p>
-<p class="doc-info">Evidence of compromise: No</p>
-<p class="doc-info">Customers actions required: No</p>
+version: "1.0.0"
+wso2_impacted: "No"
+evidence_of_compromise: "No"
+customers_impacted: "No"
+customer_action_required: "No"
 ---
 
 ### REPORTED INCIDENT

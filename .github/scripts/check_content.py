@@ -64,13 +64,23 @@ Generated lists (en/hooks/seo.py):
                      Incident Clarifications page; or one of those pages lost the
                      line where the build lists its years                 (--fix)
 
-CVE justifications and incident clarifications (<year>/*.md):
+CVE justifications and incident clarifications (<year>/*.md), two formats whose
+front matter fields are defined in en/hooks/seo.py (JUSTIFICATION_FIELDS and
+INCIDENT_FIELDS):
 
     listing          the page is missing from its yearly list or from the nav
-    repeated-info    the page repeats its title as a heading; the build renders it
+    repeated-heading the page repeats its title as a heading; the build renders it
                      from the title. --fix removes it when it matches       (--fix)
-    field-format     (CVE justifications) no published date, or "date" instead of
-                     "published"                                          (--fix)
+    repeated-info    the page writes its info lines (Published, WSO2 Products
+                     impacted, ...) by hand; the build renders them from front
+                     matter. --fix moves them into front matter            (--fix)
+    field-format     a required field is missing, a value is not in its form
+                     ("Yes" or "No", optionally with a note in parentheses; dates,
+                     versions, severity, and CVSS as for advisories), a Yes or No
+                     is not in quotes, the field is unknown, or "date" is used
+                     instead of "published"                     (--fix where safe)
+    year-folder      (CVE justifications) the published year differs from the year
+                     folder
 
 Problems recorded in .github/scripts/content_check_baseline.txt are not
 reported. Each line there is "<path> <rule>". Remove a line once the problem
@@ -260,6 +270,12 @@ def check_page(page, site):
         findings.extend(check_listed(page, site, "incident-clarifications", incident.group(1), incident.group(2)))
     if justification or incident:
         findings.extend(check_heading(page))
+        fields = SEO.JUSTIFICATION_FIELDS if justification else SEO.INCIDENT_FIELDS
+        findings.extend(check_fields(page, fields))
+    if justification and DATE.match(page.meta.get("published", "")) and \
+            page.meta["published"][-4:] != justification.group(1):
+        findings.append(Finding("year-folder", page.meta_lines["published"], "published {} is not in the {} "
+                                "folder".format(page.meta["published"], justification.group(1))))
     if page.rel in SEO.YEAR_LISTS:
         findings.extend(check_year_list(page))
     return findings
@@ -421,7 +437,7 @@ def check_heading(page):
     if not same:
         message += " (the heading \"{}\" differs from the title \"{}\"; make the title right first)".format(
             heading.group(1).strip(), title)
-    return [Finding("repeated-info", page.meta_end + page.body.index("#", heading.start()), message, same)]
+    return [Finding("repeated-heading", page.meta_end + page.body.index("#", heading.start()), message, same)]
 
 
 def check_listed(page, site, section, year, name):
@@ -441,8 +457,102 @@ def check_justification(page, site, year, name):
     if "date" in page.meta:
         findings.append(Finding("field-format", page.meta_lines["date"], "rename \"date\" to \"published\", as in "
                                 "the CVE justification template", True))
-    elif not page.meta.get("published"):
-        findings.append(Finding("field-format", 0, "add a published date"))
+    return findings
+
+
+FIELD_ALLOWED = ("title", "category", "description", "seo_title")
+INFO_LINES = re.compile(r'(?:^<p class="doc-info">[^\n]*\n(?:[ \t]*\n)*)+(?:---[ \t]*\n)?(?:[ \t]*\n)*', re.M)
+
+
+def field_value(kind, value):
+    """A field value in its standard form, or None when it cannot be put in that form safely."""
+    value = re.sub(r"<[^>]+>", "", str(value)).strip()
+    if kind == "date":
+        return value if DATE.match(value) else None
+    if kind == "version":
+        return value if re.match(r"^\d+\.\d+\.\d+$", value) else (value + ".0" if re.match(r"^\d+\.\d+$", value) else None)
+    if kind == "severity":
+        standard = normalize_severity(value)
+        return standard if standard in SEVERITIES else None
+    if kind == "cvss":
+        standard = normalize_cvss(value)
+        return standard if standard and (standard == "Not Applicable" or CVSS.match(standard)) else None
+    standard = value[:1].upper() + value[1:] if value[:3].lower() in ("yes", "no", "no ", "lim") else value
+    return standard if re.match(kind, standard) else None
+
+
+def shown_info(page, fields):
+    """The info lines a page writes by hand, as {field key: value}, and the labels no field matches."""
+    labels = {}
+    for key, label, older, _, _ in fields:
+        for name in (label,) + tuple(older):
+            labels[name.lower()] = key
+    shown, unknown = collections.OrderedDict(), []
+    for label, value in re.findall(r'^<p class="doc-info">([^:<]+):[ \t]*(.*?)</p>[ \t]*$', page.body, re.M):
+        key = labels.get(label.strip().lower())
+        if key:
+            shown[key] = value
+        else:
+            unknown.append(label.strip())
+    return shown, unknown
+
+
+def moved_info(page, fields):
+    """The front matter fields to add when the page's info lines move there, or None when unsafe."""
+    block = INFO_LINES.search(page.body)
+    shown, unknown = shown_info(page, fields)
+    lines = re.findall(r'^<p class="doc-info">', page.body, re.M)
+    if unknown or not block or len(re.findall(r'^<p class="doc-info">', block.group(0), re.M)) != len(lines):
+        return None
+    before = page.body[:block.start()]
+    if before.strip() and not HEADING.fullmatch(before.rstrip()):
+        return None
+    kinds = {key: kind for key, _, _, _, kind in fields}
+    add = collections.OrderedDict()
+    for key in [f[0] for f in fields if f[0] in shown]:  # in the format's order
+        value = shown[key]
+        standard = field_value(kinds[key], value)
+        if standard is None:
+            return None
+        current = page.meta.get(key, "").strip()
+        if current and field_value(kinds[key], current) != standard:
+            return None
+        if not current:
+            add[key] = standard
+    return add
+
+
+def check_fields(page, fields):
+    """Front matter fields of a CVE justification or an incident clarification."""
+    findings = []
+    shown, _ = shown_info(page, fields)
+    for key, label, _, required, kind in fields:
+        value = page.meta.get(key, "").strip()
+        at = page.meta_lines.get(key, 0)
+        if not value:
+            if required and key not in shown:
+                findings.append(Finding("field-format", 0, "add {} (shown as \"{}\")".format(key, label)))
+            continue
+        standard = field_value(kind, value)
+        raw = re.match(r"[^:]*:[ \t]*(.*?)[ \t]*$", page.text[at:].split("\n", 1)[0]).group(1)
+        if standard != value:
+            findings.append(Finding("field-format", at, "write {} as {} (found \"{}\")".format(
+                key, {"date": "\"Month D, YYYY\"", "version": "1.0.0", "severity": ", ".join(SEVERITIES),
+                      "cvss": "\"9.8 (CVSS:3.1/...)\" or Not Applicable"}.get(kind, " or ".join(
+                    '"{}"'.format(w) for w in re.findall(r"[A-Z][a-z]+", kind)) + ", optionally followed by a note "
+                                                                       "in parentheses"),
+                value), standard is not None))
+        elif kind not in ("date", "version", "severity", "cvss") and raw[:1] not in "\"'":
+            findings.append(Finding("field-format", at, "put the value of {} in quotes; YAML reads a bare Yes or No "
+                                    "as true or false".format(key), True))
+    known = {f[0] for f in fields}
+    for key in page.meta:
+        if key not in known and key not in FIELD_ALLOWED and key != "date":
+            findings.append(Finding("field-format", page.meta_lines[key], "remove the unknown front matter field "
+                                    "\"{}\"".format(key)))
+    if re.search(r'^<p class="doc-info">', page.body, re.M):
+        findings.append(Finding("repeated-info", page.meta_end, "remove the info lines; the build renders them from "
+                                "front matter", moved_info(page, fields) is not None))
     return findings
 
 
@@ -562,10 +672,28 @@ def fix(page, findings):
                 return m.group(0)
             return m.group(1) + path + "/" + m.group(3)
         text = re.sub(r"(\]\(\{\{#base_path#\}\}/)([^)#\s]+)((?:#[^)\s]*)?\))", slash, text)
-    if "repeated-info" in rules and not ADVISORY_PATH.search(page.rel):
+    fields = (SEO.JUSTIFICATION_FIELDS if JUSTIFICATION_PATH.search(page.rel) else
+              SEO.INCIDENT_FIELDS if INCIDENT_PATH.search(page.rel) else None)
+    if "repeated-heading" in rules:
         heading = HEADING.match(text, page.meta_end)
         text = text[:page.meta_end] + "\n" + text[heading.end():].lstrip("\n")
-    elif "repeated-info" in rules:
+        return text  # offsets changed; the next pass fixes the rest
+    if "repeated-info" in rules and fields:
+        add = moved_info(page, fields)
+        head, body = text[:page.meta_end], text[page.meta_end:]
+        head = re.sub(r"---[ \t]*\n\Z", "".join("{}: \"{}\"\n".format(k, v) for k, v in add.items()) + "---\n", head)
+        block = INFO_LINES.search(body)
+        return head + body[:block.start()] + body[block.end():]
+    if "field-format" in rules and fields:
+        head, body = text[:page.meta_end], text[page.meta_end:]
+        kinds = {key: kind for key, _, _, _, kind in fields}
+        def standardize(m):
+            standard = field_value(kinds[m.group(2)], m.group(3).strip("\"'"))
+            return m.group(1) + '"{}"'.format(standard) if standard else m.group(0)
+        head = re.sub(r"^((" + "|".join(kinds) + r"):[ \t]*)(.*?)[ \t]*$", standardize, head, flags=re.M)
+        head = re.sub(r"^date:", "published:", head, flags=re.M)
+        return head + body
+    if "repeated-info" in rules and ADVISORY_PATH.search(page.rel):
         head, body = text[:page.meta_end], text[page.meta_end:].lstrip("\n")
         # Keep any value the page shows but front matter lacks.
         missing = ["{}: \"{}\"\n".format(key, value) for key, value in shown_values(page).items()
