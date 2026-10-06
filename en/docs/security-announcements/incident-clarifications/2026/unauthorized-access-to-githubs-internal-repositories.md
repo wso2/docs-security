@@ -1,18 +1,16 @@
 ---
 title: Unauthorized access to GitHub's internal repositories
 category: security-announcements
+published: "May 22, 2026"
+updated: "May 22, 2026"
+version: "1.0.0"
+wso2_impacted: "No"
+evidence_of_compromise: "No"
+customers_impacted: "No"
+customer_action_required: "No"
 ---
 
 # Unauthorized access to GitHub’s internal repositories
-<p class="doc-info">Version: 1.0</p>
-<p class="doc-info">Published: May 22, 2026</p>
-<p class="doc-info">Last Updated: May 22, 2026</p>
-<p class="doc-info">WSO2 impacted: No</p>
-<p class="doc-info">Evidence of compromise: No</p>
-<p class="doc-info">Customers impacted: No</p>
-<p class="doc-info">Customer actions required: No</p>
----
-
 ### Reported Incident
 On May 20, 2026, WSO2 was informed of a security incident announced by GitHub regarding unauthorized access to its internal repositories. 
 
