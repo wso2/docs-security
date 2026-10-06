@@ -203,6 +203,15 @@ $ python3 .github/scripts/check_internal_links.py en/site
 $ python3 .github/scripts/check_built_pages.py en/site
 ```
 
+## How the build works
+
+Two MkDocs hooks in `en/hooks` run on every build, in the order `en/mkdocs.yml` lists them:
+
+* `announcements.py` renders each security advisory, CVE justification, and incident clarification from its front matter (the heading and the info lines) and writes the lists that are not maintained by hand: the yearly lists, the year sections of the `nav`, the year links on the section pages, and the CVE Justifications table.
+* `seo.py` adds search metadata: titles, descriptions, dates, structured data, and the RSS feed.
+
+The rules both hooks follow live in `en/hooks/security_announcements`: `formats.py` defines the three formats and their fields, `listings.py` the generated lists, and `text.py` the shared helpers. `check_content.py` imports the same package, so a change to a format there changes the build and the pull request check together. The package uses only the Python standard library and must stay compatible with Python 3.8.
+
 ## License
 
 Licenses this source under the Apache License, Version 2.0 ([LICENSE](LICENSE)), You may not use this file except in compliance with the License.
