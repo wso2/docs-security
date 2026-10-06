@@ -21,6 +21,8 @@
 Every page:
 
     placeholder      a template placeholder such as {{cvss}} was left in the page
+    front-matter     the front matter does not start on the first line, so MkDocs
+                     ignores it (title, dates)                            (--fix)
     stray-front-matter  a second front matter block in the page body, which readers see
                      as plain text
     legacy-link      a link to the retired docs.wso2.com/display/ pages
@@ -65,7 +67,10 @@ Generated lists (en/hooks/seo.py):
 CVE justifications and incident clarifications (<year>/*.md):
 
     listing          the page is missing from its yearly list or from the nav
-    field-format     no published date, or "date" instead of "published"  (--fix)
+    repeated-info    the page repeats its title as a heading; the build renders it
+                     from the title. --fix removes it when it matches       (--fix)
+    field-format     (CVE justifications) no published date, or "date" instead of
+                     "published"                                          (--fix)
 
 Problems recorded in .github/scripts/content_check_baseline.txt are not
 reported. Each line there is "<path> <rule>". Remove a line once the problem
@@ -212,6 +217,9 @@ def check_page(page, site):
     if not FILE_NAME.match(name):
         findings.append(Finding("file-name", 0, "rename the file without spaces or parentheses, "
                                 "and add a redirect from the old URL"))
+    if page.meta_end and not page.text.lstrip("\ufeff").startswith("---"):
+        findings.append(Finding("front-matter", 0, "start the file with the front matter's \"---\" line; MkDocs "
+                                "ignores front matter that comes after a blank line", True))
     stray = re.search(r"^---[ \t]*\n(?:[A-Za-z][\w -]*:.*\n)+---[ \t]*$", page.body, re.M)
     if stray:
         findings.append(Finding("stray-front-matter", page.meta_end + stray.start(),
@@ -250,6 +258,8 @@ def check_page(page, site):
     incident = INCIDENT_PATH.search(page.rel)
     if incident:
         findings.extend(check_listed(page, site, "incident-clarifications", incident.group(1), incident.group(2)))
+    if justification or incident:
+        findings.extend(check_heading(page))
     if page.rel in SEO.YEAR_LISTS:
         findings.extend(check_year_list(page))
     return findings
@@ -400,6 +410,20 @@ def check_nav(site):
     return findings
 
 
+def check_heading(page):
+    """A CVE justification or incident clarification that writes its title again as its heading."""
+    heading = HEADING.match(page.body)
+    if not heading:
+        return []
+    title = page.meta.get("title", "").strip()
+    same = heading.group(1).strip() == title
+    message = "remove the heading; the build renders it from the title"
+    if not same:
+        message += " (the heading \"{}\" differs from the title \"{}\"; make the title right first)".format(
+            heading.group(1).strip(), title)
+    return [Finding("repeated-info", page.meta_end + page.body.index("#", heading.start()), message, same)]
+
+
 def check_listed(page, site, section, year, name):
     """A page listed by hand: it must be on its year page and in the nav."""
     findings = []
@@ -528,6 +552,9 @@ def safe_to_remove(page):
 def fix(page, findings):
     text = page.text
     rules = {f.rule for f in findings if f.fixable}
+    if "front-matter" in rules:
+        # Offsets below are relative to the original text, so re-read the page after this fix.
+        return text.lstrip("\ufeff \t\r\n")
     if "trailing-slash" in rules:
         def slash(m):
             path = m.group(2)
@@ -535,7 +562,10 @@ def fix(page, findings):
                 return m.group(0)
             return m.group(1) + path + "/" + m.group(3)
         text = re.sub(r"(\]\(\{\{#base_path#\}\}/)([^)#\s]+)((?:#[^)\s]*)?\))", slash, text)
-    if "repeated-info" in rules:
+    if "repeated-info" in rules and not ADVISORY_PATH.search(page.rel):
+        heading = HEADING.match(text, page.meta_end)
+        text = text[:page.meta_end] + "\n" + text[heading.end():].lstrip("\n")
+    elif "repeated-info" in rules:
         head, body = text[:page.meta_end], text[page.meta_end:].lstrip("\n")
         # Keep any value the page shows but front matter lacks.
         missing = ["{}: \"{}\"\n".format(key, value) for key, value in shown_values(page).items()
@@ -625,15 +655,20 @@ def main(argv=None):
         page = Page(path)
         checked += 1
         findings = check_page(page, site)
-        if args.fix and any(f.fixable for f in findings):
+        changed = False
+        for _ in range(3):  # a fix can expose another, as when front matter starts to count
+            if not (args.fix and any(f.fixable for f in findings)):
+                break
             new_text = fix(page, findings)
-            if new_text != page.text:
-                with open(path, "w", encoding="utf-8", newline="") as handle:
-                    handle.write(new_text)
-                fixed += 1
-                site = Site()
-                page = Page(path)
-                findings = check_page(page, site)
+            if new_text == page.text:
+                break
+            with open(path, "w", encoding="utf-8", newline="") as handle:
+                handle.write(new_text)
+            changed = True
+            site = Site()
+            page = Page(path)
+            findings = check_page(page, site)
+        fixed += changed
         line_starts = [0] + [m.end() for m in re.finditer(r"\n", page.text)]
         for finding in findings:
             if (page.rel, finding.rule) in baseline:

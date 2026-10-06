@@ -3,8 +3,6 @@ title: NPM package UA-Parser-JS Compromised
 category: security-announcements
 ---
 
-# NPM package UA-Parser-JS Compromised
-
 <p class="doc-info">WSO2 impacted: No</p>
 <p class="doc-info">Evidence of compromise: No</p>
 <p class="doc-info">Customers actions required: No</p>

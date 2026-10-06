@@ -6,8 +6,6 @@ updated: "{{date}}"
 version: "{{version}}"
 ---
 
-# {{incident_name}}
-
 <p class="doc-info">Published: {{date}}</p>
 <p class="doc-info">Updated: {{date}}</p>
 <p class="doc-info">Version: {{version}}</p>

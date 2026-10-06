@@ -88,6 +88,10 @@ security-announcements/security-advisories/2025/WSO2-2025-4510.md overview-title
 security-announcements/security-advisories/2025/WSO2-2025-4526.md overview-title
 security-announcements/security-advisories/2026/WSO2-2025-4530.md overview-title
 
+# The heading differs from the title, so the build cannot render it from the title yet. See ROADMAP.md section 3A.
+security-announcements/incident-clarifications/2021/CVE-2021-4104.md repeated-info
+security-announcements/incident-clarifications/2026/unauthorized-access-to-githubs-internal-repositories.md repeated-info
+
 # Older advisories without version, severity, or cvss, and pages with values that need a decision. See ROADMAP.md section 3A.
 security-announcements/cve-justifications/2019/CVE-2019-6512.md field-format
 security-announcements/cve-justifications/2019/CVE-2019-6515.md field-format
