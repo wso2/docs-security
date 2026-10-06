@@ -37,7 +37,7 @@ Security advisories (security-advisories/<year>/WSO2-*.md):
     overview-title   the first OVERVIEW sentence cannot be the search title: it is
                      longer than 100 characters after the build drops words such as
                      "A potential" and "has been identified", or it refers to "the
-                     above" products (en/hooks/seo.py, title_summary)
+                     above" products (formats.title_summary)
     repeated-info    the page repeats its heading or Published, Updated, Version,
                      Severity, CVSS, or CVE IDs lines; the build renders them from
                      front matter. --fix removes them when they match front matter,
@@ -56,7 +56,7 @@ Security advisories (security-advisories/<year>/WSO2-*.md):
     duplicate-id     the advisory ID exists in more than one year folder
     listing          the advisory's year folder has no yearly list page
 
-Generated lists (en/hooks/seo.py):
+Generated lists (en/hooks/security_announcements/listings.py):
 
     generated-list   a list the build writes was written by hand: an advisory, CVE
                      justification, or incident clarification on its year page or in
@@ -66,8 +66,8 @@ Generated lists (en/hooks/seo.py):
                      the build lists its years                            (--fix)
 
 CVE justifications and incident clarifications (<year>/*.md), two formats whose
-front matter fields are defined in en/hooks/seo.py (JUSTIFICATION_FIELDS and
-INCIDENT_FIELDS):
+front matter fields are defined in en/hooks/security_announcements/formats.py
+(JUSTIFICATION_FIELDS and INCIDENT_FIELDS):
 
     listing          (incident clarifications) the year folder has no year page
     repeated-heading the page repeats its title as a heading; the build renders it
@@ -101,7 +101,6 @@ Requires Python 3.8 or later and no third-party packages.
 import argparse
 import bisect
 import collections
-import importlib.util
 import math
 import os
 import posixpath
@@ -115,15 +114,10 @@ BASELINE = os.path.join(REPO_ROOT, ".github", "scripts", "content_check_baseline
 SCRIPT = ".github/scripts/check_content.py"
 
 
-def load_build_hook():
-    """The build hook, so that this check judges search titles exactly as the build makes them."""
-    spec = importlib.util.spec_from_file_location("seo_hook", os.path.join(REPO_ROOT, "en", "hooks", "seo.py"))
-    module = importlib.util.module_from_spec(spec)
-    spec.loader.exec_module(module)
-    return module
-
-
-SEO = load_build_hook()
+# The content model the build uses (en/hooks/security_announcements), so the check applies the
+# build's own rules: formats and fields, search titles, and the lists the build writes.
+sys.path.insert(0, os.path.join(REPO_ROOT, "en", "hooks"))
+from security_announcements import formats, listings  # noqa: E402
 
 ADVISORY_PATH = re.compile(r"security-announcements/security-advisories/(\d{4})/(WSO2-\d{4}-\d{4})\.md$")
 ADVISORY_LIST_PATH = re.compile(r"security-announcements/security-advisories/(\d{4})/\d{4}-advisories\.md$")
@@ -272,13 +266,13 @@ def check_page(page, site):
         findings.extend(check_listed(page, site, "incident-clarifications", incident.group(1), incident.group(2)))
     if justification or incident:
         findings.extend(check_heading(page))
-        fields = SEO.JUSTIFICATION_FIELDS if justification else SEO.INCIDENT_FIELDS
+        fields = formats.JUSTIFICATION_FIELDS if justification else formats.INCIDENT_FIELDS
         findings.extend(check_fields(page, fields))
     if justification and DATE.match(page.meta.get("published", "")) and \
             page.meta["published"][-4:] != justification.group(1):
         findings.append(Finding("year-folder", page.meta_lines["published"], "published {} is not in the {} "
                                 "folder".format(page.meta["published"], justification.group(1))))
-    if page.rel in SEO.YEAR_LISTS or page.rel == SEO.JUSTIFICATIONS_PAGE:
+    if page.rel in listings.YEAR_LISTS or page.rel == listings.JUSTIFICATIONS_PAGE:
         findings.extend(check_year_list(page))
     return findings
 
@@ -296,8 +290,8 @@ def check_target(findings, at, label, target):
 
 
 def advisory_cves(page):
-    """The advisory's CVE IDs, found by the build's own function (en/hooks/seo.py)."""
-    return SEO.advisory_cves(page.meta.get("title", ""), page.body)
+    """The advisory's CVE IDs, found by the build's own function."""
+    return formats.advisory_cves(page.meta.get("title", ""), page.body)
 
 
 def check_advisory(page, site, year, advisory_id):
@@ -314,8 +308,8 @@ def check_advisory(page, site, year, advisory_id):
         findings.append(Finding("advisory-id", page.meta_end + heading.start(1),
                                 "the heading must name {} (found \"{}\")".format(advisory_id, heading.group(1))))
 
-    overview = SEO.advisory_overview(page.body)
-    summary, usable = SEO.title_summary(overview, drop_cves=bool(advisory_cves(page)))
+    overview = formats.advisory_overview(page.body)
+    summary, usable = formats.title_summary(overview, drop_cves=bool(advisory_cves(page)))
     if not usable:
         section = re.search(r"^#{2,4}[ \t]+OVERVIEW\b", page.body, re.M)
         at = page.meta_end + (section.start() if section else 0)
@@ -327,7 +321,7 @@ def check_advisory(page, site, year, advisory_id):
         else:
             message = ("shorten the first OVERVIEW sentence to {} characters or fewer; the search title uses it (it "
                        "has {} after the build drops words such as \"A potential\")".format(
-                           SEO.TITLE_SUMMARY_LIMIT, len(summary)))
+                           formats.TITLE_SUMMARY_LIMIT, len(summary)))
         findings.append(Finding("overview-title", at, message))
     if shown or (heading and re.match(r"(?i)security advisory\b", heading.group(1))):
         repeated = (["heading"] if heading else []) + shown
@@ -389,21 +383,21 @@ def check_advisory_list(page, site, year):
     """The build writes a year page's list from its folder, so an entry written here by hand is an error."""
     return [Finding("generated-list", page.meta_end + match.start(), "remove this line; the build lists every page "
                     "in the {} folder".format(year), True)
-            for match in SEO.ENTRY_LINE_RE.finditer(page.body)]
+            for match in listings.ENTRY_LINE_RE.finditer(page.body)]
 
 
 def check_year_list(page):
     """A section page whose year links the build writes."""
     findings = [Finding("generated-list", page.meta_end + match.start(), "remove this line; the build lists every "
                         "year that has a year page, newest first", True)
-                for match in SEO.YEAR_LINK_RE.finditer(page.body)]
-    if page.rel in SEO.YEAR_LISTS and SEO.YEAR_LIST_MARKER not in page.body:
+                for match in listings.YEAR_LINK_RE.finditer(page.body)]
+    if page.rel in listings.YEAR_LISTS and listings.YEAR_LIST_MARKER not in page.body:
         findings.append(Finding("generated-list", page.meta_end, "add the line {} where the year pages should be "
-                                "listed".format(SEO.YEAR_LIST_MARKER), bool(findings)))
-    if page.rel == SEO.JUSTIFICATIONS_PAGE:
-        if SEO.JUSTIFICATION_TABLE_MARKER not in page.body:
+                                "listed".format(listings.YEAR_LIST_MARKER), bool(findings)))
+    if page.rel == listings.JUSTIFICATIONS_PAGE:
+        if listings.JUSTIFICATION_TABLE_MARKER not in page.body:
             findings.append(Finding("generated-list", page.meta_end, "add the line {} where the CVE justifications "
-                                    "should be listed".format(SEO.JUSTIFICATION_TABLE_MARKER)))
+                                    "should be listed".format(listings.JUSTIFICATION_TABLE_MARKER)))
         for match in re.finditer(r"\{\{#base_path#\}\}/security-announcements/cve-justifications/\d{4}/", page.body):
             findings.append(Finding("generated-list", page.meta_end + match.start(), "remove this link; the build lists "
                                     "every CVE justification on this page by CVE ID"))
@@ -682,8 +676,8 @@ def fix(page, findings):
                 return m.group(0)
             return m.group(1) + path + "/" + m.group(3)
         text = re.sub(r"(\]\(\{\{#base_path#\}\}/)([^)#\s]+)((?:#[^)\s]*)?\))", slash, text)
-    fields = (SEO.JUSTIFICATION_FIELDS if JUSTIFICATION_PATH.search(page.rel) else
-              SEO.INCIDENT_FIELDS if INCIDENT_PATH.search(page.rel) else None)
+    fields = (formats.JUSTIFICATION_FIELDS if JUSTIFICATION_PATH.search(page.rel) else
+              formats.INCIDENT_FIELDS if INCIDENT_PATH.search(page.rel) else None)
     if "repeated-heading" in rules:
         heading = HEADING.match(text, page.meta_end)
         text = text[:page.meta_end] + "\n" + text[heading.end():].lstrip("\n")
@@ -731,13 +725,13 @@ def fix(page, findings):
         head = re.sub(r"^date:", "published:", head, flags=re.M) if JUSTIFICATION_PATH.search(page.rel) else head
         head = re.sub(r"^(version:[ \t]*)\"?(\d+\.\d+)\"?[ \t]*$", r'\1"\2.0"', head, flags=re.M)
         text = head + body
-    if "generated-list" in rules and page.rel in SEO.YEAR_LISTS:
-        first = SEO.YEAR_LINK_RE.search(text, page.meta_end)
-        if SEO.YEAR_LIST_MARKER not in text and first:
-            text = text[:first.start()] + SEO.YEAR_LIST_MARKER + "\n" + text[first.start():]
-        text = text[:page.meta_end] + SEO.YEAR_LINK_RE.sub("", text[page.meta_end:])
+    if "generated-list" in rules and page.rel in listings.YEAR_LISTS:
+        first = listings.YEAR_LINK_RE.search(text, page.meta_end)
+        if listings.YEAR_LIST_MARKER not in text and first:
+            text = text[:first.start()] + listings.YEAR_LIST_MARKER + "\n" + text[first.start():]
+        text = text[:page.meta_end] + listings.YEAR_LINK_RE.sub("", text[page.meta_end:])
     elif "generated-list" in rules:
-        text = (text[:page.meta_end] + SEO.ENTRY_LINE_RE.sub("", text[page.meta_end:])).rstrip("\n") + "\n"
+        text = (text[:page.meta_end] + listings.ENTRY_LINE_RE.sub("", text[page.meta_end:])).rstrip("\n") + "\n"
     return text
 
 
