@@ -84,8 +84,6 @@ INCIDENT_FIELDS = (
 YEAR_LISTS = {
     "security-announcements/security-advisories/index.md":
         ("security-announcements/security-advisories", "{0}/{0}-advisories.md", "{0} Advisories"),
-    "security-announcements/cve-justifications/index.md":
-        ("security-announcements/cve-justifications", "{0}/index.md", "{0} CVE Justifications"),
     "security-announcements/incident-clarifications/index.md":
         ("security-announcements/incident-clarifications", "{0}/index.md", "{0} Incident Clarifications"),
 }
@@ -97,11 +95,14 @@ YEAR_LINK_RE = re.compile(r"^[*-][ \t]+\[[^\]]*\]\(\{\{#base_path#\}\}/security-
 ENTRY_LINE_RE = re.compile(r"^[*-][ \t]+\[.*\]\(\{\{#base_path#\}\}/security-announcements/(?:security-advisories|"
                            r"cve-justifications|incident-clarifications)/\d{4}/.+\)[ \t]*\n?", re.M)
 # The nav sections the build writes, by their index page, and how each names its year sections.
+# CVE justifications are not in the nav: their section page lists them by CVE ID.
 NAV_SECTIONS = {
     "security-announcements/security-advisories/index.md": "{} Advisories",
-    "security-announcements/cve-justifications/index.md": "{}",
     "security-announcements/incident-clarifications/index.md": "{}",
 }
+JUSTIFICATIONS_PAGE = "security-announcements/cve-justifications/index.md"
+# Where the CVE Justifications page lists every justification by CVE ID. The build replaces this line.
+JUSTIFICATION_TABLE_MARKER = "<!-- The build lists the CVE justifications here, by CVE ID. -->"
 JUSTIFICATION_YEAR_RE = re.compile(r"^security-announcements/cve-justifications/(\d{4})/index\.md$")
 INCIDENT_YEAR_RE = re.compile(r"^security-announcements/incident-clarifications/(\d{4})/index\.md$")
 BULLETIN_YEAR_RE = re.compile(r"^security-announcements/cloud-security-bulletins/[^/]+/(\d{4})/index\.md$")
@@ -180,8 +181,8 @@ def on_page_read_source(page, config):
     """Write the generated lists: a year page's entries, and a section page's year pages."""
     src = page.file.src_uri
     folder = posixpath.dirname(src)
-    is_year_page = (ADVISORY_YEAR_RE.match(src) or JUSTIFICATION_YEAR_RE.match(src) or INCIDENT_YEAR_RE.match(src))
-    if not is_year_page and src not in YEAR_LISTS:
+    is_year_page = ADVISORY_YEAR_RE.match(src) or INCIDENT_YEAR_RE.match(src)
+    if not is_year_page and src not in YEAR_LISTS and src != JUSTIFICATIONS_PAGE:
         return None
     with open(page.file.abs_src_path, encoding="utf-8-sig") as handle:
         source = handle.read()
@@ -190,6 +191,8 @@ def on_page_read_source(page, config):
         entries = ["* [" + label + "]({{#base_path#}}/" + folder + "/" + name + "/)"
                    for name, label in section_entries(config["docs_dir"], folder)]
         return source.rstrip("\n") + "\n\n" + "\n".join(entries) + "\n"
+    if src == JUSTIFICATIONS_PAGE:
+        return source.replace(JUSTIFICATION_TABLE_MARKER, justification_table(config["docs_dir"]), 1)
     links = "\n".join("* [" + label + "]({{#base_path#}}/" + _page_path(list_page) + ")"
                       for _, list_page, label in year_pages(config["docs_dir"], src))
     source = YEAR_LINK_RE.sub("", source)  # check_content.py reports these
@@ -214,7 +217,7 @@ def section_entries(docs_dir, folder):
             continue
         with open(os.path.join(root, name), encoding="utf-8-sig") as handle:
             front = re.match(r"\A---[ \t]*\n(.*?\n)---[ \t]*\n", handle.read(), re.S)
-        fields = dict(re.findall(r"^([A-Za-z_]+):[ \t]*[\"']?(.*?)[\"']?[ \t]*$", front.group(1), re.M)) if front else {}
+        fields = dict(re.findall(r"^([A-Za-z0-9_]+):[ \t]*[\"']?(.*?)[\"']?[ \t]*$", front.group(1), re.M)) if front else {}
         title = fields.get("title") or name[:-3]
         try:
             published = datetime.strptime(fields.get("published", ""), "%B %d, %Y")
@@ -223,6 +226,50 @@ def section_entries(docs_dir, folder):
         cve = re.search(r"CVE-(\d{4})-(\d+)", title)
         entries.append((published, (int(cve.group(1)), int(cve.group(2))) if cve else (0, 0), title, name[:-3]))
     return [(name, title) for _, _, title, name in sorted(entries, reverse=True)]
+
+
+def justification_rows(docs_dir):
+    """Every CVE justification, one row per CVE ID, newest CVE first, then the ones without a CVE.
+
+    Each row is (ID, page path, WSO2 products, WSO2 Products impacted, customer action required,
+    published), taken from the page's title, front matter, and REPORTED PRODUCTS list.
+    """
+    section = "security-announcements/cve-justifications"
+    rows = []
+    years = [name for name in os.listdir(os.path.join(docs_dir, section)) if re.match(r"^\d{4}$", name)]
+    for year in years:
+        root = os.path.join(docs_dir, section, year)
+        for name in os.listdir(root):
+            if not name.endswith(".md") or name == "index.md":
+                continue
+            with open(os.path.join(root, name), encoding="utf-8-sig") as handle:
+                text = handle.read()
+            front = re.match(r"\A---[ \t]*\n(.*?\n)---[ \t]*\n", text, re.S)
+            fields = dict(re.findall(r"^([A-Za-z0-9_]+):[ \t]*[\"']?(.*?)[\"']?[ \t]*$", front.group(1), re.M)) if front else {}
+            body = text[front.end():] if front else text
+            title = fields.get("title") or name[:-3]
+            products = ", ".join(_product_names(_sections(body).get("REPORTED PRODUCTS", "")))
+            ids = _unique(CVE_RE.findall(title)) or _unique(re.findall(r"\b(?:GHSA(?:-[0-9a-z]{4}){3}|ZDI-[A-Z]+-\d+)\b",
+                                                                      title)) or [title]
+            for vuln_id in ids:
+                rows.append((vuln_id, "{}/{}/{}".format(section, year, name[:-3]), products,
+                             fields.get("wso2_products_impacted", ""), fields.get("customer_action_required", ""),
+                             fields.get("published", "")))
+    def order(row):
+        cve = re.match(r"CVE-(\d{4})-(\d+)$", row[0])
+        return (0, -int(cve.group(1)), -int(cve.group(2)), "") if cve else (1, 0, 0, row[0].lower())
+    return sorted(rows, key=order)
+
+
+def justification_table(docs_dir):
+    """The CVE Justifications page's table of every justification, by CVE ID."""
+    lines = ["| ID | WSO2 products | WSO2 Products impacted | Customer action required | Published |",
+             "| -- | ------------- | ---------------------- | ------------------------ | --------- |"]
+    for vuln_id, path, products, impacted, action, published in justification_rows(docs_dir):
+        cells = ["[{}]({{{{#base_path#}}}}/{}/)".format(vuln_id, path), products, impacted, action,
+                 published.replace(" ", "&nbsp;")]  # a date stays on one line
+        lines.append("| " + " | ".join(cell.replace("|", "\\|") for cell in cells) + " |")
+    return "\n".join(lines)
 
 
 def year_pages(docs_dir, landing):
@@ -705,6 +752,10 @@ def _listing_description(src, page):
 
 def _breadcrumbs(page, site_url, current_name):
     items = [{"name": "Home", "item": site_url}]
+    if not page.ancestors and page.file.src_uri.startswith("security-announcements/cve-justifications/") \
+            and page.file.src_uri != JUSTIFICATIONS_PAGE:
+        # Not in the nav; the CVE Justifications page lists it.
+        items.append({"name": "CVE Justifications", "item": urljoin(site_url, _page_path(JUSTIFICATIONS_PAGE))})
     for section in reversed(page.ancestors):
         index = _section_index(section)
         if index is None or index is page:

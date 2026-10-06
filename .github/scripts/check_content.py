@@ -69,7 +69,7 @@ CVE justifications and incident clarifications (<year>/*.md), two formats whose
 front matter fields are defined in en/hooks/seo.py (JUSTIFICATION_FIELDS and
 INCIDENT_FIELDS):
 
-    listing          the page's year folder has no year page (index.md)
+    listing          (incident clarifications) the year folder has no year page
     repeated-heading the page repeats its title as a heading; the build renders it
                      from the title. --fix removes it when it matches       (--fix)
     repeated-info    the page writes its info lines (Published, WSO2 Products
@@ -278,7 +278,7 @@ def check_page(page, site):
             page.meta["published"][-4:] != justification.group(1):
         findings.append(Finding("year-folder", page.meta_lines["published"], "published {} is not in the {} "
                                 "folder".format(page.meta["published"], justification.group(1))))
-    if page.rel in SEO.YEAR_LISTS:
+    if page.rel in SEO.YEAR_LISTS or page.rel == SEO.JUSTIFICATIONS_PAGE:
         findings.extend(check_year_list(page))
     return findings
 
@@ -397,9 +397,16 @@ def check_year_list(page):
     findings = [Finding("generated-list", page.meta_end + match.start(), "remove this line; the build lists every "
                         "year that has a year page, newest first", True)
                 for match in SEO.YEAR_LINK_RE.finditer(page.body)]
-    if SEO.YEAR_LIST_MARKER not in page.body:
+    if page.rel in SEO.YEAR_LISTS and SEO.YEAR_LIST_MARKER not in page.body:
         findings.append(Finding("generated-list", page.meta_end, "add the line {} where the year pages should be "
                                 "listed".format(SEO.YEAR_LIST_MARKER), bool(findings)))
+    if page.rel == SEO.JUSTIFICATIONS_PAGE:
+        if SEO.JUSTIFICATION_TABLE_MARKER not in page.body:
+            findings.append(Finding("generated-list", page.meta_end, "add the line {} where the CVE justifications "
+                                    "should be listed".format(SEO.JUSTIFICATION_TABLE_MARKER)))
+        for match in re.finditer(r"\{\{#base_path#\}\}/security-announcements/cve-justifications/\d{4}/", page.body):
+            findings.append(Finding("generated-list", page.meta_end + match.start(), "remove this link; the build lists "
+                                    "every CVE justification on this page by CVE ID"))
     return findings
 
 
@@ -419,11 +426,15 @@ def nav_block(text):
 def check_nav(site):
     """Advisories and advisory year sections written into the nav by hand. The build writes them."""
     start, end = nav_block(site.mkdocs)
-    findings = [Finding("generated-list", match.start(), "remove this year section; the build adds a section "
-                        "for every year folder that has a year page", True)
+    def where(match):
+        if "cve-justifications/" in match.group(0):
+            return "CVE justifications are not in the nav; the CVE Justifications page lists them by CVE ID"
+        return None
+    findings = [Finding("generated-list", match.start(), "remove this year section; " + (
+                        where(match) or "the build adds a section for every year folder that has a year page"), True)
                 for match in NAV_ADVISORY_YEAR.finditer(site.mkdocs, start, end)]
-    findings += [Finding("generated-list", match.start(), "remove this line; the build adds every page to its "
-                         "year's section", True)
+    findings += [Finding("generated-list", match.start(), "remove this line; " + (
+                         where(match) or "the build adds every page to its year's section"), True)
                  for match in NAV_ADVISORY.finditer(site.mkdocs, start, end)]
     return findings
 
@@ -452,7 +463,7 @@ def check_listed(page, site, section, year, name):
 
 
 def check_justification(page, site, year, name):
-    findings = check_listed(page, site, "cve-justifications", year, name)
+    findings = []  # the CVE Justifications page lists every justification; there are no year pages
     if "date" in page.meta:
         findings.append(Finding("field-format", page.meta_lines["date"], "rename \"date\" to \"published\", as in "
                                 "the CVE justification template", True))

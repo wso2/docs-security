@@ -931,3 +931,8 @@
         width: 16px;
     }
 }
+
+/* The CVE Justifications page lists every justification in a table: keep each ID on one line. */
+.md-typeset table a[href*="/cve-justifications/"] {
+  white-space: nowrap;
+}
