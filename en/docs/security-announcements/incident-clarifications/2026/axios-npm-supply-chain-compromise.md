@@ -3,7 +3,6 @@ title: Axios NPM Supply Chain Compromise
 category: security-announcements
 ---
 
-# Axios NPM Supply Chain Compromise
 <p class="doc-info">Version: 1.0</p>
 <p class="doc-info">Published: April 3, 2026</p>
 <p class="doc-info">Last Updated: April 3, 2026</p>

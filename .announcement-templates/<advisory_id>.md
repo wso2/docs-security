@@ -6,8 +6,6 @@ updated: "{{date}}"
 version: "{{version}}"
 ---
 
-# {{advisory_id}}
-
 <p class="doc-info">WSO2 Products impacted: no</p>
 <p class="doc-info">Customer action required: no</p>
 ---

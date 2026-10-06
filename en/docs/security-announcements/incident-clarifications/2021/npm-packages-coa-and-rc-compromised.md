@@ -3,8 +3,6 @@ title: NPM packages coa and rc Compromised
 category: security-announcements
 ---
 
-# NPM packages coa and rc Compromised
-
 <p class="doc-info">WSO2 impacted: No</p>
 <p class="doc-info">Evidence of compromise: No</p>
 <p class="doc-info">Customers actions required: No</p>

@@ -3,8 +3,6 @@ title: SolarWinds SUNBURST breach
 category: security-announcements
 ---
 
-# SolarWinds SUNBURST breach
-
 <p class="doc-info">WSO2 impacted: No</p>
 <p class="doc-info">Evidence of compromise: No</p>
 <p class="doc-info">Customers actions required: No</p>

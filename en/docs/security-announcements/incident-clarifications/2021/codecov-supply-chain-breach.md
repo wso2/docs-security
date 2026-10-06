@@ -3,8 +3,6 @@ title: Codecov supply chain breach
 category: security-announcements
 ---
 
-# Codecov supply chain breach
-
 <p class="doc-info">WSO2 impacted: Yes</p>
 <p class="doc-info">Evidence of compromise: No</p>
 <p class="doc-info">Customers actions required: No</p>

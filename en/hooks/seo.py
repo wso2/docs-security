@@ -199,6 +199,7 @@ def on_page_markdown(markdown, page, config, files):
         markdown = _heading_with_cves(markdown, meta, [k for k in keywords if CVE_RE.fullmatch(k)])
         seo["feed"] = "Security Advisory"
     elif JUSTIFICATION_RE.match(src):
+        markdown = _with_heading(markdown, meta)
         title, description, keywords = _justification(meta, markdown, sections)
         seo["feed"] = "CVE Justification"
     else:
@@ -212,6 +213,7 @@ def on_page_markdown(markdown, page, config, files):
             keywords = _unique(TABLE_ID_RE.findall(sections.get("VULNERABILITIES ADDRESSED", "")))
             seo["feed"] = "Cloud Security Bulletin"
         elif INCIDENT_RE.match(src):
+            markdown = _with_heading(markdown, meta)
             keywords = _unique(CVE_RE.findall(str(meta.get("title", ""))))
             seo["feed"] = "Incident Clarification"
 
@@ -505,6 +507,18 @@ def _with_info_block(markdown, meta):
         return markdown[:heading.end()] + "\n\n" + block + "\n" + markdown[heading.end():].lstrip("\n")
     title = str(meta.get("title") or "").strip()
     return "# {}\n\n{}\n{}".format(title, block, markdown.lstrip("\n"))
+
+
+def _with_heading(markdown, meta):
+    """Render a CVE justification's or incident clarification's heading from its title.
+
+    Authors write the title once, in front matter. Pages that still start with their
+    own heading are left as they are.
+    """
+    title = str(meta.get("title") or "").strip()
+    if _leading_heading(markdown) or not title:
+        return markdown
+    return "# {}\n\n{}".format(title, markdown.lstrip("\n"))
 
 
 def _leading_heading(markdown):
