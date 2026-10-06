@@ -93,8 +93,15 @@ YEAR_LISTS = {
 YEAR_LIST_MARKER = "<!-- The build lists the year pages here, newest first. -->"
 YEAR_LINK_RE = re.compile(r"^[*-][ \t]+\[[^\]]*\]\(\{\{#base_path#\}\}/security-announcements/"
                           r"(?:security-advisories|cve-justifications|incident-clarifications)/\d{4}/[^)]*\)[ \t]*\n?", re.M)
-# A yearly list line for one advisory. The build writes these; check_content.py rejects hand-written ones.
-ADVISORY_ENTRY_RE = re.compile(r"^[*-][ \t]+\[[^\]]*\]\([^)]*/security-advisories/\d{4}/WSO2-\d{4}-\d{4}/?\)[ \t]*$", re.M)
+# Any year page list line the build writes: an advisory, CVE justification, or incident clarification.
+ENTRY_LINE_RE = re.compile(r"^[*-][ \t]+\[.*\]\(\{\{#base_path#\}\}/security-announcements/(?:security-advisories|"
+                           r"cve-justifications|incident-clarifications)/\d{4}/.+\)[ \t]*\n?", re.M)
+# The nav sections the build writes, by their index page, and how each names its year sections.
+NAV_SECTIONS = {
+    "security-announcements/security-advisories/index.md": "{} Advisories",
+    "security-announcements/cve-justifications/index.md": "{}",
+    "security-announcements/incident-clarifications/index.md": "{}",
+}
 JUSTIFICATION_YEAR_RE = re.compile(r"^security-announcements/cve-justifications/(\d{4})/index\.md$")
 INCIDENT_YEAR_RE = re.compile(r"^security-announcements/incident-clarifications/(\d{4})/index\.md$")
 BULLETIN_YEAR_RE = re.compile(r"^security-announcements/cloud-security-bulletins/[^/]+/(\d{4})/index\.md$")
@@ -131,29 +138,36 @@ _section_index_paths = set()
 def on_config(config):
     _section_index_paths.clear()
     del _feed_items[:]
-    _fill_advisory_nav(config.get("nav") or [], config["docs_dir"])
+    _fill_nav(config.get("nav") or [], config["docs_dir"])
     _collect_section_indexes(config.get("nav") or [])
     return config
 
 
-def _fill_advisory_nav(items, docs_dir):
-    """Write the year sections of the advisories' nav section, one per year folder with a yearly list."""
+def _fill_nav(items, docs_dir):
+    """Write the year sections of the advisories, CVE justifications, and incident clarifications.
+
+    Each year folder with a year page gets a section listing its pages, as the year page does.
+    """
     for item in items:
         if not isinstance(item, dict):
             continue
         for value in item.values():
             if not isinstance(value, list):
                 continue
-            if _nav_index(value) != ADVISORY_DIR + "/index.md":
-                _fill_advisory_nav(value, docs_dir)
+            landing = _nav_index(value)
+            if landing not in NAV_SECTIONS:
+                _fill_nav(value, docs_dir)
                 continue
+            label = NAV_SECTIONS[landing]
             # Year sections written by hand are dropped; check_content.py reports them.
             value[:] = [entry for entry in value if not (isinstance(entry, dict) and any(
-                isinstance(v, list) and ADVISORY_YEAR_RE.match(_nav_index(v)) for v in entry.values()))]
-            for year, list_page, label in year_pages(docs_dir, ADVISORY_DIR + "/index.md"):
-                value.append({label: [{"": list_page}] + [
-                    {advisory_id: "{}/{}/{}.md".format(ADVISORY_DIR, year, advisory_id)}
-                    for advisory_id, _ in advisory_list(docs_dir, year)]})
+                isinstance(v, list) and _nav_index(v).startswith(landing[:-len("index.md")]) for v in entry.values()))]
+            for year, year_page, _ in year_pages(docs_dir, landing):
+                folder = posixpath.dirname(year_page)
+                value.append({label.format(year): [{"": year_page}] + [
+                    # The nav names an advisory by its ID; the year page adds its CVE IDs.
+                    {name if folder.startswith(ADVISORY_DIR + "/") else name_label: "{}/{}.md".format(folder, name)}
+                    for name, name_label in section_entries(docs_dir, folder)]})
 
 
 def _nav_index(entries):
@@ -163,17 +177,18 @@ def _nav_index(entries):
 
 
 def on_page_read_source(page, config):
-    """Write the generated lists: a year's advisories, and a section's year pages."""
+    """Write the generated lists: a year page's entries, and a section page's year pages."""
     src = page.file.src_uri
-    year = ADVISORY_YEAR_RE.match(src)
-    if not year and src not in YEAR_LISTS:
+    folder = posixpath.dirname(src)
+    is_year_page = (ADVISORY_YEAR_RE.match(src) or JUSTIFICATION_YEAR_RE.match(src) or INCIDENT_YEAR_RE.match(src))
+    if not is_year_page and src not in YEAR_LISTS:
         return None
     with open(page.file.abs_src_path, encoding="utf-8-sig") as handle:
         source = handle.read()
-    if year:
-        source = ADVISORY_ENTRY_RE.sub("", source)  # check_content.py reports these
-        entries = [advisory_list_entry(year.group(1), advisory_id, label)
-                   for advisory_id, label in advisory_list(config["docs_dir"], year.group(1))]
+    if is_year_page:
+        source = ENTRY_LINE_RE.sub("", source)  # check_content.py reports these
+        entries = ["* [" + label + "]({{#base_path#}}/" + folder + "/" + name + "/)"
+                   for name, label in section_entries(config["docs_dir"], folder)]
         return source.rstrip("\n") + "\n\n" + "\n".join(entries) + "\n"
     links = "\n".join("* [" + label + "]({{#base_path#}}/" + _page_path(list_page) + ")"
                       for _, list_page, label in year_pages(config["docs_dir"], src))
@@ -181,6 +196,33 @@ def on_page_read_source(page, config):
     if YEAR_LIST_MARKER in source:
         return source.replace(YEAR_LIST_MARKER, links, 1)
     return source.rstrip("\n") + "\n\n" + links + "\n"
+
+
+def section_entries(docs_dir, folder):
+    """The pages a year page lists, as (file name without .md, label), in list order.
+
+    Advisories: newest advisory ID first, labeled with their CVE IDs. CVE justifications
+    and incident clarifications: newest published first, then the higher CVE ID, then the
+    title, labeled with the title. .github/scripts/check_content.py uses this too.
+    """
+    if folder.startswith(ADVISORY_DIR + "/"):
+        return advisory_list(docs_dir, folder.rsplit("/", 1)[1])
+    root = os.path.join(docs_dir, folder)
+    entries = []
+    for name in os.listdir(root):
+        if not name.endswith(".md") or name == "index.md":
+            continue
+        with open(os.path.join(root, name), encoding="utf-8-sig") as handle:
+            front = re.match(r"\A---[ \t]*\n(.*?\n)---[ \t]*\n", handle.read(), re.S)
+        fields = dict(re.findall(r"^([A-Za-z_]+):[ \t]*[\"']?(.*?)[\"']?[ \t]*$", front.group(1), re.M)) if front else {}
+        title = fields.get("title") or name[:-3]
+        try:
+            published = datetime.strptime(fields.get("published", ""), "%B %d, %Y")
+        except ValueError:
+            published = datetime.min
+        cve = re.search(r"CVE-(\d{4})-(\d+)", title)
+        entries.append((published, (int(cve.group(1)), int(cve.group(2))) if cve else (0, 0), title, name[:-3]))
+    return [(name, title) for _, _, title, name in sorted(entries, reverse=True)]
 
 
 def year_pages(docs_dir, landing):
@@ -463,11 +505,6 @@ def advisory_list(docs_dir, year):
         cves = advisory_cves(title.group(1) if title else "", text[front.end():] if front else text)
         entries.append((advisory_id, "{} ({})".format(advisory_id, ", ".join(cves)) if cves else advisory_id))
     return entries
-
-
-def advisory_list_entry(year, advisory_id, label):
-    """A yearly list line, linked the way every page links (markdownextradata fills base_path)."""
-    return "* [" + label + "]({{#base_path#}}/" + ADVISORY_DIR + "/" + year + "/" + advisory_id + "/)"
 
 
 def advisory_overview(markdown):
