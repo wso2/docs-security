@@ -1,6 +1,7 @@
 ---
 title: NPM package UA-Parser-JS Compromised
 category: security-announcements
+published: November 2, 2021
 ---
 
 <p class="doc-info">WSO2 impacted: No</p>

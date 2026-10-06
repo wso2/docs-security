@@ -1,6 +1,7 @@
 ---
 title: Codecov supply chain breach
 category: security-announcements
+published: May 31, 2021
 ---
 
 <p class="doc-info">WSO2 impacted: Yes</p>

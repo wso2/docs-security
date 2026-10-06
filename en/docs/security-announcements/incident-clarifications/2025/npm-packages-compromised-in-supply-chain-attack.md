@@ -1,6 +1,7 @@
 ---
 title: NPM Packages Compromised in Supply Chain Attack
 category: security-announcements
+published: September 30, 2025
 ---
 
 <p class="doc-info">WSO2 impacted: No</p>
