@@ -75,7 +75,7 @@ validation:
   absolute_links: ignore
   unrecognized_links: ignore
 
-# CVE justifications are listed by CVE ID on their section page (hooks/seo.py), not in the nav.
+# CVE justifications are listed by CVE ID on their section page (hooks/announcements.py), not in the nav.
 not_in_nav: |
   /security-announcements/cve-justifications/*/
 
@@ -104,7 +104,7 @@ nav:
       - 'External Dependency Analysis using OWASP Dependency Check': 'security-guidelines/secure-engineering-guidelines/external-dependency-analysis-analysis-using-owasp-dependency-check.md'
     - 'Security Guidelines for Production Deployment': 'security-guidelines/security-guidelines-for-production-deployment.md'
   - 'Security Announcements':
-    # The build adds a section for each year folder of advisories (hooks/seo.py).
+    # The build adds a section for each year folder of advisories (hooks/announcements.py).
     - 'WSO2 Security Advisories':
       - '': 'security-announcements/security-advisories/index.md'
     - 'Cloud Security Bulletin':
@@ -176,6 +176,9 @@ markdown_extensions:
 
 # Build hooks
 hooks:
+  # announcements.py renders the announcement pages and writes their lists; seo.py then
+  # adds search metadata. The order matters.
+  - hooks/announcements.py
   - hooks/seo.py
 
 # Plugin
