@@ -280,6 +280,8 @@ plugins:
         'security-announcements/cloud-security-bulletins/asgardeo/2025/asgardeo-2025-h2.md': 'security-announcements/cloud-security-bulletins/wso2-identity-platform/2025/wso2-identity-platform-2025-h2.md'
         # CVE-2024-0392 reassigned to WSO2-2023-2987
         'security-announcements/security-advisories/2024/CVE-2024-0392.md': 'security-announcements/security-advisories/2024/WSO2-2023-2987.md'
+        # CVE-to-WSO2 advisory mapping retired; each advisory shows its CVE IDs
+        'security-announcements/cve-to-wso2-security-advisory-mapping.md': 'security-announcements/security-advisories/index.md'
         # CVE-2010-4208 superseded by CVE-2013-6780 in-depth analysis
         'security-announcements/cve-justifications/2025/CVE-2010-4208.md': 'security-announcements/cve-justifications/2025/CVE-2013-6780.md'
         # Published CVE records reference these advisories under the wrong year folder
