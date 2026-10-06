@@ -198,7 +198,7 @@ security-announcements/security-advisories/2022/WSO2-2022-1849.md legacy-link
 security-guidelines/secure-engineering-guidelines/secure-coding-guidlines/secure-coding-guide.md legacy-link
 security-guidelines/security-guidelines-for-production-deployment.md legacy-link
 
-# Renaming needs a redirect from the old URL. See ROADMAP.md section 1.
+# Kept on purpose: renaming would turn their working URLs into redirects.
 security-announcements/cve-justifications/2022/CVE-2022-3602 and CVE-2022-3786.md file-name
 security-announcements/cve-justifications/2022/log4j v1 vulnerabilities (CVE-2022-23302 CVE-2022-23305 CVE-2022-23307).md file-name
 
