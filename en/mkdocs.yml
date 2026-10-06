@@ -75,6 +75,10 @@ validation:
   absolute_links: ignore
   unrecognized_links: ignore
 
+# CVE justifications are listed by CVE ID on their section page (hooks/seo.py), not in the nav.
+not_in_nav: |
+  /security-announcements/cve-justifications/*/
+
 # Navigation
 nav:
   - 'Home': 'index.md'
@@ -191,6 +195,15 @@ plugins:
         'security-announcements/cloud-security-bulletins/asgardeo/2025/asgardeo-2025-h2.md': 'security-announcements/cloud-security-bulletins/wso2-identity-platform/2025/wso2-identity-platform-2025-h2.md'
         # CVE-2024-0392 reassigned to WSO2-2023-2987
         'security-announcements/security-advisories/2024/CVE-2024-0392.md': 'security-announcements/security-advisories/2024/WSO2-2023-2987.md'
+        # CVE justifications are listed by CVE ID on one page; the year pages were retired
+        'security-announcements/cve-justifications/2026/index.md': 'security-announcements/cve-justifications/index.md'
+        'security-announcements/cve-justifications/2025/index.md': 'security-announcements/cve-justifications/index.md'
+        'security-announcements/cve-justifications/2024/index.md': 'security-announcements/cve-justifications/index.md'
+        'security-announcements/cve-justifications/2022/index.md': 'security-announcements/cve-justifications/index.md'
+        'security-announcements/cve-justifications/2021/index.md': 'security-announcements/cve-justifications/index.md'
+        'security-announcements/cve-justifications/2020/index.md': 'security-announcements/cve-justifications/index.md'
+        'security-announcements/cve-justifications/2019/index.md': 'security-announcements/cve-justifications/index.md'
+        'security-announcements/cve-justifications/2014/index.md': 'security-announcements/cve-justifications/index.md'
         # CVE-to-WSO2 advisory mapping retired; each advisory shows its CVE IDs
         'security-announcements/cve-to-wso2-security-advisory-mapping.md': 'security-announcements/security-advisories/index.md'
         # CVE-2010-4208 superseded by CVE-2013-6780 in-depth analysis
