@@ -10,13 +10,13 @@ version: "1.0.0"
 <p class="doc-info">Published: July 15, 2025</p>
 <p class="doc-info">Version: 1.0.0</p>
 
-### BULLETIN ID  
+## BULLETIN ID  
 CHO-SB-2025-H1
 
-### SCOPE  
+## SCOPE  
 This bulletin summarizes security vulnerabilities addressed during the H1 of 2025 for Choreo.
 
-### VULNERABILITIES ADDRESSED
+## VULNERABILITIES ADDRESSED
 
 | Reference ID | Title | Severity | Summary |
 |--------------|-------|----------|---------|
@@ -27,6 +27,6 @@ This bulletin summarizes security vulnerabilities addressed during the H1 of 202
 | CHO-2025-005 | Git Credential Modification Causing Build Disruption | Medium | Low-privileged users are able to update existing Git credentials. While the modification doesn’t affect already running services, it can cause build failures if those credentials are used in a component rebuild, disrupting availability. This is a CI/CD pipeline risk that stems from improper privilege enforcement and could result in temporary denial of service for updates. |
 | CHO-2025-006 | NGINX “IngressNightmare” | Critical | Vulnerabilities in ingress configuration leading to potential unauthorized access or routing bypass. CVE-2025-1974, CVE-2025-24514, CVE-2025-1097, CVE-2025-1098, CVE-2025-24513 |
 
-### CREDITS  
+## CREDITS  
 Choreo product team would like to thank all internal and external researchers for responsibly disclosing the above issues.
 

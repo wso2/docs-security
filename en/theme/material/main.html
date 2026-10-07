@@ -118,3 +118,16 @@
     </div>
   {% endif %}
 {% endblock %}
+
+{#- Announcement pages (category security-announcements) get a class so theme.css can keep
+    their section headings at the size they had before they became H2 and H3. -#}
+{% block container %}
+  {% set announcement = page and page.meta and page.meta.category == "security-announcements" %}
+  <div class="md-content{% if announcement %} md-content--announcement{% endif %}" data-md-component="content">
+    <article class="md-content__inner md-typeset">
+      {% block content %}
+        {% include "partials/content.html" %}
+      {% endblock %}
+    </article>
+  </div>
+{% endblock %}
