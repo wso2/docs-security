@@ -63,15 +63,21 @@ def page_heading(markdown):
     return plain(match.group(1)) if match else None
 
 
+def product_name(bullet):
+    """The product name a product list line starts with, without its versions."""
+    name = plain(bullet)
+    match = VERSION_START_RE.search(name)
+    if match:
+        name = name[:match.start()]
+    name = re.split(r"\s*:\s*\.", name, 1)[0]  # a version written as ".5.0"
+    return name.strip(" :,-")
+
+
 def product_names(text):
     """The WSO2 product names in a list of products, without their versions."""
     names = []
     for bullet in BULLET_RE.findall(text):
-        name = plain(bullet)
-        match = VERSION_START_RE.search(name)
-        if match:
-            name = name[:match.start()]
-        name = name.strip(" :,-")
+        name = product_name(bullet)
         if name.startswith("WSO2 ") and len(name) <= 70:
             names.append(name)
     return unique(names)
