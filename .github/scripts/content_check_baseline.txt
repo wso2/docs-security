@@ -1,6 +1,7 @@
 # Known content problems that check_content.py does not report.
-# Each line is "<path under en/docs> <rule>". Remove the line once the problem is fixed;
-# the check lists lines that are no longer needed when it runs on all files.
+# Each line is "<path under en/docs> <rule>", or "<path under en/docs> <rule> <count>" when the page has
+# more than one such problem; a page with more problems than its line allows fails. Lower the count or
+# remove the line once a problem is fixed; the check says which lines to change when it runs on all files.
 
 # Advisories published in two year folders. See ROADMAP.md section 3A.
 security-announcements/security-advisories/2023/WSO2-2023-2075.md duplicate-id
@@ -93,45 +94,45 @@ security-announcements/incident-clarifications/2021/CVE-2021-4104.md repeated-he
 security-announcements/incident-clarifications/2026/unauthorized-access-to-githubs-internal-repositories.md repeated-heading
 
 # Older advisories without version, severity, or cvss, and pages with values that need a decision. See ROADMAP.md section 3A.
-security-announcements/security-advisories/2016/WSO2-2016-0092.md field-format
-security-announcements/security-advisories/2016/WSO2-2016-0095.md field-format
-security-announcements/security-advisories/2016/WSO2-2016-0096.md field-format
-security-announcements/security-advisories/2016/WSO2-2016-0098.md field-format
-security-announcements/security-advisories/2016/WSO2-2016-0101.md field-format
-security-announcements/security-advisories/2016/WSO2-2016-0104.md field-format
-security-announcements/security-advisories/2016/WSO2-2016-0127.md field-format
-security-announcements/security-advisories/2016/WSO2-2016-0135.md field-format
-security-announcements/security-advisories/2016/WSO2-2016-0138.md field-format
-security-announcements/security-advisories/2016/WSO2-2016-0140.md field-format
-security-announcements/security-advisories/2016/WSO2-2016-0141.md field-format
-security-announcements/security-advisories/2016/WSO2-2016-0150.md field-format
-security-announcements/security-advisories/2016/WSO2-2016-0151.md field-format
-security-announcements/security-advisories/2016/WSO2-2016-0156.md field-format
-security-announcements/security-advisories/2016/WSO2-2016-0158.md field-format
-security-announcements/security-advisories/2016/WSO2-2016-0159.md field-format
-security-announcements/security-advisories/2016/WSO2-2016-0168.md field-format
-security-announcements/security-advisories/2016/WSO2-2016-0169.md field-format
-security-announcements/security-advisories/2016/WSO2-2016-0170.md field-format
-security-announcements/security-advisories/2017/WSO2-2017-0177.md field-format
-security-announcements/security-advisories/2017/WSO2-2017-0179.md field-format
-security-announcements/security-advisories/2017/WSO2-2017-0182.md field-format
-security-announcements/security-advisories/2017/WSO2-2017-0183.md field-format
-security-announcements/security-advisories/2017/WSO2-2017-0184.md field-format
-security-announcements/security-advisories/2017/WSO2-2017-0185.md field-format
-security-announcements/security-advisories/2017/WSO2-2017-0186.md field-format
-security-announcements/security-advisories/2017/WSO2-2017-0187.md field-format
-security-announcements/security-advisories/2017/WSO2-2017-0188.md field-format
-security-announcements/security-advisories/2017/WSO2-2017-0190.md field-format
+security-announcements/security-advisories/2016/WSO2-2016-0092.md field-format 3
+security-announcements/security-advisories/2016/WSO2-2016-0095.md field-format 3
+security-announcements/security-advisories/2016/WSO2-2016-0096.md field-format 3
+security-announcements/security-advisories/2016/WSO2-2016-0098.md field-format 3
+security-announcements/security-advisories/2016/WSO2-2016-0101.md field-format 3
+security-announcements/security-advisories/2016/WSO2-2016-0104.md field-format 3
+security-announcements/security-advisories/2016/WSO2-2016-0127.md field-format 3
+security-announcements/security-advisories/2016/WSO2-2016-0135.md field-format 3
+security-announcements/security-advisories/2016/WSO2-2016-0138.md field-format 3
+security-announcements/security-advisories/2016/WSO2-2016-0140.md field-format 3
+security-announcements/security-advisories/2016/WSO2-2016-0141.md field-format 3
+security-announcements/security-advisories/2016/WSO2-2016-0150.md field-format 3
+security-announcements/security-advisories/2016/WSO2-2016-0151.md field-format 3
+security-announcements/security-advisories/2016/WSO2-2016-0156.md field-format 3
+security-announcements/security-advisories/2016/WSO2-2016-0158.md field-format 3
+security-announcements/security-advisories/2016/WSO2-2016-0159.md field-format 3
+security-announcements/security-advisories/2016/WSO2-2016-0168.md field-format 3
+security-announcements/security-advisories/2016/WSO2-2016-0169.md field-format 3
+security-announcements/security-advisories/2016/WSO2-2016-0170.md field-format 3
+security-announcements/security-advisories/2017/WSO2-2017-0177.md field-format 3
+security-announcements/security-advisories/2017/WSO2-2017-0179.md field-format 3
+security-announcements/security-advisories/2017/WSO2-2017-0182.md field-format 3
+security-announcements/security-advisories/2017/WSO2-2017-0183.md field-format 3
+security-announcements/security-advisories/2017/WSO2-2017-0184.md field-format 3
+security-announcements/security-advisories/2017/WSO2-2017-0185.md field-format 3
+security-announcements/security-advisories/2017/WSO2-2017-0186.md field-format 3
+security-announcements/security-advisories/2017/WSO2-2017-0187.md field-format 3
+security-announcements/security-advisories/2017/WSO2-2017-0188.md field-format 3
+security-announcements/security-advisories/2017/WSO2-2017-0190.md field-format 3
 security-announcements/security-advisories/2017/WSO2-2017-0197.md field-format
 security-announcements/security-advisories/2017/WSO2-2017-0198.md field-format
-security-announcements/security-advisories/2017/WSO2-2017-0203.md field-format
+security-announcements/security-advisories/2017/WSO2-2017-0203.md field-format 3
 security-announcements/security-advisories/2017/WSO2-2017-0210.md field-format
 security-announcements/security-advisories/2017/WSO2-2017-0212.md field-format
-security-announcements/security-advisories/2017/WSO2-2017-0218.md field-format
+security-announcements/security-advisories/2017/WSO2-2017-0218.md field-format 3
 security-announcements/security-advisories/2017/WSO2-2017-0223.md field-format
-security-announcements/security-advisories/2017/WSO2-2017-0235.md field-format
+security-announcements/security-advisories/2017/WSO2-2017-0235.md field-format 2
 security-announcements/security-advisories/2017/WSO2-2017-0254.md field-format
-security-announcements/security-advisories/2017/WSO2-2017-0255.md field-format
+security-announcements/security-advisories/2017/WSO2-2017-0255.md field-format 3
 security-announcements/security-advisories/2017/WSO2-2017-0257.md field-format
 security-announcements/security-advisories/2017/WSO2-2017-0260.md field-format
 security-announcements/security-advisories/2017/WSO2-2017-0261.md field-format
@@ -141,7 +142,7 @@ security-announcements/security-advisories/2017/WSO2-2017-0265.md field-format
 security-announcements/security-advisories/2017/WSO2-2017-0266.md field-format
 security-announcements/security-advisories/2017/WSO2-2017-0267.md field-format
 security-announcements/security-advisories/2017/WSO2-2017-0289.md field-format
-security-announcements/security-advisories/2017/WSO2-2017-0326.md field-format
+security-announcements/security-advisories/2017/WSO2-2017-0326.md field-format 3
 security-announcements/security-advisories/2019/WSO2-2019-0432.md field-format
 security-announcements/security-advisories/2019/WSO2-2019-0486.md field-format
 security-announcements/security-advisories/2019/WSO2-2019-0501.md field-format
@@ -173,14 +174,14 @@ security-announcements/security-advisories/2020/WSO2-2019-0651.md field-format
 security-announcements/security-advisories/2020/WSO2-2019-0661.md field-format
 security-announcements/security-advisories/2020/WSO2-2019-0665.md field-format
 security-announcements/security-advisories/2020/WSO2-2020-0718.md field-format
-security-announcements/security-advisories/2020/WSO2-2020-0864.md field-format
+security-announcements/security-advisories/2020/WSO2-2020-0864.md field-format 2
 security-announcements/security-advisories/2022/WSO2-2021-1334.md field-format
 security-announcements/security-advisories/2023/WSO2-2022-2357.md field-format
 security-announcements/security-advisories/2024/WSO2-2023-2308.md field-format
 security-announcements/security-advisories/2024/WSO2-2023-2589.md field-format
 security-announcements/security-advisories/2024/WSO2-2023-2864.md field-format
-security-announcements/security-advisories/2024/WSO2-2024-3561.md field-format
-security-announcements/security-advisories/2025/WSO2-2025-4503.md field-format
+security-announcements/security-advisories/2024/WSO2-2024-3561.md field-format 2
+security-announcements/security-advisories/2025/WSO2-2025-4503.md field-format 2
 security-announcements/security-advisories/2026/WSO2-2026-4608.md field-format
 
 # Kept on purpose: renaming would turn their working URLs into redirects.
@@ -189,20 +190,20 @@ security-announcements/cve-justifications/2022/log4j v1 vulnerabilities (CVE-202
 
 # CVE justifications from 2019 to 2021 that do not say whether WSO2 products are impacted or customer action is
 # required; WSO2's original Confluence pages do not either. See ROADMAP.md section 3A.
-security-announcements/cve-justifications/2019/CVE-2019-6512.md field-format
-security-announcements/cve-justifications/2019/CVE-2019-6515.md field-format
-security-announcements/cve-justifications/2020/CVE-2019-17571.md field-format
-security-announcements/cve-justifications/2020/CVE-2019-6513.md field-format
-security-announcements/cve-justifications/2020/CVE-2020-13226.md field-format
-security-announcements/cve-justifications/2020/CVE-2020-1938.md field-format
-security-announcements/cve-justifications/2021/ZDI-CAN-13449.md field-format
+security-announcements/cve-justifications/2019/CVE-2019-6512.md field-format 2
+security-announcements/cve-justifications/2019/CVE-2019-6515.md field-format 2
+security-announcements/cve-justifications/2020/CVE-2019-17571.md field-format 2
+security-announcements/cve-justifications/2020/CVE-2019-6513.md field-format 2
+security-announcements/cve-justifications/2020/CVE-2020-13226.md field-format 2
+security-announcements/cve-justifications/2020/CVE-2020-1938.md field-format 2
+security-announcements/cve-justifications/2021/ZDI-CAN-13449.md field-format 2
 
 # Its CVSS line carries NVD's original CVSS 2.0 score as a note, which a cvss field cannot hold. See ROADMAP.md section 3A.
 security-announcements/cve-justifications/2014/CVE-2014-3623.md repeated-info
 
 # Product lines that are not an official product name: per-platform Microgateway Toolkit lines, and
 # CVE justification lines that describe products instead of naming them. See ROADMAP.md section 3A.
-security-announcements/security-advisories/2021/WSO2-2021-1347.md product-name
+security-announcements/security-advisories/2021/WSO2-2021-1347.md product-name 3
 security-announcements/cve-justifications/2024/CVE-2021-23463.md product-name
 security-announcements/cve-justifications/2024/CVE-2022-23221.md product-name
 security-announcements/cve-justifications/2024/CVE-2022-45868.md product-name
@@ -212,8 +213,22 @@ security-announcements/cve-justifications/2025/CVE-2025-47889.md product-name
 # a four-part version, an Open Banking product name that is not on the official list, or an
 # extra Patch column. See ROADMAP.md section 3A.
 security-announcements/security-advisories/2016/WSO2-2016-0151.md update-table
-security-announcements/security-advisories/2021/WSO2-2020-1132.md update-table
-security-announcements/security-advisories/2023/WSO2-2022-2177.md update-table
-security-announcements/security-advisories/2023/WSO2-2023-2617.md update-table
-security-announcements/security-advisories/2024/WSO2-2023-2617.md update-table
-security-announcements/security-advisories/2024/WSO2-2023-2864.md update-table
+security-announcements/security-advisories/2021/WSO2-2020-1132.md update-table 2
+security-announcements/security-advisories/2023/WSO2-2022-2177.md update-table 7
+security-announcements/security-advisories/2023/WSO2-2023-2617.md update-table 6
+security-announcements/security-advisories/2024/WSO2-2023-2617.md update-table 6
+security-announcements/security-advisories/2024/WSO2-2023-2864.md update-table 4
+
+# Advisories without a required section, or with a section heading that is not the template's.
+# See ROADMAP.md section 3A.
+security-announcements/security-advisories/2016/WSO2-2016-0092.md section-heading
+security-announcements/security-advisories/2016/WSO2-2016-0095.md section-heading
+security-announcements/security-advisories/2016/WSO2-2016-0096.md section-heading
+security-announcements/security-advisories/2016/WSO2-2016-0098.md section-heading
+security-announcements/security-advisories/2016/WSO2-2016-0101.md section-heading
+security-announcements/security-advisories/2016/WSO2-2016-0104.md section-heading
+security-announcements/security-advisories/2016/WSO2-2016-0168.md section-heading
+security-announcements/security-advisories/2023/WSO2-2022-2023.md section-heading
+security-announcements/security-advisories/2023/WSO2-2022-2177.md section-heading 2
+security-announcements/security-advisories/2023/WSO2-2022-2182.md section-heading 3
+security-announcements/security-advisories/2024/WSO2-2024-3561.md section-heading

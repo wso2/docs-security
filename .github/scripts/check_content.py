@@ -39,6 +39,12 @@ Every page:
 Security advisories (security-advisories/<year>/WSO2-*.md):
 
     advisory-id      the title or heading does not name the advisory in the file name
+    section-heading  a section heading is not one of the template's: AFFECTED
+                     PRODUCTS, OVERVIEW, DESCRIPTION, IMPACT, SOLUTION, NOTE, CREDITS,
+                     CHANGE LOG, REFERENCES; or one of the first five is missing or a
+                     section appears twice, which would skip the product and update-level
+                     table checks
+                     (--fix for upper and lower case, a trailing colon, and known typos)
     product-name     a line of AFFECTED PRODUCTS (or a CVE justification's REPORTED
                      PRODUCTS) does not start with an official product name from
                      en/hooks/security_announcements/products.txt   (--fix for the
@@ -63,8 +69,10 @@ Security advisories (security-advisories/<year>/WSO2-*.md):
                      versions, is not in its form: the header "Product Name |
                      Product Version | U2 Update Level" (older advisories add "WUM
                      Timestamp"), an official product name, a version such as
-                     4.2.0, and a whole-number update level   (--fix for the header,
-                     and for product codes and spellings listed in products.txt)
+                     4.2.0, and a whole-number update level, in at least one row.
+                     From 2021 on, every table in SOLUTION is the update-level table.
+                     (--fix for the header, and for product codes and spellings
+                     listed in products.txt)
     cvss-score       the cvss score differs from the base score of its CVSS 3.0 or 3.1
                      vector (CVSS 4.0 vectors are not checked)
     severity-score   the severity differs from the rating of the cvss score: Low 0.1
@@ -101,8 +109,10 @@ front matter fields are defined in en/hooks/security_announcements/formats.py
                      folder
 
 Problems recorded in .github/scripts/content_check_baseline.txt are not
-reported. Each line there is "<path> <rule>". Remove a line once the problem
-is fixed; the check says which lines are no longer needed.
+reported. Each line there is "<path> <rule>", or "<path> <rule> <count>" when the
+page has more than one such problem. A page with more problems of a rule than its
+line allows fails, so a pull request cannot add one to a listed page. Lower or
+remove the line once a problem is fixed; the check says which lines to change.
 
 Usage:
 
@@ -156,6 +166,14 @@ DATE = re.compile(r"^(January|February|March|April|May|June|July|August|Septembe
                   r"November|December) [1-9]\d?, \d{4}$")
 SEVERITIES = ("Critical", "High", "Medium", "Low", "Informative", "Not Applicable")
 CVSS = re.compile(r"^\d{1,2}(\.\d)? \(CVSS:\d\.\d/[A-Za-z:/]+\)$")
+# An advisory's section headings, as the template writes them. The first five are required.
+ADVISORY_SECTIONS = ("AFFECTED PRODUCTS", "OVERVIEW", "DESCRIPTION", "IMPACT", "SOLUTION", "NOTE", "CREDITS",
+                     "CHANGE LOG", "REFERENCES")
+REQUIRED_SECTIONS = ADVISORY_SECTIONS[:5]
+SECTION_TYPOS = {"REFERANCES": "REFERENCES"}
+# From this year on, advisories give their fixed versions only in update-level tables; older ones
+# also have patch and configuration tables in SOLUTION.
+UPDATE_TABLES_ONLY_SINCE = 2021
 # Update-level table headers written another way, by their lower-case text without bold.
 UPDATE_TABLE_NAMES = {"product": "Product Name", "product name": "Product Name", "version": "Product Version",
                       "product version": "Product Version", "update level": "U2 Update Level",
@@ -416,6 +434,8 @@ def check_advisory(page, site, year, advisory_id):
         findings.append(Finding("field-format", line["cwe"], "write cwe as \"CWE-79\", or \"CWE-79, CWE-352\" for "
                                 "several, as the CVE record gives them (found \"{}\")".format(cwe),
                                 normalize_cwe(cwe) is not None))
+    for start, _, message, replacement in section_heading_problems(page):
+        findings.append(Finding("section-heading", start, message, replacement is not None))
     for start, _, message, replacement in update_table_problems(page):
         findings.append(Finding("update-table", start, message, replacement is not None))
     cvss = meta.get("cvss")
@@ -700,6 +720,37 @@ def normalize_cwe(value):
     return ", ".join("CWE-" + number for number in text_helpers.unique(re.findall(r"(?i)cwe[\s-]*(\d+)", value)))
 
 
+def section_heading_problems(page):
+    """Section headings that are not the template's, and missing required sections, as update_table_problems does."""
+    problems, found = [], set()
+    offset, fence = page.meta_end, None
+    for line in page.body.splitlines(True):
+        marker = FENCE.match(line)
+        if marker:
+            fence = marker.group(1) if fence is None else (None if marker.group(1) == fence else fence)
+        heading = re.match(r"^##[ \t]+(.+?)[ \t]*$", line.rstrip("\r\n")) if fence is None else None
+        if heading:
+            name = heading.group(1)
+            standard = name.rstrip(":").strip().upper()
+            standard = SECTION_TYPOS.get(standard, standard)
+            start, end = offset + heading.start(1), offset + heading.end(1)
+            if standard in found:
+                problems.append((start, end, "the {} section appears more than once; merge them, since the "
+                                 "checks read only the first".format(standard), None))
+            elif standard in ADVISORY_SECTIONS:
+                found.add(standard)
+                if name != standard:
+                    problems.append((start, end, "write the section heading as \"{}\"".format(standard), standard))
+            else:
+                problems.append((start, end, "\"{}\" is not an advisory section; use one of {}".format(
+                    name, ", ".join(ADVISORY_SECTIONS)), None))
+        offset += len(line)
+    for name in REQUIRED_SECTIONS:
+        if name not in found:
+            problems.append((page.meta_end, page.meta_end, "add the {} section".format(name), None))
+    return problems
+
+
 def table_cells(line, offset):
     """The cells of a Markdown table line, as (start, end, text), with start and end in the page text."""
     cells = []
@@ -720,15 +771,23 @@ def update_table_problems(page):
     solution = re.search(r"^##[ \t]+SOLUTION\b.*?(?=^##[ \t]|\Z)", page.body, re.M | re.S | re.I)
     if not solution:
         return []
+    published = page.meta.get("published", "")
+    recent = bool(DATE.match(published)) and int(published[-4:]) >= UPDATE_TABLES_ONLY_SINCE
     problems, block = [], []
     offset = page.meta_end + solution.start()
     for line in solution.group(0).splitlines(True) + [""]:
         if line.startswith("|"):
             block.append((offset, line.rstrip("\r\n")))
-        else:
-            if len(block) > 2 and re.search(r"(?i)update level", block[0][1]):
-                problems.extend(update_table(block))
-            block = []
+            offset += len(line)
+            continue
+        if block and re.search(r"(?i)update level", block[0][1]):
+            problems.extend(update_table(block) if len(block) > 2 else [(
+                block[0][0], block[0][0], "add a row for each fixed product version, or remove the empty table", None)])
+        elif block and recent:
+            problems.append((block[0][0], block[0][0], "give the fixed versions in the update-level table, with the "
+                             "header \"{}\" (found \"{}\")".format(" | ".join(formats.UPDATE_TABLE_HEADER),
+                                                             block[0][1].strip()), None))
+        block = []
         offset += len(line)
     return problems
 
@@ -884,6 +943,11 @@ def fix(page, findings):
                 return m.group(0)
             return m.group(1) + path + "/" + m.group(3)
         text = re.sub(r"(\]\(\{\{#base_path#\}\}/)([^)#\s]+)((?:#[^)\s]*)?\))", slash, text)
+    if "section-heading" in rules:
+        for start, end, _, replacement in sorted(section_heading_problems(page), reverse=True):
+            if replacement is not None:
+                text = text[:start] + replacement + text[end:]
+        return text  # offsets changed; the next pass fixes the rest
     if "update-table" in rules:
         for start, end, _, replacement in sorted(update_table_problems(page), reverse=True):
             if replacement is not None:
@@ -955,14 +1019,20 @@ def fix(page, findings):
 
 
 def load_baseline():
-    entries = set()
+    """Known problems, as {(path, rule): how many the page may have}. A line without a count allows one."""
+    entries = {}
     if os.path.exists(BASELINE):
         with open(BASELINE, encoding="utf-8") as handle:
             for line in handle:
                 line = line.split("#", 1)[0].strip()
-                if line:
+                if not line:
+                    continue
+                parts = line.rsplit(" ", 2)
+                if len(parts) == 3 and parts[2].isdigit():
+                    entries[(parts[0], parts[1])] = int(parts[2])
+                else:
                     path, rule = line.rsplit(" ", 1)
-                    entries.add((path, rule))
+                    entries[(path, rule)] = 1
     return entries
 
 
@@ -996,7 +1066,7 @@ def main(argv=None):
     github = os.environ.get("GITHUB_ACTIONS") == "true"
     site = Site()
     baseline = load_baseline()
-    used = set()
+    used = {}  # (path, rule): how many of the baselined problems the page has
     checked = fixed = 0
     remaining = collections.Counter()
     whole_docs = not args.paths
@@ -1021,9 +1091,16 @@ def main(argv=None):
             findings = check_page(page, site)
         fixed += changed
         line_starts = [0] + [m.end() for m in re.finditer(r"\n", page.text)]
+        per_rule = collections.Counter(f.rule for f in findings)
+        for rule, count in sorted(per_rule.items()):
+            allowed = baseline.get((page.rel, rule))
+            if allowed is not None:
+                used[(page.rel, rule)] = count
+                if count > allowed:
+                    print("{}: {} {} problem(s), but the baseline allows {}; fix the new one(s) [{}]".format(
+                        path, count, rule, allowed, rule))
         for finding in findings:
-            if (page.rel, finding.rule) in baseline:
-                used.add((page.rel, finding.rule))
+            if per_rule[finding.rule] <= baseline.get((page.rel, finding.rule), -1):
                 continue
             line = bisect.bisect_right(line_starts, finding.start)
             column = finding.start - line_starts[line - 1] + 1
@@ -1057,9 +1134,14 @@ def main(argv=None):
     if args.fix:
         print("Fixed problems in {} file(s).".format(fixed))
     if whole_docs:
-        for path, rule in sorted(baseline - used):
-            print("{}: the baseline entry \"{} {}\" is no longer needed; remove it from {}".format(
-                os.path.relpath(BASELINE), path, rule, os.path.relpath(BASELINE)))
+        for (path, rule), allowed in sorted(baseline.items()):
+            found = used.get((path, rule), 0)
+            if not found:
+                print("{}: the baseline entry \"{} {}\" is no longer needed; remove it from {}".format(
+                    os.path.relpath(BASELINE), path, rule, os.path.relpath(BASELINE)))
+            elif found < allowed:
+                print("{}: the baseline entry \"{} {}\" allows {} problems, but {} remain; lower its count".format(
+                    os.path.relpath(BASELINE), path, rule, allowed, found))
     if not remaining:
         print("Checked {} file(s). No content problems found.".format(checked))
         return 0
