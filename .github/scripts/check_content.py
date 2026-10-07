@@ -30,6 +30,9 @@ Every page:
     empty-link       a link with no text or no target
     image-alt        an image has no alt text, or only its file name
     file-name        a file name contains characters other than letters, digits, ".", "-", "_"
+    table-columns    a table row has more or fewer cells than its header, as a stray
+                     "|" or a tab in place of one makes it; the page drops the extra
+                     cells and shows missing ones as empty
     heading-level    a heading skips a level, as an H3 right after the H1 (the build
                      renders an announcement's H1 from its title)        (--fix)
     product-name     a product named in an old spelling listed in
@@ -187,6 +190,8 @@ HTML_LINK = re.compile(r"<a\b[^>]*?href=\"([^\"]*)\"[^>]*>(.*?)</a>", re.S)
 HTML_IMG = re.compile(r"<img\b[^>]*>")
 FENCE = re.compile(r"^[ \t]*(```|~~~)")
 MD_HEADING = re.compile(r"^(#{1,6})[ \t]+\S")
+TABLE_ROW = re.compile(r"^[ \t]*\|")
+TABLE_SEPARATOR = re.compile(r"^[ \t]*\|?[ \t]*:?-+:?[ \t]*(\|[ \t]*:?-+:?[ \t]*)*\|?[ \t]*$")
 INLINE_CODE = re.compile(r"(`+)(?:(?!\1).)+?\1")
 FILE_NAME = re.compile(r"^[A-Za-z0-9._-]+$")
 
@@ -291,6 +296,40 @@ def heading_levels(page):
     return found
 
 
+def row_cells(line):
+    """The cells of a Markdown table row, as the Markdown tables extension splits it."""
+    line = re.sub(r"(`+)(?:(?!\1).)+?\1", "code", line.strip())  # a "|" in inline code is text
+    if line.startswith("|"):
+        line = line[1:]
+    if line.endswith("|") and not line.endswith("\\|"):
+        line = line[:-1]
+    return re.split(r"(?<!\\)\|", line)
+
+
+def check_table_columns(page):
+    """Table rows with more or fewer cells than the header, which lose or shift content on the page."""
+    findings, block = [], []
+    offset, fence = page.meta_end, None
+    for line in page.body.splitlines(True) + [""]:
+        marker = FENCE.match(line)
+        if marker:
+            fence = marker.group(1) if fence is None else (None if marker.group(1) == fence else fence)
+        if fence is None and not marker and TABLE_ROW.match(line):
+            block.append((offset, line))
+        else:
+            if len(block) > 2 and TABLE_SEPARATOR.match(block[1][1]):
+                columns = len(row_cells(block[0][1]))
+                for at, row in block[2:]:
+                    cells = len(row_cells(row))
+                    if cells != columns:
+                        findings.append(Finding("table-columns", at, "this table row has {} cells, but its header has {}; "
+                                                "the page drops extra cells and shows missing ones as empty, so look for "
+                                                "a stray or missing \"|\"".format(cells, columns)))
+            block = []
+        offset += len(line)
+    return findings
+
+
 def check_heading_levels(page):
     """Headings that skip a level, which leaves gaps in the outline that screen readers and search engines use."""
     return [Finding("heading-level", start, "write this heading as H{} (\"{} \"); it skips a level".format(
@@ -311,6 +350,7 @@ def check_page(page, site):
         findings.append(Finding("stray-front-matter", page.meta_end + stray.start(),
                                 "remove the second front matter block; readers see it as text"))
     findings.extend(check_heading_levels(page))
+    findings.extend(check_table_columns(page))
     for start, _, text in page.prose_spans():
         for match in PLACEHOLDER.finditer(text):
             findings.append(Finding("placeholder", start + match.start(),
