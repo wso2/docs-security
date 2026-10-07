@@ -293,7 +293,8 @@ def _advisory(name, meta, markdown, sections):
         parts.append("Severity: {}.".format(severity))
     description = "{}: {}".format(lead, " ".join(p for p in parts if p))
 
-    keywords = cves + ([advisory_id] if advisory_id else []) + products
+    cwes = ["CWE-" + cwe for cwe in text.unique(formats.CWE_ID_RE.findall(str(meta.get("cwe") or "")))]
+    keywords = cves + ([advisory_id] if advisory_id else []) + cwes + products
     return title, description, keywords
 
 

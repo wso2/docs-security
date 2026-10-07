@@ -142,7 +142,7 @@ Add `--fix` to rewrite the links. When the text cites something that only anothe
 
 ## Content checks
 
-Write each value once. For a security advisory, fill in the front matter from the template in `.announcement-templates`: `title` (with the CVE ID), `published`, `updated`, `version`, `severity`, and `cvss`. Do not add a heading or the Published, Version, Severity, CVSS Score, and CVE IDs lines to the page; the build renders them from front matter.
+Write each value once. For a security advisory, fill in the front matter from the template in `.announcement-templates`: `title` (with the CVE ID), `published`, `updated`, `version`, `severity`, `cvss`, and `cwe`. Do not add a heading or the Published, Version, Severity, CVSS Score, CVE IDs, and CWE lines to the page; the build renders them from front matter.
 
 Use these forms:
 
@@ -150,11 +150,14 @@ Use these forms:
 * `severity`: `Critical`, `High`, `Medium`, `Low`, `Informative`, or `Not Applicable`
 * `cvss`: `9.8 (CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H)` or `Not Applicable`. The score must be the base score of the vector.
 * `severity` must match the CVSS rating of the score: Low for 0.1 to 3.9, Medium for 4.0 to 6.9, High for 7.0 to 8.9, and Critical for 9.0 to 10.0.
+* `cwe`: `CWE-79`, or `CWE-79, CWE-352` for several, as the advisory's CVE record gives them. Leave the field out when the advisory has no CVE record or the record names no CWE.
 * CVE justifications: `published`, not `date`
 
 Start each line of AFFECTED PRODUCTS (and of a CVE justification's REPORTED PRODUCTS) with an official product name from `en/hooks/security_announcements/products.txt`, such as `* WSO2 API Manager: 4.6.0, 4.5.0`. Write product names that way everywhere else in a page too, such as in update-level tables and in the text. The content check rejects an old spelling listed in that file, or a name in other upper and lower case, outside code. To add a new product, add its name to that file on a line of its own. An old or wrong spelling that `--fix` should correct goes there too, as `old spelling -> official name`.
 
-Start the OVERVIEW with one sentence of up to 100 characters that names the vulnerability and where it is, such as "Reflected Cross-Site Scripting (XSS) vulnerability in the Management Console." The search title uses this sentence. Words such as "A potential" and "has been identified" are dropped from the title and do not count. Name the component or product instead of writing "the above-listed products".
+Start the OVERVIEW with one sentence of up to 100 characters that names the vulnerability type, the component, and the product, such as "Reflected Cross-Site Scripting (XSS) vulnerability in the Management Console of WSO2 API Manager." The search title uses this sentence. Words such as "A potential" and "has been identified" are dropped from the title and do not count. Name the component or product instead of writing "the above-listed products".
+
+List the fixed versions in the SOLUTION table, one row per product version, under the header `Product Name | Product Version | U2 Update Level`: the official product name (not a product code such as `wso2am`), a version such as `4.2.0`, and the update level as a whole number. Put any note about a row in the text, not in the table.
 
 Name the advisory file after its ID, such as `WSO2-2026-5328.md`, use the same ID in the title, and put the file in the folder of the year it is published, such as `security-advisories/2026/`. Do not add the advisory to the yearly list or the `nav` in `en/mkdocs.yml`: the build lists every advisory in its year folder, newest advisory ID first, as `WSO2-2026-5328 (CVE-2026-5430)` with the CVE IDs from the title. For the first advisory of a new year, add the year's list page (copy last year's and change the year). The build adds the year to the `nav` and to the Security Advisories page.
 
@@ -185,7 +188,7 @@ Do not list a CVE justification yourself: the CVE Justifications page lists ever
 
 Write an announcement's sections as `##` headings and their parts as `###`, as the templates do. The build renders the page heading (H1) from the title, and a heading must not skip a level.
 
-A pull request check fails when a Markdown file that the pull request adds or changes has one of these problems, or an entry the build lists (an advisory, CVE justification, or incident clarification on its year page or in the `nav`, a year section, or a section page's year link) added by hand, a CVE justification or incident clarification field that is missing or not in its form, a product name that is not on the official list, an OVERVIEW sentence that the search title cannot use, a heading that skips a level, a leftover template placeholder, an empty link, a link to a retired `docs.wso2.com/display/` page, a `{{#base_path#}}` page link without a trailing slash, or an image without alt text. To check all files locally, run the following command from the repository root:
+A pull request check fails when a Markdown file that the pull request adds or changes has one of these problems, or an entry the build lists (an advisory, CVE justification, or incident clarification on its year page or in the `nav`, a year section, or a section page's year link) added by hand, a CVE justification or incident clarification field that is missing or not in its form, a product name that is not on the official list, an OVERVIEW sentence that the search title cannot use, a heading that skips a level, a `cwe` value or an update-level table that is not in its form, a leftover template placeholder, an empty link, a link to a retired `docs.wso2.com/display/` page, a `{{#base_path#}}` page link without a trailing slash, or an image without alt text. To check all files locally, run the following command from the repository root:
 
 ```shell
 $ python3 .github/scripts/check_content.py

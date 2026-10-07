@@ -183,8 +183,6 @@ security-announcements/security-advisories/2024/WSO2-2024-3561.md field-format
 security-announcements/security-advisories/2025/WSO2-2025-4503.md field-format
 security-announcements/security-advisories/2026/WSO2-2026-4608.md field-format
 
-# Links to retired docs.wso2.com/display/ pages that need their current location. See ROADMAP.md section 1.
-
 # Kept on purpose: renaming would turn their working URLs into redirects.
 security-announcements/cve-justifications/2022/CVE-2022-3602 and CVE-2022-3786.md file-name
 security-announcements/cve-justifications/2022/log4j v1 vulnerabilities (CVE-2022-23302 CVE-2022-23305 CVE-2022-23307).md file-name
@@ -209,3 +207,13 @@ security-announcements/cve-justifications/2024/CVE-2021-23463.md product-name
 security-announcements/cve-justifications/2024/CVE-2022-23221.md product-name
 security-announcements/cve-justifications/2024/CVE-2022-45868.md product-name
 security-announcements/cve-justifications/2025/CVE-2025-47889.md product-name
+
+# Update-level tables with a value a person has to decide: a note instead of an update level,
+# a four-part version, an Open Banking product name that is not on the official list, or an
+# extra Patch column. See ROADMAP.md section 3A.
+security-announcements/security-advisories/2016/WSO2-2016-0151.md update-table
+security-announcements/security-advisories/2021/WSO2-2020-1132.md update-table
+security-announcements/security-advisories/2023/WSO2-2022-2177.md update-table
+security-announcements/security-advisories/2023/WSO2-2023-2617.md update-table
+security-announcements/security-advisories/2024/WSO2-2023-2617.md update-table
+security-announcements/security-advisories/2024/WSO2-2023-2864.md update-table
