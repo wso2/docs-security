@@ -157,7 +157,9 @@ Start each line of AFFECTED PRODUCTS (and of a CVE justification's REPORTED PROD
 
 Start the OVERVIEW with one sentence of up to 100 characters that names the vulnerability type, the component, and the product, such as "Reflected Cross-Site Scripting (XSS) vulnerability in the Management Console of WSO2 API Manager." The search title uses this sentence. Words such as "A potential" and "has been identified" are dropped from the title and do not count. Name the component or product instead of writing "the above-listed products".
 
-List the fixed versions in the SOLUTION table, one row per product version, under the header `Product Name | Product Version | U2 Update Level`: the official product name (not a product code such as `wso2am`), a version such as `4.2.0`, and the update level as a whole number. Put any note about a row in the text, not in the table.
+List the fixed versions in the SOLUTION table, one row per product version, under the header `Product Name | Product Version | U2 Update Level`: the official product name (not a product code such as `wso2am`), a version such as `4.2.0`, and the update level as a whole number. Put any note about a row in the text, not in the table. From 2021 on, every table in SOLUTION must be this table.
+
+Use the template's section headings: AFFECTED PRODUCTS, OVERVIEW, DESCRIPTION, IMPACT, and SOLUTION (all required), and NOTE, CREDITS, CHANGE LOG, and REFERENCES where needed, each once. A misspelled section would skip the product and table checks, so the check rejects it.
 
 Name the advisory file after its ID, such as `WSO2-2026-5328.md`, use the same ID in the title, and put the file in the folder of the year it is published, such as `security-advisories/2026/`. Do not add the advisory to the yearly list or the `nav` in `en/mkdocs.yml`: the build lists every advisory in its year folder, newest advisory ID first, as `WSO2-2026-5328 (CVE-2026-5430)` with the CVE IDs from the title. For the first advisory of a new year, add the year's list page (copy last year's and change the year). The build adds the year to the `nav` and to the Security Advisories page.
 
@@ -188,13 +190,13 @@ Do not list a CVE justification yourself: the CVE Justifications page lists ever
 
 Write an announcement's sections as `##` headings and their parts as `###`, as the templates do. The build renders the page heading (H1) from the title, and a heading must not skip a level.
 
-A pull request check fails when a Markdown file that the pull request adds or changes has one of these problems, or an entry the build lists (an advisory, CVE justification, or incident clarification on its year page or in the `nav`, a year section, or a section page's year link) added by hand, a CVE justification or incident clarification field that is missing or not in its form, a product name that is not on the official list, an OVERVIEW sentence that the search title cannot use, a heading that skips a level, a `cwe` value or an update-level table that is not in its form, a leftover template placeholder, an empty link, a link to a retired `docs.wso2.com/display/` page, a `{{#base_path#}}` page link without a trailing slash, or an image without alt text. To check all files locally, run the following command from the repository root:
+A pull request check fails when a Markdown file that the pull request adds or changes has one of these problems, or an entry the build lists (an advisory, CVE justification, or incident clarification on its year page or in the `nav`, a year section, or a section page's year link) added by hand, a CVE justification or incident clarification field that is missing or not in its form, a product name that is not on the official list, an OVERVIEW sentence that the search title cannot use, a heading that skips a level, an advisory section heading that is not the template's (or a missing or repeated section), a `cwe` value or an update-level table that is not in its form, a leftover template placeholder, an empty link, a link to a retired `docs.wso2.com/display/` page, a `{{#base_path#}}` page link without a trailing slash, or an image without alt text. To check all files locally, run the following command from the repository root:
 
 ```shell
 $ python3 .github/scripts/check_content.py
 ```
 
-Add `--fix` to correct the problems that can be fixed without guessing. Known problems that are waiting for a decision are listed in `.github/scripts/content_check_baseline.txt`. Remove a line from that file when you fix the problem.
+Add `--fix` to correct the problems that can be fixed without guessing. Known problems that are waiting for a decision are listed in `.github/scripts/content_check_baseline.txt`, with how many each page has when there is more than one. A page with more problems than its line allows fails, so a pull request cannot add a new problem to a listed page. Lower the count, or remove the line, when you fix a problem.
 
 ## Build checks
 
