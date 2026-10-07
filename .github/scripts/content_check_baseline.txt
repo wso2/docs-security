@@ -201,3 +201,11 @@ security-announcements/cve-justifications/2021/ZDI-CAN-13449.md field-format
 
 # Its CVSS line carries NVD's original CVSS 2.0 score as a note, which a cvss field cannot hold. See ROADMAP.md section 3A.
 security-announcements/cve-justifications/2014/CVE-2014-3623.md repeated-info
+
+# Product lines that are not an official product name: per-platform Microgateway Toolkit lines, and
+# CVE justification lines that describe products instead of naming them. See ROADMAP.md section 3A.
+security-announcements/security-advisories/2021/WSO2-2021-1347.md product-name
+security-announcements/cve-justifications/2024/CVE-2021-23463.md product-name
+security-announcements/cve-justifications/2024/CVE-2022-23221.md product-name
+security-announcements/cve-justifications/2024/CVE-2022-45868.md product-name
+security-announcements/cve-justifications/2025/CVE-2025-47889.md product-name
