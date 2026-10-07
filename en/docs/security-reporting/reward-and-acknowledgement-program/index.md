@@ -68,12 +68,12 @@ Once the reported issue is fixed and announced to customers and the community, a
 2. Sends a certificate of appreciation.
 3. Provides a monetary reward, either as an Amazon gift voucher (any Amazon storefront) or a PayPal transfer, at the reporter's choice. The amount depends on the severity of the confirmed finding:
 
-    | Severity            | CVSS Score     | Reward  |
-    | :------------------ | :------------- | :------ |
-    | Critical            | 9.0 to 10.0    | USD 500 |
-    | High                | 7.0 to 8.9     | USD 250 |
-    | Medium              | 4.0 to 6.9     | USD 100 |
-    | Low                 | 3.9 to above 0 | USD 50  |
+    | Severity | CVSS Score     | Reward  |
+    | :------- | :------------- | :------ |
+    | Critical | 9.0 to 10.0    | USD 500 |
+    | High     | 7.0 to 8.9     | USD 250 |
+    | Medium   | 4.0 to 6.9     | USD 100 |
+    | Low      | 3.9 to above 0 | USD 50  |
 
     These revised reward amounts apply only to issues reported on or after July 1, 2026.
     Issues reported before that date are eligible for a flat reward of USD 50.
