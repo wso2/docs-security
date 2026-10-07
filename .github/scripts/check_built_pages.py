@@ -25,6 +25,12 @@
     nosnippet      a sidebar is not marked data-nosnippet
                    (en/theme/material/main.html), so search results can quote
                    menu or table of contents text instead of the page.
+    unlisted       an announcement page is not linked from the page that lists
+                   it: an advisory from its year's list, a CVE justification
+                   from the CVE Justifications page, an incident clarification
+                   or a cloud security bulletin from its year page. A page in
+                   another folder, or an advisory file not named after its ID,
+                   is published but never listed, so it fails too.
     latest-advisories  the home page does not list the newest advisories,
                    newest published first, as their structured data dates
                    them (en/hooks/security_announcements/listings.py,
@@ -141,6 +147,102 @@ def check_home_page(site_dir):
     return None
 
 
+# Each announcement section, and the list page (under security-announcements/) that links a page
+# whose path below the section is the given parts, or None when the build does not list that folder.
+LIST_PAGES = {
+    "security-advisories": lambda parts: "security-advisories/{0}/{0}-advisories".format(parts[0])
+    if len(parts) == 2 and re.fullmatch(r"\d{4}", parts[0]) and ADVISORY_ID.fullmatch(parts[1]) else None,
+    "cve-justifications": lambda parts: "cve-justifications" if len(parts) == 2 and re.fullmatch(r"\d{4}", parts[0]) else None,
+    "incident-clarifications": lambda parts: "incident-clarifications/" + parts[0]
+    if len(parts) == 2 and re.fullmatch(r"\d{4}", parts[0]) else None,
+    "cloud-security-bulletins": lambda parts: "cloud-security-bulletins/{}/{}".format(*parts[:2])
+    if len(parts) == 3 and re.fullmatch(r"\d{4}", parts[1]) else None,
+}
+
+
+class ArticleLinks(HTMLParser):
+    """Collects the links in a page's article, and whether the page is a redirect stub."""
+
+    def __init__(self):
+        super().__init__()
+        self.inside = False
+        self.links = []
+        self.redirect = False
+
+    def handle_starttag(self, tag, attrs):
+        attributes = dict(attrs)
+        if tag == "meta" and (attributes.get("http-equiv") or "").lower() == "refresh":
+            self.redirect = True
+        if tag == "article":
+            self.inside = True
+        elif tag == "a" and self.inside and attributes.get("href"):
+            self.links.append(attributes["href"])
+
+    def handle_endtag(self, tag):
+        if tag == "article":
+            self.inside = False
+
+
+def read_page(site_dir, rel):
+    parser = ArticleLinks()
+    with open(os.path.join(site_dir, rel, "index.html"), encoding="utf-8") as handle:
+        parser.feed(handle.read())
+    return parser
+
+
+def is_list_page(section, parts, folder):
+    """The section's own page, its year pages, a bulletin product's page, and the yearly advisory lists.
+
+    folder is the page's folder in the built site; a bulletin product's page has year folders below it.
+    """
+    year = bool(parts) and re.fullmatch(r"\d{4}", parts[-1 if section != "security-advisories" else 0]) is not None
+    if not parts:
+        return True
+    if section == "security-advisories":
+        return (len(parts) == 1 and year) or (len(parts) == 2 and parts[1] == "{}-advisories".format(parts[0]))
+    if section == "cloud-security-bulletins":
+        if len(parts) == 1:
+            return any(re.fullmatch(r"\d{4}", name) for name in os.listdir(folder))
+        return len(parts) == 2 and year
+    return len(parts) == 1 and year
+
+
+def check_listed(site_dir):
+    """A problem message for each announcement page that the page listing it does not link."""
+    problems, linked = [], {}
+    root = os.path.join(site_dir, "security-announcements")
+    for section, list_page in sorted(LIST_PAGES.items()):
+        for folder, _, files in sorted(os.walk(os.path.join(root, section))):
+            if "index.html" not in files:
+                continue
+            rel = os.path.relpath(folder, site_dir).replace(os.sep, "/")
+            parts = rel.split("/")[2:]
+            if is_list_page(section, parts, folder) or read_page(site_dir, rel).redirect:
+                continue
+            target = list_page(parts)
+            if target is None:
+                problems.append("{}/: the page is not in a folder the build lists; move it into its year folder, "
+                                "named as the others are [unlisted]".format(rel))
+                continue
+            target = "security-announcements/" + target
+            if target not in linked:
+                if not os.path.isfile(os.path.join(site_dir, target, "index.html")):
+                    linked[target] = None
+                else:
+                    links = set()
+                    for href in read_page(site_dir, target).links:
+                        path = unquote(urlsplit(href).path)
+                        path = posixpath.normpath(posixpath.join("/" + target + "/", path) if not path.startswith("/")
+                                                  else re.sub(r"^/[^/]+/[^/]+/", "/", path))
+                        links.add(path.strip("/"))
+                    linked[target] = links
+            if linked[target] is None:
+                problems.append("{}/: its list page {}/ does not exist [unlisted]".format(rel, target))
+            elif rel not in linked[target]:
+                problems.append("{}/: the page is not listed on {}/ [unlisted]".format(rel, target))
+    return problems
+
+
 def folder_and_entry(path):
     """The year folder and entry name of an advisory or CVE justification path, or None."""
     match = ENTRY.search(path)
@@ -196,6 +298,10 @@ def main():
                       "{} [menu-entries]".format(rel, len(others), sorted(others)[0]))
                 problems += 1
 
+    for problem in check_listed(site_dir):
+        print(problem)
+        problems += 1
+
     home_page = check_home_page(site_dir)
     if home_page:
         print(home_page)
@@ -204,8 +310,8 @@ def main():
     if problems:
         print("\n{} problem(s) in {} page(s).".format(problems, checked))
         return 1
-    print("Checked {} page(s). The menu and sidebars are fine, and the home page lists the newest "
-          "advisories.".format(checked))
+    print("Checked {} page(s). The menu and sidebars are fine, every announcement is listed, and the home page "
+          "lists the newest advisories.".format(checked))
     return 0
 
 
