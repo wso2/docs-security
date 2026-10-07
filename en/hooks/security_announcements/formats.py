@@ -58,6 +58,16 @@ INCIDENT_FIELDS = (
      ("Customer actions required", "Customers actions required"), True, YES_NO),
 )
 
+# An advisory's CWE IDs: the cwe field, as its CVE record gives them, such as "CWE-79" or
+# "CWE-79, CWE-352". Optional; an advisory without a CVE record has none.
+CWE_RE = re.compile(r"^CWE-\d+(?:, CWE-\d+)*$")
+CWE_ID_RE = re.compile(r"\bCWE-(\d+)\b")
+
+# The update-level table in an advisory's SOLUTION section: the fixed versions, one row per
+# product version. Older advisories add the WUM timestamp of the fix as a fourth column.
+UPDATE_TABLE_HEADER = ("Product Name", "Product Version", "U2 Update Level")
+UPDATE_TABLE_WUM_COLUMN = "WUM Timestamp"
+
 # The section that lists a page's products, by format. Each line starts with a product name
 # from products.txt.
 PRODUCT_SECTIONS = ((ADVISORY_RE, "AFFECTED PRODUCTS"), (JUSTIFICATION_RE, "REPORTED PRODUCTS"))
@@ -153,8 +163,8 @@ def render(src, markdown, meta):
 def with_info_block(markdown, meta):
     """Render an advisory's heading and info lines from its front matter.
 
-    Authors fill Published, Updated, Version, Severity, CVSS, and the CVE IDs (in the
-    title) once, in front matter. Pages that still write the info lines themselves are
+    Authors fill Published, Updated, Version, Severity, CVSS, the CVE IDs (in the title),
+    and the CWE IDs once, in front matter. Pages that still write the info lines themselves are
     left as they are.
     """
     if 'class="doc-info"' in markdown:
@@ -177,6 +187,10 @@ def with_info_block(markdown, meta):
     if cves:
         links = ['<a href="https://www.cve.org/CVERecord?id={0}">{0}</a>'.format(cve) for cve in cves]
         lines.append(info_line("CVE IDs", ", ".join(links)))
+    cwes = text.unique(CWE_ID_RE.findall(str(meta.get("cwe") or "")))
+    if cwes:
+        links = ['<a href="https://cwe.mitre.org/data/definitions/{0}.html">CWE-{0}</a>'.format(cwe) for cwe in cwes]
+        lines.append(info_line("CWE", ", ".join(links)))
     block = "\n".join(lines) + "\n---\n" if lines else ""
 
     heading = text.leading_heading(markdown)

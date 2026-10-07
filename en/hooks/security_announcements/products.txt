@@ -9,8 +9,9 @@
 # To have `check_content.py --fix` correct an old or wrong spelling, add a line in the
 # second part: "old spelling -> official name". Differences in upper and lower case only
 # are corrected without a line here. An old spelling that does not start with "WSO2 ",
-# such as "API Manager", is corrected only at the start of a product line, since prose
-# may use it as a short form.
+# such as "API Manager" or a product code such as "wso2am", is corrected only at the start
+# of a product line and in the product column of an update-level table, since prose may
+# use it as a short form.
 
 # Products in WSO2's product list, by its display name. The list writes "API Manager
 # Analytics" without "WSO2"; pages write "WSO2 API Manager Analytics", like the other names.
@@ -76,3 +77,29 @@ WSO2 Microgateway Toolkit -> WSO2 API Microgateway Toolkit
 WSO2 Micro Integrator Monitoring Dashboard -> WSO2 Micro Integrator Dashboard
 WSO2 Stream Integrator -> WSO2 Streaming Integrator
 WSO2 Stream Integrator Tooling -> WSO2 Streaming Integrator Tooling
+
+# WSO2's product codes, as its product list gives them. Update-level tables sometimes name
+# the product by its code; --fix writes the official name instead.
+choreo-connect -> WSO2 Choreo Connect
+wso2-integration-control-plane -> WSO2 Integration Control Plane
+wso2-obam -> WSO2 Open Banking AM
+wso2-obiam -> WSO2 Open Banking IAM
+wso2-obkm -> WSO2 Open Banking KM
+wso2am -> WSO2 API Manager
+wso2am-acp -> WSO2 API Control Plane
+wso2am-analytics -> WSO2 API Manager Analytics
+wso2am-tm -> WSO2 Traffic Manager
+wso2am-universal-gw -> WSO2 Universal Gateway
+wso2cep -> WSO2 Complex Event Processor
+wso2das -> WSO2 Data Analytics Server
+wso2dss -> WSO2 Data Services Server
+wso2ei -> WSO2 Enterprise Integrator
+wso2emm -> WSO2 Enterprise Mobility Manager
+wso2esb -> WSO2 Enterprise Service Bus
+wso2esb-analytics -> WSO2 Enterprise Service Bus Analytics
+wso2greg -> WSO2 Governance Registry
+wso2iot -> WSO2 IoT Server
+wso2is -> WSO2 Identity Server
+wso2is-analytics -> WSO2 Identity Server Analytics
+wso2is-km -> WSO2 Identity Server as Key Manager
+wso2mi -> WSO2 Micro Integrator

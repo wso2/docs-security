@@ -6,6 +6,7 @@ updated: "{{date}}"
 version: "{{version}}"
 severity: "{{severity}}"
 cvss: "{{cvss_score}} ({{cvss_vector}})"
+cwe: "{{cwe_ids_from_the_cve_record}}"
 ---
 
 ## AFFECTED PRODUCTS
@@ -14,7 +15,7 @@ cvss: "{{cvss_score}} ({{cvss_vector}})"
 
 
 ## OVERVIEW
-{{overview}}
+{{overview: one sentence of up to 100 characters naming the vulnerability type, the component, and the product}}
 
 
 ## DESCRIPTION

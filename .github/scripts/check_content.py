@@ -55,8 +55,16 @@ Security advisories (security-advisories/<year>/WSO2-*.md):
     field-format     a front matter field is missing or not in its standard form:
                      published, version (1.0.0), severity (Critical, High, Medium,
                      Low, Informative, Not Applicable), cvss ("9.8 (CVSS:3.1/...)" or
-                     Not Applicable)                                      (--fix for
-                     N/A, lowercase severity, 1.0 versions, and stray spaces)
+                     Not Applicable), and the optional cwe ("CWE-79" or "CWE-79,
+                     CWE-352")                                            (--fix for
+                     N/A, lowercase severity, 1.0 versions, CWE IDs written another
+                     way, and stray spaces)
+    update-table     the update-level table in SOLUTION, which gives the fixed
+                     versions, is not in its form: the header "Product Name |
+                     Product Version | U2 Update Level" (older advisories add "WUM
+                     Timestamp"), an official product name, a version such as
+                     4.2.0, and a whole-number update level   (--fix for the header,
+                     and for product codes and spellings listed in products.txt)
     cvss-score       the cvss score differs from the base score of its CVSS 3.0 or 3.1
                      vector (CVSS 4.0 vectors are not checked)
     severity-score   the severity differs from the rating of the cvss score: Low 0.1
@@ -148,6 +156,10 @@ DATE = re.compile(r"^(January|February|March|April|May|June|July|August|Septembe
                   r"November|December) [1-9]\d?, \d{4}$")
 SEVERITIES = ("Critical", "High", "Medium", "Low", "Informative", "Not Applicable")
 CVSS = re.compile(r"^\d{1,2}(\.\d)? \(CVSS:\d\.\d/[A-Za-z:/]+\)$")
+# Update-level table headers written another way, by their lower-case text without bold.
+UPDATE_TABLE_NAMES = {"product": "Product Name", "product name": "Product Name", "version": "Product Version",
+                      "product version": "Product Version", "update level": "U2 Update Level",
+                      "u2 update level": "U2 Update Level", "wum timestamp": "WUM Timestamp"}
 INFO_BLOCK = re.compile(r'#[ \t]+[^\n]*\n(?:[ \t]*\n)*(?:<p class="doc-info">[^\n]*\n)+(?:[ \t]*\n)*(?:---[ \t]*\n)?(?:[ \t]*\n)*')
 INFO_LINE = re.compile(r'^<p class="doc-info">(Published|Updated|Version|Severity|CVSS Score|CVE IDs):.*$', re.M)
 HEADING = re.compile(r"\s*^#[ \t]+(.+?)[ \t]*$", re.M)  # only the first line of the body
@@ -399,6 +411,13 @@ def check_advisory(page, site, year, advisory_id):
     elif severity not in SEVERITIES:
         findings.append(Finding("field-format", line["severity"], "write the severity as one of {} (found \"{}\")".format(
             ", ".join(SEVERITIES), severity), normalize_severity(severity) is not None))
+    cwe = meta.get("cwe")
+    if cwe is not None and not formats.CWE_RE.match(cwe):
+        findings.append(Finding("field-format", line["cwe"], "write cwe as \"CWE-79\", or \"CWE-79, CWE-352\" for "
+                                "several, as the CVE record gives them (found \"{}\")".format(cwe),
+                                normalize_cwe(cwe) is not None))
+    for start, _, message, replacement in update_table_problems(page):
+        findings.append(Finding("update-table", start, message, replacement is not None))
     cvss = meta.get("cvss")
     if cvss is None:
         findings.append(Finding("field-format", 0, "add a cvss value, such as \"9.8 (CVSS:3.1/...)\""))
@@ -415,7 +434,7 @@ def check_advisory(page, site, year, advisory_id):
             findings.append(Finding("severity-score", line["severity"], "a CVSS score of {} is {}, but the severity "
                                     "is {}".format(cvss.split(" ", 1)[0], cvss_rating(score), severity)))
     for key in meta:
-        if key not in ("title", "category", "published", "updated", "version", "severity", "cvss",
+        if key not in ("title", "category", "published", "updated", "version", "severity", "cvss", "cwe",
                        "description", "seo_title"):
             findings.append(Finding("field-format", line[key], "remove the unknown front matter field \"{}\"".format(key)))
 
@@ -674,6 +693,85 @@ def normalize_severity(value):
     return None
 
 
+def normalize_cwe(value):
+    """CWE IDs written another way, such as "cwe 79; CWE-352", in the standard form, or None."""
+    if not re.match(r"(?i)^\s*(?:cwe[\s-]*\d+[\s,;]*)+$", value):
+        return None
+    return ", ".join("CWE-" + number for number in text_helpers.unique(re.findall(r"(?i)cwe[\s-]*(\d+)", value)))
+
+
+def table_cells(line, offset):
+    """The cells of a Markdown table line, as (start, end, text), with start and end in the page text."""
+    cells = []
+    pipes = [m.start() for m in re.finditer(r"(?<!\\)\|", line)]
+    for left, right in zip(pipes, pipes[1:]):
+        raw = line[left + 1:right]
+        start = offset + left + 1 + len(raw) - len(raw.lstrip())
+        cells.append((start, start + len(raw.strip()), raw.strip()))
+    return cells
+
+
+def update_table_problems(page):
+    """Problems in the update-level tables of an advisory's SOLUTION section, which give the fixed versions.
+
+    Each is (start, end, message, replacement): --fix writes the replacement between start and
+    end in the page text, and a replacement of None means a person has to decide.
+    """
+    solution = re.search(r"^##[ \t]+SOLUTION\b.*?(?=^##[ \t]|\Z)", page.body, re.M | re.S | re.I)
+    if not solution:
+        return []
+    problems, block = [], []
+    offset = page.meta_end + solution.start()
+    for line in solution.group(0).splitlines(True) + [""]:
+        if line.startswith("|"):
+            block.append((offset, line.rstrip("\r\n")))
+        else:
+            if len(block) > 2 and re.search(r"(?i)update level", block[0][1]):
+                problems.extend(update_table(block))
+            block = []
+        offset += len(line)
+    return problems
+
+
+def update_table(block):
+    """Problems in one update-level table, given as its (offset, line) pairs."""
+    official, renamed = PRODUCTS
+    by_case = dict((name.lower(), name) for name in official)
+    standard = list(formats.UPDATE_TABLE_HEADER)
+    form = "\"{}\"".format(" | ".join(standard))
+    header = table_cells(block[0][1], block[0][0])
+    names = [UPDATE_TABLE_NAMES.get(re.sub(r"[*_]", "", cell).strip().lower()) for _, _, cell in header]
+    if names not in (standard, standard + [formats.UPDATE_TABLE_WUM_COLUMN]):
+        found = " | ".join(cell for _, _, cell in header)
+        return [(block[0][0], block[0][0], "write the update-level table header as {} (found \"{}\")".format(
+            form, found), None)]
+    problems = [(start, end, "write the update-level table header as {}".format(form), name)
+                for (start, end, cell), name in zip(header, names) if cell != name]
+    for offset, line in block[2:]:
+        cells = table_cells(line, offset)
+        if len(cells) < 3:
+            problems.append((offset, offset, "give each update-level table row a product, a version, and an update "
+                             "level", None))
+            continue
+        (start, end, product), (version_at, _, version), (level_at, _, level) = cells[:3]
+        spaced = " ".join(product.split())
+        target = product if product in official else (
+            renamed.get(product) or by_case.get(product.lower()) or renamed.get(spaced) or by_case.get(spaced.lower()))
+        if target is None:
+            problems.append((start, end, "\"{}\" is not an official product name; use one from "
+                             "en/hooks/security_announcements/products.txt, or add a new product there".format(product),
+                             None))
+        elif target != product:
+            problems.append((start, end, "write the product as \"{}\" (found \"{}\")".format(target, product), target))
+        if not re.match(r"^\d+\.\d+\.\d+$", version):
+            problems.append((version_at, version_at, "write the product version as 4.2.0 (found \"{}\")".format(version),
+                             None))
+        if not re.match(r"^\d+$", level):
+            problems.append((level_at, level_at, "write the update level as a whole number (found \"{}\")".format(level),
+                             None))
+    return problems
+
+
 def normalize_cvss(value):
     value = value.strip()
     if value in ("N/A", "NA", "n/a"):
@@ -786,6 +884,11 @@ def fix(page, findings):
                 return m.group(0)
             return m.group(1) + path + "/" + m.group(3)
         text = re.sub(r"(\]\(\{\{#base_path#\}\}/)([^)#\s]+)((?:#[^)\s]*)?\))", slash, text)
+    if "update-table" in rules:
+        for start, end, _, replacement in sorted(update_table_problems(page), reverse=True):
+            if replacement is not None:
+                text = text[:start] + replacement + text[end:]
+        return text  # offsets changed; the next pass fixes the rest
     if "product-name" in rules:
         for start, end, name, target in sorted(product_lines(page) + product_mentions(page), reverse=True):
             if target and target != name and end > start:
@@ -837,6 +940,7 @@ def fix(page, findings):
             return re.sub(r"^(" + key + r":[ \t]*)\"?([^\"\n]*?)\"?[ \t]*$", replace, head, flags=re.M)
         head = field("severity", lambda v: v in SEVERITIES, normalize_severity)
         head = field("cvss", lambda v: v == "Not Applicable" or CVSS.match(v), normalize_cvss)
+        head = field("cwe", lambda v: formats.CWE_RE.match(v), normalize_cwe)
         head = re.sub(r"^date:", "published:", head, flags=re.M) if JUSTIFICATION_PATH.search(page.rel) else head
         head = re.sub(r"^(version:[ \t]*)\"?(\d+\.\d+)\"?[ \t]*$", r'\1"\2.0"', head, flags=re.M)
         text = head + body
