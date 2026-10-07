@@ -22,6 +22,7 @@ checks the fields against the same definitions.
 """
 
 import html
+import os
 import re
 
 from . import text
@@ -56,6 +57,32 @@ INCIDENT_FIELDS = (
     ("customer_action_required", "Customer action required",
      ("Customer actions required", "Customers actions required"), True, YES_NO),
 )
+
+# The section that lists a page's products, by format. Each line starts with a product name
+# from products.txt.
+PRODUCT_SECTIONS = ((ADVISORY_RE, "AFFECTED PRODUCTS"), (JUSTIFICATION_RE, "REPORTED PRODUCTS"))
+PRODUCTS_FILE = os.path.join(os.path.dirname(os.path.abspath(__file__)), "products.txt")
+
+
+def products():
+    """The official product names, and the old spellings check_content.py --fix replaces.
+
+    Read from products.txt, which people edit: one name per line, and "old -> official"
+    lines for spellings to correct.
+    """
+    official, renamed = [], {}
+    with open(PRODUCTS_FILE, encoding="utf-8") as handle:
+        for line in handle:
+            line = line.strip()
+            if not line or line.startswith("#"):
+                continue
+            if "->" in line:
+                old, new = (part.strip() for part in line.split("->", 1))
+                renamed[old] = new
+            else:
+                official.append(line)
+    return official, renamed
+
 
 # An advisory's search title uses its OVERVIEW sentence, up to this length, after dropping
 # words that add nothing to it.

@@ -32,10 +32,17 @@ Every page:
     file-name        a file name contains characters other than letters, digits, ".", "-", "_"
     heading-level    a heading skips a level, as an H3 right after the H1 (the build
                      renders an announcement's H1 from its title)        (--fix)
+    product-name     a product named in an old spelling listed in
+                     en/hooks/security_announcements/products.txt, or in other upper
+                     and lower case than its official name there, outside code (--fix)
 
 Security advisories (security-advisories/<year>/WSO2-*.md):
 
     advisory-id      the title or heading does not name the advisory in the file name
+    product-name     a line of AFFECTED PRODUCTS (or a CVE justification's REPORTED
+                     PRODUCTS) does not start with an official product name from
+                     en/hooks/security_announcements/products.txt   (--fix for the
+                     spellings listed there and for upper and lower case)
     overview-title   the first OVERVIEW sentence cannot be the search title: it is
                      longer than 100 characters after the build drops words such as
                      "A potential" and "has been identified", or it refers to "the
@@ -120,6 +127,16 @@ SCRIPT = ".github/scripts/check_content.py"
 # build's own rules: formats and fields, search titles, and the lists the build writes.
 sys.path.insert(0, os.path.join(REPO_ROOT, "en", "hooks"))
 from security_announcements import formats, listings  # noqa: E402
+from security_announcements import text as text_helpers  # noqa: E402
+
+PRODUCTS = formats.products()
+# Product names corrected anywhere in a page, in lower case, with their official names: the
+# official names in other case, and the old spellings that start with "WSO2 ". Prose may use
+# a short form such as "API Manager", so those old spellings count only in product lines.
+PRODUCT_SPELLINGS = dict((name.lower(), name) for name in PRODUCTS[0])
+PRODUCT_SPELLINGS.update((old.lower(), new) for old, new in PRODUCTS[1].items() if old.startswith("WSO2 "))
+PRODUCT_MENTION = re.compile(r"\b(?:" + "|".join(
+    re.escape(name) for name in sorted(PRODUCT_SPELLINGS, key=len, reverse=True)) + r")\b", re.I)
 
 ADVISORY_PATH = re.compile(r"security-announcements/security-advisories/(\d{4})/(WSO2-\d{4}-\d{4})\.md$")
 ADVISORY_LIST_PATH = re.compile(r"security-announcements/security-advisories/(\d{4})/\d{4}-advisories\.md$")
@@ -298,6 +315,7 @@ def check_page(page, site):
     incident = INCIDENT_PATH.search(page.rel)
     if incident:
         findings.extend(check_listed(page, site, "incident-clarifications", incident.group(1), incident.group(2)))
+    findings.extend(check_products(page))
     if justification or incident:
         findings.extend(check_heading(page))
         fields = formats.JUSTIFICATION_FIELDS if justification else formats.INCIDENT_FIELDS
@@ -479,6 +497,59 @@ def check_heading(page):
         message += " (the heading \"{}\" differs from the title \"{}\"; make the title right first)".format(
             heading.group(1).strip(), title)
     return [Finding("repeated-heading", page.meta_end + page.body.index("#", heading.start()), message, same)]
+
+
+def product_lines(page):
+    """Each product line of the page's product section, as (start, end, name, official name or None).
+
+    start and end locate the name in page.text. The official name is None for an unknown product.
+    """
+    section = next((name for pattern, name in formats.PRODUCT_SECTIONS if pattern.match(page.rel)), None)
+    if not section:
+        return []
+    block = re.search(r"^#{2,4}[ \t]+" + section + r"[ \t:]*\n(.*?)(?=^#{2,4}[ \t]|\Z)", page.body, re.M | re.S | re.I)
+    if not block:
+        return []
+    official, renamed = PRODUCTS
+    by_case = {name.lower(): name for name in official}
+    found = []
+    for bullet in re.finditer(r"^[*+-][ \t]+(.+)$", block.group(1), re.M):
+        name = text_helpers.product_name(bullet.group(1))
+        target = name if name in official else renamed.get(name) or by_case.get(name.lower())
+        at = bullet.group(1).find(name)
+        start = page.meta_end + block.start(1) + bullet.start(1) + max(at, 0)
+        found.append((start, start + len(name) if at >= 0 else start, name, target if at >= 0 or target == name else None))
+    return found
+
+
+def product_mentions(page):
+    """Each product name the page writes in an old spelling or other case, outside code and product
+    lines, as (start, end, name, official name)."""
+    lines = [(start, max(end, start + 1)) for start, end, _, _ in product_lines(page)]
+    found = []
+    for offset, _, text in [(0, page.meta_end, page.text[:page.meta_end])] + page.prose_spans():
+        for match in PRODUCT_MENTION.finditer(text):
+            start, end = offset + match.start(), offset + match.end()
+            target = PRODUCT_SPELLINGS[match.group(0).lower()]
+            if match.group(0) != target and not any(a < end and start < b for a, b in lines):
+                found.append((start, end, match.group(0), target))
+    return found
+
+
+def check_products(page):
+    """Product names, which must be official so that lists and future VEX statements stay consistent."""
+    findings = []
+    for start, _, name, target in product_lines(page) + product_mentions(page):
+        if target == name:
+            continue
+        if target:
+            findings.append(Finding("product-name", start, "write the product as \"{}\" (found \"{}\")".format(
+                target, name), True))
+        else:
+            findings.append(Finding("product-name", start, "\"{}\" is not an official product name; use one from "
+                                    "en/hooks/security_announcements/products.txt, or add a new product "
+                                    "there".format(name)))
+    return findings
 
 
 def check_listed(page, site, section, year, name):
@@ -715,6 +786,11 @@ def fix(page, findings):
                 return m.group(0)
             return m.group(1) + path + "/" + m.group(3)
         text = re.sub(r"(\]\(\{\{#base_path#\}\}/)([^)#\s]+)((?:#[^)\s]*)?\))", slash, text)
+    if "product-name" in rules:
+        for start, end, name, target in sorted(product_lines(page) + product_mentions(page), reverse=True):
+            if target and target != name and end > start:
+                text = text[:start] + target + text[end:]
+        return text  # offsets changed; the next pass fixes the rest
     fields = (formats.JUSTIFICATION_FIELDS if JUSTIFICATION_PATH.search(page.rel) else
               formats.INCIDENT_FIELDS if INCIDENT_PATH.search(page.rel) else None)
     if "repeated-heading" in rules:
