@@ -184,19 +184,6 @@ security-announcements/security-advisories/2025/WSO2-2025-4503.md field-format
 security-announcements/security-advisories/2026/WSO2-2026-4608.md field-format
 
 # Links to retired docs.wso2.com/display/ pages that need their current location. See ROADMAP.md section 1.
-security-announcements/security-advisories/2017/WSO2-2017-0326.md legacy-link
-security-announcements/security-advisories/2019/WSO2-2019-0621.md legacy-link
-security-announcements/security-advisories/2019/WSO2-2019-0653.md legacy-link
-security-announcements/security-advisories/2020/WSO2-2019-0666.md legacy-link
-security-announcements/security-advisories/2020/WSO2-2020-0781.md legacy-link
-security-announcements/security-advisories/2021/WSO2-2021-1258.md legacy-link
-security-announcements/security-advisories/2021/WSO2-2021-1260.md legacy-link
-security-announcements/security-advisories/2021/WSO2-2021-1261.md legacy-link
-security-announcements/security-advisories/2021/WSO2-2021-1357.md legacy-link
-security-announcements/security-advisories/2022/WSO2-2021-1259.md legacy-link
-security-announcements/security-advisories/2022/WSO2-2022-1849.md legacy-link
-security-guidelines/secure-engineering-guidelines/secure-coding-guidlines/secure-coding-guide.md legacy-link
-security-guidelines/security-guidelines-for-production-deployment.md legacy-link
 
 # Kept on purpose: renaming would turn their working URLs into redirects.
 security-announcements/cve-justifications/2022/CVE-2022-3602 and CVE-2022-3786.md file-name
