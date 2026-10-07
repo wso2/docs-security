@@ -11,13 +11,6 @@ security-announcements/security-advisories/2024/WSO2-2023-2075.md year-folder
 # A severity or CVSS score that does not match the score or vector. See ROADMAP.md section 3A.
 security-announcements/security-advisories/2025/WSO2-2024-3149.md cvss-score
 
-# Front matter and the page disagree, or the page uses an older layout. See ROADMAP.md section 3A.
-security-announcements/security-advisories/2017/WSO2-2017-0255.md repeated-info
-security-announcements/security-advisories/2017/WSO2-2017-0326.md repeated-info
-security-announcements/security-advisories/2020/WSO2-2020-0864.md repeated-info
-security-announcements/security-advisories/2024/WSO2-2023-2987.md repeated-info
-security-announcements/security-advisories/2025/WSO2-2025-4503.md repeated-info
-
 # The first OVERVIEW sentence is too long for a search title, or refers to "the above" products, so the
 # title uses the product names instead. Shortening it changes reviewed text. See ROADMAP.md section 2.
 security-announcements/security-advisories/2016/WSO2-2016-0092.md overview-title
@@ -128,7 +121,6 @@ security-announcements/security-advisories/2017/WSO2-2017-0218.md field-format 3
 security-announcements/security-advisories/2017/WSO2-2017-0223.md field-format
 security-announcements/security-advisories/2017/WSO2-2017-0235.md field-format 2
 security-announcements/security-advisories/2017/WSO2-2017-0254.md field-format
-security-announcements/security-advisories/2017/WSO2-2017-0255.md field-format 3
 security-announcements/security-advisories/2017/WSO2-2017-0257.md field-format
 security-announcements/security-advisories/2017/WSO2-2017-0260.md field-format
 security-announcements/security-advisories/2017/WSO2-2017-0261.md field-format
@@ -138,7 +130,6 @@ security-announcements/security-advisories/2017/WSO2-2017-0265.md field-format
 security-announcements/security-advisories/2017/WSO2-2017-0266.md field-format
 security-announcements/security-advisories/2017/WSO2-2017-0267.md field-format
 security-announcements/security-advisories/2017/WSO2-2017-0289.md field-format
-security-announcements/security-advisories/2017/WSO2-2017-0326.md field-format 3
 security-announcements/security-advisories/2019/WSO2-2019-0432.md field-format
 security-announcements/security-advisories/2019/WSO2-2019-0486.md field-format
 security-announcements/security-advisories/2019/WSO2-2019-0501.md field-format
@@ -170,14 +161,12 @@ security-announcements/security-advisories/2020/WSO2-2019-0651.md field-format
 security-announcements/security-advisories/2020/WSO2-2019-0661.md field-format
 security-announcements/security-advisories/2020/WSO2-2019-0665.md field-format
 security-announcements/security-advisories/2020/WSO2-2020-0718.md field-format
-security-announcements/security-advisories/2020/WSO2-2020-0864.md field-format 2
 security-announcements/security-advisories/2022/WSO2-2021-1334.md field-format
 security-announcements/security-advisories/2023/WSO2-2022-2357.md field-format
 security-announcements/security-advisories/2024/WSO2-2023-2308.md field-format
 security-announcements/security-advisories/2024/WSO2-2023-2589.md field-format
 security-announcements/security-advisories/2024/WSO2-2023-2864.md field-format
 security-announcements/security-advisories/2024/WSO2-2024-3561.md field-format 2
-security-announcements/security-advisories/2025/WSO2-2025-4503.md field-format 2
 security-announcements/security-advisories/2026/WSO2-2026-4608.md field-format
 
 # Kept on purpose: renaming would turn their working URLs into redirects.
@@ -227,3 +216,18 @@ security-announcements/security-advisories/2023/WSO2-2022-2023.md section-headin
 security-announcements/security-advisories/2023/WSO2-2022-2177.md section-heading 2
 security-announcements/security-advisories/2023/WSO2-2022-2182.md section-heading 3
 security-announcements/security-advisories/2024/WSO2-2024-3561.md section-heading
+
+# Kept on purpose: WSO2-2017-0255 and WSO2-2017-0326 give their severity as "Please refer [^1]", a link to
+# Apache Tomcat's security page, as WSO2's original pages do. A severity field cannot hold a footnote, so the
+# pages keep their own info lines; like other 2017 advisories, they have no version or cvss.
+security-announcements/security-advisories/2017/WSO2-2017-0255.md repeated-info
+security-announcements/security-advisories/2017/WSO2-2017-0326.md repeated-info
+security-announcements/security-advisories/2017/WSO2-2017-0255.md field-format 3
+security-announcements/security-advisories/2017/WSO2-2017-0326.md field-format 3
+
+# Kept on purpose: WSO2-2020-0864 and WSO2-2025-4503 give one severity and CVSS score per product, which
+# the single severity and cvss fields cannot hold, so the pages keep their own info lines.
+security-announcements/security-advisories/2020/WSO2-2020-0864.md repeated-info
+security-announcements/security-advisories/2025/WSO2-2025-4503.md repeated-info
+security-announcements/security-advisories/2020/WSO2-2020-0864.md field-format 2
+security-announcements/security-advisories/2025/WSO2-2025-4503.md field-format 2
