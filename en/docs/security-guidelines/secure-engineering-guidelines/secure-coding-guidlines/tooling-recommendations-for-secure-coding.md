@@ -7,7 +7,7 @@ category: security-guidelines
 # Tooling Recommendations for Secure Coding
 
 ## Security Related Static Code Analysis 
-Find Security Bugs[^2], FindBugs plugin is the recommended tool for performing static security analysis.
+Find Security Bugs[^2], SpotBugs plugin is the recommended tool for performing static security analysis.
 
 !!! tip hint important "WSO2 Document Reference"
     Further information on using Find Security Bugs with WSO2 recommended security policies are available in the [Engineering Guidelines - Tooling - Static Code Analysis using FindSecurityBugs](../static-code-analysis-using-findsecuritybugs.md) document.

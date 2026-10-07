@@ -8,26 +8,26 @@ severity: "{{severity}}"
 cvss: "{{cvss_score}} ({{cvss_vector}})"
 ---
 
-### AFFECTED PRODUCTS
+## AFFECTED PRODUCTS
 * {{product_1}}
 * {{product_2}}
 
 
-### OVERVIEW
+## OVERVIEW
 {{overview}}
 
 
-### DESCRIPTION
+## DESCRIPTION
 {{description}}
 
 
-### IMPACT
+## IMPACT
 {{impact}}
 
 
-### SOLUTION
+## SOLUTION
 
-#### Community Users (Open Source)
+### Community Users (Open Source)
 Apply the relevant fixes to your product using the public fix(es) provided below.
 
 * {{pr_link_1}}
@@ -36,7 +36,7 @@ Apply the relevant fixes to your product using the public fix(es) provided below
 If applying the fix or update is not feasible, migrate to the latest unaffected version of the respective WSO2 product(s).
 
 
-#### Support Subscription Holders
+### Support Subscription Holders
 
 Update your product to the specified update level—or a higher update level—to apply the fix.
 
@@ -47,13 +47,13 @@ Update your product to the specified update level—or a higher update level—t
 |:------------:|:---------------:|:---------------:|
 
 
-### CREDITS
+## CREDITS
 WSO2 thanks, **{{reporter}}** for responsibly reporting the identified issue and working with us as we addressed it.
 
 
-### CHANGE LOG
+## CHANGE LOG
 * {{change_log}}
 
 
-### REFERENCES
+## REFERENCES
 [^1]: [reference_1_link](reference_1_link)

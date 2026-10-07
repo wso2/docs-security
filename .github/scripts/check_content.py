@@ -30,6 +30,8 @@ Every page:
     empty-link       a link with no text or no target
     image-alt        an image has no alt text, or only its file name
     file-name        a file name contains characters other than letters, digits, ".", "-", "_"
+    heading-level    a heading skips a level, as an H3 right after the H1 (the build
+                     renders an announcement's H1 from its title)        (--fix)
 
 Security advisories (security-advisories/<year>/WSO2-*.md):
 
@@ -137,6 +139,7 @@ MD_LINK = re.compile(r"(!?)\[([^\]]*)\]\(([^)\s]*)(?:\s+\"[^\"]*\")?\)")
 HTML_LINK = re.compile(r"<a\b[^>]*?href=\"([^\"]*)\"[^>]*>(.*?)</a>", re.S)
 HTML_IMG = re.compile(r"<img\b[^>]*>")
 FENCE = re.compile(r"^[ \t]*(```|~~~)")
+MD_HEADING = re.compile(r"^(#{1,6})[ \t]+\S")
 INLINE_CODE = re.compile(r"(`+)(?:(?!\1).)+?\1")
 FILE_NAME = re.compile(r"^[A-Za-z0-9._-]+$")
 
@@ -217,6 +220,36 @@ class Site(object):
         return re.search(pattern, text) is not None
 
 
+def heading_levels(page):
+    """Each heading in the page body outside code, as (start, level, level it should have).
+
+    A heading goes at most one level below the heading it belongs to, so the outline does
+    not skip from the H1 (written, or rendered from the title) to an H3.
+    """
+    found = []
+    outline = [(1, 1)]  # (level written, level it should have) of the headings above
+    offset, fence = page.meta_end, None
+    for line in page.body.splitlines(True):
+        marker = FENCE.match(line)
+        if marker:
+            fence = marker.group(1) if fence is None else (None if marker.group(1) == fence else fence)
+        elif fence is None and MD_HEADING.match(line):
+            level = len(MD_HEADING.match(line).group(1))
+            while len(outline) > 1 and outline[-1][0] >= level:
+                outline.pop()
+            should = 1 if level == 1 else outline[-1][1] + 1
+            outline = [(1, 1)] if level == 1 else outline + [(level, should)]
+            found.append((offset, level, should))
+        offset += len(line)
+    return found
+
+
+def check_heading_levels(page):
+    """Headings that skip a level, which leaves gaps in the outline that screen readers and search engines use."""
+    return [Finding("heading-level", start, "write this heading as H{} (\"{} \"); it skips a level".format(
+        should, "#" * should), True) for start, level, should in heading_levels(page) if level != should]
+
+
 def check_page(page, site):
     findings = []
     name = os.path.basename(page.path)
@@ -230,6 +263,7 @@ def check_page(page, site):
     if stray:
         findings.append(Finding("stray-front-matter", page.meta_end + stray.start(),
                                 "remove the second front matter block; readers see it as text"))
+    findings.extend(check_heading_levels(page))
     for start, _, text in page.prose_spans():
         for match in PLACEHOLDER.finditer(text):
             findings.append(Finding("placeholder", start + match.start(),
@@ -669,6 +703,11 @@ def fix(page, findings):
     if "front-matter" in rules:
         # Offsets below are relative to the original text, so re-read the page after this fix.
         return text.lstrip("\ufeff \t\r\n")
+    if "heading-level" in rules:
+        for start, level, should in reversed(heading_levels(page)):
+            if level != should:
+                text = text[:start] + "#" * should + text[start + level:]
+        return text  # offsets changed; the next pass fixes the rest
     if "trailing-slash" in rules:
         def slash(m):
             path = m.group(2)

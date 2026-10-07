@@ -9,13 +9,13 @@ version: "1.0.0"
 <p class="doc-info">Published: May 6, 2026</p>
 <p class="doc-info">Version: 1.0.0</p>
 
-### BULLETIN ID  
+## BULLETIN ID  
 ASG-SB-2025-H2
 
-### SCOPE  
+## SCOPE  
 This bulletin summarizes security vulnerabilities addressed during the H2 of 2025 for WSO2 Identity Platform.
 
-### VULNERABILITIES ADDRESSED
+## VULNERABILITIES ADDRESSED
 
 | Reference ID | Title | Severity | Summary |
 |--------------|-------|----------|---------|
@@ -38,5 +38,5 @@ This bulletin summarizes security vulnerabilities addressed during the H2 of 202
 | ASG-2025-025 | DoS vulnerability with user sessions API | Medium | The `/api/users/v1/sessions` endpoint was found to place significant load on the WSO2 Identity Platform session database when invoked repeatedly due to a heavy backend query. |
 | ASG-2025-026 | Potential credential exposure related to Shai-Hulud supply chain attack | Critical | The Shai-Hulud 2.0 worm infects npm packages to steal cloud credentials and GitHub tokens. It establishes persistent access via self-hosted GitHub Actions runners and spreads automatically through CI/CD pipelines. |
 
-### CREDITS  
+## CREDITS  
 WSO2 Identity Platform thanks all internal and external researchers for responsibly disclosing the above issues.

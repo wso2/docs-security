@@ -9,17 +9,17 @@ customers_impacted: "No"
 customer_action_required: "No"
 ---
 
-### REPORTED INCIDENT
+## REPORTED INCIDENT
 {{description}}
 
 
-### IMPACT ON WSO2 PRODUCTS AND DEPLOYMENTS
+## IMPACT ON WSO2 PRODUCTS AND DEPLOYMENTS
 {{impact_info}}
 
 
-### SECURITY CONTROLS AGAINST SUPPLY CHAIN ATTACKS
+## SECURITY CONTROLS AGAINST SUPPLY CHAIN ATTACKS
 {{security_controls_info}}
 
 
-### References
+## References
 [^1]: [reference_1_link](reference_1_link)
