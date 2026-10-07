@@ -33,6 +33,9 @@ jobs:
       # Pushes to main, manual runs, and PRs that change the checker, its baseline,
       # the nav, or the build's rules in en/hooks check every file. The script and
       # en/hooks/security_announcements use only the Python standard library.
+      # When the check fails, the log shows the changes --fix makes (such as table
+      # padding), so the author can apply them without running the script. The
+      # job has read-only access and never pushes them.
       - name: Check content
         shell: bash
         run: |
@@ -40,8 +43,16 @@ jobs:
           baseline=.github/scripts/content_check_baseline.txt
           if [ "$GITHUB_EVENT_NAME" = pull_request ] && git diff --quiet HEAD^1 HEAD -- "$checker" "$baseline" en/mkdocs.yml en/hooks; then
             echo "Checking the Markdown files this pull request adds or changes."
-            git diff -z --name-only --diff-filter=ACMR HEAD^1 HEAD -- 'en/docs/*.md' \
-              | xargs -0 -r python3 "$checker" --
+            git diff -z --name-only --diff-filter=ACMR HEAD^1 HEAD -- 'en/docs/*.md' > "$RUNNER_TEMP/changed"
+            check() { xargs -0 -r python3 "$checker" "$@" -- < "$RUNNER_TEMP/changed"; }
           else
-            python3 "$checker"
+            check() { python3 "$checker" "$@"; }
           fi
+          if check; then
+            exit 0
+          fi
+          echo "::group::The changes that python3 $checker --fix makes"
+          check --fix > /dev/null || true
+          git diff
+          echo "::endgroup::"
+          exit 1

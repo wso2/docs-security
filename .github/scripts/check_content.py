@@ -30,6 +30,9 @@ Every page:
     empty-link       a link with no text or no target
     image-alt        an image has no alt text, or only its file name
     file-name        a file name contains characters other than letters, digits, ".", "-", "_"
+    table-format     a table's cells are not padded to their column's width, with
+                     "| " and " |" around each row and the separator's dashes as wide
+                     as the column, keeping its alignment colons            (--fix)
     table-columns    a table row has more or fewer cells than its header, as a stray
                      "|" or a tab in place of one makes it; the page drops the extra
                      cells and shows missing ones as empty
@@ -296,19 +299,44 @@ def heading_levels(page):
     return found
 
 
-def row_cells(line):
-    """The cells of a Markdown table row, as the Markdown tables extension splits it."""
-    line = re.sub(r"(`+)(?:(?!\1).)+?\1", "code", line.strip())  # a "|" in inline code is text
-    if line.startswith("|"):
-        line = line[1:]
-    if line.endswith("|") and not line.endswith("\\|"):
-        line = line[:-1]
-    return re.split(r"(?<!\\)\|", line)
+def split_row(line):
+    """The cells of a Markdown table row, trimmed, as the Markdown tables extension splits them.
+
+    A "|" that is escaped or inside inline code is part of the cell.
+    """
+    text = line.strip()
+    cells, cell, i, tick = [], "", 0, 0
+    while i < len(text):
+        char = text[i]
+        if char == "\\" and i + 1 < len(text):
+            cell += text[i:i + 2]
+            i += 2
+            continue
+        if char == "`":
+            run = len(re.match(r"`+", text[i:]).group(0))
+            tick = run if not tick else (0 if run == tick else tick)
+            cell += text[i:i + run]
+            i += run
+            continue
+        if char == "|" and not tick:
+            cells.append(cell)
+            cell = ""
+        else:
+            cell += char
+        i += 1
+    cells.append(cell)
+    if tick:  # an unclosed backtick is plain text, so every unescaped "|" separates cells
+        cells = re.split(r"(?<!\\)\|", text)
+    if text.startswith("|"):
+        cells = cells[1:]
+    if text.endswith("|") and not text.endswith("\\|"):
+        cells = cells[:-1]
+    return [c.strip() for c in cells]
 
 
-def check_table_columns(page):
-    """Table rows with more or fewer cells than the header, which lose or shift content on the page."""
-    findings, block = [], []
+def table_blocks(page):
+    """Each Markdown table outside code, as a list of (offset in the page text, line with its line end)."""
+    blocks, block = [], []
     offset, fence = page.meta_end, None
     for line in page.body.splitlines(True) + [""]:
         marker = FENCE.match(line)
@@ -317,16 +345,62 @@ def check_table_columns(page):
         if fence is None and not marker and TABLE_ROW.match(line):
             block.append((offset, line))
         else:
-            if len(block) > 2 and TABLE_SEPARATOR.match(block[1][1]):
-                columns = len(row_cells(block[0][1]))
-                for at, row in block[2:]:
-                    cells = len(row_cells(row))
-                    if cells != columns:
-                        findings.append(Finding("table-columns", at, "this table row has {} cells, but its header has {}; "
-                                                "the page drops extra cells and shows missing ones as empty, so look for "
-                                                "a stray or missing \"|\"".format(cells, columns)))
+            if len(block) > 1 and TABLE_SEPARATOR.match(block[1][1].rstrip("\r\n")):
+                blocks.append(block)
             block = []
         offset += len(line)
+    return blocks
+
+
+def check_table_columns(page):
+    """Table rows with more or fewer cells than the header, which lose or shift content on the page."""
+    findings = []
+    for block in table_blocks(page):
+        columns = len(split_row(block[0][1]))
+        for at, row in block[2:]:
+            cells = len(split_row(row))
+            if cells != columns:
+                findings.append(Finding("table-columns", at, "this table row has {} cells, but its header has {}; "
+                                        "the page drops extra cells and shows missing ones as empty, so look for "
+                                        "a stray or missing \"|\"".format(cells, columns)))
+    return findings
+
+
+def formatted_table(lines):
+    """A table's lines with each cell padded to its column's width, or None when its rows do not match its header.
+
+    Rows keep their line ends and the header's indentation; the separator keeps each column's alignment.
+    """
+    indent = re.match(r"[ \t]*", lines[0]).group(0)
+    rows = [split_row(line) for line in lines]
+    columns = len(rows[0])
+    if any(len(row) != columns for row in rows):
+        return None
+    aligns = [(cell.startswith(":"), cell.endswith(":")) for cell in rows[1]]
+    content = [[cell if "`" in cell else cell.replace("\t", " ") for cell in row] for row in [rows[0]] + rows[2:]]
+    widths = [max([3] + [len(row[i]) for row in content]) for i in range(columns)]
+
+    def rule(align, width):
+        left, right = align
+        return (":" if left else "-") + "-" * (width - 2) + (":" if right else "-")
+
+    def row_line(cells):
+        return indent + "| " + " | ".join(cell.ljust(width) for cell, width in zip(cells, widths)) + " |"
+
+    out = [row_line(content[0]), indent + "| " + " | ".join(rule(a, w) for a, w in zip(aligns, widths)) + " |"]
+    out += [row_line(row) for row in content[1:]]
+    return [new + line[len(line.rstrip("\r\n")):] for new, line in zip(out, lines)]
+
+
+def check_table_format(page):
+    """Tables whose cells are not padded to their column's width, so the Markdown source stays readable."""
+    findings = []
+    for block in table_blocks(page):
+        lines = [line for _, line in block]
+        formatted = formatted_table(lines)
+        if formatted is not None and formatted != lines:
+            findings.append(Finding("table-format", block[0][0], "pad each cell of this table to its column's "
+                                    "width, as --fix does", True))
     return findings
 
 
@@ -351,6 +425,7 @@ def check_page(page, site):
                                 "remove the second front matter block; readers see it as text"))
     findings.extend(check_heading_levels(page))
     findings.extend(check_table_columns(page))
+    findings.extend(check_table_format(page))
     for start, _, text in page.prose_spans():
         for match in PLACEHOLDER.finditer(text):
             findings.append(Finding("placeholder", start + match.start(),
@@ -998,6 +1073,14 @@ def fix(page, findings):
             if target and target != name and end > start:
                 text = text[:start] + target + text[end:]
         return text  # offsets changed; the next pass fixes the rest
+    if "table-format" in rules:
+        for block in reversed(table_blocks(page)):
+            lines = [line for _, line in block]
+            formatted = formatted_table(lines)
+            if formatted is not None:
+                end = block[-1][0] + len(block[-1][1])
+                text = text[:block[0][0]] + "".join(formatted) + text[end:]
+        return text  # offsets changed; the next pass fixes the rest
     fields = (formats.JUSTIFICATION_FIELDS if JUSTIFICATION_PATH.search(page.rel) else
               formats.INCIDENT_FIELDS if INCIDENT_PATH.search(page.rel) else None)
     if "repeated-heading" in rules:
@@ -1117,7 +1200,7 @@ def main(argv=None):
         checked += 1
         findings = check_page(page, site)
         changed = False
-        for _ in range(3):  # a fix can expose another, as when front matter starts to count
+        for _ in range(6):  # each fix that moves text returns, and a fix can expose another
             if not (args.fix and any(f.fixable for f in findings)):
                 break
             new_text = fix(page, findings)

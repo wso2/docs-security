@@ -45,7 +45,7 @@ Update your product to the specified update level—or a higher update level—t
     **WSO2 Support Subscription Holders may use [WSO2 Updates](https://wso2.com/updates/) in order to apply the fix.**
 
 | Product Name | Product Version | U2 Update Level |
-|:------------:|:---------------:|:---------------:|
+| :----------: | :-------------: | :-------------: |
 
 
 ## CREDITS
