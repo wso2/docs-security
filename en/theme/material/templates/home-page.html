@@ -61,6 +61,38 @@
 
     <div class="components-hub-container">
 
+      {#- The newest advisories, from hooks/announcements.py. A link on the home page gets a
+          new advisory crawled soon after it is published. -#}
+      {% if latest_advisories %}
+      <div class="components-section-header">
+        <h2>Latest Security Advisories</h2>
+        <p>The newest advisories for WSO2 products. See
+          <a href="{{ 'security-announcements/security-advisories/' | url }}">all security advisories</a>, by year.</p>
+      </div>
+      <div class="md-typeset__scrollwrap latest-advisories">
+        <div class="md-typeset__table">
+          <table>
+            <thead>
+              <tr><th>Advisory</th><th>Summary</th><th>Severity</th><th>Published</th></tr>
+            </thead>
+            <tbody>
+              {% for advisory in latest_advisories %}
+              <tr>
+                <td>
+                  <a href="{{ advisory.path | url }}">{{ advisory.id }}</a>
+                  {%- if advisory.cves %}<br><span class="latest-advisories__cves">{{ advisory.cves | join(", ") }}</span>{% endif %}
+                </td>
+                <td>{{ advisory.summary | e }}</td>
+                <td>{{ advisory.severity | e }}</td>
+                <td>{{ advisory.published | e }}</td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+      {% endif %}
+
       <div class="components-grid-split">
 
         <div>

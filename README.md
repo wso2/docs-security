@@ -198,7 +198,7 @@ Add `--fix` to correct the problems that can be fixed without guessing. Known pr
 The pull request build runs two checks on the built site:
 
 * `check_internal_links.py` fails on links to pages or files that the build does not contain.
-* `check_built_pages.py` fails when a page's menu lists advisories or CVE justifications from other year folders, or when a sidebar is not marked `data-nosnippet`. Search engines index the menu on every page, so the theme lists only the open section and keeps the sidebars out of search result snippets.
+* `check_built_pages.py` fails when a page's menu lists advisories or CVE justifications from other year folders, or when a sidebar is not marked `data-nosnippet`. Search engines index the menu on every page, so the theme lists only the open section and keeps the sidebars out of search result snippets. It also fails when the home page does not list the 10 newest advisories, newest published first: a link from the home page gets a new advisory crawled soon after it is published.
 
 To run them locally, build the site and run the following commands from the repository root:
 
@@ -211,7 +211,7 @@ $ python3 .github/scripts/check_built_pages.py en/site
 
 Two MkDocs hooks in `en/hooks` run on every build, in the order `en/mkdocs.yml` lists them:
 
-* `announcements.py` renders each security advisory, CVE justification, and incident clarification from its front matter (the heading and the info lines) and writes the lists that are not maintained by hand: the yearly lists, the year sections of the `nav`, the year links on the section pages, and the CVE Justifications table.
+* `announcements.py` renders each security advisory, CVE justification, and incident clarification from its front matter (the heading and the info lines) and writes the lists that are not maintained by hand: the yearly lists, the year sections of the `nav`, the year links on the section pages, the CVE Justifications table, and the newest advisories on the home page.
 * `seo.py` adds search metadata: titles, descriptions, dates, structured data, and the RSS feed.
 
 The rules both hooks follow live in `en/hooks/security_announcements`: `formats.py` defines the three formats and their fields, `listings.py` the generated lists, and `text.py` the shared helpers. `check_content.py` imports the same package, so a change to a format there changes the build and the pull request check together. The package uses only the Python standard library and must stay compatible with Python 3.8.

@@ -19,7 +19,8 @@
 Renders each advisory's, CVE justification's, and incident clarification's heading
 and info lines from front matter, and writes the lists and nav the authors no longer
 maintain by hand: the yearly lists, the year sections of the nav, the year links on
-the section pages, and the CVE Justifications table. The rules live in the
+the section pages, the CVE Justifications table, and the newest advisories on the
+home page. The rules live in the
 security_announcements package next to this file, which the content check uses too.
 
 Listed before seo.py in mkdocs.yml, so the search metadata sees the rendered pages.
@@ -53,3 +54,10 @@ def on_page_read_source(page, config):
 
 def on_page_markdown(markdown, page, config, files):
     return formats.render(page.file.src_uri, markdown, page.meta)
+
+
+def on_page_context(context, page, config, nav):
+    """Give the home page template (templates/home-page.html) the newest advisories."""
+    if page.is_homepage:
+        context["latest_advisories"] = listings.latest_advisories(config["docs_dir"])
+    return context
