@@ -21,6 +21,7 @@
     Incident clarifications    the same, by year of the incident
     CVE justifications         one table on the CVE Justifications page, by CVE ID; they are
                                not in the nav
+    Home page                  the newest security advisories
 """
 
 import os
@@ -60,6 +61,9 @@ NAV_SECTIONS = {
 JUSTIFICATIONS_PAGE = "security-announcements/cve-justifications/index.md"
 # Where the CVE Justifications page lists every justification by CVE ID. The build replaces this line.
 JUSTIFICATION_TABLE_MARKER = "<!-- The build lists the CVE justifications here, by CVE ID. -->"
+# How many of the newest advisories the home page lists. The home page is the page search
+# engines crawl most, so a new advisory is found soon after it is published.
+LATEST_ADVISORIES = 10
 
 
 def fill_nav(items, docs_dir):
@@ -209,3 +213,44 @@ def year_pages(docs_dir, landing):
     years = sorted((name for name in os.listdir(root) if re.match(r"^\d{4}$", name)), reverse=True)
     return [(year, "{}/{}".format(folder, page.format(year)), label.format(year)) for year in years
             if os.path.isfile(os.path.join(root, page.format(year)))]
+
+
+def latest_advisories(docs_dir, limit=LATEST_ADVISORIES):
+    """The newest advisories, newest published first, then the newest advisory ID, for the home page.
+
+    Each is a dict: id, path (the page's URL path), cves, summary (the wording of its search
+    title: the OVERVIEW sentence, or its products), severity, and published (as the page shows it).
+    """
+    root = os.path.join(docs_dir, ADVISORY_DIR)
+    advisories = []
+    for year in os.listdir(root):
+        folder = os.path.join(root, year)
+        if not (re.match(r"^\d{4}$", year) and os.path.isdir(folder)):
+            continue
+        for name in os.listdir(folder):
+            if not ADVISORY_FILE_RE.match(name):
+                continue
+            with open(os.path.join(folder, name), encoding="utf-8-sig") as handle:
+                fields, body = text.front_matter(handle.read())
+            published = text.iso_date(fields.get("published"))
+            if not published:
+                continue
+            advisory_id = name[:-3]
+            advisories.append(((published, int(advisory_id[5:9]), int(advisory_id[10:])), advisory_id, year, fields, body))
+    latest = []
+    for _, advisory_id, year, fields, body in sorted(advisories, key=lambda a: a[0], reverse=True)[:limit]:
+        cves = formats.advisory_cves(fields.get("title", ""), body)
+        summary, usable = formats.title_summary(formats.advisory_overview(body), drop_cves=bool(cves))
+        if not usable:
+            products = text.product_names(text.sections(body).get("AFFECTED PRODUCTS", ""))
+            summary = "Security advisory for {}".format(text.product_phrase(products, title_case=False))
+        latest.append({
+            "id": advisory_id,
+            "path": text.page_path("{}/{}/{}".format(ADVISORY_DIR, year, advisory_id + ".md")),
+            "cves": cves,
+            "summary": summary,
+            "severity": fields.get("severity", ""),
+            "published": text.display_date(fields.get("published")),
+        })
+    return latest
+
