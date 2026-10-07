@@ -3,14 +3,10 @@
 # more than one such problem; a page with more problems than its line allows fails. Lower the count or
 # remove the line once a problem is fixed; the check says which lines to change when it runs on all files.
 
-# Advisories published in two year folders. See ROADMAP.md section 3A.
-security-announcements/security-advisories/2023/WSO2-2023-2075.md duplicate-id
-security-announcements/security-advisories/2023/WSO2-2023-2617.md duplicate-id
-security-announcements/security-advisories/2024/WSO2-2023-2075.md duplicate-id
-security-announcements/security-advisories/2024/WSO2-2023-2617.md duplicate-id
-
-# Published dates that do not match the year folder. See ROADMAP.md section 3A.
-security-announcements/security-advisories/2023/WSO2-2023-2617.md year-folder
+# Published dates that do not match the year folder. Kept on purpose: WSO2-2023-2075 was first published
+# on October 28, 2023 and announced again on May 31, 2024; its page stays in the 2024 folder, and the
+# 2023 URL redirects to it.
+security-announcements/security-advisories/2024/WSO2-2023-2075.md year-folder
 
 # A severity or CVSS score that does not match the score or vector. See ROADMAP.md section 3A.
 security-announcements/security-advisories/2025/WSO2-2024-3149.md cvss-score
@@ -215,7 +211,6 @@ security-announcements/cve-justifications/2025/CVE-2025-47889.md product-name
 security-announcements/security-advisories/2016/WSO2-2016-0151.md update-table
 security-announcements/security-advisories/2021/WSO2-2020-1132.md update-table 2
 security-announcements/security-advisories/2023/WSO2-2022-2177.md update-table 7
-security-announcements/security-advisories/2023/WSO2-2023-2617.md update-table 6
 security-announcements/security-advisories/2024/WSO2-2023-2617.md update-table 6
 security-announcements/security-advisories/2024/WSO2-2023-2864.md update-table 4
 
