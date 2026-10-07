@@ -30,9 +30,11 @@ Every page:
     empty-link       a link with no text or no target
     image-alt        an image has no alt text, or only its file name
     file-name        a file name contains characters other than letters, digits, ".", "-", "_"
-    table-format     a table's cells are not padded to their column's width, with
-                     "| " and " |" around each row and the separator's dashes as wide
-                     as the column, keeping its alignment colons            (--fix)
+    table-format     a table is not in its form: each cell padded to its column's
+                     width, with the separator's dashes as wide as the column; or,
+                     when that makes a row wider than 120 characters, as tables of
+                     sentences do, one space around each cell and "---" in the
+                     separator. Alignment colons are kept.                  (--fix)
     table-columns    a table row has more or fewer cells than its header, as a stray
                      "|" or a tab in place of one makes it; the page drops the extra
                      cells and shows missing ones as empty
@@ -194,6 +196,8 @@ HTML_IMG = re.compile(r"<img\b[^>]*>")
 FENCE = re.compile(r"^[ \t]*(```|~~~)")
 MD_HEADING = re.compile(r"^(#{1,6})[ \t]+\S")
 TABLE_ROW = re.compile(r"^[ \t]*\|")
+# A padded table wider than this is written compact, so tables of sentences stay readable.
+TABLE_WIDTH_LIMIT = 120
 TABLE_SEPARATOR = re.compile(r"^[ \t]*\|?[ \t]*:?-+:?[ \t]*(\|[ \t]*:?-+:?[ \t]*)*\|?[ \t]*$")
 INLINE_CODE = re.compile(r"(`+)(?:(?!\1).)+?\1")
 FILE_NAME = re.compile(r"^[A-Za-z0-9._-]+$")
@@ -367,9 +371,11 @@ def check_table_columns(page):
 
 
 def formatted_table(lines):
-    """A table's lines with each cell padded to its column's width, or None when its rows do not match its header.
+    """A table's lines in its standard form, or None when its rows do not match its header.
 
-    Rows keep their line ends and the header's indentation; the separator keeps each column's alignment.
+    Each cell is padded to its column's width, unless that makes a row wider than
+    TABLE_WIDTH_LIMIT; then each cell has one space around it. Rows keep their line ends
+    and the header's indentation; the separator keeps each column's alignment.
     """
     indent = re.match(r"[ \t]*", lines[0]).group(0)
     rows = [split_row(line) for line in lines]
@@ -389,6 +395,9 @@ def formatted_table(lines):
 
     out = [row_line(content[0]), indent + "| " + " | ".join(rule(a, w) for a, w in zip(aligns, widths)) + " |"]
     out += [row_line(row) for row in content[1:]]
+    if max(len(line) for line in out) > TABLE_WIDTH_LIMIT:
+        out = [indent + "| " + " | ".join(row) + " |" for row in content]
+        out.insert(1, indent + "| " + " | ".join(rule(a, 3) for a in aligns) + " |")
     return [new + line[len(line.rstrip("\r\n")):] for new, line in zip(out, lines)]
 
 
@@ -399,8 +408,9 @@ def check_table_format(page):
         lines = [line for _, line in block]
         formatted = formatted_table(lines)
         if formatted is not None and formatted != lines:
-            findings.append(Finding("table-format", block[0][0], "pad each cell of this table to its column's "
-                                    "width, as --fix does", True))
+            findings.append(Finding("table-format", block[0][0], "format this table as --fix does: each cell "
+                                    "padded to its column's width, or one space around each cell when that would "
+                                    "make a row wider than {} characters".format(TABLE_WIDTH_LIMIT), True))
     return findings
 
 
