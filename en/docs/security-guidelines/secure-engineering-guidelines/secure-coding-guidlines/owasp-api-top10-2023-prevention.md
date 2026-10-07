@@ -8,7 +8,7 @@ category: security-guidelines
 This page maps the [OWASP API Security Top 10 - 2023](https://owasp.org/API-Security/editions/2023/en/0x00-header/) categories to the [Secure Coding Guide]({{#base_path#}}/security-guidelines/secure-engineering-guidelines/secure-coding-guidlines/secure-coding-guide/). The API list complements (it does not replace) the [OWASP Top 10 - 2025 Prevention]({{#base_path#}}/security-guidelines/secure-engineering-guidelines/secure-coding-guidlines/owasp-t10-2025-prevention/) mapping.
 
 | # | Category | Section in the Secure Coding Guide |
-|---|---|---|
+| --- | --- | --- |
 | API1 | Broken Object Level Authorization | [Object-level access control (IDOR)]({{#base_path#}}/security-guidelines/secure-engineering-guidelines/secure-coding-guidlines/secure-coding-guide/#object-level-access-control-idor) |
 | API2 | Broken Authentication | [Authentication Failures]({{#base_path#}}/security-guidelines/secure-engineering-guidelines/secure-coding-guidlines/secure-coding-guide/#authentication-failures) |
 | API3 | Broken Object Property Level Authorization | [Object property-level access control (mass assignment)]({{#base_path#}}/security-guidelines/secure-engineering-guidelines/secure-coding-guidlines/secure-coding-guide/#object-property-level-access-control-mass-assignment) |

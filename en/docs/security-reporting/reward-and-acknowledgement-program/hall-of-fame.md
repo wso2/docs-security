@@ -13,27 +13,27 @@ For the in-scope products and services, qualifying criteria, and reward terms, s
 
 ### WSO2 Products and Infrastructure
 
-|                                                                                                                      |
-| :------------------------------------------------------------------------------------------------------------------- |
-| [Abhishek Karle](https://linktr.ee/abhishekkarle)                                                                    |
-| [Alex Williams from Pellera Technologies](https://www.linkedin.com/in/alexanderwilliamscyber)                        |
-| [Claire Wang](https://clairewang.net/)                                                                               |
-| [Damir](https://github.com/Evelynkaz)                                                                                |
-| **Dnyaneshwar Chandanshiv**                                                                                          |
-| **Ethan Havinga**                                                                                                    |
-| [Hacktron Team](https://www.hacktron.ai/)                                                                            |
-| **Haoxucu**                                                                                                          |
-| [Lasantha Karunarathne](https://www.linkedin.com/in/lasakaru/)                                                       |
-| [Maneesha Dewmina](https://www.linkedin.com/in/maneesha-dewmina/)                                                    |
-| [Manisha Dilshan](https://www.linkedin.com/in/manisha-dilshan-b08ba3215)                                             |
-| [Michał Majchrowicz, Marcin Wyczechowski, and Paweł Zdunek — members of the AFINE Team](https://afine.com/)          |
-| **Nishant Lungare**                                                                                                  |
-| **Omri Inbar**                                                                                                       |
-| **Rock Jein**                                                                                                        |
-| [Robert C. Raducioiu](https://it.linkedin.com/in/rbct)                                                               |
-| [San Gil from Security Office](https://securityoffice.io/)                                                           |
-| [Suraj Theekshana and Ishan Nim (株式会社CyberCrew)](https://cyber.spool.co.jp/)                                      |
-| [Thinh Dang](https://www.linkedin.com/in/thinh-dang-bb4b72170/)                                                      |
+|                                                                                                             |
+| :---------------------------------------------------------------------------------------------------------- |
+| [Abhishek Karle](https://linktr.ee/abhishekkarle)                                                           |
+| [Alex Williams from Pellera Technologies](https://www.linkedin.com/in/alexanderwilliamscyber)               |
+| [Claire Wang](https://clairewang.net/)                                                                      |
+| [Damir](https://github.com/Evelynkaz)                                                                       |
+| **Dnyaneshwar Chandanshiv**                                                                                 |
+| **Ethan Havinga**                                                                                           |
+| [Hacktron Team](https://www.hacktron.ai/)                                                                   |
+| **Haoxucu**                                                                                                 |
+| [Lasantha Karunarathne](https://www.linkedin.com/in/lasakaru/)                                              |
+| [Maneesha Dewmina](https://www.linkedin.com/in/maneesha-dewmina/)                                           |
+| [Manisha Dilshan](https://www.linkedin.com/in/manisha-dilshan-b08ba3215)                                    |
+| [Michał Majchrowicz, Marcin Wyczechowski, and Paweł Zdunek — members of the AFINE Team](https://afine.com/) |
+| **Nishant Lungare**                                                                                         |
+| **Omri Inbar**                                                                                              |
+| **Rock Jein**                                                                                               |
+| [Robert C. Raducioiu](https://it.linkedin.com/in/rbct)                                                      |
+| [San Gil from Security Office](https://securityoffice.io/)                                                  |
+| [Suraj Theekshana and Ishan Nim (株式会社CyberCrew)](https://cyber.spool.co.jp/)                                |
+| [Thinh Dang](https://www.linkedin.com/in/thinh-dang-bb4b72170/)                                             |
 
 
 
@@ -60,31 +60,31 @@ For the in-scope products and services, qualifying criteria, and reward terms, s
 
 ### WSO2 Integration Platform
 
-|                                                                                                   |
-| :------------------------------------------------------------------------------------------------ |
-| [Lakshitha Perera](https://www.linkedin.com/in/lakshitha-perera-687857352)                        |
-| [Mykhailo Kholiev](https://www.linkedin.com/in/mykhailo-kholiev-41b43b3b1/)                       |
-| [Sanjula Lakpahana](https://www.linkedin.com/in/lakpahana)                                        |
+|                                                                             |
+| :-------------------------------------------------------------------------- |
+| [Lakshitha Perera](https://www.linkedin.com/in/lakshitha-perera-687857352)  |
+| [Mykhailo Kholiev](https://www.linkedin.com/in/mykhailo-kholiev-41b43b3b1/) |
+| [Sanjula Lakpahana](https://www.linkedin.com/in/lakpahana)                  |
 
 
 ### WSO2 Security Hackathon 2026
 
-|                             |
-| :---------------------------|
-| Anju Chamantha              |
-| Ashirwada Dayarathne        |
-| Dehami Koswatte             |
-| Dinuwan Kalubowila          |
-| Kavindu Nilshan             |
-| Ramiiyan Sriraguhan         |
-| Ranuga Gamage               |
-| Rivindu Madushan            |
-| Sanjula Madurapperuma       |
-| Sankeerthan Kasilingam      |
-| Seralahthan Vivekaananthan  |
-| Tharsanan Kurukulasingam    |
-| Vinicius Fraga              |
-| Vimukthi Rajapaksha         |
+|                            |
+| :------------------------- |
+| Anju Chamantha             |
+| Ashirwada Dayarathne       |
+| Dehami Koswatte            |
+| Dinuwan Kalubowila         |
+| Kavindu Nilshan            |
+| Ramiiyan Sriraguhan        |
+| Ranuga Gamage              |
+| Rivindu Madushan           |
+| Sanjula Madurapperuma      |
+| Sankeerthan Kasilingam     |
+| Seralahthan Vivekaananthan |
+| Tharsanan Kurukulasingam   |
+| Vinicius Fraga             |
+| Vimukthi Rajapaksha        |
 
 
 ## 2025
@@ -119,9 +119,9 @@ For the in-scope products and services, qualifying criteria, and reward terms, s
 
 ### WSO2 Developer Platform
 
-|                                                                               |
-| :-----------------------------------------------------------------------------|
-| [Abdelkarim Haji](https://www.linkedin.com/in/abdelkarim-haji-4aa84b313/)     |
+|                                                                           |
+| :------------------------------------------------------------------------ |
+| [Abdelkarim Haji](https://www.linkedin.com/in/abdelkarim-haji-4aa84b313/) |
 
 ### WSO2 Identity Platform
 
@@ -132,24 +132,24 @@ For the in-scope products and services, qualifying criteria, and reward terms, s
 
 ### WSO2 Cloud Security Hackathon 2025
 
-|                        |
-| :--------------------- |
-| Anshajanth Yoganathan  |
-| Chandima Jayawickrama  |
-| Chathura Ranathunga    |
-| Dehami Koswatte        |
-| Dinithi Amarasinghe    |
-| Hasitha Pathirana      |
-| Janitha Senevirathna   |
-| Lahiru Samaranayaka    |
-| Mifraz Murthaja        |
-| Prabod Dunuwila        |
-| Sachith Manchanayaka   |
-| Sajith Ekanayaka       |
-| Samindu Cooray         |
-| Tharaka Wijekoon       |
-| Thilan Dissanayaka     |
-| Ushani Athukorala      |
+|                       |
+| :-------------------- |
+| Anshajanth Yoganathan |
+| Chandima Jayawickrama |
+| Chathura Ranathunga   |
+| Dehami Koswatte       |
+| Dinithi Amarasinghe   |
+| Hasitha Pathirana     |
+| Janitha Senevirathna  |
+| Lahiru Samaranayaka   |
+| Mifraz Murthaja       |
+| Prabod Dunuwila       |
+| Sachith Manchanayaka  |
+| Sajith Ekanayaka      |
+| Samindu Cooray        |
+| Tharaka Wijekoon      |
+| Thilan Dissanayaka    |
+| Ushani Athukorala     |
 
 
 ## 2024
@@ -157,7 +157,7 @@ For the in-scope products and services, qualifying criteria, and reward terms, s
 ### WSO2 Products and Infrastructure
 
 |                                                                                                          |
-| :--------------------------------------------------------------------------------------------------------|
+| :------------------------------------------------------------------------------------------------------- |
 | [Pavel Richtarik](https://www.linkedin.com/in/pavel-richtarik-0b524974/)                                 |
 | [Siebene@](https://twitter.com/Siebene7)                                                                 |
 | [Toqa Hassib - Cyber Security Consultant at Inovasys](https://www.linkedin.com/in/toqa-hassib-621a971b9) |
@@ -184,91 +184,91 @@ For the in-scope products and services, qualifying criteria, and reward terms, s
 
 ### WSO2 Products and Infrastructure
 
-|                                                                                                                                        |
-| :------------------------------------------------------------------------------------------------------------------------------------- |
-| [Abdennour Chakifi](https://twitter.com/dazaii111)                                                                                     |
-| [Abin Joseph](https://www.facebook.com/hacker.abin1337)                                                                                |
-| [Abdulrahman Nour](https://twitter.com/aboodnour) ([redforce.io](https://redforce.io/))                                                |
-| [Adesh Nandkishor Kolte](https://twitter.com/AdeshKolte)                                                                               |
-| [Ali Yavuz Çukur](https://www.linkedin.com/in/ali-yavuz-%C3%A7ukur-44789418a)                                                          |
-| [Amnotacat](https://hackerone.com/amnotacat)                                                                                           |
-| [Amit Khandebharad](https://www.linkedin.com/in/amit-khandebharad-15a5651b7/)                                                          |
-| [Anders Norlander (Mitang AB)](https://mitang.se/)                                                                                     |
-| [Ahmed Aboul-Ela](https://twitter.com/aboul3la)                                                                                        |
-| [Akalanka Ekanayake](https://www.facebook.com/ceo.akalanka)                                                                            |
-| [Avinash Jain](https://www.linkedin.com/in/avinash-jain-54524678/)                                                                     |
-| [Bharat](https://www.linkedin.com/in/mr-noob-9812a6172)                                                                                |
-| [Bawantha Chandula (Team Hawk Security)](https://www.linkedin.com/in/bawanthachandula)                                                 |
-| [Bruno Monteiro](https://www.linkedin.com/in/bruno-monteiro-4b926413a)                                                                 |
-| [Bibek Sapkota](https://m.me/Sar00n)                                                                                                   |
-| [Burhanuddin sabun](https://twitter.com/B19R8A14?t=ziw19FeMOKrKVsuUXpvL0A&s=09)                                                        |
-| [Cameron Dawe (Spam404)](https://twitter.com/spam404online)                                                                            |
-| [crnkovic]()                                                                                                                           |
-| [Đậu Hoàng Tài)](	https://twitter.com/taidh)                                                                                           |
-| [Daniel Kalinowski](https://llamasbytes.com/)                                                                                          |
-| [Dipendranath Tarafder](https://twitter.com/dip_tarafder)                                                                              |
-| [Dienpv](#)                                                                                                                            |
-| [Digant Prajapati](#)                                                                                                                  |
-| [Evgeny Anihovsky](https://www.linkedin.com/in/evgeny-anihovsky-a1966456/)                                                             |
-| [Foysal Ahmed Fahim](https://twitter.com/foysal1197)                                                                                   |
-| [f6x](https://hackerone.com/f6x)                                                                                                       |
-| [Guhan Raja.L (Havoc)](https://www.facebook.com/havocgwen)                                                                             |
-| [Gianluca Palma](https://www.linkedin.com/in/piuppi) ([Engineering Ingegneria Informatica S.p.A.](https://www.eng.it/))                |
-| [Hakan Bayır](https://tr.linkedin.com/in/hakan-bay%C4%B1r-290505b1)                                                                    |
-| [Himanshu Rahi](https://www.facebook.com/himanshu.rahi.31)                                                                             |
-| [Hari Namburi](https://www.linkedin.com/in/hari-namburi/)                                                                              |
-| [Jackson Henry](https://twitter.com/JacksonHHax)                                                                                       |
-| [Jakub Palaczynski](#)                                                                                                                 |
-| [Jared Kosanovic](https://www.linkedin.com/in/jared-kosanovic-98671310a)                                                               |
-| [John Page aka hyp3rlinx](#)                                                                                                           |
-| [Juba Baghdad](https://twitter.com/jubabaghdad)                                                                                        |
-| [Julien Oury--Nogues](https://fr.linkedin.com/in/julien-oury-nogues-a23186115/en)                                                      |
-| [Krzysztof Przybylski](#)                                                                                                              |
-| [Lukasz Juszczyk](#)                                                                                                                   |
-| [Manuel Alejandro Fernández Casado (Equipo M45)](https://es.linkedin.com/in/malejandrofc)                                              |
-| [Mariani Francesco](#)                                                                                                                 |
-| [Matei Mal Badanoiu](#)                                                                                                                |
-| [Marcin Suchocki](#)                                                                                                                   |
-| [Marcin Woloszyn](#)                                                                                                                   |
-| [Matel "Mal" Badanoiu (Deloitte)](#)                                                                                                   |
-| [Mehedi Hasan Remon](http://twitter.com/mehedi1194)                                                                                    |
-| [Mohammed Adel](https://www.facebook.com/xXalreshyxX)                                                                                  |
-| [Nghĩa Vũ Trung](https://www.linkedin.com/in/nghia-vu-trung-45a144171/)                                                                |
-| Orange Tsai (@orange_8361) from DEVCORE Research Team                                                                                  |
-| [Osanda Malith Jayathissa](https://twitter.com/OsandaMalith)                                                                           |
-| [Pace Hitech](http://pacehitech.com/)                                                                                                  |
-| [Paweł Gocyla](#)                                                                                                                      |
-| [Paweł Hałdrzyński](#) ([Limpid Security](https://limpidsecurity.pl/))                                                                 |
-| [Piotr Bazydło](https://twitter.com/chudyPB)                                                                                           |
-| [Pradipta Das](https://www.facebook.com/dasprodipto)                                                                                   |
-| [Prial Islam](https://0xprial.com/)                                                                                                    |
-| [Pubudu Priyashan Iddamalgoda (Team Hawk Security)](https://www.facebook.com/pubudu.priyashan.1)                                       |
-| [Quentin Biguenet](#)                                                                                                                  |
-| [Raki Ben Hamouda](https://www.linkedin.com/in/rakibha)                                                                                |
-| [Rodrigo Duarte Favarini Silva](https://www.linkedin.com/in/rodrigofavarini/)                                                          |
-| [Simon Gerst](https://github.com/intrigus-lgtm)                                                                                        |
-| [Sajibe Kanti](https://twitter.com/Sajibekantibd)                                                                                      |
-| [Samir Hadji](https://twitter.com/dz_samir)                                                                                            |
-| [Samitha Madhusanka](https://www.linkedin.com/in/madhusanka-athapaththu-b4b936ab/)                                                     |
-| [Sathish Kumar Balakrishnan](http://sathish.co.in/) ([Cyber Security Works Pvt Ltd](http://cybersecurityworks.com/))                   |
-| [Soner Soydinc](#)                                                                                                                     |
-| [Suyog Palav](https://medium.com/@suyogpalav/)                                                                                         |
-| [Tawfik Bakache](https://twitter.com/di_0_zx)                                                                                          |
-| [Trần Như Minh]()                                                                                                                      |
-| [Trình. Mai Công](https://www.linkedin.com/in/trinh-mai-cong-94b4b0209/)                                                               |
-| [Tom O'Neill](https://www.linkedin.com/in/the-tom-oneill)                                                                              |
-| [Valentin Giraud ( OKIOK )](https://www.linkedin.com/in/valentin-giraud-762ab8ba/)                                                     |
+|  |
+| :-- |
+| [Abdennour Chakifi](https://twitter.com/dazaii111) |
+| [Abin Joseph](https://www.facebook.com/hacker.abin1337) |
+| [Abdulrahman Nour](https://twitter.com/aboodnour) ([redforce.io](https://redforce.io/)) |
+| [Adesh Nandkishor Kolte](https://twitter.com/AdeshKolte) |
+| [Ali Yavuz Çukur](https://www.linkedin.com/in/ali-yavuz-%C3%A7ukur-44789418a) |
+| [Amnotacat](https://hackerone.com/amnotacat) |
+| [Amit Khandebharad](https://www.linkedin.com/in/amit-khandebharad-15a5651b7/) |
+| [Anders Norlander (Mitang AB)](https://mitang.se/) |
+| [Ahmed Aboul-Ela](https://twitter.com/aboul3la) |
+| [Akalanka Ekanayake](https://www.facebook.com/ceo.akalanka) |
+| [Avinash Jain](https://www.linkedin.com/in/avinash-jain-54524678/) |
+| [Bharat](https://www.linkedin.com/in/mr-noob-9812a6172) |
+| [Bawantha Chandula (Team Hawk Security)](https://www.linkedin.com/in/bawanthachandula) |
+| [Bruno Monteiro](https://www.linkedin.com/in/bruno-monteiro-4b926413a) |
+| [Bibek Sapkota](https://m.me/Sar00n) |
+| [Burhanuddin sabun](https://twitter.com/B19R8A14?t=ziw19FeMOKrKVsuUXpvL0A&s=09) |
+| [Cameron Dawe (Spam404)](https://twitter.com/spam404online) |
+| crnkovic |
+| [Đậu Hoàng Tài)]( https://twitter.com/taidh) |
+| [Daniel Kalinowski](https://llamasbytes.com/) |
+| [Dipendranath Tarafder](https://twitter.com/dip_tarafder) |
+| [Dienpv](#) |
+| [Digant Prajapati](#) |
+| [Evgeny Anihovsky](https://www.linkedin.com/in/evgeny-anihovsky-a1966456/) |
+| [Foysal Ahmed Fahim](https://twitter.com/foysal1197) |
+| [f6x](https://hackerone.com/f6x) |
+| [Guhan Raja.L (Havoc)](https://www.facebook.com/havocgwen) |
+| [Gianluca Palma](https://www.linkedin.com/in/piuppi) ([Engineering Ingegneria Informatica S.p.A.](https://www.eng.it/)) |
+| [Hakan Bayır](https://tr.linkedin.com/in/hakan-bay%C4%B1r-290505b1) |
+| [Himanshu Rahi](https://www.facebook.com/himanshu.rahi.31) |
+| [Hari Namburi](https://www.linkedin.com/in/hari-namburi/) |
+| [Jackson Henry](https://twitter.com/JacksonHHax) |
+| [Jakub Palaczynski](#) |
+| [Jared Kosanovic](https://www.linkedin.com/in/jared-kosanovic-98671310a) |
+| [John Page aka hyp3rlinx](#) |
+| [Juba Baghdad](https://twitter.com/jubabaghdad) |
+| [Julien Oury--Nogues](https://fr.linkedin.com/in/julien-oury-nogues-a23186115/en) |
+| [Krzysztof Przybylski](#) |
+| [Lukasz Juszczyk](#) |
+| [Manuel Alejandro Fernández Casado (Equipo M45)](https://es.linkedin.com/in/malejandrofc) |
+| [Mariani Francesco](#) |
+| [Matei Mal Badanoiu](#) |
+| [Marcin Suchocki](#) |
+| [Marcin Woloszyn](#) |
+| [Matel "Mal" Badanoiu (Deloitte)](#) |
+| [Mehedi Hasan Remon](http://twitter.com/mehedi1194) |
+| [Mohammed Adel](https://www.facebook.com/xXalreshyxX) |
+| [Nghĩa Vũ Trung](https://www.linkedin.com/in/nghia-vu-trung-45a144171/) |
+| Orange Tsai (@orange_8361) from DEVCORE Research Team |
+| [Osanda Malith Jayathissa](https://twitter.com/OsandaMalith) |
+| [Pace Hitech](http://pacehitech.com/) |
+| [Paweł Gocyla](#) |
+| [Paweł Hałdrzyński](#) ([Limpid Security](https://limpidsecurity.pl/)) |
+| [Piotr Bazydło](https://twitter.com/chudyPB) |
+| [Pradipta Das](https://www.facebook.com/dasprodipto) |
+| [Prial Islam](https://0xprial.com/) |
+| [Pubudu Priyashan Iddamalgoda (Team Hawk Security)](https://www.facebook.com/pubudu.priyashan.1) |
+| [Quentin Biguenet](#) |
+| [Raki Ben Hamouda](https://www.linkedin.com/in/rakibha) |
+| [Rodrigo Duarte Favarini Silva](https://www.linkedin.com/in/rodrigofavarini/) |
+| [Simon Gerst](https://github.com/intrigus-lgtm) |
+| [Sajibe Kanti](https://twitter.com/Sajibekantibd) |
+| [Samir Hadji](https://twitter.com/dz_samir) |
+| [Samitha Madhusanka](https://www.linkedin.com/in/madhusanka-athapaththu-b4b936ab/) |
+| [Sathish Kumar Balakrishnan](http://sathish.co.in/) ([Cyber Security Works Pvt Ltd](http://cybersecurityworks.com/)) |
+| [Soner Soydinc](#) |
+| [Suyog Palav](https://medium.com/@suyogpalav/) |
+| [Tawfik Bakache](https://twitter.com/di_0_zx) |
+| Trần Như Minh |
+| [Trình. Mai Công](https://www.linkedin.com/in/trinh-mai-cong-94b4b0209/) |
+| [Tom O'Neill](https://www.linkedin.com/in/the-tom-oneill) |
+| [Valentin Giraud ( OKIOK )](https://www.linkedin.com/in/valentin-giraud-762ab8ba/) |
 | [Vijayakumar Muniraj](https://www.linkedin.com/in/vijaykumarmuniraj) ([Cyber Security Research Labs](https://cybersecurityworks.com/)) |
-| [Werner Schober (SEC Consult Vulnerability Lab)](#)                                                                                    |
-| [Wolfgang Ettlinger (SEC Consult Vulnerability Lab)](#)                                                                                |
-| [Zakaria BRAHIMI](https://www.linkedin.com/in/zakaria-brahimi)                                                                         |
+| [Werner Schober (SEC Consult Vulnerability Lab)](#) |
+| [Wolfgang Ettlinger (SEC Consult Vulnerability Lab)](#) |
+| [Zakaria BRAHIMI](https://www.linkedin.com/in/zakaria-brahimi) |
 
 
 ### WSO2 Developer Platform
 
-|                                                                               |
-| :-----------------------------------------------------------------------------|
-| [Dipak Kumar Das](https://twitter.com/d1pakdas)                               |
-| [Suraj Theekshana](https://www.linkedin.com/in/suraj-theekshana-10171023a/)   |
+|                                                                             |
+| :-------------------------------------------------------------------------- |
+| [Dipak Kumar Das](https://twitter.com/d1pakdas)                             |
+| [Suraj Theekshana](https://www.linkedin.com/in/suraj-theekshana-10171023a/) |
 
 We thank you for helping us keep WSO2 products and services safe!

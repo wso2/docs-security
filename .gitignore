@@ -31,6 +31,12 @@ hs_err_pid*
 venv/
 .venv/
 
+# Python bytecode from the build hooks and checks
+__pycache__/
+
 # MkDocs build output
 en/site/
 site/
+
+# Local roadmap notes
+ROADMAP.md

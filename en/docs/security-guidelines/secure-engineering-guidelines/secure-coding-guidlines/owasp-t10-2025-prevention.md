@@ -8,7 +8,7 @@ category: security-guidelines
 This page maps the OWASP Top 10 - 2025 categories to the [Secure Coding Guide]({{#base_path#}}/security-guidelines/secure-engineering-guidelines/secure-coding-guidlines/secure-coding-guide/). Each section there has a shared block of principles plus stack-specific implementation in tabs — click **Java stack** or **Go stack** once and the choice sticks across the site.
 
 | # | Category | Section |
-|---|---|---|
+| --- | --- | --- |
 | A01 | Broken Access Control | [Broken Access Control]({{#base_path#}}/security-guidelines/secure-engineering-guidelines/secure-coding-guidlines/secure-coding-guide/#broken-access-control) |
 | A02 | Security Misconfiguration | [Security Misconfiguration]({{#base_path#}}/security-guidelines/secure-engineering-guidelines/secure-coding-guidlines/secure-coding-guide/#security-misconfiguration) |
 | A03 | Software Supply Chain Failures | [Software Supply Chain Failures]({{#base_path#}}/security-guidelines/secure-engineering-guidelines/secure-coding-guidlines/secure-coding-guide/#software-supply-chain-failures) |

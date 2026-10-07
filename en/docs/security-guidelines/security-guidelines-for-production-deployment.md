@@ -1,5 +1,6 @@
 ---
 title: Security Guidelines for Production Deployment
+description: "Links to the security guidelines for production deployment of WSO2 API Manager, WSO2 Identity Server, WSO2 Micro Integrator, and WSO2 Enterprise Integrator, by product version."
 category: security-guidelines
 ---
 
@@ -10,7 +11,7 @@ Refer to the listed documentation for each product based on the version that you
 
 !!! note
     If you are using a WSO2 product or a version that is not in this list,
-    refer to the common [Security Guidelines for Production Deployment](https://docs.wso2.com/display/ADMIN44x/Security+Guidelines+for+Production+Deployment).
+    refer to the common [Security Guidelines for Production Deployment](https://wso2docs.atlassian.net/wiki/spaces/ADMIN44x/pages/6686381/Security+Guidelines+for+Production+Deployment).
 
 * WSO2 API Manager
     - [APIM-4.7.0](https://apim.docs.wso2.com/en/4.7.0/install-and-setup/setup/deployment-best-practices/security-guidelines-for-production-deployment/)

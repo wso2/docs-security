@@ -1,29 +1,23 @@
 ---
-title: "{{advisory_id}}"
+title: "{{cve_id}}"
 category: security-announcements
 published: "{{date}}"
-updated: "{{date}}"
-version: "{{version}}"
+wso2_products_impacted: "No"
+customer_action_required: "No"
 ---
 
-# {{advisory_id}}
-
-<p class="doc-info">WSO2 Products impacted: no</p>
-<p class="doc-info">Customer action required: no</p>
----
-
-### REPORTED VULNERABILITY
+## REPORTED VULNERABILITY
 {{description}}
 
 
-### REPORTED PRODUCTS
+## REPORTED PRODUCTS
 * {{product_1}}
 * {{product_2}}
 
 
-### WSO2 JUSTIFICATION
+## WSO2 JUSTIFICATION
 {{wso2_Justification}}
 
 
-### REFERENCES
+## REFERENCES
 [^1]: [reference_1_link](reference_1_link)

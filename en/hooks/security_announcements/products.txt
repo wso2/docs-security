@@ -1,0 +1,105 @@
+# Official WSO2 product names. Pages name a product only as written here: each line of a
+# security advisory's AFFECTED PRODUCTS and a CVE justification's REPORTED PRODUCTS must
+# start with one of these names, and anywhere else in a page the content check
+# (.github/scripts/check_content.py) rejects a listed old spelling and a difference in
+# upper and lower case, such as "WSO2 identity server".
+#
+# To allow a new product, add its name on a line of its own, in the part where it belongs.
+#
+# To have `check_content.py --fix` correct an old or wrong spelling, add a line in the
+# second part: "old spelling -> official name". Differences in upper and lower case only
+# are corrected without a line here. An old spelling that does not start with "WSO2 ",
+# such as "API Manager" or a product code such as "wso2am", is corrected only at the start
+# of a product line and in the product column of an update-level table, since prose may
+# use it as a short form.
+
+# Products in WSO2's product list, by its display name. The list writes "API Manager
+# Analytics" without "WSO2"; pages write "WSO2 API Manager Analytics", like the other names.
+WSO2 API Control Plane
+WSO2 API Manager
+WSO2 API Manager Analytics
+WSO2 Choreo Connect
+WSO2 Complex Event Processor
+WSO2 Data Analytics Server
+WSO2 Data Services Server
+WSO2 Enterprise Integrator
+WSO2 Enterprise Mobility Manager
+WSO2 Enterprise Service Bus
+WSO2 Enterprise Service Bus Analytics
+WSO2 Governance Registry
+WSO2 Identity Server
+WSO2 Identity Server Analytics
+WSO2 Identity Server as Key Manager
+WSO2 Integration Control Plane
+WSO2 IoT Server
+WSO2 Micro Integrator
+WSO2 Open Banking AM
+WSO2 Open Banking IAM
+WSO2 Open Banking KM
+WSO2 Traffic Manager
+WSO2 Universal Gateway
+
+# Products on these pages that WSO2's product list does not have: retired products, and
+# products newer than the list. Confirm a new name with the product team before adding it here.
+WSO2 API Microgateway Toolkit
+WSO2 App Manager
+WSO2 Application Server
+WSO2 Business Process Server
+WSO2 Business Rules Server
+WSO2 Dashboard Server
+WSO2 Elastic Load Balancer
+WSO2 Enterprise Integrator Analytics
+WSO2 Enterprise Store
+WSO2 Integration Studio
+WSO2 Integrator: MI
+WSO2 Integrator: MI for Visual Studio Code
+WSO2 Machine Learner
+WSO2 Message Broker
+WSO2 Micro Integrator Dashboard
+WSO2 Microgateway
+WSO2 Storage Server
+WSO2 Stream Processor
+WSO2 Streaming Integrator
+WSO2 Streaming Integrator Tooling
+
+# Spellings that --fix replaces with the official name.
+API Manager -> WSO2 API Manager
+API Manager Analytics -> WSO2 API Manager Analytics
+WSO2 API Management Traffic Manager -> WSO2 Traffic Manager
+WSO2 API Manager - Publisher Portal -> WSO2 API Manager
+WSO2 API Manager Universal Gateway -> WSO2 Universal Gateway
+WSO2 API Microgateway -> WSO2 Microgateway
+WSO2 IS as Key Manager -> WSO2 Identity Server as Key Manager
+WSO2 MI Dashboard -> WSO2 Micro Integrator Dashboard
+WSO2 Micro Gateway -> WSO2 Microgateway
+WSO2 Micro Gateway Toolkit -> WSO2 API Microgateway Toolkit
+WSO2 Microgateway Toolkit -> WSO2 API Microgateway Toolkit
+WSO2 Micro Integrator Monitoring Dashboard -> WSO2 Micro Integrator Dashboard
+WSO2 Stream Integrator -> WSO2 Streaming Integrator
+WSO2 Stream Integrator Tooling -> WSO2 Streaming Integrator Tooling
+
+# WSO2's product codes, as its product list gives them. Update-level tables sometimes name
+# the product by its code; --fix writes the official name instead.
+choreo-connect -> WSO2 Choreo Connect
+wso2-integration-control-plane -> WSO2 Integration Control Plane
+wso2-obam -> WSO2 Open Banking AM
+wso2-obiam -> WSO2 Open Banking IAM
+wso2-obkm -> WSO2 Open Banking KM
+wso2am -> WSO2 API Manager
+wso2am-acp -> WSO2 API Control Plane
+wso2am-analytics -> WSO2 API Manager Analytics
+wso2am-tm -> WSO2 Traffic Manager
+wso2am-universal-gw -> WSO2 Universal Gateway
+wso2cep -> WSO2 Complex Event Processor
+wso2das -> WSO2 Data Analytics Server
+wso2dss -> WSO2 Data Services Server
+wso2ei -> WSO2 Enterprise Integrator
+wso2emm -> WSO2 Enterprise Mobility Manager
+wso2esb -> WSO2 Enterprise Service Bus
+wso2esb-analytics -> WSO2 Enterprise Service Bus Analytics
+wso2greg -> WSO2 Governance Registry
+wso2iot -> WSO2 IoT Server
+wso2is -> WSO2 Identity Server
+wso2is-analytics -> WSO2 Identity Server Analytics
+wso2is-km -> WSO2 Identity Server as Key Manager
+wso2mi -> WSO2 Micro Integrator

@@ -559,3 +559,14 @@
     grid-template-columns: 1fr;
   }
 }
+
+/* The newest advisories (templates/home-page.html). The advisory ID and the date stay on one line. */
+.latest-advisories td:first-child,
+.latest-advisories td:last-child {
+  white-space: nowrap;
+}
+
+.latest-advisories__cves {
+  color: var(--md-default-fg-color--light);
+  font-size: 0.9em;
+}

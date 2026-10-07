@@ -1,5 +1,6 @@
 ---
 title: Security Advisories
+description: "WSO2 security advisories by year. Each advisory gives the WSO2 advisory ID, the CVE ID where one is assigned, the affected products and versions, the severity, and the solution."
 summary: Overview of Security Advisories
 category: security-announcements
 ---
@@ -8,16 +9,6 @@ category: security-announcements
 
 Following pages list the security advisories that we have released in each year. For information regarding the vulnerability management process that we follow, refer WSO2 Security Vulnerability Management Process page.
 
-* [2026 Advisories]({{#base_path#}}/security-announcements/security-advisories/2026/2026-advisories/)
-* [2025 Advisories]({{#base_path#}}/security-announcements/security-advisories/2025/2025-advisories/)
-* [2024 Advisories]({{#base_path#}}/security-announcements/security-advisories/2024/2024-advisories/)
-* [2023 Advisories]({{#base_path#}}/security-announcements/security-advisories/2023/2023-advisories/)
-* [2022 Advisories]({{#base_path#}}/security-announcements/security-advisories/2022/2022-advisories/)
-* [2021 Advisories]({{#base_path#}}/security-announcements/security-advisories/2021/2021-advisories/)
-* [2020 Advisories]({{#base_path#}}/security-announcements/security-advisories/2020/2020-advisories/)
-* [2019 Advisories]({{#base_path#}}/security-announcements/security-advisories/2019/2019-advisories/)
-* [2018 Advisories]({{#base_path#}}/security-announcements/security-advisories/2018/2018-advisories/)
-* [2017 Advisories]({{#base_path#}}/security-announcements/security-advisories/2017/2017-advisories/)
-* [2016 Advisories]({{#base_path#}}/security-announcements/security-advisories/2016/2016-advisories/)
+<!-- The build lists the year pages here, newest first. -->
 
 security-announce@wso2.org  mailing list is used to announce security vulnerabilities in WSO2 products and services. If you wish to subscribe to this mailing list, email to <security-announce-request@wso2.org> with the header '**subscribe**'.

@@ -10,16 +10,16 @@ version: "1.0.0"
 <p class="doc-info">Published: July 4, 2025</p>
 <p class="doc-info">Version: 1.0.0</p>
 
-### BULLETIN ID  
+## BULLETIN ID  
 ASG-SB-2025-H1
 
-### SCOPE  
+## SCOPE  
 This bulletin summarizes security vulnerabilities addressed during the H1 of 2025 for WSO2 Identity Platform.
 
-### VULNERABILITIES ADDRESSED
+## VULNERABILITIES ADDRESSED
 
 | Reference ID | Title | Severity | Summary |
-|--------------|-------|----------|---------|
+| --- | --- | --- | --- |
 | ASG-2025-001 | Tokens not revoked on role unassignment | High | Access tokens continued to work after the user’s role was removed or the consuming app’s role was deleted. |
 | ASG-2025-002 | Multi-tenant bypass via conditional auth function | High | Multi-attribute login functions could be triggered across tenant boundaries. |
 | ASG-2025-003 | Tokens valid post admin removal in suborg | Medium | Tokens of removed admins in sub-orgs remained valid. |
@@ -31,5 +31,5 @@ This bulletin summarizes security vulnerabilities addressed during the H1 of 202
 | ASG-2025-008 | NGINX “IngressNightmare” | Critical | Vulnerabilities in ingress configuration leading to potential unauthorized access or routing bypass. CVE-2025-1974, CVE-2025-24514, CVE-2025-1097, CVE-2025-1098, CVE-2025-24513 |
 | ASG-2025-009 | Access Token retrieval via ‘code token’ flow | High | Improper validation allowed tokens to be issued under improper flow conditions. |
 
-### CREDITS  
+## CREDITS  
 WSO2 Identity Platform thanks all internal and external researchers for responsibly disclosing the above issues.
