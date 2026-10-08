@@ -214,6 +214,7 @@ plugins:
         # Published CVE records reference these advisories under the wrong year folder
         'security-announcements/security-advisories/2025/WSO2-2024-3566.md': 'security-announcements/security-advisories/2024/WSO2-2024-3566.md'
         'security-announcements/security-advisories/2026/WSO2-2024-3144.md': 'security-announcements/security-advisories/2025/WSO2-2024-3144.md'
+        'security-announcements/security-advisories/2026/WSO2-2024-3149.md': 'security-announcements/security-advisories/2025/WSO2-2024-3149.md'
         # Published in both the 2023 and 2024 folders with the same text; the 2024 copy is kept
         'security-announcements/security-advisories/2023/WSO2-2023-2075.md': 'security-announcements/security-advisories/2024/WSO2-2023-2075.md'
         'security-announcements/security-advisories/2023/WSO2-2023-2617.md': 'security-announcements/security-advisories/2024/WSO2-2023-2617.md'
