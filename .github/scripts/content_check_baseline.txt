@@ -8,9 +8,6 @@
 # 2023 URL redirects to it.
 security-announcements/security-advisories/2024/WSO2-2023-2075.md year-folder
 
-# A severity or CVSS score that does not match the score or vector. See ROADMAP.md section 3A.
-security-announcements/security-advisories/2025/WSO2-2024-3149.md cvss-score
-
 # The first OVERVIEW sentence is too long for a search title, or refers to "the above" products, so the
 # title uses the product names instead. Shortening it changes reviewed text. See ROADMAP.md section 2.
 security-announcements/security-advisories/2016/WSO2-2016-0092.md overview-title
