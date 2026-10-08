@@ -31,6 +31,9 @@
                    or a cloud security bulletin from its year page. A page in
                    another folder, or an advisory file not named after its ID,
                    is published but never listed, so it fails too.
+    llms-txt       llms.txt (en/hooks/seo.py) is missing, does not start with the
+                   site name and description, or links to a page the site
+                   does not have.
     latest-advisories  the home page does not list the newest advisories,
                    newest published first, as their structured data dates
                    them (en/hooks/security_announcements/listings.py,
@@ -243,6 +246,25 @@ def check_listed(site_dir):
     return problems
 
 
+def check_llms_txt(site_dir):
+    """Problem messages for llms.txt: it exists, has the llmstxt.org header, and every link resolves."""
+    path = os.path.join(site_dir, "llms.txt")
+    if not os.path.isfile(path):
+        return ["llms.txt: the build did not write it [llms-txt]"]
+    with open(path, encoding="utf-8") as handle:
+        lines = handle.read().splitlines()
+    problems = []
+    if len(lines) < 3 or not lines[0].startswith("# ") or not lines[2].startswith("> "):
+        problems.append("llms.txt: start with \"# <site name>\", a blank line, and \"> <description>\" [llms-txt]")
+    for number, line in enumerate(lines, 1):
+        for link in re.findall(r"\]\(([^)\s]+)\)", line):
+            target = re.sub(r"^/[^/]+/[^/]+/", "", unquote(urlsplit(link).path)).strip("/")
+            if not (os.path.isfile(os.path.join(site_dir, target, "index.html"))
+                    or os.path.isfile(os.path.join(site_dir, target))):
+                problems.append("llms.txt:{}: the link {} is not a page of the site [llms-txt]".format(number, link))
+    return problems
+
+
 def folder_and_entry(path):
     """The year folder and entry name of an advisory or CVE justification path, or None."""
     match = ENTRY.search(path)
@@ -298,7 +320,7 @@ def main():
                       "{} [menu-entries]".format(rel, len(others), sorted(others)[0]))
                 problems += 1
 
-    for problem in check_listed(site_dir):
+    for problem in check_listed(site_dir) + check_llms_txt(site_dir):
         print(problem)
         problems += 1
 
@@ -310,8 +332,8 @@ def main():
     if problems:
         print("\n{} problem(s) in {} page(s).".format(problems, checked))
         return 1
-    print("Checked {} page(s). The menu and sidebars are fine, every announcement is listed, and the home page "
-          "lists the newest advisories.".format(checked))
+    print("Checked {} page(s). The menu and sidebars are fine, every announcement is listed, llms.txt is valid, "
+          "and the home page lists the newest advisories.".format(checked))
     return 0
 
 
