@@ -18,8 +18,8 @@
 
 Derives a page-specific meta description, a search-friendly title for
 advisories and CVE justifications, publication dates, schema.org structured
-data, and an RSS feed from the front matter and the standard section headings
-the announcement templates use. theme/material/main.html and sitemap.xml
+data, an RSS feed, and llms.txt from the front matter and the standard section
+headings the announcement templates use. theme/material/main.html and sitemap.xml
 render the values. A `description` set in front matter always wins.
 
 Runs after announcements.py (see mkdocs.yml), so it sees each announcement's
@@ -52,10 +52,15 @@ DESCRIPTION_LIMIT = 300
 FEED_FILE = "feed.xml"
 FEED_TITLE = "WSO2 Security Announcements"
 FEED_LIMIT = 50
+# llms.txt (https://llmstxt.org): the site's pages for tools that read a site with a language model.
+LLMS_FILE = "llms.txt"
 SEVERITIES = ("Critical", "High", "Medium", "Low", "Informative")
 
 # Announcement pages for the RSS feed, collected during the build.
 _feed_items = []
+
+# Each page's title, description, and URL by source path, for llms.txt.
+_pages = {}
 
 # Paths of the pages written as `'': path` in `nav`. Such a page is its
 # section's index, like an index.md.
@@ -64,6 +69,7 @@ _section_index_paths = set()
 
 def on_config(config):
     _section_index_paths.clear()
+    _pages.clear()
     del _feed_items[:]
     _collect_section_indexes(config.get("nav") or [])
     return config
@@ -151,6 +157,8 @@ def on_env(env, config, files):
 
 
 def on_page_context(context, page, config, nav):
+    _pages[page.file.src_uri] = (text.plain(str(_page_title(page) or "")), page.meta.get("description") or "",
+                                 page.canonical_url)
     seo = page.meta.get("seo")
     if seo is None:
         return context
@@ -259,6 +267,60 @@ def on_post_build(config):
     )
     with open(os.path.join(config["site_dir"], FEED_FILE), "w", encoding="utf-8") as handle:
         handle.write(feed)
+    _write_llms_txt(config)
+
+
+def _write_llms_txt(config):
+    """Write llms.txt: each nav section's pages with their descriptions, the newest advisories, and the lists.
+
+    Individual advisories, CVE justifications, and incident clarifications are left to the
+    pages that list them; the yearly lists, bulletins, and the RSS feed go under "Optional".
+    """
+    site_url = config.get("site_url") or ""
+    lines = ["# " + config["site_name"], "", "> " + (config.get("site_description") or ""), ""]
+    optional = []
+    for item in config.get("nav") or []:
+        for title, value in (item.items() if isinstance(item, dict) else []):
+            if isinstance(value, list):
+                entries = []
+                _llms_entries(value, entries, optional)
+                if entries:
+                    lines += ["## " + title, ""] + entries + [""]
+    latest = listings.latest_advisories(config["docs_dir"])
+    if latest:
+        lines += ["## Latest security advisories", ""]
+        for advisory in latest:
+            label = advisory["id"] + (" ({})".format(", ".join(advisory["cves"])) if advisory["cves"] else "")
+            details = [text.sentence(advisory["summary"])]
+            if advisory["severity"] in SEVERITIES:
+                details.append("Severity: {}.".format(advisory["severity"]))
+            details.append("Published {}.".format(advisory["published"]))
+            lines.append("- [{}]({}): {}".format(label, urljoin(site_url, advisory["path"]), " ".join(details)))
+        lines.append("")
+    optional.append("- [{}]({}): the newest security announcements".format(FEED_TITLE, urljoin(site_url, FEED_FILE)))
+    lines += ["## Optional", ""] + optional
+    with open(os.path.join(config["site_dir"], LLMS_FILE), "w", encoding="utf-8") as handle:
+        handle.write("\n".join(lines) + "\n")
+
+
+def _llms_entries(items, entries, optional):
+    """Add an llms.txt line for each page in a nav section, to entries or, for lists and bulletins, optional."""
+    for item in items:
+        for _, value in (item.items() if isinstance(item, dict) else [("", item)]):
+            if isinstance(value, list):
+                _llms_entries(value, entries, optional)
+                continue
+            if any(pattern.match(value) for pattern in (formats.ADVISORY_RE, formats.JUSTIFICATION_RE, formats.INCIDENT_RE)):
+                continue
+            if value not in _pages:
+                continue
+            title, description, url = _pages[value]
+            line = "- [{}]({})".format(title.replace("[", "(").replace("]", ")"), url)
+            line += ": " + description if description else ""
+            secondary = (listings.ADVISORY_YEAR_RE.match(value) or listings.INCIDENT_YEAR_RE.match(value)
+                         or (value.startswith("security-announcements/cloud-security-bulletins/")
+                             and value != "security-announcements/cloud-security-bulletins/index.md"))
+            (optional if secondary else entries).append(line)
 
 
 def _advisory(name, meta, markdown, sections):
