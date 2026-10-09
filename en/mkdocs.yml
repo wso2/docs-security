@@ -104,6 +104,7 @@ nav:
       - '': 'security-announcements/security-advisories/index.md'
       - '2026 Advisories':
         - '': 'security-announcements/security-advisories/2026/2026-advisories.md'
+        - 'WSO2-2026-5854': 'security-announcements/security-advisories/2026/WSO2-2026-5854.md'
         - 'WSO2-2026-5328': 'security-announcements/security-advisories/2026/WSO2-2026-5328.md'
         - 'WSO2-2026-5236': 'security-announcements/security-advisories/2026/WSO2-2026-5236.md'
         - 'WSO2-2026-5212': 'security-announcements/security-advisories/2026/WSO2-2026-5212.md'
@@ -498,7 +499,8 @@ nav:
         - '': 'security-announcements/cloud-security-bulletins/choreo/index.md'
         - '2025':
           - '': 'security-announcements/cloud-security-bulletins/choreo/2025/index.md'
-          - '2025 H1': 'security-announcements/cloud-security-bulletins/choreo/2025/choreo-2025-h1.md'        
+          - '2025 H1': 'security-announcements/cloud-security-bulletins/choreo/2025/choreo-2025-h1.md'
+          - '2025 H2': 'security-announcements/cloud-security-bulletins/choreo/2025/choreo-2025-h2.md'
       - 'WSO2 API Platform':
         - '': 'security-announcements/cloud-security-bulletins/wso2-api-platform/index.md'
         - '2025':
@@ -508,6 +510,7 @@ nav:
       - '': 'security-announcements/cve-justifications/index.md'
       - '2026':
         - '': 'security-announcements/cve-justifications/2026/index.md'
+        - 'CVE-2026-44825': 'security-announcements/cve-justifications/2026/CVE-2026-44825.md'
         - 'CVE-2026-41851': 'security-announcements/cve-justifications/2026/CVE-2026-41851.md'
         - 'CVE-2026-41848': 'security-announcements/cve-justifications/2026/CVE-2026-41848.md'
         - 'GHSA-72hv-8253-57qq': 'security-announcements/cve-justifications/2026/GHSA-72hv-8253-57qq.md'

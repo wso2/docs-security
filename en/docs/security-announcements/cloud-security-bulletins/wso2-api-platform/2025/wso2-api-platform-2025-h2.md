@@ -1,13 +1,13 @@
 ---
 title: WSO2 API Platform Security Bulletin – H2 2025
 category: security-announcements
-published: "2026-04-08"
+published: "April 8, 2026"
 version: "1.0.0"
 ---
 
 # WSO2 API Platform Security Bulletin – H2 2025
 
-<p class="doc-info">Published: 2026-04-08</p>
+<p class="doc-info">Published: April 8, 2026</p>
 <p class="doc-info">Version: 1.0.0</p>
 
 ### BULLETIN ID  

@@ -1,7 +1,7 @@
 ---
 title: Secure Software Development Process
 category: security-processes
-published: 19th Mar 2020
+published: March 19, 2020
 version: 2.2
 ---
 

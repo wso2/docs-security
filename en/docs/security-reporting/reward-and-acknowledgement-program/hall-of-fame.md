@@ -13,24 +13,27 @@ For the in-scope products and services, qualifying criteria, and reward terms, s
 
 ### WSO2 Products and Infrastructure
 
-|                                                                                                             |
-| :---------------------------------------------------------------------------------------------------------- |
-| [Abhishek Karle](https://linktr.ee/abhishekkarle)                                                           |
-| [Alex Williams from Pellera Technologies](https://www.linkedin.com/in/alexanderwilliamscyber)               |
-| [Claire Wang](https://clairewang.net/)                                                                      |
-| [crnkovic](https://crnkovic.dev/?__mt=19dde3abd10654-0e2881c76f74f4-18525631-1d73c0)                        |
-| **Ethan Havinga**                                                                                           |
-| [Hacktron Team](https://www.hacktron.ai/)                                                                   |
-| [Lasantha Karunarathne](https://www.linkedin.com/in/lasakaru/)                                              |
-| [Maneesha Dewmina](https://www.linkedin.com/in/maneesha-dewmina/)                                           |
-| [Manisha Dilshan](https://www.linkedin.com/in/manisha-dilshan-b08ba3215)                                    |
-| [Michał Majchrowicz, Marcin Wyczechowski, and Paweł Zdunek — members of the AFINE Team](https://afine.com/) |
-| **Nishant Lungare**                                                                                         |
-| **Omri Inbar**                                                                                              |
-| [Robert C. Raducioiu](https://it.linkedin.com/in/rbct)                                                      |
-| [San Gil from Security Office](https://securityoffice.io/)                                                  |
-| [Suraj Theekshana and Ishan Nim (株式会社CyberCrew)](https://cyber.spool.co.jp/)                             |
-| [Thinh Dang](https://www.linkedin.com/in/thinh-dang-bb4b72170/)                                             |
+|                                                                                                                      |
+| :------------------------------------------------------------------------------------------------------------------- |
+| [Abhishek Karle](https://linktr.ee/abhishekkarle)                                                                    |
+| [Alex Williams from Pellera Technologies](https://www.linkedin.com/in/alexanderwilliamscyber)                        |
+| [Claire Wang](https://clairewang.net/)                                                                               |
+| [Damir](https://github.com/Evelynkaz)                                                                                |
+| **Dnyaneshwar Chandanshiv**                                                                                          |
+| **Ethan Havinga**                                                                                                    |
+| [Hacktron Team](https://www.hacktron.ai/)                                                                            |
+| **Haoxucu**                                                                                                          |
+| [Lasantha Karunarathne](https://www.linkedin.com/in/lasakaru/)                                                       |
+| [Maneesha Dewmina](https://www.linkedin.com/in/maneesha-dewmina/)                                                    |
+| [Manisha Dilshan](https://www.linkedin.com/in/manisha-dilshan-b08ba3215)                                             |
+| [Michał Majchrowicz, Marcin Wyczechowski, and Paweł Zdunek — members of the AFINE Team](https://afine.com/)          |
+| **Nishant Lungare**                                                                                                  |
+| **Omri Inbar**                                                                                                       |
+| **Rock Jein**                                                                                                        |
+| [Robert C. Raducioiu](https://it.linkedin.com/in/rbct)                                                               |
+| [San Gil from Security Office](https://securityoffice.io/)                                                           |
+| [Suraj Theekshana and Ishan Nim (株式会社CyberCrew)](https://cyber.spool.co.jp/)                                      |
+| [Thinh Dang](https://www.linkedin.com/in/thinh-dang-bb4b72170/)                                                      |
 
 
 
@@ -44,13 +47,44 @@ For the in-scope products and services, qualifying criteria, and reward terms, s
 
 
 
-### Choreo
+### WSO2 Developer Platform
 
 |                                                        |
 | :----------------------------------------------------- |
 | [AGS Lakpahana](https://www.linkedin.com/in/lakpahana) |
 | [Alex Roger from Laburity](https://laburity.com)       |
+| **Nishant Lungare**                                    |
 | **Omri Inbar**                                         |
+| **Rock Jein**                                          |
+
+
+### WSO2 Integration Platform
+
+|                                                                                                   |
+| :------------------------------------------------------------------------------------------------ |
+| [Lakshitha Perera](https://www.linkedin.com/in/lakshitha-perera-687857352)                        |
+| [Mykhailo Kholiev](https://www.linkedin.com/in/mykhailo-kholiev-41b43b3b1/)                       |
+| [Sanjula Lakpahana](https://www.linkedin.com/in/lakpahana)                                        |
+
+
+### WSO2 Security Hackathon 2026
+
+|                             |
+| :---------------------------|
+| Anju Chamantha              |
+| Ashirwada Dayarathne        |
+| Dehami Koswatte             |
+| Dinuwan Kalubowila          |
+| Kavindu Nilshan             |
+| Ramiiyan Sriraguhan         |
+| Ranuga Gamage               |
+| Rivindu Madushan            |
+| Sanjula Madurapperuma       |
+| Sankeerthan Kasilingam      |
+| Seralahthan Vivekaananthan  |
+| Tharsanan Kurukulasingam    |
+| Vinicius Fraga              |
+| Vimukthi Rajapaksha         |
 
 
 ## 2025
@@ -83,7 +117,7 @@ For the in-scope products and services, qualifying criteria, and reward terms, s
 
 
 
-### Choreo
+### WSO2 Developer Platform
 
 |                                                                               |
 | :-----------------------------------------------------------------------------|
@@ -101,21 +135,21 @@ For the in-scope products and services, qualifying criteria, and reward terms, s
 |                        |
 | :--------------------- |
 | Anshajanth Yoganathan  |
-| Sajith Ekanayaka       |
-| Dehami Koswatte        |
-| Samindu Cooray         |
-| Thilan Dissanayaka     |
-| Tharaka Wijekoon       |
-| Sachith Manchanayaka   |
 | Chandima Jayawickrama  |
 | Chathura Ranathunga    |
-| Mifraz Murthaja        |
-| Ushani Athukorala      |
+| Dehami Koswatte        |
+| Dinithi Amarasinghe    |
+| Hasitha Pathirana      |
 | Janitha Senevirathna   |
 | Lahiru Samaranayaka    |
-| Dinithi Amarasinghe    |
+| Mifraz Murthaja        |
 | Prabod Dunuwila        |
-| Hasitha Pathirana      |
+| Sachith Manchanayaka   |
+| Sajith Ekanayaka       |
+| Samindu Cooray         |
+| Tharaka Wijekoon       |
+| Thilan Dissanayaka     |
+| Ushani Athukorala      |
 
 
 ## 2024
@@ -230,7 +264,7 @@ For the in-scope products and services, qualifying criteria, and reward terms, s
 | [Zakaria BRAHIMI](https://www.linkedin.com/in/zakaria-brahimi)                                                                         |
 
 
-### Choreo
+### WSO2 Developer Platform
 
 |                                                                               |
 | :-----------------------------------------------------------------------------|
