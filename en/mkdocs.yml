@@ -495,7 +495,9 @@ nav:
           - '': 'security-announcements/cloud-security-bulletins/wso2-identity-platform/2025/index.md'
           - '2025 H1': 'security-announcements/cloud-security-bulletins/wso2-identity-platform/2025/wso2-identity-platform-2025-h1.md'
           - '2025 H2': 'security-announcements/cloud-security-bulletins/wso2-identity-platform/2025/wso2-identity-platform-2025-h2.md'
-          - '2026 H1': 'security-announcements/cloud-security-bulletins/wso2-identity-platform/2025/wso2-identity-platform-2026-h1.md'
+        - '2026':
+          - '': 'security-announcements/cloud-security-bulletins/wso2-identity-platform/2026/index.md'
+          - '2026 H1': 'security-announcements/cloud-security-bulletins/wso2-identity-platform/2026/wso2-identity-platform-2026-h1.md'
       - 'Choreo':
         - '': 'security-announcements/cloud-security-bulletins/choreo/index.md'
         - '2025':
