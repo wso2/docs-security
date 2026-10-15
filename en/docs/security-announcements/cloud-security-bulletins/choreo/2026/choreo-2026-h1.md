@@ -1,13 +1,13 @@
 ---
 title: Choreo Security Bulletin – H1 2026
 category: security-announcements
-published: "2026-09-23"
+published: "September 23, 2026"
 version: "1.0.0"
 ---
 
 # Choreo Security Bulletin – H1 2026
 
-<p class="doc-info">Published: 2026-09-23</p>
+<p class="doc-info">Published: September 23, 2026</p>
 <p class="doc-info">Version: 1.0.0</p>
 
 ### BULLETIN ID  
