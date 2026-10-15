@@ -8,3 +8,4 @@ category: security-announcements
 This section contains the security bulletins for Choreo
 
 * [2025]({{#base_path#}}/security-announcements/cloud-security-bulletins/choreo/2025/)
+* [2026]({{#base_path#}}/security-announcements/cloud-security-bulletins/choreo/2026/)
