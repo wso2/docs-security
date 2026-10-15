@@ -1,13 +1,13 @@
 ---
 title: WSO2 Identity Platform Security Bulletin – H1 2025
 category: security-announcements
-published: "2025-07-04"
+published: "July 4, 2025"
 version: "1.0.0"
 ---
 
 # WSO2 Identity Platform Security Bulletin – H1 2025
 
-<p class="doc-info">Published: 2025-07-04</p>
+<p class="doc-info">Published: July 4, 2025</p>
 <p class="doc-info">Version: 1.0.0</p>
 
 ### BULLETIN ID  

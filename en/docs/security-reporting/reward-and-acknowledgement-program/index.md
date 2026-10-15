@@ -75,7 +75,7 @@ Once the reported issue is fixed and announced to customers and the community, a
     | Medium              | 4.0 to 6.9     | USD 100 |
     | Low                 | 3.9 to above 0 | USD 50  |
 
-    These revised reward amounts apply only to issues reported on or after July 01, 2026.
+    These revised reward amounts apply only to issues reported on or after July 1, 2026.
     Issues reported before that date are eligible for a flat reward of USD 50.
 
 Disclosure and announcement timing (which determine when the reward is issued) are documented in [Vulnerability Management Process]({{#base_path#}}/security-processes/vulnerability-management-process/).

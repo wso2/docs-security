@@ -6,7 +6,7 @@ version: "1.0.0"
 
 # WSO2 Identity Platform Security Bulletin – H2 2025
 
-<p class="doc-info">Published: 2026-05-06</p>
+<p class="doc-info">Published: May 6, 2026</p>
 <p class="doc-info">Version: 1.0.0</p>
 
 ### BULLETIN ID  

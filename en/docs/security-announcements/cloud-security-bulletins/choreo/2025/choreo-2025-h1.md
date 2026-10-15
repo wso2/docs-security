@@ -1,13 +1,13 @@
 ---
 title: Choreo Security Bulletin – H1 2025
 category: security-announcements
-published: "2025-07-15"
+published: "July 15, 2025"
 version: "1.0.0"
 ---
 
 # Choreo Security Bulletin – H1 2025
 
-<p class="doc-info">Published: 2025-07-15</p>
+<p class="doc-info">Published: July 15, 2025</p>
 <p class="doc-info">Version: 1.0.0</p>
 
 ### BULLETIN ID  
