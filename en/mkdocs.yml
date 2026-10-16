@@ -513,6 +513,8 @@ nav:
       - '': 'security-announcements/cve-justifications/index.md'
       - '2026':
         - '': 'security-announcements/cve-justifications/2026/index.md'
+        - 'CVE-2026-43869': 'security-announcements/cve-justifications/2026/CVE-2026-43869.md'
+        - 'CVE-2026-19203': 'security-announcements/cve-justifications/2026/CVE-2026-19203.md'
         - 'CVE-2026-44825': 'security-announcements/cve-justifications/2026/CVE-2026-44825.md'
         - 'CVE-2026-41851': 'security-announcements/cve-justifications/2026/CVE-2026-41851.md'
         - 'CVE-2026-41848': 'security-announcements/cve-justifications/2026/CVE-2026-41848.md'
@@ -531,6 +533,7 @@ nav:
         - 'CVE-2015-9251': 'security-announcements/cve-justifications/2026/CVE-2015-9251.md'
         - 'CVE-2012-6708': 'security-announcements/cve-justifications/2026/CVE-2012-6708.md'
         - 'CVE-2012-5783': 'security-announcements/cve-justifications/2026/CVE-2012-5783.md'
+        - 'CVE-2012-6153': 'security-announcements/cve-justifications/2026/CVE-2012-6153.md'
         - 'Bluebird Memory Leak Vulnerability (NPM)': 'security-announcements/cve-justifications/2026/bluebird-memory-leak-vulnerability-npm.md'
       - '2025':
         - '': 'security-announcements/cve-justifications/2025/index.md'
