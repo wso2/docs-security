@@ -9,7 +9,7 @@
 security-announcements/security-advisories/2024/WSO2-2023-2075.md year-folder
 
 # The first OVERVIEW sentence is too long for a search title, or refers to "the above" products, so the
-# title uses the product names instead. Shortening it changes reviewed text. See ROADMAP.md section 2.
+# title uses the product names instead. Shortening it changes reviewed text.
 security-announcements/security-advisories/2016/WSO2-2016-0092.md overview-title
 security-announcements/security-advisories/2016/WSO2-2016-0101.md overview-title
 security-announcements/security-advisories/2016/WSO2-2016-0104.md overview-title
@@ -75,10 +75,10 @@ security-announcements/security-advisories/2025/WSO2-2025-4510.md overview-title
 security-announcements/security-advisories/2025/WSO2-2025-4526.md overview-title
 security-announcements/security-advisories/2026/WSO2-2025-4530.md overview-title
 
-# The heading differs from the title, so the build cannot render it from the title yet. See ROADMAP.md section 3A.
+# The heading differs from the title, so the build cannot render it from the title yet.
 security-announcements/incident-clarifications/2026/unauthorized-access-to-githubs-internal-repositories.md repeated-heading
 
-# Older advisories without version, severity, or cvss, and pages with values that need a decision. See ROADMAP.md section 3A.
+# Older advisories without version, severity, or cvss, and pages with values that need a decision.
 security-announcements/security-advisories/2016/WSO2-2016-0092.md field-format 3
 security-announcements/security-advisories/2016/WSO2-2016-0095.md field-format 3
 security-announcements/security-advisories/2016/WSO2-2016-0096.md field-format 3
@@ -170,7 +170,7 @@ security-announcements/cve-justifications/2022/CVE-2022-3602 and CVE-2022-3786.m
 security-announcements/cve-justifications/2022/log4j v1 vulnerabilities (CVE-2022-23302 CVE-2022-23305 CVE-2022-23307).md file-name
 
 # CVE justifications from 2019 to 2021 that do not say whether WSO2 products are impacted or customer action is
-# required; WSO2's original Confluence pages do not either. See ROADMAP.md section 3A.
+# required; WSO2's original Confluence pages do not either.
 security-announcements/cve-justifications/2019/CVE-2019-6512.md field-format 2
 security-announcements/cve-justifications/2019/CVE-2019-6515.md field-format 2
 security-announcements/cve-justifications/2020/CVE-2019-17571.md field-format 2
@@ -179,11 +179,11 @@ security-announcements/cve-justifications/2020/CVE-2020-13226.md field-format 2
 security-announcements/cve-justifications/2020/CVE-2020-1938.md field-format 2
 security-announcements/cve-justifications/2021/ZDI-CAN-13449.md field-format 2
 
-# Its CVSS line carries NVD's original CVSS 2.0 score as a note, which a cvss field cannot hold. See ROADMAP.md section 3A.
+# Its CVSS line carries NVD's original CVSS 2.0 score as a note, which a cvss field cannot hold.
 security-announcements/cve-justifications/2014/CVE-2014-3623.md repeated-info
 
 # Product lines that are not an official product name: per-platform Microgateway Toolkit lines, and
-# CVE justification lines that describe products instead of naming them. See ROADMAP.md section 3A.
+# CVE justification lines that describe products instead of naming them.
 security-announcements/security-advisories/2021/WSO2-2021-1347.md product-name 3
 security-announcements/cve-justifications/2024/CVE-2021-23463.md product-name
 security-announcements/cve-justifications/2024/CVE-2022-23221.md product-name
@@ -192,7 +192,7 @@ security-announcements/cve-justifications/2025/CVE-2025-47889.md product-name
 
 # Update-level tables with a value a person has to decide: a note instead of an update level,
 # a four-part version, an Open Banking product name that is not on the official list, or an
-# extra Patch column. See ROADMAP.md section 3A.
+# extra Patch column.
 security-announcements/security-advisories/2016/WSO2-2016-0151.md update-table
 security-announcements/security-advisories/2021/WSO2-2020-1132.md update-table 2
 security-announcements/security-advisories/2023/WSO2-2022-2177.md update-table 7
@@ -200,7 +200,6 @@ security-announcements/security-advisories/2024/WSO2-2023-2617.md update-table 6
 security-announcements/security-advisories/2024/WSO2-2023-2864.md update-table 4
 
 # Advisories without a required section, or with a section heading that is not the template's.
-# See ROADMAP.md section 3A.
 security-announcements/security-advisories/2016/WSO2-2016-0092.md section-heading
 security-announcements/security-advisories/2016/WSO2-2016-0095.md section-heading
 security-announcements/security-advisories/2016/WSO2-2016-0096.md section-heading
