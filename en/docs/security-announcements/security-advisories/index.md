@@ -9,6 +9,8 @@ category: security-announcements
 
 Following pages list the security advisories that we have released in each year. For information regarding the vulnerability management process that we follow, refer WSO2 Security Vulnerability Management Process page.
 
+WSO2 is a [CVE Numbering Authority (CNA)](https://www.cve.org/PartnerInformation/ListofPartners/partner/WSO2) and assigns CVE IDs to vulnerabilities in the [products and services in scope]({{#base_path#}}/security-reporting/reward-and-acknowledgement-program/#products-and-services-in-scope) of the Reward and Acknowledgement Program. Advisories published before WSO2 became a CNA give a CVE ID only where another CNA, such as MITRE, assigned one.
+
 <!-- The build lists the year pages here, newest first. -->
 
 security-announce@wso2.org  mailing list is used to announce security vulnerabilities in WSO2 products and services. If you wish to subscribe to this mailing list, email to <security-announce-request@wso2.org> with the header '**subscribe**'.
