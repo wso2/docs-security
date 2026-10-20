@@ -59,7 +59,7 @@ Security advisories (security-advisories/<year>/WSO2-*.md):
                      spellings listed there and for upper and lower case)
     overview-title   the first OVERVIEW sentence cannot be the search title: it is
                      longer than 100 characters after the build drops words such as
-                     "A potential" and "has been identified", or it refers to "the
+                     a leading "A" and "has been identified", or it refers to "the
                      above" products (formats.title_summary)
     repeated-info    the page repeats its heading or Published, Updated, Version,
                      Severity, CVSS, or CVE IDs lines; the build renders them from
@@ -527,7 +527,7 @@ def check_advisory(page, site, year, advisory_id):
                        "it; name the vulnerability and where it is")
         else:
             message = ("shorten the first OVERVIEW sentence to {} characters or fewer; the search title uses it (it "
-                       "has {} after the build drops words such as \"A potential\")".format(
+                       "has {} after the build drops words such as a leading \"A\")".format(
                            formats.TITLE_SUMMARY_LIMIT, len(summary)))
         findings.append(Finding("overview-title", at, message))
     if shown or (heading and re.match(r"(?i)security advisory\b", heading.group(1))):
