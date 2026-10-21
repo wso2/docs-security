@@ -65,8 +65,7 @@ A finding in one of these categories may still qualify for a reward if the demon
 Once the reported issue is fixed and announced to customers and the community, and subject to the reporter's consent, WSO2:
 
 1. Lists the reporter on the [Security Hall of Fame]({{#base_path#}}/security-reporting/reward-and-acknowledgement-program/hall-of-fame/).
-2. Sends a certificate of appreciation.
-3. Provides a monetary reward, either as an Amazon gift voucher (any Amazon storefront) or a PayPal transfer, at the reporter's choice. The amount depends on the severity of the confirmed finding:
+2. Provides a monetary reward, either as an Amazon gift voucher (any Amazon storefront) or a PayPal transfer, at the reporter's choice. The amount depends on the severity of the confirmed finding:
 
     | Severity            | CVSS Score     | Reward  |
     | :------------------ | :------------- | :------ |
