@@ -26,6 +26,14 @@ Every page:
     stray-front-matter  a second front matter block in the page body, which readers see
                      as plain text
     legacy-link      a link to the retired docs.wso2.com/display/ pages
+    link-url         a link or bare URL outside code with a tracking parameter (utm_*,
+                     __mt, fbclid, ...; TRACKING_PARAMS), wrapped by a mail or security
+                     gateway or a redirector (Safe Links, URL Defense, google.com/url,
+                     lnkd.in, t.co, ...), through a URL shortener (bit.ly, ...), or with a
+                     user name and password or a credential, token, or signature
+                     parameter, whose value the message does not show (--fix removes
+                     tracking parameters, and unwraps a wrapper whose query gives the
+                     destination)
     trailing-slash   a {{#base_path#}} link to a page does not end with "/"   (--fix)
     empty-link       a link with no text or no target
     image-alt        an image has no alt text, or only its file name
@@ -141,6 +149,7 @@ import os
 import posixpath
 import re
 import sys
+import urllib.parse
 
 REPO_ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 DOCS = os.path.join(REPO_ROOT, "en", "docs")
@@ -201,6 +210,45 @@ TABLE_WIDTH_LIMIT = 120
 TABLE_SEPARATOR = re.compile(r"^[ \t]*\|?[ \t]*:?-+:?[ \t]*(\|[ \t]*:?-+:?[ \t]*)*\|?[ \t]*$")
 INLINE_CODE = re.compile(r"(`+)(?:(?!\1).)+?\1")
 FILE_NAME = re.compile(r"^[A-Za-z0-9._-]+$")
+# A web address in the page text, in a Markdown or HTML link or bare. Trailing punctuation of the
+# sentence around a bare address is not part of it.
+URL = re.compile(r"\b(?:https?|ftp)://[^\s<>\"'`()\[\]{}|\\^]+", re.I)
+URL_END = ".,;:!?*_~"
+# Query parameters that record who shared or clicked a link, in lower case. A name ending in "*"
+# covers every parameter that starts with it; a name with hosts counts only on those hosts and
+# their subdomains, where it is a tracking parameter rather than part of the address.
+TRACKING_PARAMS = {
+    "utm_*": None, "__mt": None, "fbclid": None, "gclid": None, "gclsrc": None, "dclid": None,
+    "gbraid": None, "wbraid": None, "msclkid": None, "mc_cid": None, "mc_eid": None, "_hsenc": None,
+    "_hsmi": None, "__hssc": None, "__hstc": None, "__hsfp": None, "hsctatracking": None, "mkt_tok": None,
+    "trk": None, "trkinfo": None, "igshid": None, "yclid": None, "_ga": None, "_gl": None, "ref_src": None,
+    "ref_url": None, "twclid": None, "ttclid": None, "li_fat_id": None, "oly_anon_id": None,
+    "oly_enc_id": None, "vero_id": None, "_kx": None, "ck_subscriber_id": None,
+    "si": ("youtube.com", "youtu.be", "spotify.com"),
+    "s": ("twitter.com", "x.com"), "t": ("twitter.com", "x.com"),
+}
+# Addresses that mail and security gateways or sites wrap a link in, as (host, path, the query
+# parameters that hold the destination). A wrapper without such a parameter cannot be unwrapped
+# without opening it. Hosts match their subdomains too; a path of None matches every path.
+LINK_WRAPPERS = (
+    ("safelinks.protection.outlook.com", None, ("url",)),
+    ("urldefense.com", None, ()), ("urldefense.proofpoint.com", None, ()),
+    ("google.com", "/url", ("q", "url")),
+    ("l.facebook.com", "/l.php", ("u",)), ("lm.facebook.com", "/l.php", ("u",)),
+    ("l.instagram.com", None, ("u",)), ("youtube.com", "/redirect", ("q",)),
+    ("linkedin.com", "/redir/redirect", ("url",)), ("slack-redir.net", "/link", ("url",)),
+    ("linkprotect.cudasvc.com", None, ("a",)),
+    ("protect2.fireeye.com", None, ()), ("secure-web.cisco.com", None, ()),
+    ("lnkd.in", None, ()), ("t.co", None, ()),
+)
+# URL shorteners, whose links hide the destination and can be changed or expire.
+SHORTENERS = ("bit.ly", "tinyurl.com", "goo.gl", "ow.ly", "buff.ly", "is.gd", "v.gd", "rebrand.ly",
+              "shorturl.at", "cutt.ly", "t.ly", "tiny.cc", "rb.gy", "bl.ink", "s.id")
+# Query parameters that carry a credential, a token, or a signature that grants access, in lower case.
+CREDENTIAL_PARAMS = ("token", "access_token", "id_token", "refresh_token", "private_token", "auth", "api_key",
+                     "apikey", "key", "secret", "client_secret", "password", "passwd", "sig", "signature",
+                     "x-amz-signature", "x-amz-credential", "x-amz-security-token", "x-goog-signature",
+                     "x-goog-credential", "jwt")
 
 
 class Finding(object):
@@ -434,6 +482,8 @@ def check_page(page, site):
         findings.append(Finding("stray-front-matter", page.meta_end + stray.start(),
                                 "remove the second front matter block; readers see it as text"))
     findings.extend(check_heading_levels(page))
+    for start, _, message, replacement in link_url_problems(page):
+        findings.append(Finding("link-url", start, message, replacement is not None))
     findings.extend(check_table_columns(page))
     findings.extend(check_table_format(page))
     for start, _, text in page.prose_spans():
@@ -494,6 +544,86 @@ def check_target(findings, at, label, target):
         path = "{{#base_path#}}/" + target[len("{{#base_path#}}/"):].split("#", 1)[0]
         if not path.endswith("/") and "." not in posixpath.basename(path):
             findings.append(Finding("trailing-slash", at, "end the link with \"/\" ({}/)".format(path), True))
+
+
+
+def host_matches(host, names):
+    return any(host == name or host.endswith("." + name) for name in names)
+
+
+def tracking_param(name, host):
+    for param, hosts in TRACKING_PARAMS.items():
+        if name == param or (param.endswith("*") and name.startswith(param[:-1])):
+            if hosts is None or host_matches(host, hosts):
+                return True
+    return False
+
+
+def without_tracking(url, host):
+    """The URL without its tracking parameters, keeping the others and the fragment, and the names removed."""
+    rest, hash_mark, fragment = url.partition("#")
+    rest, question_mark, query = rest.partition("?")
+    if not question_mark:
+        return url, []
+    separator = "&amp;" if "&amp;" in query else "&"  # an HTML attribute may escape "&"
+    kept, removed = [], []
+    for pair in query.split(separator):
+        name = urllib.parse.unquote_plus(pair.split("=", 1)[0]).lower()
+        if tracking_param(name, host):
+            removed.append(name)
+        elif pair:
+            kept.append(pair)
+    if not removed:
+        return url, []
+    return rest + ("?" + separator.join(kept) if kept else "") + hash_mark + fragment, removed
+
+
+def link_url_problems(page):
+    """Links and bare URLs outside code that track readers, hide or wrap their destination, or carry a
+    credential, as (start, end, message, replacement or None). A message never shows a credential's value.
+    """
+    problems = []
+    for start, _, text in page.prose_spans():
+        for match in URL.finditer(text):
+            url = match.group(0).rstrip(URL_END)
+            begin, end = start + match.start(), start + match.start() + len(url)
+            try:
+                parts = urllib.parse.urlsplit(url.replace("&amp;", "&"))
+                host = (parts.hostname or "").lower()
+            except ValueError:
+                continue
+            path = parts.path or "/"
+            query = urllib.parse.parse_qsl(parts.query, keep_blank_values=True)
+            if "@" in parts.netloc:
+                problems.append((begin, end, "remove the user name and password from this URL; a password "
+                                 "published in a page must be changed", None))
+            for name in collections.OrderedDict.fromkeys(k.lower() for k, v in query if v):
+                if name in CREDENTIAL_PARAMS:
+                    problems.append((begin, end, "remove the \"{}\" parameter (value not shown) from this URL; "
+                                     "it carries a credential, token, or signature, which must be revoked "
+                                     "once published".format(name), None))
+            wrapper = next((w for w in LINK_WRAPPERS if host_matches(host, (w[0],)) and
+                            (w[1] is None or path == w[1])), None)
+            if wrapper:
+                values = dict((k.lower(), v) for k, v in query)
+                target = next((values[p] for p in wrapper[2] if URL.fullmatch(values.get(p, ""))), None)
+                if target:
+                    problems.append((begin, end, "link {} directly instead of through this {} wrapper, which a "
+                                     "mail or security gateway added".format(urllib.parse.urlsplit(target).hostname,
+                                                                             host), target))
+                else:
+                    problems.append((begin, end, "link the destination directly instead of this {} redirect; "
+                                     "open it to find where it goes".format(host), None))
+                continue
+            if host_matches(host, SHORTENERS):
+                problems.append((begin, end, "link the destination instead of this {} short link; readers "
+                                 "cannot see where it goes, and its owner can change it".format(host), None))
+                continue
+            clean, removed = without_tracking(url, host)
+            if removed:
+                problems.append((begin, end, "remove the tracking parameter{} {} from this link".format(
+                    "s" if len(removed) > 1 else "", ", ".join('"{}"'.format(n) for n in removed)), clean))
+    return problems
 
 
 def advisory_cves(page):
@@ -1060,6 +1190,11 @@ def fix(page, findings):
         for start, level, should in reversed(heading_levels(page)):
             if level != should:
                 text = text[:start] + "#" * should + text[start + level:]
+        return text  # offsets changed; the next pass fixes the rest
+    if "link-url" in rules:
+        for start, end, _, replacement in sorted(link_url_problems(page), reverse=True):
+            if replacement is not None:
+                text = text[:start] + replacement + text[end:]
         return text  # offsets changed; the next pass fixes the rest
     if "trailing-slash" in rules:
         def slash(m):
