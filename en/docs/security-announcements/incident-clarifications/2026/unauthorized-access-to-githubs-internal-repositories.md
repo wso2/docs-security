@@ -24,5 +24,5 @@ We will update this announcement if we receive such communications from GitHub o
 
 ## References
 [^1]: [https://x.com/github/status/2056884788179726685](https://x.com/github/status/2056884788179726685)
-[^2]: [https://x.com/github/status/2056949168208552080?s=20](https://x.com/github/status/2056949168208552080?s=20)
+[^2]: [https://x.com/github/status/2056949168208552080](https://x.com/github/status/2056949168208552080)
 [^3]: [https://github.blog/security/investigating-unauthorized-access-to-githubs-internal-repositories/](https://github.blog/security/investigating-unauthorized-access-to-githubs-internal-repositories/)
