@@ -10,16 +10,16 @@ version: "1.0.0"
 <p class="doc-info">Published: September 22, 2026</p>
 <p class="doc-info">Version: 1.0.0</p>
 
-### BULLETIN ID  
+## BULLETIN ID  
 CHO-SB-2025-H2
 
-### SCOPE  
+## SCOPE  
 This bulletin summarizes security vulnerabilities addressed during the H2 of 2025 for Choreo.
 
-### VULNERABILITIES ADDRESSED
+## VULNERABILITIES ADDRESSED
 
 | Reference ID | Title | Severity | Summary |
-|--------------|-------|----------|---------|
+| --- | --- | --- | --- |
 | CHO-2025-007 | Read-Only Attribute Modification via SCIM2/Me API | Medium | A user attribute configured as read-only in the UI could still be modified through the SCIM2 `/Me` API because the restriction was enforced only at the UI layer and not at the backend/API layer. This could lead administrators to incorrectly assume sensitive attributes were protected from end-user modification. The issue was remediated by clarifying the product behavior in the UI and documentation to accurately reflect the scope of the read-only configuration. |
 | CHO-2025-008 | Cross-Organization Authorization Bypass | Critical | A cross-organization authorization gap allowed a user with a valid token and required scopes to perform privileged operations against other organizations, including adding themselves as an administrator, inviting users, managing groups, and removing group members. The issue was caused by the broader-than-intended removal of the `isAdmin()` check during migration. It was rated CVSS 9.4 (Critical), remediated through a production hotfix in the US and EU, and no evidence of exploitation or customer impact was identified. |
 | CHO-2025-009 | Unsecured Choreo Build Workflow Endpoint | Medium | An unsecured public `/configurable-commit-mapping` endpoint allowed unauthenticated modification of source and GitOps commit mappings used by the Choreo CI/CD workflow. Exploitation required several specific deployment identifiers, and successful exploitation could disrupt configuration-management and deployment actions, while existing running workloads remained unaffected. The issue was rated CVSS 4.8 (Medium) and was remediated in production. |
@@ -34,5 +34,5 @@ This bulletin summarizes security vulnerabilities addressed during the H2 of 202
 | CHO-2025-018 | AWS Instance Credential Exposure via SSRF | High | A server-side request forgery vulnerability in backend URL validation allowed requests to reach cloud metadata services, exposing AWS instance metadata and temporary IAM role credentials. The issue became Critical (CVSS 10) because the AWS environment was missing the NetworkPolicy required to block access to the metadata endpoint, while related Azure policies also contained configuration issues. A hotfix was applied to block metadata access, and updated NetworkPolicies were deployed across Azure US, Azure EU, and AWS and verified by engineering. Additional preventive work included extending network-policy coverage and adding connectivity tests to detect future regressions. |
 | CHO-2025-019 | Unrestricted File Upload Leading to Denial of Service | Medium | An unrestricted file upload issue could be abused to trigger a denial-of-service condition by allowing oversized or otherwise unsuitable files to be processed without adequate restrictions. The issue was rated CVSS 6.5 (Medium) and was confirmed to be reproducible across Choreo, Bijira, and Devant. Remediation was tracked separately by each product team, and fixes were subsequently deployed to production for all three products. |
 
-### CREDITS  
+## CREDITS  
 Choreo product team would like to thank all internal and external researchers for responsibly disclosing the above issues.
