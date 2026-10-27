@@ -169,14 +169,10 @@ security-announcements/security-advisories/2026/WSO2-2026-4608.md field-format
 security-announcements/cve-justifications/2022/CVE-2022-3602 and CVE-2022-3786.md file-name
 security-announcements/cve-justifications/2022/log4j v1 vulnerabilities (CVE-2022-23302 CVE-2022-23305 CVE-2022-23307).md file-name
 
-# CVE justifications from 2019 to 2021 that do not say whether WSO2 products are impacted or customer action is
-# required; WSO2's original Confluence pages do not either.
+# CVE justifications from 2019 to 2021 whose text does not settle whether WSO2 products are impacted or customer
+# action is required; WSO2's original Confluence pages do not either.
 security-announcements/cve-justifications/2019/CVE-2019-6512.md field-format 2
 security-announcements/cve-justifications/2019/CVE-2019-6515.md field-format 2
-security-announcements/cve-justifications/2020/CVE-2019-17571.md field-format 2
-security-announcements/cve-justifications/2020/CVE-2019-6513.md field-format 2
-security-announcements/cve-justifications/2020/CVE-2020-13226.md field-format 2
-security-announcements/cve-justifications/2020/CVE-2020-1938.md field-format 2
 security-announcements/cve-justifications/2021/ZDI-CAN-13449.md field-format 2
 
 # Its CVSS line carries NVD's original CVSS 2.0 score as a note, which a cvss field cannot hold.
