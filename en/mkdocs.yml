@@ -515,6 +515,7 @@ nav:
         - '': 'security-announcements/cve-justifications/2026/index.md'
         - 'CVE-2026-107726': 'security-announcements/cve-justifications/2026/CVE-2026-107726.md'
         - 'CVE-2026-107725': 'security-announcements/cve-justifications/2026/CVE-2026-107725.md'
+        - 'CVE-2026-47886': 'security-announcements/cve-justifications/2026/CVE-2026-47886.md'
         - 'CVE-2026-43869': 'security-announcements/cve-justifications/2026/CVE-2026-43869.md'
         - 'CVE-2026-19203': 'security-announcements/cve-justifications/2026/CVE-2026-19203.md'
         - 'CVE-2026-71497': 'security-announcements/cve-justifications/2026/CVE-2026-71497.md'
