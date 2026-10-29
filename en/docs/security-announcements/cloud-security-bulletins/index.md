@@ -1,5 +1,6 @@
 ---
 title: Cloud Security Bulletins
+description: "Security bulletins for WSO2 cloud services (WSO2 Identity Platform, Choreo, and WSO2 API Platform) that summarize the vulnerabilities addressed in each period."
 summary: Overview of Cloud Security Bulletins
 category: security-announcements
 ---

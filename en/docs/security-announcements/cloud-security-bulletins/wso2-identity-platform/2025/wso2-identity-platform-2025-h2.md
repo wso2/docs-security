@@ -9,16 +9,16 @@ version: "1.0.0"
 <p class="doc-info">Published: May 6, 2026</p>
 <p class="doc-info">Version: 1.0.0</p>
 
-### BULLETIN ID  
+## BULLETIN ID  
 ASG-SB-2025-H2
 
-### SCOPE  
+## SCOPE  
 This bulletin summarizes security vulnerabilities addressed during the H2 of 2025 for WSO2 Identity Platform.
 
-### VULNERABILITIES ADDRESSED
+## VULNERABILITIES ADDRESSED
 
 | Reference ID | Title | Severity | Summary |
-|--------------|-------|----------|---------|
+| --- | --- | --- | --- |
 | CVE-2025-48976 | Vulnerable Library Present in WSO2 Identity Platform | High | Allocation of resources for multipart headers with insufficient limits enabled a DoS vulnerability in Apache Commons FileUpload. This issue affects Apache Commons FileUpload from 1.0 before 1.6 and from 2.0.0-M1 before 2.0.0-M4. Users are recommended to upgrade to versions 1.6 or 2.0.0-M4, which fix the issue. |
 | ASG-2025-010 | Potential broken authorization via Attribute Configurations | Low | The Attribute Configurations controls offered via the Console application are applicable only to the UI profiles, while the backend APIs continue to follow the standard schema mutability. |
 | ASG-2025-011 | Locked users can successfully log in through Magic Link authenticator | Medium | Without proper account state checks, locked users may still be able to authenticate using Magic Links or Pass Keys. This could result in unintended access to restricted accounts. |
@@ -38,5 +38,5 @@ This bulletin summarizes security vulnerabilities addressed during the H2 of 202
 | ASG-2025-025 | DoS vulnerability with user sessions API | Medium | The `/api/users/v1/sessions` endpoint was found to place significant load on the WSO2 Identity Platform session database when invoked repeatedly due to a heavy backend query. |
 | ASG-2025-026 | Potential credential exposure related to Shai-Hulud supply chain attack | Critical | The Shai-Hulud 2.0 worm infects npm packages to steal cloud credentials and GitHub tokens. It establishes persistent access via self-hosted GitHub Actions runners and spreads automatically through CI/CD pipelines. |
 
-### CREDITS  
+## CREDITS  
 WSO2 Identity Platform thanks all internal and external researchers for responsibly disclosing the above issues.

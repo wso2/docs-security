@@ -11,6 +11,9 @@ ___
 
 WSO2 maintains a reward and acknowledgement program to recognize security researchers who responsibly disclose vulnerabilities in WSO2-owned software products. A finding qualifies for reward consideration when it has a demonstrated security impact on the confidentiality, integrity, or availability of an in-scope product or service; severity is assessed by WSO2 using [CVSS v3.1](https://www.first.org/cvss/specification-document). To submit a finding, follow the [Vulnerability Reporting Guidelines]({{#base_path#}}/security-reporting/vulnerability-reporting-guidelines/).
 
+<!-- WSO2's CNA entry on cve.org links this section as #products-services-in-scope. -->
+<a id="products-services-in-scope"></a>
+
 ## Products and services in scope
 
 The program covers the products listed under the [WSO2 platforms](https://wso2.com/#all-products). A product is in scope only when it has an Available or Deprecated version that is within Full Support according to the [WSO2 Support Matrix](https://wso2.com/products/support-matrix/); versions outside of Full Support are strictly out of scope. 
@@ -28,6 +31,8 @@ The platforms are:
 See [WSO2 Products](https://wso2.com/products/downloads/) for the current products, platforms, and Solutions. For Ballerina, vulnerability scope is governed by the [Ballerina Security Policy](https://ballerina.io/security-policy/).
 
 Internal staging environments, demo sites, WSO2-operated websites (e.g. wso2.com), and any customer-owned deployment of WSO2 software are out of scope.
+
+The same scope applies to WSO2 as a [CVE Numbering Authority (CNA)](https://www.cve.org/PartnerInformation/ListofPartners/partner/WSO2): WSO2 assigns CVE IDs to vulnerabilities in the products and services in scope.
 
 ## Non-qualifying findings
 
@@ -67,12 +72,12 @@ Once the reported issue is fixed and announced to customers and the community, a
 1. Lists the reporter on the [Security Hall of Fame]({{#base_path#}}/security-reporting/reward-and-acknowledgement-program/hall-of-fame/).
 2. Provides a monetary reward, either as an Amazon gift voucher (any Amazon storefront) or a PayPal transfer, at the reporter's choice. The amount depends on the severity of the confirmed finding:
 
-    | Severity            | CVSS Score     | Reward  |
-    | :------------------ | :------------- | :------ |
-    | Critical            | 9.0 to 10.0    | USD 500 |
-    | High                | 7.0 to 8.9     | USD 250 |
-    | Medium              | 4.0 to 6.9     | USD 100 |
-    | Low                 | 3.9 to above 0 | USD 50  |
+    | Severity | CVSS Score     | Reward  |
+    | :------- | :------------- | :------ |
+    | Critical | 9.0 to 10.0    | USD 500 |
+    | High     | 7.0 to 8.9     | USD 250 |
+    | Medium   | 4.0 to 6.9     | USD 100 |
+    | Low      | 3.9 to above 0 | USD 50  |
 
     These revised reward amounts apply only to issues reported on or after July 1, 2026.
     Issues reported before that date are eligible for a flat reward of USD 50.

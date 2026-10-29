@@ -16,15 +16,6 @@
  * under the License.
  */
  
-@import url('partials/_typography.css');
-@import url('partials/_button.css');
-@import url('partials/_icon.css');
-@import url('partials/_search.css');
-@import url('partials/_card.css');
-@import url('partials/_footer.css');
-@import url('partials/_sidebar.css');
-@import url('partials/_header.css');
-
 :root {
     --md-main-content-max-width: 1400px;
     --md-border-radius: 8px;
@@ -939,4 +930,26 @@
         height: 16px;
         width: 16px;
     }
+}
+
+/* The CVE Justifications page lists every justification in a table: keep each ID on one line. */
+.md-typeset table a[href*="/cve-justifications/"] {
+  white-space: nowrap;
+}
+
+/* Announcement pages write their sections as H2 and the parts of a section as H3, so the
+   outline does not skip a level after the H1. They keep the size they had as H3 and H4.
+   main.html marks these pages with md-content--announcement. */
+.md-content--announcement .md-typeset h2 {
+  font-size: 1.25em;
+  font-weight: 400;
+  line-height: 1.5;
+  margin: 1.6em 0 0.8em;
+}
+
+.md-content--announcement .md-typeset h3 {
+  font-size: inherit;
+  font-weight: 700;
+  line-height: inherit;
+  margin: 1em 0;
 }

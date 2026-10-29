@@ -1,5 +1,6 @@
 ---
 title: Secure Software Development Process
+description: "How WSO2 builds security into each phase of the software development life cycle: design review, developer self-review and code review, static, dynamic, and third-party dependency analysis during release, and vulnerability management."
 category: security-processes
 published: March 19, 2020
 version: 2.2
@@ -9,7 +10,7 @@ version: 2.2
 
 Security is not an afterthought at WSO2. It's an integral part of each phase in the development life cycle. This ensures that security vulnerabilities are identified and mitigated as early as possible.
 
-![secure-software-development-process](../assets/images/product-security/secure-software-development-process-overall-v2.png)
+![WSO2 secure software development process: secure design review, developer self-review, and code review guided by the WSO2 Secure Engineering Guidelines, followed by static, dynamic, and third-party dependency analysis in the product release process](../assets/images/product-security/secure-software-development-process-overall-v2.png)
 
 
 [WSO2 Secure Engineering Guidelines](../security-guidelines/secure-engineering-guidelines/index.md) provide the overall security guidance during the design, development and code review phases. A group of security leads review designs of new features and also review the code to make sure that engineers are adhering to the guidelines set forth. Some security checks are further enforced when engineers commit the code to the WSO2-maintained code repositories. 
@@ -18,7 +19,7 @@ Furthermore, before a product release, there are mandatory security scans that l
 
 This document further explains each individual phase of this overall process, carried out to produce secure software.
 
-### Design Phase
+## Design Phase
 
 New feature developments and modifications to the existing features must go through thorough design reviews that evaluate the security aspects of the corresponding component. 
 
@@ -35,9 +36,9 @@ The software architects and security leads of the respective product domains mus
 * Is an adequate amount of information being logged to understand a security-related incident?
 
 
-### Development Phase
+## Development Phase
 
-#### Developer Self-review
+### Developer Self-review
 
 Before any code review, all the engineers must do a self-code review. During development tasks and also during the self-code reviews, it is essential to follow the guidelines set forth by [WSO2 Secure Engineering Guidelines](../security-guidelines/secure-engineering-guidelines/index.md).
 
@@ -47,14 +48,14 @@ Before sending any GitHub Pull Requests (PR), developers must confirm the follow
 
 Developer workflow before creating a pull request
 
-![secure-software-development-process](../assets/images/product-security/secure-software-development-process-overall-5.png)
+![Developer self-review: follow the WSO2 Secure Engineering Guidelines, run FindSecurityBugs, and confirm the commits contain no secrets before creating the pull request](../assets/images/product-security/secure-software-development-process-overall-5.png)
 
 Relevant checks are further enforced by the GitHub PR template:
 
-![pull-request-template](../assets/images/product-security/pull-request-template.png)
+![GitHub pull request template with automation test and security check sections](../assets/images/product-security/pull-request-template.png)
 
 
-#### Code Reviews
+### Code Reviews
 
 Each new component must go through a set of code reviews. The participation of one or more security leads is a must for each code review. Once a code review is done, all the findings related to the security aspects must be resolved before merging the component into the code base. 
 
@@ -89,11 +90,11 @@ During these reviews, the following questions are considered:
 * Do the default values carry the most secure option?
 
 
-### Release Process
+## Release Process
 
 A release candidate goes through three types of security checks to make sure that the product is in a secure state.
 
-#### Static Code Analysis
+### Static Code Analysis
 Static Code Analysis is used to identify possible vulnerabilities within source code by using techniques such as [Taint Analysis and Data Flow Analysis](https://owasp.org/www-community/controls/Static_Code_Analysis).
 
 Apart from the [Find Security Bugs](https://find-sec-bugs.github.io/) Spotbugs plugin which is used in the development phase, WSO2 uses the [Veracode](https://www.veracode.com/products/binary-static-analysis-sast) commercial static analyzer for this purpose.
@@ -101,12 +102,12 @@ Apart from the [Find Security Bugs](https://find-sec-bugs.github.io/) Spotbugs p
 !!! note
     The security issues relevant to the third-party dependencies are covered separately with the [Third-Party Dependency Analysis](#third-party-dependency-analysis) effort. Therefore, the source code of the third-party dependencies is excluded from the static code analysis.
 
-#### Dynamic Analysis 
+### Dynamic Analysis 
 Dynamic Analysis is used to search for software vulnerabilities when the code is in operation mode. The analysis is performed when the application is running.
 
 WSO2 uses [Qualys Web Application Scanner (Qualys WAS)](https://www.qualys.com/apps/web-app-scanning/), [Invicti](https://www.invicti.com/web-vulnerability-scanner/) and [Burp Suite Professional](https://portswigger.net/burp/pro) for dynamic security scanning.
 
-#### Third-Party Dependency Analysis
+### Third-Party Dependency Analysis
 Security vulnerabilities identified in third-party dependencies may affect the security of the product. WSO2 prevents such security impacts that could occur due to third-party dependencies at a few stages.  
 
 It is essential to prevent the introduction of new third-party dependencies with known security vulnerabilities. Therefore, with any _third-party dependency approval request_ it is essential to attach the [OWASP Dependency Check](https://owasp.org/www-project-dependency-check/) report, adhering to the **[Software Supply Chain Failures]({{#base_path#}}/security-guidelines/secure-engineering-guidelines/secure-coding-guidlines/secure-coding-guide/#using-known-vulnerable-components)** section of the [WSO2 Secure Coding Guidelines]({{#base_path#}}/security-guidelines/secure-engineering-guidelines/secure-coding-guidlines/introduction/). 
@@ -118,9 +119,9 @@ New security vulnerabilities related to third-party dependencies may get identif
 
 The [National Vulnerability Database (NVD)](https://nvd.nist.gov/vuln) and other proprietary databases maintained by the mentioned scanner vendors are queried for third-party dependency issues and alerts will be generated if a new issue has been identified. Updating the dependency is required. When updating the dependency is not an option due to any major complications a [CVE Justification](../security-announcements/cve-justifications/index.md) should be published explaining why the relevant vulnerability does not affect security of the products. Such justification should explain the complications related to the update process requiring such justification to be published.
 
-#### Mandatory checks during releases
+### Mandatory checks during releases
 
-![release-process-sec-checks](../assets/images/product-security/release-process-sec-checks.png)
+![Release process security checks: the release candidate is scanned, true positives are fixed, and justifications for other findings are recorded before the release proceeds](../assets/images/product-security/release-process-sec-checks.png)
 
 Even though security scans can be scheduled at any time, based on the requests from the product teams, it is mandatory to perform all three scan types (static scan, dynamic scan, third-party dependency scan) before a product release. This involves the following:
 
@@ -133,7 +134,7 @@ Even though security scans can be scheduled at any time, based on the requests f
 * Re-scan the product before the release vote, if complex changes have occurred between the initial security scan and the actual release vote, preventing manual verification of security fixes.
 
 
-### Vulnerability Management
+## Vulnerability Management
 
 All issues reported by static code analyzers, dynamic scanners and dependency scans will be uploaded into a centralized Vulnerability Management System (VMS).
 

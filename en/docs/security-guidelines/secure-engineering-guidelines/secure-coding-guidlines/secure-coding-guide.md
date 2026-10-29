@@ -232,7 +232,7 @@ Do not accept absolute forward URLs, or absolute redirect URLs (apart from admin
 
 External: [OWASP A05](https://owasp.org/Top10/A05_2021-Security_Misconfiguration/) · [HTTP Headers Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/HTTP_Headers_Cheat_Sheet.html). Read these for the category model; this section covers what to set in WSO2 code and deployments.
 
-Production hardening (per-product, per-version) is a separate concern from code defaults. Follow the version-indexed [Security Guidelines for Production Deployment](https://docs.wso2.com/display/ADMIN44x/Security+Guidelines+for+Production+Deployment) for your product and version; the controls below are the ones you own in code and manifests regardless of deployment.
+Production hardening (per-product, per-version) is a separate concern from code defaults. Follow the version-indexed [Security Guidelines for Production Deployment]({{#base_path#}}/security-guidelines/security-guidelines-for-production-deployment/) for your product and version; the controls below are the ones you own in code and manifests regardless of deployment.
 
 ### HTTP security headers
 
