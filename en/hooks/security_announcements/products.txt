@@ -42,6 +42,7 @@ WSO2 Universal Gateway
 # Products on these pages that WSO2's product list does not have: retired products, and
 # products newer than the list. Confirm a new name with the product team before adding it here.
 WSO2 API Microgateway Toolkit
+WSO2 APK
 WSO2 App Manager
 WSO2 Application Server
 WSO2 Business Process Server
@@ -65,6 +66,7 @@ WSO2 Streaming Integrator Tooling
 # Spellings that --fix replaces with the official name.
 API Manager -> WSO2 API Manager
 API Manager Analytics -> WSO2 API Manager Analytics
+WSO2 APK (API Platform for Kubernetes) -> WSO2 APK
 WSO2 API Management Traffic Manager -> WSO2 Traffic Manager
 WSO2 API Manager - Publisher Portal -> WSO2 API Manager
 WSO2 API Manager Universal Gateway -> WSO2 Universal Gateway
