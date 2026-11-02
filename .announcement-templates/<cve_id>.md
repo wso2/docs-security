@@ -16,8 +16,9 @@ customer_action_required: "No"
 
 
 ## WSO2 JUSTIFICATION
-{{wso2_Justification}}
+{{wso2_justification}}
 
 
 ## REFERENCES
-[^1]: [reference_1_link](reference_1_link)
+[^1]: [https://www.cve.org/CVERecord?id={{cve_id}}](https://www.cve.org/CVERecord?id={{cve_id}})
+[^2]: [reference_2_link](reference_2_link)
