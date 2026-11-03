@@ -274,10 +274,7 @@ class Page(object):
             for line in match.group(1).splitlines(True):
                 field = re.match(r"([A-Za-z][\w -]*?):[ \t]*(.*?)[ \t]*$", line.rstrip("\n"))
                 if field:
-                    value = field.group(2)
-                    if len(value) >= 2 and value[0] == value[-1] and value[0] in "\"'":
-                        value = value[1:-1]
-                    self.meta[field.group(1)] = value
+                    self.meta[field.group(1)] = text_helpers.unquoted(field.group(2))
                     self.meta_lines[field.group(1)] = offset
                 offset += len(line)
         self.body = self.text[self.meta_end:]
@@ -1180,6 +1177,11 @@ def safe_to_remove(page):
         and len(block_lines) == len(re.findall(r'^<p class="doc-info">', page.body, re.M))
 
 
+def quoted(value):
+    """A front matter value as a YAML double-quoted string, which text_helpers.unquoted() reads back."""
+    return '"{}"'.format(value.replace("\\", "\\\\").replace('"', '\\"'))
+
+
 def fix(page, findings):
     text = page.text
     rules = {f.rule for f in findings if f.fixable}
@@ -1235,7 +1237,8 @@ def fix(page, findings):
     if "repeated-info" in rules and fields:
         add = moved_info(page, fields)
         head, body = text[:page.meta_end], text[page.meta_end:]
-        head = re.sub(r"---[ \t]*\n\Z", "".join("{}: \"{}\"\n".format(k, v) for k, v in add.items()) + "---\n", head)
+        head = re.sub(r"---[ \t]*\n\Z", lambda _: "".join("{}: {}\n".format(k, quoted(v)) for k, v in add.items()) +
+                      "---\n", head)
         block = INFO_LINES.search(body)
         return head + body[:block.start()] + body[block.end():]
     if "field-format" in rules and fields:
@@ -1243,16 +1246,16 @@ def fix(page, findings):
         kinds = {key: kind for key, _, _, _, kind in fields}
         def standardize(m):
             standard = field_value(kinds[m.group(2)], m.group(3).strip("\"'"))
-            return m.group(1) + '"{}"'.format(standard) if standard else m.group(0)
+            return m.group(1) + quoted(standard) if standard else m.group(0)
         head = re.sub(r"^((" + "|".join(kinds) + r"):[ \t]*)(.*?)[ \t]*$", standardize, head, flags=re.M)
         head = re.sub(r"^date:", "published:", head, flags=re.M)
         return head + body
     if "repeated-info" in rules and ADVISORY_PATH.search(page.rel):
         head, body = text[:page.meta_end], text[page.meta_end:].lstrip("\n")
         # Keep any value the page shows but front matter lacks.
-        missing = ["{}: \"{}\"\n".format(key, value) for key, value in shown_values(page).items()
+        missing = ["{}: {}\n".format(key, quoted(value)) for key, value in shown_values(page).items()
                    if not page.meta.get(key, "").strip()]
-        head = re.sub(r"---[ \t]*\n\Z", "".join(missing) + "---\n", head)
+        head = re.sub(r"---[ \t]*\n\Z", lambda _: "".join(missing) + "---\n", head)
         # The build takes CVE IDs from the title, so move them there as the template writes them.
         shown_cves = re.search(r'^<p class="doc-info">CVE IDs:(.*)$', body, re.M)
         cves = list(collections.OrderedDict.fromkeys(CVE.findall(shown_cves.group(1)))) if shown_cves else []
@@ -1261,6 +1264,7 @@ def fix(page, findings):
                           lambda m: m.group(1) + m.group(2) + m.group(3) + "/" + ", ".join(cves) + m.group(2),
                           head, count=1, flags=re.M)
         text = head + "\n" + body[INFO_BLOCK.match(body).end():]
+        return text  # offsets changed; the next pass fixes the rest
     if "field-format" in rules:
         head, body = text[:page.meta_end], text[page.meta_end:]
         def field(key, valid, normalize):
@@ -1268,7 +1272,7 @@ def fix(page, findings):
                 value = m.group(2)
                 if valid(value) or normalize(value) is None:
                     return m.group(0)
-                return m.group(1) + '"{}"'.format(normalize(value))
+                return m.group(1) + quoted(normalize(value))
             return re.sub(r"^(" + key + r":[ \t]*)\"?([^\"\n]*?)\"?[ \t]*$", replace, head, flags=re.M)
         head = field("severity", lambda v: v in SEVERITIES, normalize_severity)
         head = field("cvss", lambda v: v == "Not Applicable" or CVSS.match(v), normalize_cvss)

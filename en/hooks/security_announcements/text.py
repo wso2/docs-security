@@ -31,12 +31,29 @@ VERSION_START_RE = re.compile(r"[\s:,(-]+(?:v(?:ersions?)?\.?\s*)?\d")
 FRONT_MATTER_RE = re.compile(r"\A---[ \t]*\n(.*?\n)---[ \t]*\n", re.S)
 
 
+def unquoted(value):
+    """A front matter value as YAML reads it, for the plain and quoted forms the templates use."""
+    if len(value) >= 2 and value[0] == value[-1] == '"':
+        return re.sub(r'\\(["\\])', r"\1", value[1:-1])
+    if len(value) >= 2 and value[0] == value[-1] == "'":
+        return value[1:-1].replace("''", "'")
+    return value
+
+
 def front_matter(text):
-    """A file's front matter fields as plain strings, quotes removed, and its body."""
+    """A file's front matter fields as plain strings, quotes removed, and its body.
+
+    MkDocs reads front matter as YAML; this reads only "key: value" lines. The two agree on
+    the forms .github/scripts/check_content.py enforces (dates as "Month D, YYYY", values on
+    one line), and that check reads front matter with unquoted() too. A page that bypasses
+    the check may parse differently: an advisory published as "2026-10-19" would be left
+    off the home page and llms.txt.
+    """
     front = FRONT_MATTER_RE.match(text)
     if not front:
         return {}, text
-    fields = dict(re.findall(r"^([A-Za-z0-9_]+):[ \t]*[\"']?(.*?)[\"']?[ \t]*$", front.group(1), re.M))
+    fields = {key: unquoted(value) for key, value in
+              re.findall(r"^([A-Za-z0-9_]+):[ \t]*(.*?)[ \t]*$", front.group(1), re.M)}
     return fields, text[front.end():]
 
 
