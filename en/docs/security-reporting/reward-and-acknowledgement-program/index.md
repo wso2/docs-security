@@ -32,8 +32,6 @@ See [WSO2 Products](https://wso2.com/products/downloads/) for the current produc
 
 Internal staging environments, demo sites, WSO2-operated websites (e.g. wso2.com), and any customer-owned deployment of WSO2 software are out of scope.
 
-The same scope applies to WSO2 as a [CVE Numbering Authority (CNA)](https://www.cve.org/PartnerInformation/ListofPartners/partner/WSO2): WSO2 assigns CVE IDs to vulnerabilities in the products and services in scope.
-
 ## Non-qualifying findings
 
 Reports in the following categories are reviewed but typically do not qualify for a reward under this program. WSO2 may still address these findings as security improvements or hardening work where appropriate; reward eligibility is a separate decision from whether the finding is fixed.
