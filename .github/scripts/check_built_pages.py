@@ -39,6 +39,11 @@
                    them (en/hooks/security_announcements/listings.py,
                    latest_advisories). The home page link is how a new
                    advisory gets crawled soon after it is published.
+    cna-links      a page or anchor that WSO2's entry in the CVE Program's list
+                   of partners links (CNA_LINKS) is missing. The entry gives
+                   the scope as the #products-services-in-scope section, which
+                   MkDocs would name #products-and-services-in-scope, so the
+                   page keeps an explicit anchor.
 
 Usage: check_built_pages.py <site-dir>
 """
@@ -58,6 +63,9 @@ from security_announcements import listings  # noqa: E402
 ENTRY = re.compile(r"(?:^|/)(security-announcements/(?:security-advisories|cve-justifications)/\d{4})/([^/]+)(?:/|$)")
 SIDEBARS = {"md-sidebar--primary": "menu", "md-sidebar--secondary": "table of contents"}
 ADVISORY_ID = re.compile(r"WSO2-\d{4}-\d{4}")
+# The scope, policy, and advisories links of WSO2's CNA entry on cve.org: (page, anchor or None).
+CNA_LINKS = (("security-reporting/reward-and-acknowledgement-program", "products-services-in-scope"),
+             ("security-announcements", None))
 PUBLISHED = re.compile(r'"datePublished":\s*"(\d{4}-\d{2}-\d{2})"')
 
 
@@ -265,6 +273,23 @@ def check_llms_txt(site_dir):
     return problems
 
 
+def check_cna_links(site_dir):
+    """Problem messages for the pages and anchors that WSO2's cve.org entry links."""
+    problems = []
+    for rel, anchor in CNA_LINKS:
+        path = os.path.join(site_dir, rel, "index.html")
+        if not os.path.isfile(path):
+            problems.append("{}/: WSO2's cve.org entry links this page, but the build did not write it "
+                            "[cna-links]".format(rel))
+            continue
+        with open(path, encoding="utf-8") as handle:
+            text = handle.read()
+        if anchor and not re.search(r"\bid=[\"']?{}[\"'\s>]".format(re.escape(anchor)), text):
+            problems.append("{}/: WSO2's cve.org entry links #{}, but the page has no element with that id "
+                            "[cna-links]".format(rel, anchor))
+    return problems
+
+
 def folder_and_entry(path):
     """The year folder and entry name of an advisory or CVE justification path, or None."""
     match = ENTRY.search(path)
@@ -320,7 +345,7 @@ def main():
                       "{} [menu-entries]".format(rel, len(others), sorted(others)[0]))
                 problems += 1
 
-    for problem in check_listed(site_dir) + check_llms_txt(site_dir):
+    for problem in check_listed(site_dir) + check_llms_txt(site_dir) + check_cna_links(site_dir):
         print(problem)
         problems += 1
 
@@ -333,7 +358,7 @@ def main():
         print("\n{} problem(s) in {} page(s).".format(problems, checked))
         return 1
     print("Checked {} page(s). The menu and sidebars are fine, every announcement is listed, llms.txt is valid, "
-          "and the home page lists the newest advisories.".format(checked))
+          "the cve.org links resolve, and the home page lists the newest advisories.".format(checked))
     return 0
 
 

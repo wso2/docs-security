@@ -32,6 +32,13 @@ See [WSO2 Products](https://wso2.com/products/downloads/) for the current produc
 
 Internal staging environments, demo sites, WSO2-operated websites (e.g. wso2.com), and any customer-owned deployment of WSO2 software are out of scope.
 
+### CVE assignment
+
+WSO2 is a [CVE Numbering Authority (CNA)](https://www.cve.org/PartnerInformation/ListofPartners/partner/WSO2), and its entry in the CVE Program's list of partners defines its scope by this section. For WSO2 cloud services and Ballerina, CVE IDs are assigned as follows:
+
+* **WSO2 cloud services:** WSO2 assigns a CVE ID for a vulnerability in a cloud service when customers or other parties must act on it. A vulnerability that WSO2 fixes in the service, with no action needed from customers, is listed in the [Cloud Security Bulletins]({{#base_path#}}/security-announcements/cloud-security-bulletins/) under a WSO2 reference ID instead of a CVE ID. WSO2 notifies subscribers of confirmed security incidents as described in the [Security Incident Notification Process for SaaS]({{#base_path#}}/security-processes/saas-incident-notification-process/).
+* **Ballerina:** vulnerabilities are handled under the [Ballerina Security Policy](https://ballerina.io/security-policy/). They are reported to security@ballerina.io and published as Ballerina security advisories.
+
 ## Non-qualifying findings
 
 Reports in the following categories are reviewed but typically do not qualify for a reward under this program. WSO2 may still address these findings as security improvements or hardening work where appropriate; reward eligibility is a separate decision from whether the finding is fixed.
