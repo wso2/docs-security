@@ -25,7 +25,8 @@ Every page:
                      ignores it (title, dates)                            (--fix)
     stray-front-matter  a second front matter block in the page body, which readers see
                      as plain text
-    legacy-link      a link to the retired docs.wso2.com/display/ pages
+    legacy-link      a link to the retired docs.wso2.com/display/ pages or to the Confluence site
+                     (wso2docs.atlassian.net)
     link-url         a link or bare URL outside code with a tracking parameter (utm_*,
                      __mt, fbclid, ...; TRACKING_PARAMS), wrapped by a mail or security
                      gateway or a redirector (Safe Links, URL Defense, google.com/url,
@@ -543,6 +544,9 @@ def check_target(findings, at, label, target):
     elif "docs.wso2.com/display/" in target:
         findings.append(Finding("legacy-link", at, "replace the link to the retired docs.wso2.com/display/ "
                                 "page with its current location"))
+    elif "wso2docs.atlassian.net" in target:
+        findings.append(Finding("legacy-link", at, "replace the link to the Confluence site with this site's page "
+                                "or the product's docs site, or remove it and keep the text"))
     elif target.startswith("{{#base_path#}}/"):
         path = "{{#base_path#}}/" + target[len("{{#base_path#}}/"):].split("#", 1)[0]
         if not path.endswith("/") and "." not in posixpath.basename(path):
