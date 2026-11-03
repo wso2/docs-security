@@ -2,7 +2,6 @@
 title: NPM Supply Chain Attack - Shai-Hulud 2.0
 category: security-announcements
 published: "December 5, 2025"
-updated: "December 5, 2025"
 version: "1.0.0"
 wso2_impacted: "Yes"
 evidence_of_compromise: "Yes"

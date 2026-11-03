@@ -142,7 +142,7 @@ Add `--fix` to rewrite the links. When the text cites something that only anothe
 
 ## Content checks
 
-Write each value once. For a security advisory, fill in the front matter from the template in `.announcement-templates`: `title` (with the CVE ID), `published`, `updated`, `version`, `severity`, `cvss`, and `cwe`. Do not add a heading or the Published, Version, Severity, CVSS Score, CVE IDs, and CWE lines to the page; the build renders them from front matter.
+Write each value once. For a security advisory, fill in the front matter from the template in `.announcement-templates`: `title` (with the CVE ID), `published`, `updated`, `version`, `severity`, `cvss`, and `cwe`. Do not add a heading or the Published, Version, Severity, CVSS Score, CVE IDs, and CWE lines to the page; the build renders them from front matter. Add `updated` only when you revise a published advisory: set it to the date of the revision, after `published`, and raise `version`. A version above 1.0.0 needs `updated`.
 
 Use these forms:
 
@@ -168,7 +168,7 @@ A CVE justification and an incident clarification each have their own format. St
 | CVE justification field | Shown as | Required | Values |
 | ----------------------- | -------- | -------- | ------ |
 | `published` | Published | Yes | `Month D, YYYY` |
-| `updated` | Updated | No | `Month D, YYYY`, only when the page is revised |
+| `updated` | Updated | No | `Month D, YYYY`, only when the page is revised: after `published` |
 | `wso2_products_impacted` | WSO2 Products impacted | Yes | `"Yes"`, `"No"`, or `"Limited"` |
 | `severity` | WSO2 Products severity | No | As for advisories |
 | `cvss` | WSO2 Products CVSS score | No | As for advisories |

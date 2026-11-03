@@ -2,7 +2,6 @@
 title: Axios NPM Supply Chain Compromise
 category: security-announcements
 published: "April 3, 2026"
-updated: "April 3, 2026"
 version: "1.0.0"
 wso2_impacted: "Yes"
 evidence_of_compromise: "No"

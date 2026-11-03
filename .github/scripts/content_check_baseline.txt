@@ -220,3 +220,15 @@ security-announcements/security-advisories/2020/WSO2-2020-0864.md repeated-info
 security-announcements/security-advisories/2025/WSO2-2025-4503.md repeated-info
 security-announcements/security-advisories/2020/WSO2-2020-0864.md field-format 2
 security-announcements/security-advisories/2025/WSO2-2025-4503.md field-format 2
+# Revised (version above 1.0.0) with no record of the revision date; add updated once the security team gives it.
+security-announcements/security-advisories/2020/WSO2-2019-0663.md updated-date
+security-announcements/security-advisories/2020/WSO2-2020-0685.md updated-date
+security-announcements/security-advisories/2020/WSO2-2020-0687.md updated-date
+security-announcements/security-advisories/2020/WSO2-2020-0718.md updated-date
+security-announcements/security-advisories/2020/WSO2-2020-0731.md updated-date
+security-announcements/security-advisories/2020/WSO2-2020-0747.md updated-date
+security-announcements/security-advisories/2020/WSO2-2020-0755.md updated-date
+security-announcements/security-advisories/2021/WSO2-2020-1132.md updated-date
+security-announcements/security-advisories/2021/WSO2-2020-1196.md updated-date
+security-announcements/security-advisories/2021/WSO2-2021-1289.md updated-date
+security-announcements/security-advisories/2026/WSO2-2026-5236.md updated-date

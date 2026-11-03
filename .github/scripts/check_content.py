@@ -94,6 +94,9 @@ Security advisories (security-advisories/<year>/WSO2-*.md):
     severity-score   the severity differs from the rating of the cvss score: Low 0.1
                      to 3.9, Medium 4.0 to 6.9, High 7.0 to 8.9, Critical 9.0 to 10.0
     year-folder      the published year differs from the year folder
+    updated-date     (also CVE justifications and incident clarifications) updated
+                     is the published date (--fix removes it) or before it, or is
+                     missing although the version is above 1.0.0
     duplicate-id     the advisory ID exists in more than one year folder
     listing          the advisory's year folder has no yearly list page
 
@@ -150,6 +153,7 @@ import posixpath
 import re
 import sys
 import urllib.parse
+from datetime import datetime
 
 REPO_ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 DOCS = os.path.join(REPO_ROOT, "en", "docs")
@@ -518,6 +522,8 @@ def check_page(page, site):
     if incident:
         findings.extend(check_listed(page, site, "incident-clarifications", incident.group(1), incident.group(2)))
     findings.extend(check_products(page))
+    if advisory or justification or incident:
+        findings.extend(check_updated(page))
     if justification or incident:
         findings.extend(check_heading(page))
         fields = formats.JUSTIFICATION_FIELDS if justification else formats.INCIDENT_FIELDS
@@ -922,6 +928,24 @@ def moved_info(page, fields):
     return add
 
 
+def check_updated(page):
+    """The updated date of an advisory, CVE justification, or incident clarification."""
+    findings = []
+    published, updated = page.meta.get("published", ""), page.meta.get("updated", "")
+    if updated and updated == published:
+        findings.append(Finding("updated-date", page.meta_lines["updated"], "remove updated; it is the published "
+                                "date, and the page shows it only when the page is revised", True))
+    elif DATE.match(published) and DATE.match(updated) and \
+            datetime.strptime(updated, "%B %d, %Y") < datetime.strptime(published, "%B %d, %Y"):
+        findings.append(Finding("updated-date", page.meta_lines["updated"], "updated {} is before published "
+                                "{}".format(updated, published)))
+    version = page.meta.get("version", "")
+    if not updated and re.match(r"^\d+\.\d+\.\d+$", version) and version != "1.0.0":
+        findings.append(Finding("updated-date", page.meta_lines["version"], "add updated, the date of version {}; "
+                                "a version above 1.0.0 is a revision".format(version)))
+    return findings
+
+
 def check_fields(page, fields):
     """Front matter fields of a CVE justification or an incident clarification."""
     findings = []
@@ -1230,6 +1254,9 @@ def fix(page, findings):
         return text  # offsets changed; the next pass fixes the rest
     fields = (formats.JUSTIFICATION_FIELDS if JUSTIFICATION_PATH.search(page.rel) else
               formats.INCIDENT_FIELDS if INCIDENT_PATH.search(page.rel) else None)
+    if "updated-date" in rules:
+        head = re.sub(r"^updated:[^\n]*\n", "", text[:page.meta_end], count=1, flags=re.M)
+        return head + text[page.meta_end:]
     if "repeated-heading" in rules:
         heading = HEADING.match(text, page.meta_end)
         text = text[:page.meta_end] + "\n" + text[heading.end():].lstrip("\n")

@@ -2,7 +2,6 @@
 title: Unauthorized access to GitHub's internal repositories
 category: security-announcements
 published: "May 22, 2026"
-updated: "May 22, 2026"
 version: "1.0.0"
 wso2_impacted: "No"
 evidence_of_compromise: "No"
