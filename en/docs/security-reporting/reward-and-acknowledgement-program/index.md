@@ -38,7 +38,7 @@ WSO2 is a [CVE Numbering Authority (CNA)](https://www.cve.org/PartnerInformation
 
 * **WSO2 cloud services:** WSO2 fixes a vulnerability in a cloud service in the service itself and lists it in the [Cloud Security Bulletins]({{#base_path#}}/security-announcements/cloud-security-bulletins/) under a WSO2 reference ID. WSO2 also assigns a CVE ID when the vulnerability concerns a broader audience than its customers, for example when other parties must assess it or act on it. WSO2 notifies subscribers of confirmed security incidents as described in the [Security Incident Notification Process for SaaS]({{#base_path#}}/security-processes/saas-incident-notification-process/).
 * **WSO2 Solutions:** WSO2 assigns a CVE ID for a vulnerability in a Solution on the same basis as for cloud services.
-* **Versions outside Full Support:** WSO2 fixes vulnerabilities in the versions within Full Support and does not assess every version outside Full Support. WSO2 may assign a CVE ID that covers a version outside Full Support, for example for a critical vulnerability that concerns a broader audience, or when a reporter shows that an older version is affected. A CVE record that covers only versions that no longer receive fixes is tagged `unsupported-when-assigned`.
+* **Versions outside Full Support:** WSO2 may assign a CVE ID that covers a version outside Full Support, for example for a critical vulnerability that concerns a broader audience, or when a reporter shows that an older version is affected. A CVE record that covers only versions that no longer receive fixes is tagged `unsupported-when-assigned`.
 
 ## Non-qualifying findings
 
