@@ -1,6 +1,7 @@
 ---
 title: WSO2 Identity Platform Security Bulletin – H2 2025
 category: security-announcements
+published: "May 6, 2026"
 version: "1.0.0"
 ---
 
