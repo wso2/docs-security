@@ -27,6 +27,9 @@ against a build of it:
     missing-page   the record links a URL of this site that the build does
                    not have, as a page or a redirect. Correct the record's
                    reference, or add a redirect from that URL.
+    outside-site   the record links a URL on this site's host outside its
+                   site_url, such as a mistyped /en/lates/ path. The build
+                   cannot serve it, so correct the record's reference.
 
 It also lists, without failing, the WSO2 records that link no page of this
 site, such as records that still link a retired docs.wso2.com page.
@@ -77,9 +80,10 @@ def references(record):
 def built_file(site_dir, base, url):
     """The built file a URL of this site is served from, or None when the URL is not under base."""
     parts, root = urlsplit(url), urlsplit(base)
-    if parts.netloc.lower() != root.netloc.lower() or not parts.path.startswith(root.path):
+    path = parts.path if parts.path.endswith("/") or parts.path + "/" != root.path else root.path
+    if parts.netloc.lower() != root.netloc.lower() or not path.startswith(root.path):
         return None
-    rel = unquote(parts.path[len(root.path):])
+    rel = unquote(path[len(root.path):])
     if not rel or rel.endswith("/"):
         rel += "index.html"
     elif not os.path.splitext(rel)[1]:
@@ -115,7 +119,10 @@ def main():
             unlinked.append(cve_id)
         for url in ours:
             path = built_file(site_dir, base, url)
-            if path is not None and not os.path.isfile(path):
+            if path is None:
+                problems.append("{}: the CVE record links {}, which is outside {}. Correct the record's "
+                                "reference [outside-site]".format(cve_id, url, base))
+            elif not os.path.isfile(path):
                 problems.append("{}: the CVE record links {}, which the site does not have. Correct the "
                                 "record's reference, or add a redirect from that URL [missing-page]".format(cve_id, url))
 
@@ -124,7 +131,7 @@ def main():
     if unlinked:
         print("\n{} WSO2 CVE record(s) link no page of this site: {}".format(len(unlinked), ", ".join(unlinked)))
     if problems:
-        print("\nFound {} CVE record reference(s) to pages the site does not have, in the {} WSO2 CVE records "
+        print("\nFound {} CVE record reference(s) that do not resolve to a page of the site, in the {} WSO2 CVE records "
               "the site links.".format(len(problems), checked))
         return 1
     print("\nChecked the {} WSO2 CVE records the site links. Every reference to this site works.".format(checked))
