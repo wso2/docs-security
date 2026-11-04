@@ -41,6 +41,8 @@ titles must agree both ways:
     missing-advisory  an advisory's title lists a WSO2 CVE ID whose record does
                       not link the advisory, as when two advisories share a CVE
                       ID and the record covers only one.
+    rejected-id       the CVE Program's API rejects a CVE ID the site links,
+                      such as a mistyped one.
 
 A link to a redirect counts as a link to the page it redirects to. The script
 also lists, without failing, the WSO2 records that link no page of this site,
@@ -64,7 +66,7 @@ import check_cve_links
 REPO_ROOT = check_cve_links.REPO_ROOT
 ASSIGNER = "WSO2"
 ADVISORY_DIR = "security-announcements/security-advisories"
-ADVISORY_FILE = re.compile(r"^WSO2-\d{4}-\d{4}\.md$")
+ADVISORY_FILE = re.compile(r"^WSO2-\d{4}-\d+\.md$")
 REFRESH = re.compile(r"<meta[^>]+http-equiv=[\"']?refresh[^>]*url=([^\"'>\s]+)", re.I)
 
 
@@ -154,6 +156,9 @@ def main():
     for cve_id in linked_ids():
         try:
             record = check_cve_links.fetch_record(cve_id)
+        except check_cve_links.RejectedId as error:
+            problems.append("{} [rejected-id]".format(error))
+            continue
         except OSError as error:
             print(error)
             print("\nThe CVE Program's API could not be reached, so the CVE records were not checked. "
