@@ -91,6 +91,8 @@ CVE_RECORD_URL = re.compile(
     r")(?P<id>CVE-\d{4}-\d{4,})(?![\w-])/?",
     re.IGNORECASE,
 )
+# A link to a CVE record in the CVE Program's API, which --published also looks up.
+CVE_API_URL = re.compile(r"https?://cveawg\.mitre\.org/api/cve/(?P<id>CVE-\d{4}-\d{4,})(?![\w-])", re.IGNORECASE)
 CVE_ID = re.compile(r"\bCVE-\d{4}-\d{4,}\b", re.IGNORECASE)
 # The front matter, up to its closing ---, and its title with any indented continuation lines.
 FRONT_MATTER = re.compile(r"\A---[ \t]*\r?\n(.*?)^---[ \t]*\r?$", re.M | re.S)
@@ -108,14 +110,18 @@ class Finding(object):
 
 
 class Unpublished(object):
-    def __init__(self, start, cve_id):
+    def __init__(self, start, cve_id, message=None):
         self.start = start
         self.found = cve_id
-        self.message = ("{} has no published CVE record. Link it once its record is published on "
-                        "cve.org, or remove the link".format(cve_id))
+        self.message = message or ("{} has no published CVE record. Link it once its record is published on "
+                                   "cve.org, or remove the link".format(cve_id))
 
 
-def record_links(text, allowed=False):
+class RejectedId(Exception):
+    """The CVE Program's API rejected a CVE ID itself (an HTTP 4xx other than 404 or 429)."""
+
+
+def record_links(text, allowed=False, pattern=CVE_RECORD_URL):
     """Yield (offset, match) for each CVE record link outside code.
 
     Lines marked ALLOW are left out, unless allowed is true: the marker permits a link to
@@ -132,7 +138,7 @@ def record_links(text, allowed=False):
                 in_fence = None
         elif in_fence is None and (allowed or ALLOW not in line):
             code = [m.span() for m in INLINE_CODE.finditer(line)]
-            for match in CVE_RECORD_URL.finditer(line):
+            for match in pattern.finditer(line):
                 if not any(start <= match.start() < end for start, end in code):
                     yield offset + match.start(), match
         offset += len(line)
@@ -150,7 +156,10 @@ def find_links(text):
 
 def linked_cves(text):
     """Return (offset, CVE ID) for each CVE ID the page links: its record links and its title's IDs."""
-    linked = [(start, match.group("id").upper()) for start, match in record_links(text, allowed=True)]
+    # The offset is the CVE ID's, not the URL's, so a report points at the ID.
+    linked = [(start + match.start("id") - match.start(), match.group("id").upper())
+              for pattern in (CVE_RECORD_URL, CVE_API_URL)
+              for start, match in record_links(text, allowed=True, pattern=pattern)]
     front = FRONT_MATTER.match(text)
     title = TITLE.search(front.group(1)) if front else None
     if title:
@@ -162,7 +171,8 @@ def linked_cves(text):
 def record_state(cve_id):
     """The state of a CVE record (PUBLISHED or REJECTED), or None when it has no record.
 
-    Raises OSError when the CVE Program's API cannot be reached after a few attempts.
+    Raises RejectedId when the API rejects the ID itself, and OSError when the API cannot be
+    reached, or answers with no record, after a few attempts.
     """
     request = urllib.request.Request(CVE_API.format(cve_id), headers={
         "Accept": "application/json", "User-Agent": "wso2-docs-security-cve-link-check"})
@@ -171,13 +181,17 @@ def record_state(cve_id):
             with urllib.request.urlopen(request, timeout=20) as response:
                 body = json.load(response)
             metadata = body.get("cveMetadata") if isinstance(body, dict) else None
+            containers = body.get("containers") if isinstance(body, dict) else None
             state = metadata.get("state") if isinstance(metadata, dict) else None
-            if isinstance(state, str):
+            if isinstance(state, str) and isinstance(containers, dict) and isinstance(containers.get("cna"), dict):
                 return state
-            failure = ValueError("the response has no cveMetadata.state")
+            failure = ValueError("the response has no cveMetadata.state or containers.cna")
         except urllib.error.HTTPError as error:
             if error.code == 404:
                 return None  # CVE_RECORD_DNE: reserved, or never assigned
+            if 400 <= error.code < 500 and error.code not in (408, 429):
+                raise RejectedId("the CVE Program's API rejected {} (HTTP {}). Check the CVE ID".format(
+                    cve_id, error.code))
             failure = error
         except (urllib.error.URLError, OSError, ValueError) as error:
             failure = error
@@ -186,20 +200,25 @@ def record_state(cve_id):
     raise OSError("could not look up {} at {}: {}".format(cve_id, CVE_API.format(cve_id), failure))
 
 
-def renamed_from(revision):
-    """The files renamed since a git revision, as {new path: old path}, relative to the repository."""
+def changes_since(revision):
+    """The files renamed since a git revision, as {new path: old path}, and the files deleted since.
+
+    Paths are relative to the repository.
+    """
     result = subprocess.run(["git", "-C", REPO_ROOT, "diff", "-z", "--name-status", "--find-renames", revision],
                             stdout=subprocess.PIPE, stderr=subprocess.DEVNULL)
     fields = result.stdout.decode("utf-8", "replace").split("\0") if result.returncode == 0 else []
-    renames, i = {}, 0
+    renames, deleted, i = {}, [], 0
     while i < len(fields) - 1:
         status = fields[i]
         if status.startswith(("R", "C")) and i + 2 < len(fields):
             renames[fields[i + 2]] = fields[i + 1]
             i += 3
         else:
+            if status == "D":
+                deleted.append(fields[i + 1])
             i += 2
-    return renames
+    return renames, deleted
 
 
 def linked_at(revision, path, renames=None):
@@ -212,7 +231,7 @@ def linked_at(revision, path, renames=None):
     result = subprocess.run(["git", "-C", REPO_ROOT, "show", "{}:{}".format(revision, relative)],
                             stdout=subprocess.PIPE, stderr=subprocess.DEVNULL)
     if result.returncode != 0:
-        return set()
+        return None
     return {cve_id for _, cve_id in linked_cves(result.stdout.decode("utf-8", "replace"))}
 
 
@@ -226,9 +245,14 @@ def find_unpublished(text, states, known=frozenset()):
         if cve_id in known:
             continue
         if cve_id not in states:
-            states[cve_id] = record_state(cve_id)
+            try:
+                states[cve_id] = record_state(cve_id)
+            except RejectedId as error:
+                states[cve_id] = str(error)
         if states[cve_id] is None:
             findings.append(Unpublished(start, cve_id))
+        elif states[cve_id] not in ("PUBLISHED", "REJECTED"):
+            findings.append(Unpublished(start, cve_id, states[cve_id]))
     return findings
 
 
@@ -286,6 +310,9 @@ def main(argv=None):
     args = parser.parse_args(argv)
     if args.since and not args.published:
         parser.error("--since needs --published")
+    if args.since and subprocess.run(["git", "-C", REPO_ROOT, "rev-parse", "--verify", "--quiet",
+                                      args.since + "^{commit}"], stdout=subprocess.DEVNULL).returncode != 0:
+        parser.error("--since: {} is not a git revision".format(args.since))
 
     paths = args.paths or [os.path.relpath(os.path.join(REPO_ROOT, p)) for p in DEFAULT_PATHS]
     missing = [p for p in paths if not os.path.exists(p)]
@@ -326,13 +353,21 @@ def main(argv=None):
 
 def check_published(paths, github, since=None):
     states = {}
-    renames = renamed_from(since) if since else {}
+    renames, deleted = changes_since(since) if since else ({}, [])
+    # A file that git does not pair with an old path, such as one renamed and heavily edited,
+    # is compared with the CVE IDs of every file the change deletes.
+    from_deleted = set()
+    for old in deleted:
+        from_deleted |= linked_at(since, os.path.join(REPO_ROOT, old)) or set()
     checked = remaining = remaining_files = 0
     for path in markdown_files(paths):
         with open(path, encoding="utf-8", newline="") as handle:
             text = handle.read()
         checked += 1
-        known = linked_at(since, path, renames) if since else frozenset()
+        known = frozenset()
+        if since:
+            known = linked_at(since, path, renames)
+            known = from_deleted if known is None else known
         try:
             findings = find_unpublished(text, states, known)
         except OSError as error:
