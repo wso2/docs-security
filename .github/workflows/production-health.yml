@@ -1,0 +1,51 @@
+name: Production Health
+
+# Every day, check that the live site serves every URL in its sitemap and answers
+# a page it does not have with 404. A failure opens an issue (or comments on the
+# open one), and the next passing run closes it.
+on:
+  schedule:
+    - cron: '0 4 * * *'  # daily at 04:00 UTC
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: production-health
+  cancel-in-progress: true
+
+jobs:
+  production:
+    name: Check the live site
+    if: github.repository == 'wso2/docs-security'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      issues: write
+    steps:
+      - name: Check out code
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+        with:
+          persist-credentials: false
+
+      # The script uses only the Python standard library.
+      - name: Check the live site
+        id: check
+        shell: bash
+        run: |
+          report="$RUNNER_TEMP/production.txt"
+          status=0
+          python3 .github/scripts/check_production.py > "$report" 2>&1 || status=$?
+          cat "$report"
+          echo "report=$report" >> "$GITHUB_OUTPUT"
+          echo "failed=$([ "$status" -ne 0 ] && echo true || echo false)" >> "$GITHUB_OUTPUT"
+          exit "$status"
+
+      - name: Report to an issue
+        if: always() && steps.check.outputs.failed != ''
+        uses: ./.github/actions/report-issue
+        with:
+          title: Production Health check failed
+          failed: ${{ steps.check.outputs.failed }}
+          report: ${{ steps.check.outputs.report }}
