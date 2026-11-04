@@ -92,7 +92,9 @@ CVE_RECORD_URL = re.compile(
     re.IGNORECASE,
 )
 CVE_ID = re.compile(r"\bCVE-\d{4}-\d{4,}\b", re.IGNORECASE)
-TITLE = re.compile(r"\A---[ \t]*\r?\n(?:.*\r?\n)*?(title:.*)$", re.M)
+# The front matter, up to its closing ---, and its title with any indented continuation lines.
+FRONT_MATTER = re.compile(r"\A---[ \t]*\r?\n(.*?)^---[ \t]*\r?$", re.M | re.S)
+TITLE = re.compile(r"^(title:.*(?:\r?\n[ \t]+.*)*)", re.M)
 FENCE = re.compile(r"^[ \t]*(```|~~~)")
 INLINE_CODE = re.compile(r"(`+)(?:(?!\1).)+?\1")
 
@@ -145,9 +147,11 @@ def find_links(text):
 def linked_cves(text):
     """Return (offset, CVE ID) for each CVE ID the page links: its record links and its title's IDs."""
     linked = [(start, match.group("id").upper()) for start, match in record_links(text)]
-    title = TITLE.match(text)
+    front = FRONT_MATTER.match(text)
+    title = TITLE.search(front.group(1)) if front else None
     if title:
-        linked += [(title.start(1) + m.start(), m.group(0).upper()) for m in CVE_ID.finditer(title.group(1))]
+        start = front.start(1) + title.start(1)
+        linked += [(start + m.start(), m.group(0).upper()) for m in CVE_ID.finditer(title.group(1))]
     return sorted(linked)
 
 
@@ -161,7 +165,12 @@ def record_state(cve_id):
     for attempt in range(1, ATTEMPTS + 1):
         try:
             with urllib.request.urlopen(request, timeout=20) as response:
-                return json.load(response).get("cveMetadata", {}).get("state")
+                body = json.load(response)
+            metadata = body.get("cveMetadata") if isinstance(body, dict) else None
+            state = metadata.get("state") if isinstance(metadata, dict) else None
+            if isinstance(state, str):
+                return state
+            failure = ValueError("the response has no cveMetadata.state")
         except urllib.error.HTTPError as error:
             if error.code == 404:
                 return None  # CVE_RECORD_DNE: reserved, or never assigned
