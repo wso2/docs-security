@@ -39,8 +39,9 @@ Every page:
     empty-link       a link with no text or no target
     image-alt        an image has no alt text, or only its file name
     footnote         a footnote is defined ("[^1]: ...") but the text never cites it, or is cited
-                     ("[^1]") but never defined; a citation in a raw HTML line (one that starts
-                     with "<") does not count, since Markdown does not process that line
+                     ("[^1]") but never defined; a citation in a raw HTML block (a line that
+                     starts with a block-level tag such as <p> or <div>) does not count, since
+                     Markdown does not process that block
     file-name        a file name contains characters other than letters, digits, ".", "-", "_"
     table-format     a table is not in its form: each cell padded to its column's
                      width, with the separator's dashes as wide as the column; or,
@@ -475,6 +476,16 @@ def check_heading_levels(page):
         should, "#" * should), True) for start, level, should in heading_levels(page) if level != should]
 
 
+# The tags that start a raw HTML block in Python-Markdown (md.block_level_elements), and
+# comments. Markdown is not processed in such a block, so a footnote citation there is text.
+# A line that starts with an inline tag, such as <span> or <b>, is a Markdown paragraph.
+HTML_BLOCK_START = re.compile(
+    r"<(?:!--|/?(?:address|article|aside|blockquote|body|canvas|colgroup|dd|details|div|dl|dt|fieldset|"
+    r"figcaption|figure|footer|form|h[1-6]|header|hgroup|hr|iframe|legend|li|main|map|math|menu|nav|"
+    r"noscript|object|ol|option|output|p|pre|progress|script|section|style|summary|table|tbody|td|"
+    r"textarea|tfoot|th|thead|tr|ul|video)(?=[\s/>]))", re.I)
+
+
 def check_footnotes(page):
     """Footnotes that are defined but never cited, which leave a broken back-link, and citations with no definition."""
     definitions = {}
@@ -485,7 +496,7 @@ def check_footnotes(page):
         if definition:
             definitions.setdefault(definition.group(1), start)
         line_start = page.text.rfind("\n", 0, start) + 1
-        if page.text[line_start:].lstrip(" \t").startswith("<"):
+        if HTML_BLOCK_START.match(page.text[line_start:].lstrip(" \t")):
             continue
         for match in FOOTNOTE_CITATION.finditer(text):
             if not (definition and match.start() == definition.start(1) - 2):
@@ -494,7 +505,7 @@ def check_footnotes(page):
     for name, at in definitions.items():
         if name not in citations:
             findings.append(Finding("footnote", at, "cite the footnote [^{0}] in the text after the sentence it "
-                                    "supports (a line that starts with \"<\" does not count), or remove its "
+                                    "supports (a line that starts with a block-level HTML tag does not count), or remove its "
                                     "definition".format(name)))
     for name, at in citations.items():
         if name not in definitions:
