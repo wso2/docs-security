@@ -16,7 +16,7 @@ When you build a WSO2 product or service that serves HTTP, this is the security 
 Identify whether the surface you're building is an **admin-only UI**, a **customer-facing or themable UI**, or a **JSON API**. The header defaults differ.
 
 | Header | Engineer default | Per-surface tuning |
-|---|---|---|
+| --- | --- | --- |
 | `X-Content-Type-Options` | `nosniff` on every response | Same for all surfaces. |
 | `Referrer-Policy` | `strict-origin-when-cross-origin` on every response | Stricter (`no-referrer`) for token-bearing endpoints. |
 | `Permissions-Policy` | `geolocation=(), microphone=(), camera=(), payment=(), interest-cohort=()` on every response | Add directives for any other features the surface doesn't use. |
@@ -38,7 +38,7 @@ Identify whether the surface you're building is an **admin-only UI**, a **custom
 Deprecated, ignored, or actively harmful. If you find existing code emitting one of these, remove it.
 
 | Header | Status |
-|---|---|
+| --- | --- |
 | `X-XSS-Protection` | Chrome removed the XSS Auditor in v78 (October 2019); Firefox never implemented it. **Deprecated.** If any code still emits it, set the value to `0` (explicitly disable) rather than `1; mode=block`, since the heuristics it enabled were themselves a source of XSS. |
 | `Public-Key-Pins` (HPKP) | **Removed** from browsers: Chrome v72 (January 2019), Firefox v72 (January 2020). Operational misuse can also lock customers out of an upgraded TLS chain in legacy browsers that still parse it. |
 | `Feature-Policy` | Replaced by `Permissions-Policy`. Same intent, different syntax. |
