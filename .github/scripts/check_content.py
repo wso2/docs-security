@@ -38,6 +38,9 @@ Every page:
     trailing-slash   a {{#base_path#}} link to a page does not end with "/"   (--fix)
     empty-link       a link with no text or no target
     image-alt        an image has no alt text, or only its file name
+    footnote         a footnote is defined ("[^1]: ...") but the text never cites it, or is cited
+                     ("[^1]") but never defined; a citation in a raw HTML line (one that starts
+                     with "<") does not count, since Markdown does not process that line
     file-name        a file name contains characters other than letters, digits, ".", "-", "_"
     table-format     a table is not in its form: each cell padded to its column's
                      width, with the separator's dashes as wide as the column; or,
@@ -204,6 +207,8 @@ INFO_BLOCK = re.compile(r'#[ \t]+[^\n]*\n(?:[ \t]*\n)*(?:<p class="doc-info">[^\
 INFO_LINE = re.compile(r'^<p class="doc-info">(Published|Updated|Version|Severity|CVSS Score|CVE IDs):.*$', re.M)
 HEADING = re.compile(r"\s*^#[ \t]+(.+?)[ \t]*$", re.M)  # only the first line of the body
 PLACEHOLDER = re.compile(r"\{\{(?!#)[^{}#]*\}\}")
+FOOTNOTE_DEFINITION = re.compile(r"[ ]{0,3}\[\^([^\]\s]+)\]:")
+FOOTNOTE_CITATION = re.compile(r"(?<!\\)\[\^([^\]\s]+)\]")
 MD_LINK = re.compile(r"(!?)\[([^\]]*)\]\(([^)\s]*)(?:\s+\"[^\"]*\")?\)")
 HTML_LINK = re.compile(r"<a\b[^>]*?href=\"([^\"]*)\"[^>]*>(.*?)</a>", re.S)
 HTML_IMG = re.compile(r"<img\b[^>]*>")
@@ -470,6 +475,34 @@ def check_heading_levels(page):
         should, "#" * should), True) for start, level, should in heading_levels(page) if level != should]
 
 
+def check_footnotes(page):
+    """Footnotes that are defined but never cited, which leave a broken back-link, and citations with no definition."""
+    definitions = {}
+    citations = {}
+    for start, _, text in page.prose_spans():
+        at_line_start = start == 0 or page.text[start - 1] == "\n"
+        definition = FOOTNOTE_DEFINITION.match(text) if at_line_start else None
+        if definition:
+            definitions.setdefault(definition.group(1), start)
+        line_start = page.text.rfind("\n", 0, start) + 1
+        if page.text[line_start:].lstrip(" \t").startswith("<"):
+            continue
+        for match in FOOTNOTE_CITATION.finditer(text):
+            if not (definition and match.start() == definition.start(1) - 2):
+                citations.setdefault(match.group(1), start + match.start())
+    findings = []
+    for name, at in definitions.items():
+        if name not in citations:
+            findings.append(Finding("footnote", at, "cite the footnote [^{0}] in the text after the sentence it "
+                                    "supports (a line that starts with \"<\" does not count), or remove its "
+                                    "definition".format(name)))
+    for name, at in citations.items():
+        if name not in definitions:
+            findings.append(Finding("footnote", at, "define the footnote [^{0}] (\"[^{0}]: ...\"), or remove the "
+                                    "citation".format(name)))
+    return findings
+
+
 def check_page(page, site):
     findings = []
     name = os.path.basename(page.path)
@@ -488,6 +521,7 @@ def check_page(page, site):
         findings.append(Finding("link-url", start, message, replacement is not None))
     findings.extend(check_table_columns(page))
     findings.extend(check_table_format(page))
+    findings.extend(check_footnotes(page))
     for start, _, text in page.prose_spans():
         for match in PLACEHOLDER.finditer(text):
             findings.append(Finding("placeholder", start + match.start(),
