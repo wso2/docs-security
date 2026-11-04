@@ -63,7 +63,7 @@ JUSTIFICATIONS_PAGE = "security-announcements/cve-justifications/index.md"
 JUSTIFICATION_TABLE_MARKER = "<!-- The build lists the CVE justifications here, by CVE ID. -->"
 # How many of the newest advisories the home page lists. The home page is the page search
 # engines crawl most, so a new advisory is found soon after it is published.
-LATEST_ADVISORIES = 10
+LATEST_ADVISORIES = 5
 
 
 def fill_nav(items, docs_dir):
