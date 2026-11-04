@@ -815,6 +815,10 @@ def nav_block(text):
     return (match.start(), match.end()) if match else (0, 0)
 
 
+NAV_JUSTIFICATIONS = re.compile(r"^([ \t]*)-[ \t]*['\"]CVE Justifications['\"][ \t]*:[ \t]*\n", re.M)
+JUSTIFICATIONS_INDEX = re.compile(r"-[ \t]*''[ \t]*:[ \t]*['\"]security-announcements/cve-justifications/index\.md['\"]")
+
+
 def check_nav(site):
     """Advisories and advisory year sections written into the nav by hand. The build writes them."""
     start, end = nav_block(site.mkdocs)
@@ -828,6 +832,20 @@ def check_nav(site):
     findings += [Finding("generated-list", match.start(), "remove this line; " + (
                          where(match) or "the build adds every page to its year's section"), True)
                  for match in NAV_ADVISORY.finditer(site.mkdocs, start, end)]
+    # The build replaces everything under the CVE Justifications section but its index page
+    # (listings.fill_nav), so any other entry there is dropped from the menu.
+    reported = {finding.start for finding in findings}
+    section = NAV_JUSTIFICATIONS.search(site.mkdocs, start, end)
+    if section:
+        indent = len(section.group(1))
+        for line in re.finditer(r"^([ \t]*)(\S.*)$", site.mkdocs[section.end():end], re.M):
+            if len(line.group(1).expandtabs()) <= indent:
+                break
+            at = section.end() + line.start()
+            if line.group(2).startswith("#") or JUSTIFICATIONS_INDEX.match(line.group(2)) or at in reported:
+                continue
+            findings.append(Finding("generated-list", at, "remove this entry; the build lists every CVE "
+                                    "justification in the nav by CVE ID and drops entries written by hand"))
     return findings
 
 
