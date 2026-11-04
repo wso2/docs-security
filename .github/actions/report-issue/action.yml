@@ -1,0 +1,57 @@
+name: Report to an issue
+description: >-
+  Keep one open issue per scheduled check. When the check fails, open the issue,
+  or comment on it when it is already open. When the check passes, close it.
+
+inputs:
+  title:
+    description: The issue title, which identifies the check's issue.
+    required: true
+  failed:
+    description: "'true' when the check failed."
+    required: true
+  report:
+    description: A file with the check's output, quoted in the issue.
+    required: false
+    default: ''
+
+runs:
+  using: composite
+  steps:
+    - name: Report to an issue
+      shell: bash
+      env:
+        GH_TOKEN: ${{ github.token }}
+        GH_REPO: ${{ github.repository }}
+        TITLE: ${{ inputs.title }}
+        FAILED: ${{ inputs.failed }}
+        REPORT: ${{ inputs.report }}
+        RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+      run: |
+        label=site-health
+        gh label create "$label" --color d93f0b --description "Found by a scheduled site check" 2>/dev/null || true
+        number=$(gh issue list --label "$label" --state open --limit 100 --json number,title \
+          --jq ".[] | select(.title == env.TITLE) | .number" | head -n 1)
+        if [ "$FAILED" != true ]; then
+          if [ -n "$number" ]; then
+            gh issue close "$number" --comment "The check passed in $RUN_URL."
+          fi
+          exit 0
+        fi
+        body="$RUNNER_TEMP/issue-body.md"
+        {
+          echo "The check failed in $RUN_URL."
+          if [ -n "$REPORT" ] && [ -s "$REPORT" ]; then
+            echo
+            echo '```'
+            # An issue or comment holds at most 65536 characters.
+            head -c 60000 "$REPORT"
+            echo
+            echo '```'
+          fi
+        } > "$body"
+        if [ -n "$number" ]; then
+          gh issue comment "$number" --body-file "$body"
+        else
+          gh issue create --title "$TITLE" --label "$label" --body-file "$body"
+        fi

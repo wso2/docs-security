@@ -156,12 +156,21 @@ def record_state(cve_id):
 
     Raises OSError when the CVE Program's API cannot be reached after a few attempts.
     """
+    record = fetch_record(cve_id)
+    return record.get("cveMetadata", {}).get("state") if record is not None else None
+
+
+def fetch_record(cve_id):
+    """A CVE record as the CVE Program's API returns it (CVE JSON 5), or None when it has no record.
+
+    Raises OSError when the API cannot be reached after a few attempts.
+    """
     request = urllib.request.Request(CVE_API.format(cve_id), headers={
         "Accept": "application/json", "User-Agent": "wso2-docs-security-cve-link-check"})
     for attempt in range(1, ATTEMPTS + 1):
         try:
             with urllib.request.urlopen(request, timeout=20) as response:
-                return json.load(response).get("cveMetadata", {}).get("state")
+                return json.load(response)
         except urllib.error.HTTPError as error:
             if error.code == 404:
                 return None  # CVE_RECORD_DNE: reserved, or never assigned
