@@ -223,10 +223,9 @@ $ python3 .github/scripts/check_removed_urls.py <base-site> en/site
 
 ## Scheduled checks
 
-These workflows check the live site and the CVE records on a schedule, since neither changes with a pull request. Each keeps one open issue, labeled `site-health`: a failing run opens it or comments on it, and the next passing run closes it. Run any of them from the Actions tab.
+These workflows check the live site's links and the CVE records on a schedule, since neither changes with a pull request. Each keeps one open issue, labeled `site-health`: a failing run opens it or comments on it, and the next passing run closes it. Run any of them from the Actions tab.
 
 * **Broken Link Checker** (daily) runs linkchecker on the live site and uploads its report.
-* **Production Health** (daily) runs `check_production.py`: `sitemap.xml`, `llms.txt`, and `feed.xml` load, every URL in the sitemap returns 200, and a page the site does not have returns 404.
 * **CVE Record Health** (weekly) runs `check_cve_links.py --published` on every file, not only the CVE IDs a pull request adds, and `check_cve_records.py` on a build of the site: every CVE record that WSO2 assigned and the site links must reference only pages the site has. It also lists the WSO2 records that link no page of this site.
 
 The workflows pin each action to a commit SHA, with its version in a comment, and `.github/dependabot.yml` proposes updates to those pins weekly. Python packages get Dependabot security updates only.
