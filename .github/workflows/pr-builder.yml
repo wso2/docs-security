@@ -7,6 +7,10 @@ on:
       - '.github/workflows/pr-builder.yml'
       - '.github/scripts/check_internal_links.py'
       - '.github/scripts/check_built_pages.py'
+      - '.github/scripts/check_removed_urls.py'
+
+permissions:
+  contents: read
 
 concurrency:
   group: pr-builder-${{ github.ref }}
@@ -21,6 +25,7 @@ jobs:
         uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
         with:
           fetch-depth: 0
+          persist-credentials: false
 
       - name: Set up Python
         uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5.6.0
@@ -47,3 +52,14 @@ jobs:
       # and out of search result snippets.
       - name: Check built pages
         run: python .github/scripts/check_built_pages.py en/site
+
+      # Other sites and CVE records link to these pages. Build the base branch too,
+      # and fail when a URL it publishes is missing from this build. A moved or
+      # removed page needs a redirect.
+      - name: Check for removed URLs
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+        run: |
+          git worktree add --detach "$RUNNER_TEMP/base" "$BASE_SHA"
+          (cd "$RUNNER_TEMP/base/en" && mkdocs build --site-dir "$RUNNER_TEMP/base-site")
+          python .github/scripts/check_removed_urls.py "$RUNNER_TEMP/base-site" en/site
