@@ -31,8 +31,20 @@ against a build of it:
                    site_url, such as a mistyped /en/lates/ path. The build
                    cannot serve it, so correct the record's reference.
 
-It also lists, without failing, the WSO2 records that link no page of this
-site, such as records that still link a retired docs.wso2.com page.
+An advisory's front matter title gives the CVE IDs that belong to it; the
+body may cite other CVEs, and a record may link other pages too. Records and
+titles must agree both ways:
+
+    wrong-advisory    the record links none of the advisories whose title
+                      lists its CVE ID, as when a record describes another
+                      advisory's vulnerability.
+    missing-advisory  an advisory's title lists a WSO2 CVE ID whose record does
+                      not link the advisory, as when two advisories share a CVE
+                      ID and the record covers only one.
+
+A link to a redirect counts as a link to the page it redirects to. The script
+also lists, without failing, the WSO2 records that link no page of this site,
+such as records that still link a retired docs.wso2.com page.
 
 Usage:
 
@@ -51,6 +63,9 @@ import check_cve_links
 
 REPO_ROOT = check_cve_links.REPO_ROOT
 ASSIGNER = "WSO2"
+ADVISORY_DIR = "security-announcements/security-advisories"
+ADVISORY_FILE = re.compile(r"^WSO2-\d{4}-\d{4}\.md$")
+REFRESH = re.compile(r"<meta[^>]+http-equiv=[\"']?refresh[^>]*url=([^\"'>\s]+)", re.I)
 
 
 def site_url():
@@ -67,6 +82,38 @@ def linked_ids():
         with open(path, encoding="utf-8", newline="") as handle:
             ids.update(cve_id for _, cve_id in check_cve_links.linked_cves(handle.read()))
     return sorted(ids)
+
+
+def advisory_claims():
+    """{CVE ID: the advisory pages whose front matter title lists it}, pages as URL paths below site_url."""
+    claims = {}
+    root = os.path.join(REPO_ROOT, "en", "docs", *ADVISORY_DIR.split("/"))
+    for year in sorted(os.listdir(root)):
+        folder = os.path.join(root, year)
+        if not os.path.isdir(folder):
+            continue
+        for name in sorted(os.listdir(folder)):
+            if not ADVISORY_FILE.match(name):
+                continue
+            with open(os.path.join(folder, name), encoding="utf-8", newline="") as handle:
+                text = handle.read()
+            front = check_cve_links.FRONT_MATTER.match(text)
+            title = check_cve_links.TITLE.search(front.group(1)) if front else None
+            page = "{}/{}/{}/".format(ADVISORY_DIR, year, name[:-3])
+            for match in check_cve_links.CVE_ID.finditer(title.group(1) if title else ""):
+                claims.setdefault(match.group(0).upper(), set()).add(page)
+    return claims
+
+
+def page_path(site_dir, path):
+    """The URL path below site_url of a built file, following a redirect stub to its target."""
+    with open(path, encoding="utf-8", errors="replace") as handle:
+        refresh = REFRESH.search(handle.read(4096))
+    if refresh:
+        target = os.path.normpath(os.path.join(os.path.dirname(path), unquote(refresh.group(1)).split("#")[0]))
+        path = target if target.endswith(".html") else os.path.join(target, "index.html")
+    rel = os.path.relpath(path, site_dir).replace(os.sep, "/")
+    return rel[:-len("index.html")] if rel.endswith("index.html") else rel
 
 
 def references(record):
@@ -102,6 +149,7 @@ def main():
     base = site_url()
     host = urlsplit(base).netloc.lower()
 
+    claims = advisory_claims()
     problems, unlinked, checked = [], [], 0
     for cve_id in linked_ids():
         try:
@@ -117,6 +165,7 @@ def main():
         ours = [url for url in references(record) if urlsplit(url).netloc.lower() == host]
         if not ours:
             unlinked.append(cve_id)
+        linked = set()
         for url in ours:
             path = built_file(site_dir, base, url)
             if path is None:
@@ -125,16 +174,28 @@ def main():
             elif not os.path.isfile(path):
                 problems.append("{}: the CVE record links {}, which the site does not have. Correct the "
                                 "record's reference, or add a redirect from that URL [missing-page]".format(cve_id, url))
+            else:
+                linked.add(page_path(site_dir, path))
+        owners = claims.get(cve_id, set())
+        if ours and owners and not linked & owners:
+            problems.append("{}: the CVE record links {}, but the advisory whose title lists {} is {}. Correct the "
+                            "record, or the advisory's title [wrong-advisory]".format(
+                                cve_id, ", ".join(ours), cve_id, ", ".join(base + page for page in sorted(owners))))
+        for page in sorted(owners - linked):
+            if ours and not linked & owners:
+                break  # reported as wrong-advisory
+            problems.append("{}: the title of {} lists {}, but the CVE record does not link it. Add the advisory "
+                            "to the record [missing-advisory]".format(cve_id, base + page, cve_id))
 
     for problem in problems:
         print(problem)
     if unlinked:
         print("\n{} WSO2 CVE record(s) link no page of this site: {}".format(len(unlinked), ", ".join(unlinked)))
     if problems:
-        print("\nFound {} CVE record reference(s) that do not resolve to a page of the site, in the {} WSO2 CVE records "
-              "the site links.".format(len(problems), checked))
+        print("\nFound {} problem(s) in the {} WSO2 CVE records the site links.".format(len(problems), checked))
         return 1
-    print("\nChecked the {} WSO2 CVE records the site links. Every reference to this site works.".format(checked))
+    print("\nChecked the {} WSO2 CVE records the site links. Every reference to this site works, and each record "
+          "links the advisories whose titles list it.".format(checked))
     return 0
 
 
