@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+{#- Overrides the MkDocs sitemap: lastmod comes from the page's published or
+    updated date (set by hooks/seo.py) instead of the build date, and pages
+    marked noindex are left out. -#}
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+{%- for file in pages -%}
+    {%- set page = file.page -%}
+    {% if not page.is_link and (page.abs_url or page.canonical_url) and not (page.meta and page.meta.robots and "noindex" in page.meta.robots) %}
+    <url>
+         <loc>{% if page.canonical_url %}{{ page.canonical_url|e }}{% else %}{{ page.abs_url|e }}{% endif %}</loc>
+         {% if page.meta and page.meta.seo and page.meta.seo.modified %}<lastmod>{{ page.meta.seo.modified }}</lastmod>{% endif %}
+    </url>
+    {%- endif -%}
+{% endfor %}
+</urlset>

@@ -1,0 +1,58 @@
+name: Content Check
+
+# No paths filter: a required check that is skipped by a filter stays pending
+# and blocks the merge.
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: content-check-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  content:
+    name: Check content
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v4
+        with:
+          # The merge commit and its parents, to list the files a PR changes.
+          fetch-depth: 2
+          persist-credentials: false
+
+      # A pull request is checked only in the Markdown files it adds or changes,
+      # so a problem that reached main some other way does not fail unrelated PRs.
+      # Pushes to main, manual runs, and PRs that change the checker, its baseline,
+      # the nav, or the build's rules in en/hooks check every file. The script and
+      # en/hooks/security_announcements use only the Python standard library.
+      # When the check fails, the log shows the changes --fix makes (such as table
+      # padding), so the author can apply them without running the script. The
+      # job has read-only access and never pushes them.
+      - name: Check content
+        shell: bash
+        run: |
+          checker=.github/scripts/check_content.py
+          baseline=.github/scripts/content_check_baseline.txt
+          if [ "$GITHUB_EVENT_NAME" = pull_request ] && git diff --quiet HEAD^1 HEAD -- "$checker" "$baseline" en/mkdocs.yml en/hooks; then
+            echo "Checking the Markdown files this pull request adds or changes."
+            git diff -z --name-only --diff-filter=ACMR HEAD^1 HEAD -- 'en/docs/*.md' > "$RUNNER_TEMP/changed"
+            check() { xargs -0 -r python3 "$checker" "$@" -- < "$RUNNER_TEMP/changed"; }
+          else
+            check() { python3 "$checker" "$@"; }
+          fi
+          if check; then
+            exit 0
+          fi
+          echo "::group::The changes that python3 $checker --fix makes"
+          check --fix > /dev/null || true
+          git diff
+          echo "::endgroup::"
+          exit 1
