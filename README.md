@@ -206,17 +206,30 @@ Add `--fix` to correct the problems that can be fixed without guessing, such as 
 
 ## Build checks
 
-The pull request build runs `mkdocs build` in `en/`, then two checks on the built site:
+The pull request build runs `mkdocs build` in `en/`, then three checks on the built site:
 
 * `check_internal_links.py` fails on links to pages or files that the build does not contain. It matches paths case-sensitively.
 * `check_built_pages.py` fails when a page's menu lists advisories from other year folders, or CVE justifications on a page outside the CVE Justifications section, or when a sidebar is not marked `data-nosnippet`. Search engines index the menu on every page, so the theme lists only the open section and keeps the sidebars out of search result snippets. It also fails when an announcement page is not linked from the page that lists it (an advisory from its year's list, a CVE justification from the CVE Justifications page, an incident clarification or a cloud security bulletin from its year page), which catches a file in the wrong folder, an advisory file not named after its ID, and a bulletin missing from its hand-kept year page. It checks `llms.txt`, which the build writes for tools that read the site with a language model (https://llmstxt.org), next to `sitemap.xml` and the RSS feed `feed.xml`. And it fails when the home page does not list the 5 newest advisories, newest published first: a link from the home page gets a new advisory crawled soon after it is published. It also fails when a page or anchor that WSO2's CNA entry on cve.org links is missing, such as the `#products-services-in-scope` anchor that the entry gives as WSO2's CNA scope.
 
-To run them locally, build the site and run the following commands from the repository root:
+* `check_removed_urls.py` fails when the pull request removes a URL that the base branch publishes. The build also builds the base branch and compares the two: every page and redirect of the base build must still be in the pull request's build. Other sites and CVE records link to these pages, so to move or remove a page, add a redirect from its old Markdown file to `redirect_maps` in `en/mkdocs.yml`.
+
+To run them locally, build the site and run the following commands from the repository root (for the last one, build the base branch into another folder first):
 
 ```shell
 $ python3 .github/scripts/check_internal_links.py en/site
 $ python3 .github/scripts/check_built_pages.py en/site
+$ python3 .github/scripts/check_removed_urls.py <base-site> en/site
 ```
+
+## Scheduled checks
+
+These workflows check the live site and the CVE records on a schedule, since neither changes with a pull request. Each keeps one open issue, labeled `site-health`: a failing run opens it or comments on it, and the next passing run closes it. Run any of them from the Actions tab.
+
+* **Broken Link Checker** (daily) runs linkchecker on the live site and uploads its report.
+* **Production Health** (daily) runs `check_production.py`: `sitemap.xml`, `llms.txt`, and `feed.xml` load, every URL in the sitemap returns 200, and a page the site does not have returns 404.
+* **CVE Record Health** (weekly) runs `check_cve_links.py --published` on every file, not only the CVE IDs a pull request adds, and `check_cve_records.py` on a build of the site: every CVE record that WSO2 assigned and the site links must reference only pages the site has. It also lists the WSO2 records that link no page of this site.
+
+The workflows pin each action to a commit SHA, with its version in a comment, and `.github/dependabot.yml` proposes updates to those pins weekly. Python packages get Dependabot security updates only.
 
 ## How the build works
 
