@@ -68,8 +68,10 @@ def linked_ids():
 
 def references(record):
     """The reference URLs of a CVE record's CNA container."""
-    cna = record.get("containers", {}).get("cna", {})
-    return [ref.get("url", "") for ref in cna.get("references", []) if ref.get("url")]
+    containers = record.get("containers")
+    cna = containers.get("cna") if isinstance(containers, dict) else None
+    refs = cna.get("references") if isinstance(cna, dict) else None
+    return [ref["url"] for ref in refs or [] if isinstance(ref, dict) and isinstance(ref.get("url"), str)]
 
 
 def built_file(site_dir, base, url):
