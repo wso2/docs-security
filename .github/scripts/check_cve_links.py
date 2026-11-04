@@ -115,8 +115,12 @@ class Unpublished(object):
                         "cve.org, or remove the link".format(cve_id))
 
 
-def record_links(text):
-    """Yield (offset, match) for each CVE record link outside code and allowed lines."""
+def record_links(text, allowed=False):
+    """Yield (offset, match) for each CVE record link outside code.
+
+    Lines marked ALLOW are left out, unless allowed is true: the marker permits a link to
+    another site, not a link to a CVE ID without a published record.
+    """
     offset = 0
     in_fence = None
     for line in text.splitlines(True):
@@ -126,7 +130,7 @@ def record_links(text):
                 in_fence = fence.group(1)
             elif fence.group(1) == in_fence:
                 in_fence = None
-        elif in_fence is None and ALLOW not in line:
+        elif in_fence is None and (allowed or ALLOW not in line):
             code = [m.span() for m in INLINE_CODE.finditer(line)]
             for match in CVE_RECORD_URL.finditer(line):
                 if not any(start <= match.start() < end for start, end in code):
@@ -146,7 +150,7 @@ def find_links(text):
 
 def linked_cves(text):
     """Return (offset, CVE ID) for each CVE ID the page links: its record links and its title's IDs."""
-    linked = [(start, match.group("id").upper()) for start, match in record_links(text)]
+    linked = [(start, match.group("id").upper()) for start, match in record_links(text, allowed=True)]
     front = FRONT_MATTER.match(text)
     title = TITLE.search(front.group(1)) if front else None
     if title:
@@ -182,9 +186,29 @@ def record_state(cve_id):
     raise OSError("could not look up {} at {}: {}".format(cve_id, CVE_API.format(cve_id), failure))
 
 
-def linked_at(revision, path):
-    """The CVE IDs a file linked at a git revision; none when the file did not exist there."""
+def renamed_from(revision):
+    """The files renamed since a git revision, as {new path: old path}, relative to the repository."""
+    result = subprocess.run(["git", "-C", REPO_ROOT, "diff", "-z", "--name-status", "--find-renames", revision],
+                            stdout=subprocess.PIPE, stderr=subprocess.DEVNULL)
+    fields = result.stdout.decode("utf-8", "replace").split("\0") if result.returncode == 0 else []
+    renames, i = {}, 0
+    while i < len(fields) - 1:
+        status = fields[i]
+        if status.startswith(("R", "C")) and i + 2 < len(fields):
+            renames[fields[i + 2]] = fields[i + 1]
+            i += 3
+        else:
+            i += 2
+    return renames
+
+
+def linked_at(revision, path, renames=None):
+    """The CVE IDs a file linked at a git revision, under its old path when it was renamed since.
+
+    None when the file did not exist there.
+    """
     relative = os.path.relpath(os.path.abspath(path), REPO_ROOT).replace(os.sep, "/")
+    relative = (renames or {}).get(relative, relative)
     result = subprocess.run(["git", "-C", REPO_ROOT, "show", "{}:{}".format(revision, relative)],
                             stdout=subprocess.PIPE, stderr=subprocess.DEVNULL)
     if result.returncode != 0:
@@ -302,12 +326,13 @@ def main(argv=None):
 
 def check_published(paths, github, since=None):
     states = {}
+    renames = renamed_from(since) if since else {}
     checked = remaining = remaining_files = 0
     for path in markdown_files(paths):
         with open(path, encoding="utf-8", newline="") as handle:
             text = handle.read()
         checked += 1
-        known = linked_at(since, path) if since else frozenset()
+        known = linked_at(since, path, renames) if since else frozenset()
         try:
             findings = find_unpublished(text, states, known)
         except OSError as error:
