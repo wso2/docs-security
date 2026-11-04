@@ -775,7 +775,7 @@ def check_nav(site):
     start, end = nav_block(site.mkdocs)
     def where(match):
         if "cve-justifications/" in match.group(0):
-            return "CVE justifications are not in the nav; the CVE Justifications page lists them by CVE ID"
+            return "the build lists every CVE justification in the nav by CVE ID, as the CVE Justifications page does"
         return None
     findings = [Finding("generated-list", match.start(), "remove this year section; " + (
                         where(match) or "the build adds a section for every year folder that has a year page"), True)

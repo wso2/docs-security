@@ -75,10 +75,6 @@ validation:
   absolute_links: ignore
   unrecognized_links: ignore
 
-# CVE justifications are listed by CVE ID on their section page (hooks/announcements.py), not in the nav.
-not_in_nav: |
-  /security-announcements/cve-justifications/*/
-
 # Navigation
 nav:
   - 'Home': 'index.md'
@@ -129,6 +125,7 @@ nav:
         - '2025':
           - '': 'security-announcements/cloud-security-bulletins/wso2-api-platform/2025/index.md'
           - '2025 H2': 'security-announcements/cloud-security-bulletins/wso2-api-platform/2025/wso2-api-platform-2025-h2.md'
+    # The build lists every CVE justification here by CVE ID (hooks/announcements.py).
     - 'CVE Justifications':
       - '': 'security-announcements/cve-justifications/index.md'
     - 'Incident Clarifications':
