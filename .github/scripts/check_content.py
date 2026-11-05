@@ -39,9 +39,9 @@ Every page:
     empty-link       a link with no text or no target
     image-alt        an image has no alt text, or only its file name
     footnote         a footnote is defined ("[^1]: ...") but the text never cites it, or is cited
-                     ("[^1]") but never defined; a citation in a raw HTML block (a line that
-                     starts with a block-level tag such as <p> or <div>) does not count, since
-                     Markdown does not process that block
+                     ("[^1]") but never defined; a citation in a raw HTML block (from a line
+                     that starts with a block-level tag such as <p> or <div> to its closing
+                     tag) does not count, since Markdown does not process that block
     file-name        a file name contains characters other than letters, digits, ".", "-", "_"
     table-format     a table is not in its form: each cell padded to its column's
                      width, with the separator's dashes as wide as the column; or,
@@ -486,18 +486,60 @@ HTML_BLOCK_START = re.compile(
     r"textarea|tfoot|th|thead|tr|ul|video)(?=[\s/>]))", re.I)
 
 
+def html_blocks(page):
+    """The (start, end) offsets of the raw HTML blocks in a page's body, outside fenced code.
+
+    A block starts on a line that starts with a block-level tag or a comment, and runs to the
+    line that closes that tag (or the comment), counting nested tags of the same name. A void
+    tag, a self-closed tag, or a tag that never closes is a block of one line.
+    """
+    lines, offset, fence = [], page.meta_end, None
+    for line in page.body.splitlines(True):
+        marker = FENCE.match(line)
+        if marker:
+            fence = marker.group(1) if fence is None else (None if marker.group(1) == fence else fence)
+        lines.append((offset, line, fence is None and not marker))
+        offset += len(line)
+    blocks, i = [], 0
+    while i < len(lines):
+        start, line, prose = lines[i]
+        opening = HTML_BLOCK_START.match(line.lstrip(" \t")) if prose else None
+        if not opening:
+            i += 1
+            continue
+        tag = re.match(r"<(!--|\w+)", line.lstrip(" \t")).group(1).lower()
+        end, depth, j = start + len(line), 0, i
+        if tag != "hr" and not re.match(r"<\w+[^>]*/>\s*$", line.strip()):
+            while j < len(lines):
+                text = lines[j][1]
+                if tag == "!--":
+                    depth = 0 if "-->" in text else 1
+                else:
+                    depth += len(re.findall(r"<{}(?=[\s/>])".format(tag), text, re.I))
+                    depth -= len(re.findall(r"</{}\s*>".format(tag), text, re.I))
+                if depth <= 0:
+                    break
+                j += 1
+            if j == len(lines):
+                j = i  # never closed: only the opening line
+            end = lines[j][0] + len(lines[j][1])
+        blocks.append((start, end))
+        i = j + 1
+    return blocks
+
+
 def check_footnotes(page):
     """Footnotes that are defined but never cited, which leave a broken back-link, and citations with no definition."""
     definitions = {}
     citations = {}
+    blocks = html_blocks(page)
     for start, _, text in page.prose_spans():
+        if any(block_start <= start < block_end for block_start, block_end in blocks):
+            continue
         at_line_start = start == 0 or page.text[start - 1] == "\n"
         definition = FOOTNOTE_DEFINITION.match(text) if at_line_start else None
         if definition:
             definitions.setdefault(definition.group(1), start)
-        line_start = page.text.rfind("\n", 0, start) + 1
-        if HTML_BLOCK_START.match(page.text[line_start:].lstrip(" \t")):
-            continue
         for match in FOOTNOTE_CITATION.finditer(text):
             if not (definition and match.start() == definition.start(1) - 2):
                 citations.setdefault(match.group(1), start + match.start())
@@ -505,7 +547,7 @@ def check_footnotes(page):
     for name, at in definitions.items():
         if name not in citations:
             findings.append(Finding("footnote", at, "cite the footnote [^{0}] in the text after the sentence it "
-                                    "supports (a line that starts with a block-level HTML tag does not count), or remove its "
+                                    "supports (a raw HTML block, from a block-level tag to its closing tag, does not count), or remove its "
                                     "definition".format(name)))
     for name, at in citations.items():
         if name not in definitions:
