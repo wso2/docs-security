@@ -140,6 +140,12 @@ $ python3 .github/scripts/check_cve_links.py
 
 Add `--fix` to rewrite the links. When the text cites something that only another site shows, such as NVD's own CVSS score, add `<!-- cve-link-check: allow -->` to the end of the line that holds the link.
 
+Link a CVE ID only after its CVE record is published. A second pull request check looks up each CVE ID that the pull request adds to a Markdown file, as a link or in the front matter `title` (the build links those on the page), in the CVE Program's API, and fails when one has no published record, such as a reserved CVE ID. When the API cannot be reached, the check fails; run it again. To check files locally, run the following command from the repository root:
+
+```shell
+$ python3 .github/scripts/check_cve_links.py --published en/docs/security-announcements/security-advisories/2026/WSO2-2026-5212.md
+```
+
 ## Content checks
 
 Write each value once. For a security advisory, fill in the front matter from the template in `.announcement-templates`: `title` (with the CVE ID), `published`, `updated`, `version`, `severity`, `cvss`, and `cwe`. Do not add a heading or the Published, Version, Severity, CVSS Score, CVE IDs, and CWE lines to the page; the build renders them from front matter. Add `updated` only when you revise a published advisory: set it to the date of the revision, after `published`, and raise `version`. A version above 1.0.0 needs `updated`.
