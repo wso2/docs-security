@@ -1,13 +1,9 @@
 name: PR Builder
 
+# No paths filter: a required check that is skipped by a filter stays pending
+# and blocks the merge.
 on:
   pull_request:
-    paths:
-      - 'en/**'
-      - '.github/workflows/pr-builder.yml'
-      - '.github/scripts/check_internal_links.py'
-      - '.github/scripts/check_built_pages.py'
-      - '.github/scripts/check_removed_urls.py'
 
 permissions:
   contents: read
@@ -18,6 +14,9 @@ concurrency:
 
 jobs:
   build:
+    # The check's name in branch protection. A distinct name keeps another job called
+    # "build" from satisfying the required check.
+    name: Build the site
     # Python 3.8 (the WSO2 docs builder version) is not available on ubuntu-latest (24.04) runners.
     runs-on: ubuntu-22.04
     steps:
