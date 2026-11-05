@@ -19,7 +19,7 @@ For the in-scope products and services, qualifying criteria, and reward terms, s
 | [Alex Williams from Pellera Technologies](https://www.linkedin.com/in/alexanderwilliamscyber)               |
 | [Claire Wang](https://clairewang.net/)                                                                      |
 | [Damir](https://github.com/Evelynkaz)                                                                       |
-| **Dnyaneshwar Chandanshiv**                                                                                 |
+| [Dnyaneshwar Chandanshiv](https://www.linkedin.com/in/dnyanesh7030)                                         |
 | **Ethan Havinga**                                                                                           |
 | [Hacktron Team](https://www.hacktron.ai/)                                                                   |
 | **Haoxucu**                                                                                                 |
@@ -45,6 +45,7 @@ For the in-scope products and services, qualifying criteria, and reward terms, s
 | [Hamed Elnwasani from DeepStrike](https://deepstrike.io/)                   |
 | [Lakshitha Perera](https://www.linkedin.com/in/lakshitha-perera-687857352/) |
 | [Mahmoud Osama](https://www.linkedin.com/in/mahmoud0x00/)                   |
+| [Naveed Qadir](https://www.linkedin.com/in/naveed-qadir-a99506351)          |
 
 
 
@@ -54,6 +55,7 @@ For the in-scope products and services, qualifying criteria, and reward terms, s
 | :----------------------------------------------------- |
 | [AGS Lakpahana](https://www.linkedin.com/in/lakpahana) |
 | [Alex Roger from Laburity](https://laburity.com)       |
+| [Dylan Ong from Karmasec](https://karmasec.io)         |
 | **Nishant Lungare**                                    |
 | **Omri Inbar**                                         |
 | **Rock Jein**                                          |
@@ -63,9 +65,24 @@ For the in-scope products and services, qualifying criteria, and reward terms, s
 
 |                                                                             |
 | :-------------------------------------------------------------------------- |
+| [AGS Lakpahana](https://www.linkedin.com/in/lakpahana)                      |
 | [Lakshitha Perera](https://www.linkedin.com/in/lakshitha-perera-687857352)  |
 | [Mykhailo Kholiev](https://www.linkedin.com/in/mykhailo-kholiev-41b43b3b1/) |
-| [Sanjula Lakpahana](https://www.linkedin.com/in/lakpahana)                  |
+
+
+### WSO2 API Platform
+
+|                                                                           |
+| :------------------------------------------------------------------------ |
+| [Abdelkarim Haji](https://www.linkedin.com/in/abdelkarim-haji-4aa84b313/) |
+| [Dylan Ong from Karmasec](https://karmasec.io)                            |
+
+
+### WSO2 Agent Platform
+
+|                                                |
+| :--------------------------------------------- |
+| [Dylan Ong from Karmasec](https://karmasec.io) |
 
 
 ### WSO2 Security Hackathon 2026
