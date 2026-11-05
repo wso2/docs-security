@@ -60,9 +60,11 @@ jobs:
           for _ in $(seq 1 30); do curl -sf -o /dev/null http://127.0.0.1:8000/en/latest/ && break; sleep 1; done
           report="$RUNNER_TEMP/linkchecker.txt"
           status=0
-          linkchecker http://127.0.0.1:8000/en/latest/ --check-extern \
+          # .github/linkcheckerrc ignores every warning but a rate-limited link (HTTP 429),
+          # which was not checked, so it fails the run and is listed in the report.
+          linkchecker -f .github/linkcheckerrc http://127.0.0.1:8000/en/latest/ --check-extern \
             --ignore-url='^https?://security\.docs\.wso2\.com/' \
-            --threads=10 --no-warnings --no-status -F html > "$report" 2>&1 || status=$?
+            --threads=10 --no-status -F html > "$report" 2>&1 || status=$?
           cat "$report"
           echo "report=$report" >> "$GITHUB_OUTPUT"
           echo "failed=$([ "$status" -ne 0 ] && echo true || echo false)" >> "$GITHUB_OUTPUT"
