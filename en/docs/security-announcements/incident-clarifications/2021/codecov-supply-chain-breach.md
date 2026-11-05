@@ -8,7 +8,7 @@ customer_action_required: "No"
 ---
 
 ## Reported Incident
-**Codecov's** breach which was announced on April 15, 2021. In addition, Codecov updated the initial security notifications with Indicators of compromise (IOC) on April 29, 2021.
+**Codecov's** breach which was announced on April 15, 2021. In addition, Codecov updated the initial security notifications with Indicators of compromise (IOC) on April 29, 2021[^1].
 
 
 ## Impact on WSO2 Products and Deployments

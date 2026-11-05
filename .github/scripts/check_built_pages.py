@@ -17,10 +17,11 @@
 
 """Fail when the built pages show search engines the menu instead of the page.
 
-    menu-entries   the menu lists advisories or CVE justifications from a year
-                   folder other than the page's own. Search engines then find
-                   every advisory ID on every page and rank the wrong page for
-                   it. The theme lists only the open section
+    menu-entries   the menu lists advisories from a year folder other than the
+                   page's own, or CVE justifications on a page outside the CVE
+                   Justifications section. Search engines then find every
+                   advisory ID on every page and rank the wrong page for it.
+                   The theme lists only the open section
                    (en/theme/material/partials/nav-item.html).
     nosnippet      a sidebar is not marked data-nosnippet
                    (en/theme/material/main.html), so search results can quote
@@ -59,6 +60,8 @@ REPO_ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__fi
 sys.path.insert(0, os.path.join(REPO_ROOT, "en", "hooks"))
 from security_announcements import listings  # noqa: E402
 
+# The CVE Justifications section, which the menu lists as one group.
+JUSTIFICATIONS = "security-announcements/cve-justifications"
 # A page in a year folder of advisories or CVE justifications, and that year's list page.
 ENTRY = re.compile(r"(?:^|/)(security-announcements/(?:security-advisories|cve-justifications)/\d{4})/([^/]+)(?:/|$)")
 SIDEBARS = {"md-sidebar--primary": "menu", "md-sidebar--secondary": "table of contents"}
@@ -291,12 +294,20 @@ def check_cna_links(site_dir):
 
 
 def folder_and_entry(path):
-    """The year folder and entry name of an advisory or CVE justification path, or None."""
+    """The menu group and entry name of an advisory or CVE justification path, or None.
+
+    An advisory's group is its year folder. The menu lists every CVE justification in one
+    section, so a justification's group is the CVE Justifications section.
+    """
+    if path in (JUSTIFICATIONS, JUSTIFICATIONS + "/index.html"):
+        return JUSTIFICATIONS, None
     match = ENTRY.search(path)
     if not match:
         return None
     folder, name = match.groups()
     year = folder[-4:]
+    if folder.startswith(JUSTIFICATIONS + "/"):
+        folder = JUSTIFICATIONS
     if name in ("index.html", "{}-advisories".format(year)):
         return folder, None
     return folder, name
@@ -341,7 +352,7 @@ def main():
                 if entry and entry[1] and entry[0] != own_folder:
                     others.add(target)
             if others:
-                print("{}: the menu lists {} advisories or CVE justifications from other year folders, such as "
+                print("{}: the menu lists {} advisories or CVE justifications from other menu sections, such as "
                       "{} [menu-entries]".format(rel, len(others), sorted(others)[0]))
                 problems += 1
 

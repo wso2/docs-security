@@ -174,6 +174,16 @@ def record_state(cve_id):
     Raises RejectedId when the API rejects the ID itself, and OSError when the API cannot be
     reached, or answers with no record, after a few attempts.
     """
+    record = fetch_record(cve_id)
+    return record["cveMetadata"]["state"] if record is not None else None
+
+
+def fetch_record(cve_id):
+    """A CVE record as the CVE Program's API returns it (CVE JSON 5), or None when it has no record.
+
+    Raises RejectedId when the API rejects the ID itself, and OSError when the API cannot be
+    reached, or answers with no record, after a few attempts.
+    """
     request = urllib.request.Request(CVE_API.format(cve_id), headers={
         "Accept": "application/json", "User-Agent": "wso2-docs-security-cve-link-check"})
     for attempt in range(1, ATTEMPTS + 1):
@@ -184,7 +194,7 @@ def record_state(cve_id):
             containers = body.get("containers") if isinstance(body, dict) else None
             state = metadata.get("state") if isinstance(metadata, dict) else None
             if isinstance(state, str) and isinstance(containers, dict) and isinstance(containers.get("cna"), dict):
-                return state
+                return body
             failure = ValueError("the response has no cveMetadata.state or containers.cna")
         except urllib.error.HTTPError as error:
             if error.code == 404:

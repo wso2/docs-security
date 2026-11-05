@@ -8,7 +8,7 @@ customer_action_required: "No"
 ---
 
 ## Reported Incident
-On September 28, 2025, a security incident was reported where over 40 NPM packages were compromised in a large-scale supply chain attack. These malicious packages were modified to exfiltrate sensitive information, including authentication tokens and configuration details, from developer environments.
+On September 28, 2025, a security incident was reported where over 40 NPM packages were compromised in a large-scale supply chain attack[^1]. These malicious packages were modified to exfiltrate sensitive information, including authentication tokens and configuration details, from developer environments.
 
 
 ## Impact on WSO2 Products and Deployments
