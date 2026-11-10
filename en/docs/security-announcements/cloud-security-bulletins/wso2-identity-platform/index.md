@@ -3,7 +3,7 @@ title: WSO2 Identity Platform Cloud Security Bulletins
 category: security-announcements
 ---
 
-# Cloud Security Bulletins
+# WSO2 Identity Platform Cloud Security Bulletins
 
 This section contains the security bulletins for WSO2 Identity Platform
 
