@@ -226,9 +226,12 @@
       {% endif %}
 
       {# Leave out the children of inactive sections below level 2 that have an index page
-         (the yearly advisory and CVE lists). The index page links to them, and rendering
-         every advisory into every page made the navigation most of each page's HTML. #}
-      {% set pruned = indexes and level > 2 and not nav_item.active %}
+         (the yearly advisory lists), and of the CVE Justifications section when inactive.
+         The index page links to them, and rendering every advisory into every page made the
+         navigation most of each page's HTML. #}
+      {% set index_page = indexes | first %}
+      {% set pruned = indexes and (level > 2 or index_page.file.src_uri == "security-announcements/cve-justifications/index.md")
+                      and not nav_item.active %}
 
       <!-- Render toggle to expand nested items -->
       {% if not indexes %}

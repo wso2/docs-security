@@ -38,6 +38,10 @@ Every page:
     trailing-slash   a {{#base_path#}} link to a page does not end with "/"   (--fix)
     empty-link       a link with no text or no target
     image-alt        an image has no alt text, or only its file name
+    footnote         a footnote is defined ("[^1]: ...") but the text never cites it, or is cited
+                     ("[^1]") but never defined; a citation in a raw HTML block (from a line
+                     that starts with a block-level tag such as <p> or <div> to its closing
+                     tag) does not count, since Markdown does not process that block
     file-name        a file name contains characters other than letters, digits, ".", "-", "_"
     table-format     a table is not in its form: each cell padded to its column's
                      width, with the separator's dashes as wide as the column; or,
@@ -204,6 +208,8 @@ INFO_BLOCK = re.compile(r'#[ \t]+[^\n]*\n(?:[ \t]*\n)*(?:<p class="doc-info">[^\
 INFO_LINE = re.compile(r'^<p class="doc-info">(Published|Updated|Version|Severity|CVSS Score|CVE IDs):.*$', re.M)
 HEADING = re.compile(r"\s*^#[ \t]+(.+?)[ \t]*$", re.M)  # only the first line of the body
 PLACEHOLDER = re.compile(r"\{\{(?!#)[^{}#]*\}\}")
+FOOTNOTE_DEFINITION = re.compile(r"[ ]{0,3}\[\^([^\]\s]+)\]:")
+FOOTNOTE_CITATION = re.compile(r"(?<!\\)\[\^([^\]\s]+)\]")
 MD_LINK = re.compile(r"(!?)\[([^\]]*)\]\(([^)\s]*)(?:\s+\"[^\"]*\")?\)")
 HTML_LINK = re.compile(r"<a\b[^>]*?href=\"([^\"]*)\"[^>]*>(.*?)</a>", re.S)
 HTML_IMG = re.compile(r"<img\b[^>]*>")
@@ -470,6 +476,86 @@ def check_heading_levels(page):
         should, "#" * should), True) for start, level, should in heading_levels(page) if level != should]
 
 
+# The tags that start a raw HTML block in Python-Markdown (md.block_level_elements), and
+# comments. Markdown is not processed in such a block, so a footnote citation there is text.
+# A line that starts with an inline tag, such as <span> or <b>, is a Markdown paragraph.
+HTML_BLOCK_START = re.compile(
+    r"<(?:!--|/?(?:address|article|aside|blockquote|body|canvas|colgroup|dd|details|div|dl|dt|fieldset|"
+    r"figcaption|figure|footer|form|h[1-6]|header|hgroup|hr|iframe|legend|li|main|map|math|menu|nav|"
+    r"noscript|object|ol|option|output|p|pre|progress|script|section|style|summary|table|tbody|td|"
+    r"textarea|tfoot|th|thead|tr|ul|video)(?=[\s/>]))", re.I)
+
+
+def html_blocks(page):
+    """The (start, end) offsets of the raw HTML blocks in a page's body, outside fenced code.
+
+    A block starts on a line that starts with a block-level tag or a comment, and runs to the
+    line that closes that tag (or the comment), counting nested tags of the same name. A void
+    tag, a self-closed tag, or a tag that never closes is a block of one line.
+    """
+    lines, offset, fence = [], page.meta_end, None
+    for line in page.body.splitlines(True):
+        marker = FENCE.match(line)
+        if marker:
+            fence = marker.group(1) if fence is None else (None if marker.group(1) == fence else fence)
+        lines.append((offset, line, fence is None and not marker))
+        offset += len(line)
+    blocks, i = [], 0
+    while i < len(lines):
+        start, line, prose = lines[i]
+        opening = HTML_BLOCK_START.match(line.lstrip(" \t")) if prose else None
+        if not opening:
+            i += 1
+            continue
+        tag = re.match(r"<(!--|\w+)", line.lstrip(" \t")).group(1).lower()
+        end, depth, j = start + len(line), 0, i
+        if tag != "hr" and not re.match(r"<\w+[^>]*/>\s*$", line.strip()):
+            while j < len(lines):
+                text = lines[j][1]
+                if tag == "!--":
+                    depth = 0 if "-->" in text else 1
+                else:
+                    depth += len(re.findall(r"<{}(?=[\s/>])".format(tag), text, re.I))
+                    depth -= len(re.findall(r"</{}\s*>".format(tag), text, re.I))
+                if depth <= 0:
+                    break
+                j += 1
+            if j == len(lines):
+                j = i  # never closed: only the opening line
+            end = lines[j][0] + len(lines[j][1])
+        blocks.append((start, end))
+        i = j + 1
+    return blocks
+
+
+def check_footnotes(page):
+    """Footnotes that are defined but never cited, which leave a broken back-link, and citations with no definition."""
+    definitions = {}
+    citations = {}
+    blocks = html_blocks(page)
+    for start, _, text in page.prose_spans():
+        if any(block_start <= start < block_end for block_start, block_end in blocks):
+            continue
+        at_line_start = start == 0 or page.text[start - 1] == "\n"
+        definition = FOOTNOTE_DEFINITION.match(text) if at_line_start else None
+        if definition:
+            definitions.setdefault(definition.group(1), start)
+        for match in FOOTNOTE_CITATION.finditer(text):
+            if not (definition and match.start() == definition.start(1) - 2):
+                citations.setdefault(match.group(1), start + match.start())
+    findings = []
+    for name, at in definitions.items():
+        if name not in citations:
+            findings.append(Finding("footnote", at, "cite the footnote [^{0}] in the text after the sentence it "
+                                    "supports (a raw HTML block, from a block-level tag to its closing tag, does not count), or remove its "
+                                    "definition".format(name)))
+    for name, at in citations.items():
+        if name not in definitions:
+            findings.append(Finding("footnote", at, "define the footnote [^{0}] (\"[^{0}]: ...\"), or remove the "
+                                    "citation".format(name)))
+    return findings
+
+
 def check_page(page, site):
     findings = []
     name = os.path.basename(page.path)
@@ -488,6 +574,7 @@ def check_page(page, site):
         findings.append(Finding("link-url", start, message, replacement is not None))
     findings.extend(check_table_columns(page))
     findings.extend(check_table_format(page))
+    findings.extend(check_footnotes(page))
     for start, _, text in page.prose_spans():
         for match in PLACEHOLDER.finditer(text):
             findings.append(Finding("placeholder", start + match.start(),
@@ -770,12 +857,16 @@ def nav_block(text):
     return (match.start(), match.end()) if match else (0, 0)
 
 
+NAV_JUSTIFICATIONS = re.compile(r"^([ \t]*)-[ \t]*['\"]CVE Justifications['\"][ \t]*:[ \t]*\n", re.M)
+JUSTIFICATIONS_INDEX = re.compile(r"-[ \t]*''[ \t]*:[ \t]*['\"]security-announcements/cve-justifications/index\.md['\"]")
+
+
 def check_nav(site):
     """Advisories and advisory year sections written into the nav by hand. The build writes them."""
     start, end = nav_block(site.mkdocs)
     def where(match):
         if "cve-justifications/" in match.group(0):
-            return "CVE justifications are not in the nav; the CVE Justifications page lists them by CVE ID"
+            return "the build lists every CVE justification in the nav by CVE ID, as the CVE Justifications page does"
         return None
     findings = [Finding("generated-list", match.start(), "remove this year section; " + (
                         where(match) or "the build adds a section for every year folder that has a year page"), True)
@@ -783,6 +874,20 @@ def check_nav(site):
     findings += [Finding("generated-list", match.start(), "remove this line; " + (
                          where(match) or "the build adds every page to its year's section"), True)
                  for match in NAV_ADVISORY.finditer(site.mkdocs, start, end)]
+    # The build replaces everything under the CVE Justifications section but its index page
+    # (listings.fill_nav), so any other entry there is dropped from the menu.
+    reported = {finding.start for finding in findings}
+    section = NAV_JUSTIFICATIONS.search(site.mkdocs, start, end)
+    if section:
+        indent = len(section.group(1))
+        for line in re.finditer(r"^([ \t]*)(\S.*)$", site.mkdocs[section.end():end], re.M):
+            if len(line.group(1).expandtabs()) <= indent:
+                break
+            at = section.end() + line.start()
+            if line.group(2).startswith("#") or JUSTIFICATIONS_INDEX.match(line.group(2)) or at in reported:
+                continue
+            findings.append(Finding("generated-list", at, "remove this entry; the build lists every CVE "
+                                    "justification in the nav by CVE ID and drops entries written by hand"))
     return findings
 
 
