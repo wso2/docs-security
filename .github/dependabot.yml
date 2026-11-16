@@ -1,0 +1,19 @@
+# The workflows pin each action to a commit SHA, with its version in a comment.
+# Dependabot proposes updates to those pins weekly. Python packages get security
+# updates only (the limit of 0 turns off version updates), because a theme or
+# plugin upgrade can change the built pages and needs its own review.
+version: 2
+updates:
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+    groups:
+      github-actions:
+        patterns:
+          - "*"
+  - package-ecosystem: pip
+    directory: /en
+    schedule:
+      interval: weekly
+    open-pull-requests-limit: 0

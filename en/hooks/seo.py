@@ -404,10 +404,6 @@ def _listing_description(src, page):
 
 def _breadcrumbs(page, site_url, current_name):
     items = [{"name": "Home", "item": site_url}]
-    if not page.ancestors and page.file.src_uri.startswith("security-announcements/cve-justifications/") \
-            and page.file.src_uri != listings.JUSTIFICATIONS_PAGE:
-        # Not in the nav; the CVE Justifications page lists it.
-        items.append({"name": "CVE Justifications", "item": urljoin(site_url, text.page_path(listings.JUSTIFICATIONS_PAGE))})
     for section in reversed(page.ancestors):
         index = _section_index(section)
         if index is None or index is page:

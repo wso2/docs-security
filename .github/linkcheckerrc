@@ -1,0 +1,8 @@
+# LinkChecker configuration for the Broken Link Checker workflow.
+#
+# Every warning type except http-rate-limited is ignored. A site that answers
+# with HTTP 429 has not been checked, so that warning fails the run and is
+# listed in the report instead of passing unchecked. These are all the warning
+# types of LinkChecker 10.6.0 (linkcheck/checker/const.py) but that one.
+[filtering]
+ignorewarnings=url-effective-url,url-error-getting-content,url-content-too-large,url-content-size-zero,url-content-type-unparseable,url-obfuscated-ip,url-too-long,url-whitespace,file-missing-slash,file-system-path,file-anchorcheck-directory,ftp-missing-slash,http-empty-content,http-cookie-store-error,http-redirected,mail-no-mx-host,xml-parse-error
