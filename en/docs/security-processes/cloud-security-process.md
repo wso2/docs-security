@@ -9,7 +9,7 @@ version: 2.1
 <p class="doc-info">Version: 2.1</p>
 ___
 
-WSO2 cloud services operate under a DevSecOps process aligned with [The Six Pillars of DevSecOps: Pragmatic Implementation](https://cloudsecurityalliance.org/artifacts/six-pillars-devsecops-pragmatic-implementation/) from the Cloud Security Alliance: secure design, hardened build pipelines, continuous testing, governed delivery, runtime defense, and structured incident response. This page documents the tooling, controls, and engineering practices applied at each lifecycle stage; the CSA reference covers the conceptual framing.
+Choreo Labs cloud services operate under a DevSecOps process aligned with [The Six Pillars of DevSecOps: Pragmatic Implementation](https://cloudsecurityalliance.org/artifacts/six-pillars-devsecops-pragmatic-implementation/) from the Cloud Security Alliance: secure design, hardened build pipelines, continuous testing, governed delivery, runtime defense, and structured incident response. This page documents the tooling, controls, and engineering practices applied at each lifecycle stage; the CSA reference covers the conceptual framing.
 
 ## Design and Architecture
 
@@ -34,7 +34,7 @@ Pre-production validation combines automated scanning, configuration testing, an
 - **Dynamic Application Security Testing (DAST).** [Invicti](https://www.invicti.com/) (formerly Netsparker) and [Burp Suite](https://portswigger.net/burp) probe deployed applications, services, and APIs for vulnerabilities observable from the outside.
 - **Container and orchestrator testing.** A dedicated test suite exercises container host and orchestrator configurations against the hardening baseline; this complements the build-pipeline controls and the runtime controls described below.
 - **Internal penetration testing.** Choreo Labs' Security Team performs penetration tests and vulnerability assessments on a recurring cadence. Findings are routed to the responsible product teams for remediation, with severity-based service-level expectations.
-- **Customer penetration testing.** WSO2 Private Cloud customers may conduct penetration tests against their own environments under a formal authorization process. A request must be submitted covering testing scope, tools, source IP addresses, and other relevant details for approval. Approved tests proceed under Choreo Labs' published terms; findings must be reported to Choreo Labs within 24 hours; testers operate under the terms of their agreement with Choreo Labs and must not introduce risk or impact to the service during the test window.
+- **Customer penetration testing.** Choreo Labs Private Cloud customers may conduct penetration tests against their own environments under a formal authorization process. A request must be submitted covering testing scope, tools, source IP addresses, and other relevant details for approval. Approved tests proceed under Choreo Labs' published terms; findings must be reported to Choreo Labs within 24 hours; testers operate under the terms of their agreement with Choreo Labs and must not introduce risk or impact to the service during the test window.
 
 ## Delivery and Deployment
 

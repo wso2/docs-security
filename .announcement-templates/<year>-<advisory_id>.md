@@ -42,7 +42,7 @@ If applying the fix or update is not feasible, migrate to the latest unaffected 
 Update your product to the specified update level—or a higher update level—to apply the fix.
 
 !!! info todo
-    **Choreo Labs Support Subscription Holders may use [WSO2 Updates](https://choreolabs.com/updates/) in order to apply the fix.**
+    **Choreo Labs Support Subscription Holders may use [Choreo Labs Updates](https://choreolabs.com/updates/) in order to apply the fix.**
 
 | Product Name | Product Version | U2 Update Level |
 | :----------: | :-------------: | :-------------: |

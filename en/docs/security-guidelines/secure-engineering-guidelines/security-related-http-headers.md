@@ -100,7 +100,7 @@ Deprecated, ignored, or actively harmful. If you find existing code emitting one
 
     **Server header.** Override via `[transport.https.properties]` in `deployment.toml` so the response doesn't return `Server: WSO2 Carbon Server`. Reference: [IS, Configure Transport-Level Security](https://is.docs.wso2.com/en/latest/deploy/security/configure-transport-level-security/).
 
-    **Jaggery.** Jaggery is deprecated. New WSO2 features should not ship Jaggery applications; existing Jaggery surfaces should be migrated.
+    **Jaggery.** Jaggery is deprecated. New Choreo Labs features should not ship Jaggery applications; existing Jaggery surfaces should be migrated.
 
 === "Go services"
 

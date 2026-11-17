@@ -114,19 +114,19 @@ Markdown can carry embedded HTML and `javascript:` links, so it is an XSS vector
 
 ## Rules for React in Choreo Labs products
 
-These are the points that are not obvious from the external references, that recur across Choreo Labs product UIs, or that have a Choreo Labs-specific reason.
+These are the points that are not obvious from the external references, that recur across Choreo Labs product UIs, or that have a reason specific to Choreo Labs.
 
 ### Sanitizer standardization
 
-When a WSO2 React surface needs to render rich text or third-party HTML, use **DOMPurify** as the sanitizer (via `dangerouslySetInnerHTML`, ref-based `innerHTML`, or `rehype-sanitize` for Markdown). Consistency matters more than the library: the security team reviews against this baseline. If you need a different sanitizer, raise it with the security team before adoption.
+When a Choreo Labs React surface needs to render rich text or third-party HTML, use **DOMPurify** as the sanitizer (via `dangerouslySetInnerHTML`, ref-based `innerHTML`, or `rehype-sanitize` for Markdown). Consistency matters more than the library: the security team reviews against this baseline. If you need a different sanitizer, raise it with the security team before adoption.
 
 ### URL attribute validation
 
-WSO2 portals routinely render externally-sourced URLs (publisher metadata, IdP endpoints, callback URLs displayed back to the user). For every variable `href` / `src`, parse with `new URL(input, window.location.origin)` and restrict the resulting `url.protocol` to `http:` / `https:` (plus `mailto:` only where deliberately allowed). Reject `javascript:`, `data:`, `vbscript:`, and unknown schemes. Pair `target="_blank"` with `rel="noopener noreferrer"`.
+Choreo Labs portals routinely render externally-sourced URLs (publisher metadata, IdP endpoints, callback URLs displayed back to the user). For every variable `href` / `src`, parse with `new URL(input, window.location.origin)` and restrict the resulting `url.protocol` to `http:` / `https:` (plus `mailto:` only where deliberately allowed). Reject `javascript:`, `data:`, `vbscript:`, and unknown schemes. Pair `target="_blank"` with `rel="noopener noreferrer"`.
 
 ### Token storage with BFF or HttpOnly cookies
 
-WSO2 admin UIs (Carbon Console, APIM Publisher/DevPortal, IS Console) are session-cookie-based; new React SPAs must follow the same pattern. **Never store refresh tokens or long-lived access tokens in `localStorage` / `sessionStorage`.** Two acceptable shapes:
+Choreo Labs admin UIs (Carbon Console, APIM Publisher/DevPortal, IS Console) are session-cookie-based; new React SPAs must follow the same pattern. **Never store refresh tokens or long-lived access tokens in `localStorage` / `sessionStorage`.** Two acceptable shapes:
 
 * **Cookie session** with `HttpOnly; Secure; SameSite=Strict`, set by the WSO2 IdP / API Gateway.
 * **Backend-for-frontend (BFF)** where a small server-side component holds the long-lived credential and the SPA only talks to it via the same-origin cookie.
@@ -135,7 +135,7 @@ OAuth for the SPA itself uses **authorization code with PKCE** (`code_challenge_
 
 ### Open-redirect parameter validation
 
-WSO2 login flows accept a post-authentication redirect parameter (`returnTo`, `next`, `redirect_uri`). The same exact-match rule that WSO2 enforces for OAuth `redirect_uri` applies here:
+Choreo Labs login flows accept a post-authentication redirect parameter (`returnTo`, `next`, `redirect_uri`). The same exact-match rule that Choreo Labs enforces for OAuth `redirect_uri` applies here:
 
 ```jsx
 const ALLOWED_RETURN_PATHS = new Set(['/', '/dashboard', '/settings']);
@@ -148,9 +148,9 @@ function PostLogin({ returnTo }) {
 
 Reject absolute URLs, schemeful URLs, and protocol-relative URLs (`//evil.example/`) up front. The same logic belongs in any WSO2 IdP-issued template that uses a `commonauth`-style return path.
 
-### CSP target for WSO2-served admin UIs
+### CSP target for Choreo Labs admin UIs
 
-CSP is set by the serving component, not by React, but the React build must be compatible with the WSO2 target shape:
+CSP is set by the serving component, not by React, but the React build must be compatible with the Choreo Labs target shape:
 
 ```
 Content-Security-Policy:
@@ -190,9 +190,9 @@ For Next.js / Remix / any SSR setup, raw `JSON.stringify(state)` interpolated in
     </script>
     ```
 
-### `postMessage` for embedded WSO2 surfaces
+### `postMessage` for embedded Choreo Labs surfaces
 
-Where a WSO2 React UI hosts or is hosted by another origin (OAuth popup callbacks, embedded widgets in the Developer Portal), the receiver checks `event.origin` against an allow-list of WSO2 / customer origins before reading `event.data`, and schema-validates the payload. Senders pass an explicit `targetOrigin`, never `'*'`.
+Where a Choreo Labs React UI hosts or is hosted by another origin (OAuth popup callbacks, embedded widgets in the Developer Portal), the receiver checks `event.origin` against an allow-list of Choreo Labs / customer origins before reading `event.data`, and schema-validates the payload. Senders pass an explicit `targetOrigin`, never `'*'`.
 
 ```jsx
 useEffect(() => {

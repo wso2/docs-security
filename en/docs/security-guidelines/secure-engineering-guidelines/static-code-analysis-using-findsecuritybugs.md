@@ -9,7 +9,7 @@ version: 3.1
 <p class="doc-info">Version: 3.1</p>
 ___
 
-When you set up the build for a Choreo Labs product, wire in the static analysis tooling described below. Tool-by-tool tutorials, install steps, and configuration references live in the tools' own documentation, linked below. This page covers what to run, the thresholds to gate on, and the Choreo Labs-specific patterns worth encoding as custom rules.
+When you set up the build for a Choreo Labs product, wire in the static analysis tooling described below. Tool-by-tool tutorials, install steps, and configuration references live in the tools' own documentation, linked below. This page covers what to run, the thresholds to gate on, and the patterns specific to Choreo Labs that are worth encoding as custom rules.
 
 Static analysis complements [Dynamic Analysis with OWASP ZAP]({{#base_path#}}/security-guidelines/secure-engineering-guidelines/dynamic-analysis-with-owasp-zap/) and [Dependency Vulnerability Analysis]({{#base_path#}}/security-guidelines/secure-engineering-guidelines/external-dependency-analysis-analysis-using-owasp-dependency-check/).
 
@@ -22,7 +22,7 @@ Wire all four into the PR builder:
 
 * **OWASP-Top-10-focused SAST**: SpotBugs + Find Security Bugs (Java); `gosec` (Go).
 * **General-purpose static analyzer**: SpotBugs core (Java); `staticcheck` (Go).
-* **Semantic-rules engine** for codebase-specific patterns, either [Semgrep](https://semgrep.dev/) or [GitHub CodeQL](https://codeql.github.com/). These catch what generic tools cannot: usage of internal WSO2 helpers, secrets in source, and anti-patterns from past audits.
+* **Semantic-rules engine** for codebase-specific patterns, either [Semgrep](https://semgrep.dev/) or [GitHub CodeQL](https://codeql.github.com/). These catch what generic tools cannot: usage of internal Choreo Labs helpers, secrets in source, and anti-patterns from past audits.
 * **Vulnerable-dependency scanner**: covered in [Dependency Vulnerability Analysis]({{#base_path#}}/security-guidelines/secure-engineering-guidelines/external-dependency-analysis-analysis-using-owasp-dependency-check/).
 
 Findings above the agreed severity threshold fail the PR build. Suppressions go in an audited allow-list with a documented rationale; blanket suppressions are rejected at review.
@@ -65,7 +65,7 @@ Narrow, with rationale, in the tool-native suppression format:
 
 Annotation-based suppression (`@SuppressFBWarnings`) is acceptable on a single method or field; both forms must include a rationale comment.
 
-## Choreo Labs-specific Semgrep rules to author
+## Semgrep rules specific to Choreo Labs
 
 These are anti-patterns from the Choreo Labs [Secure Coding Guide]({{#base_path#}}/security-guidelines/secure-engineering-guidelines/secure-coding-guidlines/secure-coding-guide/) that generic SAST tools do not catch. They are high-value to encode as Semgrep (or CodeQL) rules in a shared Choreo Labs ruleset:
 

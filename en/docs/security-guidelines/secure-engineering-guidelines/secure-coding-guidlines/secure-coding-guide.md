@@ -9,7 +9,7 @@ version: 4.1
 <p class="doc-info">Version: 4.1</p>
 ___
 
-When you write code for a Choreo Labs product, follow this guide. Each section opens with the canonical external reading (OWASP, NIST, RFCs), then lists what's Choreo Labs-specific: named helpers to use, default configurations to override, anti-patterns to avoid, and stack-specific call shapes. For the general "what and why" of a category, follow the external links.
+When you write code for a Choreo Labs product, follow this guide. Each section opens with the canonical external reading (OWASP, NIST, RFCs), then lists what's specific to Choreo Labs: named helpers to use, default configurations to override, anti-patterns to avoid, and stack-specific call shapes. For the general "what and why" of a category, follow the external links.
 
 **How to read this guide.** Click the tab for your stack (**Java stack** for Carbon-based products, **Go stack** for the new Go-based products). Material remembers your choice across the site.
 
@@ -181,7 +181,7 @@ The strategy is keyed to the Carbon Kernel version:
 
 Read the [OWASP SSRF Prevention Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/Server_Side_Request_Forgery_Prevention_Cheat_Sheet.html) for the full list of bypasses; this is a high-severity class because the server can be turned into a proxy for internal port scanning, `file://` access, and `gopher://`/`tftp://` protocol smuggling.
 
-WSO2 surfaces that take URLs from input are the back-channel operations where the product acts as the client (e.g. webhook destinations, OIDC discovery, or federated-IdP metadata fetches). Validate the *resolved* address, not the host string, because DNS rebinding makes a host-string allow-list bypassable.
+Choreo Labs surfaces that take URLs from input are the back-channel operations where the product acts as the client (e.g. webhook destinations, OIDC discovery, or federated-IdP metadata fetches). Validate the *resolved* address, not the host string, because DNS rebinding makes a host-string allow-list bypassable.
 
 Prevention techniques:
 
@@ -240,7 +240,7 @@ The header set your code should emit, and how to wire it on Carbon/Tomcat, Go se
 
 Distinguish the two tiers when reviewing a change:
 
-* **Mandatory** on every response from a WSO2 service: framing defense (`X-Frame-Options` / CSP `frame-ancestors 'none'`, see [ClickJacking](#clickjacking-and-cross-frame-scripting) below) and `X-Content-Type-Options: nosniff`, plus any other header the companion page marks as required. Do not emit `X-XSS-Protection: 1; mode=block`. The header is deprecated, browsers have removed the XSS Auditor, and the companion page lists it under headers your code must not emit; rely on a strict nonce-based Content-Security-Policy for reflected and stored XSS defense instead. If any legacy code still emits it, set the value to `0`.
+* **Mandatory** on every response from a Choreo Labs service: framing defense (`X-Frame-Options` / CSP `frame-ancestors 'none'`, see [ClickJacking](#clickjacking-and-cross-frame-scripting) below) and `X-Content-Type-Options: nosniff`, plus any other header the companion page marks as required. Do not emit `X-XSS-Protection: 1; mode=block`. The header is deprecated, browsers have removed the XSS Auditor, and the companion page lists it under headers your code must not emit; rely on a strict nonce-based Content-Security-Policy for reflected and stored XSS defense instead. If any legacy code still emits it, set the value to `0`.
 * **Configurable** (CSP source lists, HSTS `max-age` such as `Strict-Transport-Security: max-age=31536000; includeSubDomains`, and CORS allow-lists): version-controlled and reviewed as configuration, never hardcoded per build. Ship a long `max-age` (at least one year) with `includeSubDomains`; treat `preload` as an operator decision, an irreversible per-hostname commitment that engineers never hardcode. See [HTTP Security Headers]({{#base_path#}}/security-guidelines/secure-engineering-guidelines/security-related-http-headers/) for the authoritative split and the recommended values.
 
 === "Java stack"
@@ -359,7 +359,7 @@ Unmanaged versions and undocumented endpoints are the misconfiguration here: an 
 
 * **Inventory is authoritative and generated, not maintained by hand.** Every reachable endpoint, on every host and version, appears in a machine-readable spec. Routing is driven from that spec; a handler that is not in the spec is a defect.
 * **Deny by default for non-public surfaces.** Internal, debug, and management endpoints are not reachable from public ingress. Bind them to localhost or an internal network and front them with a deny-default `NetworkPolicy`.
-* **Signal deprecation in the response using the standard contract.** Per RFC 8594, emit `Sunset` (with the retirement date), `Deprecation`, and a `Link` to the migration guide on deprecated resources so consumers can detect and act before removal. Use your stack's normal response-header mechanism; this is standard HTTP technique, not a Choreo Labs-specific control.
+* **Signal deprecation in the response using the standard contract.** Per RFC 8594, emit `Sunset` (with the retirement date), `Deprecation`, and a `Link` to the migration guide on deprecated resources so consumers can detect and act before removal. Use your stack's normal response-header mechanism; this is standard HTTP technique, not a control specific to Choreo Labs.
 * **Retire on a schedule.** Track deprecated versions to a removal date; do not leave superseded versions serving traffic indefinitely.
 
 === "Java stack"
@@ -372,7 +372,7 @@ Unmanaged versions and undocumented endpoints are the misconfiguration here: an 
 
 ### Default credentials, sample apps, management console exposure
 
-Choreo Labs-specific operational rules; these are the defaults attackers try first:
+Operational rules specific to Choreo Labs; these are the defaults attackers try first:
 
 * **Rotate the Carbon admin password before any exposure.** Replace all shipped keystore and truststore passwords as well. Store the rotated secrets in the product's secure secret store or an external secret manager; never leave them in plaintext config or commit them.
 * **Remove or isolate sample apps and demo content** before production. Do not ship demo artifacts on a public surface.
@@ -712,7 +712,7 @@ Choreo Labs rule: every user input appended to an LDAP filter or DN must pass th
 
 === "Java stack"
 
-    Escape each filter value through the escaping helper your LDAP client library provides before substituting it into the filter: an `escapeSpecialCharactersForFilter(...)`-style helper, applied consistently to every value. (Library-specific equivalents exist, for example Spring Security's `LdapEncoder.filterEncode` / `nameEncode`, or the Apache Directory API escaping utilities; these are illustrative examples, not a prescribed WSO2 API; pick whatever your library ships.) Filter values and DN components use different escaping; do not reuse one for the other.
+    Escape each filter value through the escaping helper your LDAP client library provides before substituting it into the filter: an `escapeSpecialCharactersForFilter(...)`-style helper, applied consistently to every value. (Library-specific equivalents exist, for example Spring Security's `LdapEncoder.filterEncode` / `nameEncode`, or the Apache Directory API escaping utilities; these are illustrative examples, not a prescribed Choreo Labs API; pick whatever your library ships.) Filter values and DN components use different escaping; do not reuse one for the other.
 
     ```java
     // Anti-pattern - raw value in the filter
@@ -1030,7 +1030,7 @@ General Choreo Labs engineering guidance for building authentication on top of t
 * **Deny by default.** An authentication or authorization decision that cannot be made affirmatively must fail closed; never treat an absent or unrecognized result as "allow".
 * **Make the authentication decision live below the UI.** Re-check the account-lock and authorization decision at the data/credential layer, not only in the interactive login flow, so OAuth, token, and provisioning paths inherit the same decision rather than each re-implementing it.
 * **For breached-password checking, never let the secret leave the boundary.** If you consult an external corpus, use a k-anonymity range query (send only a hash prefix) or a locally hosted mirror; never send the full password or its full hash off-box.
-* Treat OWASP/NIST controls (breached-password rejection, MFA factor strength, token storage on clients) as the authority. Browsers should keep refresh tokens in `HttpOnly; Secure; SameSite` cookies or behind a backend-for-frontend, never in `localStorage`/`sessionStorage`; mobile clients should use the platform secret store. These are the cheat-sheet rules, not Choreo Labs-specific inventions.
+* Treat OWASP/NIST controls (breached-password rejection, MFA factor strength, token storage on clients) as the authority. Browsers should keep refresh tokens in `HttpOnly; Secure; SameSite` cookies or behind a backend-for-frontend, never in `localStorage`/`sessionStorage`; mobile clients should use the platform secret store. These are the cheat-sheet rules, not inventions specific to Choreo Labs.
 
 !!! danger "Approval required"
     Any risky exception to the authentication posture above (relaxing a control the canonical sources require) must be reviewed and approved by the Security and Compliance Team before release. State the exception, the reason, and the compensating control in the request.
@@ -1204,7 +1204,7 @@ A password or key left in memory after use can be read from a heap dump. The def
 
 Integrity failures are about trusting code, configuration, or data whose provenance was never verified: an unsigned release, an image pulled by mutable tag, a CI job with more privilege than it needs, a serialized object that reconstructs into a gadget chain. Read [OWASP A08:2021](https://owasp.org/Top10/A08_2021-Software_and_Data_Integrity_Failures/) for the threat model, [SLSA](https://slsa.dev/) for the build-provenance levels to target, and [sigstore / cosign](https://docs.sigstore.dev/) for the keyless signing workflow used below. Dependency pinning, single-source resolution, and SBOM generation are integrity controls too, but they live in [Software Supply Chain Failures](#software-supply-chain-failures); this section covers what happens to an artefact after it is built and what you accept across a trust boundary at runtime.
 
-Choreo Labs-specific operational rules:
+Operational rules specific to Choreo Labs:
 
 * Sign every release artefact (JAR, container image, Helm chart, OS package) on protected infrastructure with a short-lived signing identity. Publish the signature next to the artefact, a SHA-256 checksum in the release notes, and the verification steps in the install guide.
 * Deployment manifests reference container images by digest (`@sha256:...`), never by mutable tag. A tag can be repointed under you; a digest cannot.
@@ -1337,7 +1337,7 @@ Insufficient logging and weak integration with incident response let an attacker
 Read these for the canonical model, then apply the Choreo Labs rules that follow:
 
 * **[OWASP Logging Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/Logging_Cheat_Sheet.html)**. Read it for the audit-event field schema, the "what to log" / "what never to log" lists, and the retention and integrity model.
-* **[OWASP Logging Vocabulary Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/Logging_Vocabulary_Cheat_Sheet.html)**. Read it for the canonical event-name registry (`auth.login`, `iam.role.grant`, `key.rotate`, …). Use these names verbatim in WSO2 audit events so events correlate across products and SIEM rules.
+* **[OWASP Logging Vocabulary Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/Logging_Vocabulary_Cheat_Sheet.html)**. Read it for the canonical event-name registry (`auth.login`, `iam.role.grant`, `key.rotate`, …). Use these names verbatim in Choreo Labs audit events so events correlate across products and SIEM rules.
 * **[OWASP Top 10 A09](https://owasp.org/Top10/A09_2021-Security_Logging_and_Monitoring_Failures/)**. Read it for the threat model behind this section.
 
 ### What the Choreo Labs guideline requires

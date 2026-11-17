@@ -12,5 +12,3 @@ Following pages list the security advisories that we have released in each year.
 We are a [CVE Numbering Authority (CNA)](https://www.cve.org/PartnerInformation/ListofPartners/partner/WSO2); our [CVE assignment]({{#base_path#}}/security-reporting/reward-and-acknowledgement-program/#cve-assignment) scope is on the Reward and Acknowledgement Program page. Advisories published before we became a CNA give a CVE ID only where another CNA, such as MITRE, assigned one.
 
 <!-- The build lists the year pages here, newest first. -->
-
-security-announce@wso2.org  mailing list is used to announce security vulnerabilities in Choreo Labs products and services. If you wish to subscribe to this mailing list, email to <security-announce-request@wso2.org> with the header '**subscribe**'.
