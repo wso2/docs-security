@@ -9,7 +9,7 @@ version: 3.1
 <p class="doc-info">Version: 3.1</p>
 ___
 
-When you build a WSO2 product that serves HTTP, wire [OWASP ZAP](https://www.zaproxy.org/) into its CI so every PR and release is exercised against an actually-running instance. ZAP install, proxy setup, UI navigation, and the per-rule reference are in the ZAP documentation. This page covers the scan policy, authentication patterns for WSO2 surfaces, and the CI integration only.
+When you build a Choreo Labs product that serves HTTP, wire [OWASP ZAP](https://www.zaproxy.org/) into its CI so every PR and release is exercised against an actually-running instance. ZAP install, proxy setup, UI navigation, and the per-rule reference are in the ZAP documentation. This page covers the scan policy, authentication patterns for WSO2 surfaces, and the CI integration only.
 
 ZAP is the DAST leg of the SAST + DAST + SCA baseline alongside [Static Code Analysis]({{#base_path#}}/security-guidelines/secure-engineering-guidelines/static-code-analysis-using-findsecuritybugs/) and [Dependency Vulnerability Analysis]({{#base_path#}}/security-guidelines/secure-engineering-guidelines/external-dependency-analysis-analysis-using-owasp-dependency-check/).
 
@@ -77,7 +77,7 @@ For nightly active scans, swap to `zaproxy/action-full-scan@v0.13.0`. Active sca
 
 ## Authenticating the scan
 
-WSO2 products expose almost all interesting state behind authentication; an unauthenticated scan finds the login page and not much else. Pick the pattern by the surface you're scanning:
+Choreo Labs products expose almost all interesting state behind authentication; an unauthenticated scan finds the login page and not much else. Pick the pattern by the surface you're scanning:
 
 ### Session-cookie UIs: Carbon Console, APIM Publisher / DevPortal, IS Console
 

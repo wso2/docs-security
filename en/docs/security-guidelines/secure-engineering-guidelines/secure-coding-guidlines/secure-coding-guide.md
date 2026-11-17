@@ -9,7 +9,7 @@ version: 4.1
 <p class="doc-info">Version: 4.1</p>
 ___
 
-When you write code for a WSO2 product, follow this guide. Each section opens with the canonical external reading (OWASP, NIST, RFCs), then lists what's WSO2-specific: named helpers to use, default configurations to override, anti-patterns to avoid, and stack-specific call shapes. For the general "what and why" of a category, follow the external links.
+When you write code for a Choreo Labs product, follow this guide. Each section opens with the canonical external reading (OWASP, NIST, RFCs), then lists what's Choreo Labs-specific: named helpers to use, default configurations to override, anti-patterns to avoid, and stack-specific call shapes. For the general "what and why" of a category, follow the external links.
 
 **How to read this guide.** Click the tab for your stack (**Java stack** for Carbon-based products, **Go stack** for the new Go-based products). Material remembers your choice across the site.
 
@@ -28,11 +28,11 @@ Read these once; we link back to specific entries throughout this guide instead 
 * Identity and OAuth: [NIST SP 800-63](https://pages.nist.gov/800-63-3/), [RFC 9700: OAuth 2.0 Security BCP](https://datatracker.ietf.org/doc/html/rfc9700), [RFC 7636: PKCE](https://datatracker.ietf.org/doc/html/rfc7636), [RFC 8725: JWT BCP](https://datatracker.ietf.org/doc/html/rfc8725), [OpenID Connect Core](https://openid.net/specs/openid-connect-core-1_0.html).
 * Cryptography and transport: [NIST SP 800-131A](https://csrc.nist.gov/publications/detail/sp/800-131a/rev-2/final), [NIST SP 800-52](https://csrc.nist.gov/publications/detail/sp/800-52/rev-2/final), [NIST SP 800-57](https://csrc.nist.gov/projects/key-management), [Mozilla TLS config generator](https://ssl-config.mozilla.org/).
 * Supply chain: [SLSA](https://slsa.dev/), [OWASP SCVS](https://owasp.org/www-project-software-component-verification-standard/), [OpenSSF Best Practices](https://www.bestpractices.dev/), [CycloneDX](https://cyclonedx.org/), [SPDX](https://spdx.dev/).
-* WSO2 internal: [Secure Software Development Process]({{#base_path#}}/security-processes/secure-software-development-process/) · [Vulnerability Management]({{#base_path#}}/security-processes/vulnerability-management-process/) · [Cloud Security Process]({{#base_path#}}/security-processes/cloud-security-process/) · [Security Reporting]({{#base_path#}}/security-reporting/report-security-issues/) · [Incident clarifications]({{#base_path#}}/security-announcements/incident-clarifications/).
+* Choreo Labs internal: [Secure Software Development Process]({{#base_path#}}/security-processes/secure-software-development-process/) · [Vulnerability Management]({{#base_path#}}/security-processes/vulnerability-management-process/) · [Cloud Security Process]({{#base_path#}}/security-processes/cloud-security-process/) · [Security Reporting]({{#base_path#}}/security-reporting/report-security-issues/) · [Incident clarifications]({{#base_path#}}/security-announcements/incident-clarifications/).
 
-## Principles specific to WSO2 product code
+## Principles specific to Choreo Labs product code
 
-The general principles (defense in depth, fail secure, least privilege, deny by default, secure defaults, no security through obscurity) are covered in [OWASP Proactive Controls](https://owasp.org/www-project-proactive-controls/). The principles that are *not* obvious from external references and must be applied when writing WSO2 product code:
+The general principles (defense in depth, fail secure, least privilege, deny by default, secure defaults, no security through obscurity) are covered in [OWASP Proactive Controls](https://owasp.org/www-project-proactive-controls/). The principles that are *not* obvious from external references and must be applied when writing Choreo Labs product code:
 
 1. **Tenant identity rides in context, never in caller input.** Carbon's `PrivilegedCarbonContext` in Java; a typed `context.Context` key in Go. Reading tenant id from a header, query parameter, or request body is wrong by construction.
 2. **Re-check authorization at the data layer.** The store layer carries tenant and owner predicates on every query and refuses to return non-matching rows; handler-level checks alone are insufficient.
@@ -230,7 +230,7 @@ Do not accept absolute forward URLs, or absolute redirect URLs (apart from admin
 
 ## Security Misconfiguration
 
-External: [OWASP A05](https://owasp.org/Top10/A05_2021-Security_Misconfiguration/) · [HTTP Headers Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/HTTP_Headers_Cheat_Sheet.html). Read these for the category model; this section covers what to set in WSO2 code and deployments.
+External: [OWASP A05](https://owasp.org/Top10/A05_2021-Security_Misconfiguration/) · [HTTP Headers Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/HTTP_Headers_Cheat_Sheet.html). Read these for the category model; this section covers what to set in Choreo Labs code and deployments.
 
 Production hardening (per-product, per-version) is a separate concern from code defaults. Follow the version-indexed [Security Guidelines for Production Deployment]({{#base_path#}}/security-guidelines/security-guidelines-for-production-deployment/) for your product and version; the controls below are the ones you own in code and manifests regardless of deployment.
 
@@ -253,7 +253,7 @@ Distinguish the two tiers when reviewing a change:
 
 ### Container security defaults
 
-This is net-new general engineering guidance, not extracted from the secure-coding source: the controls below are external-standard baselines adopted as the WSO2 baseline. Read [Kubernetes Pod Security Standards (Restricted)](https://kubernetes.io/docs/concepts/security/pod-security-standards/#restricted) for the exact field set the Restricted profile enforces, and [NIST SP 800-190](https://csrc.nist.gov/publications/detail/sp/800-190/final) for the container-platform threat model. Pod Security, `NetworkPolicy`, and image-pinning follow those standards.
+This is net-new general engineering guidance, not extracted from the secure-coding source: the controls below are external-standard baselines adopted as the Choreo Labs baseline. Read [Kubernetes Pod Security Standards (Restricted)](https://kubernetes.io/docs/concepts/security/pod-security-standards/#restricted) for the exact field set the Restricted profile enforces, and [NIST SP 800-190](https://csrc.nist.gov/publications/detail/sp/800-190/final) for the container-platform threat model. Pod Security, `NetworkPolicy`, and image-pinning follow those standards.
 
 Apply at the workload and namespace level:
 
@@ -345,7 +345,7 @@ Set the values through the [HTTP Security Headers]({{#base_path#}}/security-guid
 External: [MDN: CORS](https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS) · [OWASP HTML5 Security Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/HTML5_Security_Cheat_Sheet.html#cross-origin-resource-sharing).
 
 * Reject `Access-Control-Allow-Origin: *` combined with `Access-Control-Allow-Credentials: true` at code review: the combination is invalid and browsers will not honor it, but shipping it signals a misunderstanding of the trust boundary.
-* A wildcard `Access-Control-Allow-Origin` is appropriate only for content that is fully public to any site. It must not be the default in WSO2 products. Where a wildcard option exists, an admin must be able to switch it to domain-level restriction; the allow-list is configuration, version-controlled and reviewed.
+* A wildcard `Access-Control-Allow-Origin` is appropriate only for content that is fully public to any site. It must not be the default in Choreo Labs products. Where a wildcard option exists, an admin must be able to switch it to domain-level restriction; the allow-list is configuration, version-controlled and reviewed.
 * Admin and management APIs must be domain-restricted, never wildcard.
 
 !!! danger "Approval required"
@@ -359,7 +359,7 @@ Unmanaged versions and undocumented endpoints are the misconfiguration here: an 
 
 * **Inventory is authoritative and generated, not maintained by hand.** Every reachable endpoint, on every host and version, appears in a machine-readable spec. Routing is driven from that spec; a handler that is not in the spec is a defect.
 * **Deny by default for non-public surfaces.** Internal, debug, and management endpoints are not reachable from public ingress. Bind them to localhost or an internal network and front them with a deny-default `NetworkPolicy`.
-* **Signal deprecation in the response using the standard contract.** Per RFC 8594, emit `Sunset` (with the retirement date), `Deprecation`, and a `Link` to the migration guide on deprecated resources so consumers can detect and act before removal. Use your stack's normal response-header mechanism; this is standard HTTP technique, not a WSO2-specific control.
+* **Signal deprecation in the response using the standard contract.** Per RFC 8594, emit `Sunset` (with the retirement date), `Deprecation`, and a `Link` to the migration guide on deprecated resources so consumers can detect and act before removal. Use your stack's normal response-header mechanism; this is standard HTTP technique, not a Choreo Labs-specific control.
 * **Retire on a schedule.** Track deprecated versions to a removal date; do not leave superseded versions serving traffic indefinitely.
 
 === "Java stack"
@@ -372,7 +372,7 @@ Unmanaged versions and undocumented endpoints are the misconfiguration here: an 
 
 ### Default credentials, sample apps, management console exposure
 
-WSO2-specific operational rules; these are the defaults attackers try first:
+Choreo Labs-specific operational rules; these are the defaults attackers try first:
 
 * **Rotate the Carbon admin password before any exposure.** Replace all shipped keystore and truststore passwords as well. Store the rotated secrets in the product's secure secret store or an external secret manager; never leave them in plaintext config or commit them.
 * **Remove or isolate sample apps and demo content** before production. Do not ship demo artifacts on a public surface.
@@ -385,7 +385,7 @@ WSO2-specific operational rules; these are the defaults attackers try first:
 
 ## Software Supply Chain Failures
 
-External: [SLSA](https://slsa.dev/) for the build-integrity levels to target · [OWASP SCVS](https://owasp.org/www-project-software-component-verification-standard/) for the component-verification checklist. Read these for the threat model and the maturity targets; the controls below are what they translate to in WSO2 product code.
+External: [SLSA](https://slsa.dev/) for the build-integrity levels to target · [OWASP SCVS](https://owasp.org/www-project-software-component-verification-standard/) for the component-verification checklist. Read these for the threat model and the maturity targets; the controls below are what they translate to in Choreo Labs product code.
 
 Deployments that diverge from the official release baseline are the recurring supply-chain failure pattern: an artefact, dependency, or build step that no longer matches what was reviewed and released.
 
@@ -435,10 +435,10 @@ Read [OWASP A06:2021, Vulnerable and Outdated Components](https://owasp.org/Top1
 When a scan flags an existing dependency, do not jump straight to a suppression. Triage it:
 
 1. Open a thread on the Security Group mailing list with the subject `Dependency Vulnerability - [DependencyName] - [DependencyVersion] - [CVE]`.
-2. Analyze whether WSO2's actual usage of the component is reachable by the vulnerability.
+2. Analyze whether Choreo Labs' actual usage of the component is reachable by the vulnerability.
     * **Reachable, fix available:** migrate to a version with no known vulnerability.
-    * **Reachable, no fixed version:** nullify the impact in WSO2's usage path with additional validation or security checks (this hardening is itself approval-gated, below).
-    * **Not reachable in WSO2's usage:** document the reasoning on the thread and request approval to record it in the Dependency Check suppression file. Suppress only genuine non-exploitable findings after this per-vulnerability analysis; never blanket-suppress to make a build pass.
+    * **Reachable, no fixed version:** nullify the impact in Choreo Labs' usage path with additional validation or security checks (this hardening is itself approval-gated, below).
+    * **Not reachable in Choreo Labs' usage:** document the reasoning on the thread and request approval to record it in the Dependency Check suppression file. Suppress only genuine non-exploitable findings after this per-vulnerability analysis; never blanket-suppress to make a build pass.
 
 !!! danger "Approval required"
     When no newer version exists and the component is unmaintained, the Security and Compliance Team must review any validations or security constraints added to nullify the vulnerability's impact. Separately, any pull request adding entries to a component's OWASP Dependency Check suppression file must be reviewed **and merged** by the Security and Compliance Team; the review covers the mitigated reason, the dependency source, and the usage path.
@@ -475,18 +475,18 @@ Read [OWASP API10:2023, Unsafe Consumption of APIs](https://owasp.org/API-Securi
 
 ## Cryptographic Failures
 
-Cryptographic failures cover weak or misused algorithms, mishandled keys, broken transport, forgeable tokens, and sensitive material left readable in memory. Most of this is net-new relative to the upstream guideline, so the canonical reading lives outside WSO2; the WSO2 rules are about *where* crypto lives in product code and *which* deviations need approval.
+Cryptographic failures cover weak or misused algorithms, mishandled keys, broken transport, forgeable tokens, and sensitive material left readable in memory. Most of this is net-new relative to the upstream guideline, so the canonical reading lives outside Choreo Labs; the Choreo Labs rules are about *where* crypto lives in product code and *which* deviations need approval.
 
 Read these for the parameters; do not restate them in code or comments, reference the current version at implementation time:
 
-* **[NIST SP 800-131A](https://csrc.nist.gov/publications/detail/sp/800-131a/rev-2/final)**. Read it for the approved-algorithm list and the transition schedule. Anything NIST currently marks legacy or disallowed (MD5, SHA-1, 3DES, RC4, RSA without padding, AES without an authenticated mode) is banned in WSO2 product code.
+* **[NIST SP 800-131A](https://csrc.nist.gov/publications/detail/sp/800-131a/rev-2/final)**. Read it for the approved-algorithm list and the transition schedule. Anything NIST currently marks legacy or disallowed (MD5, SHA-1, 3DES, RC4, RSA without padding, AES without an authenticated mode) is banned in Choreo Labs product code.
 * **[NIST SP 800-52 Rev. 2](https://csrc.nist.gov/publications/detail/sp/800-52/rev-2/final)**. Read it for the TLS protocol and cipher selection rules that apply to government-grade deployments.
 * **[OWASP Cryptographic Storage Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/Cryptographic_Storage_Cheat_Sheet.html)**. Read it for symmetric/asymmetric primitive choice, nonce/IV handling, and key lifecycle.
 * **[OWASP Password Storage Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/Password_Storage_Cheat_Sheet.html)**. Read it for the current Argon2id / scrypt / bcrypt / PBKDF2 work-factor parameters. These move over time: use the values current at implementation time, store the algorithm name and parameters alongside the hash so they can be migrated, and re-evaluate every release.
 * **[Mozilla TLS configuration generator](https://ssl-config.mozilla.org/)**. Generate the cipher suite, protocol, OCSP, and HSTS config for the terminator from the "Intermediate" or "Modern" profile and pin to it rather than hand-rolling.
 * **[RFC 8725: JWT BCP](https://datatracker.ietf.org/doc/html/rfc8725)**. Read it for algorithm allow-listing, the alg-confusion attack, `kid`/`jwk` header handling, and required claim validation.
 
-WSO2 rules that apply on top of the external baselines:
+Choreo Labs rules that apply on top of the external baselines:
 
 * **Centralize crypto behind the platform facade; do not hand-roll.** Product code that encrypts or decrypts a secret (refresh tokens, IdP credentials, vault-managed configuration) goes through the platform crypto facade, not a raw `Cipher` / `crypto/aes` call scattered through a component. Centralizing keeps algorithm, mode, and key selection in one auditable place that can be upgraded when NIST guidance moves.
 * **A JWT algorithm allow-list is data, not code.** Each verifier accepts an explicit, configured set of algorithms. **Reject `alg: none`**, and reject HMAC algorithms where the verifier holds an asymmetric (public) key: that is the alg-confusion attack RFC 8725 describes.
@@ -610,7 +610,7 @@ If a password or key is left in memory after use, an attacker with a memory dump
 
 External: read the [OWASP Session Management Cheat Sheet: Cookies](https://cheatsheetseries.owasp.org/cheatsheets/Session_Management_Cheat_Sheet.html#cookies) for the attribute rationale and test cases.
 
-Sensitive cookies such as `JSESSIONID` are stolen over insecure networks or through an XSS vulnerability when their attributes are weak. WSO2 baseline for every session and authentication cookie:
+Sensitive cookies such as `JSESSIONID` are stolen over insecure networks or through an XSS vulnerability when their attributes are weak. Choreo Labs baseline for every session and authentication cookie:
 
 * **`Secure`**: set it so the browser only sends the cookie over HTTPS. Java: `cookie.setSecure(true)`. Go: `Secure: true` on the `http.Cookie`.
 * **`HttpOnly`**: set it so client-side JavaScript cannot read the cookie, mitigating XSS-driven session theft. Java: `cookie.setHttpOnly(true)`. Go: `HttpOnly: true` on the `http.Cookie`.
@@ -631,7 +631,7 @@ External: [OWASP A03](https://owasp.org/Top10/A03_2021-Injection/) · [Injection
 
 ### Input validation
 
-The general rules (allow-list not deny-list, length caps, format validation, canonicalization before validation, refuse unknown JSON fields, bound parser cost) are in the OWASP Input Validation Cheat Sheet. Read it for the canonical allow-list/canonicalization order; below is what to do in WSO2 code.
+The general rules (allow-list not deny-list, length caps, format validation, canonicalization before validation, refuse unknown JSON fields, bound parser cost) are in the OWASP Input Validation Cheat Sheet. Read it for the canonical allow-list/canonicalization order; below is what to do in Choreo Labs code.
 
 Validation must run server-side; front-end validation is for UX only and is trivially bypassed. In Carbon 4 based products, input validation is given a lower priority and is performed only on essential screens, so it cannot be the line of defense on its own. Treat output encoding and output sanitization (see [Cross-Site Scripting](#cross-site-scripting-xss)) as mandatory and treat parameterization/escaping at each sink (see the subsections below) as the primary control. Input validation is defense in depth, not the boundary.
 
@@ -655,7 +655,7 @@ Validation must run server-side; front-end validation is for UX only and is triv
 
 External: [OWASP SQL Injection Prevention Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/SQL_Injection_Prevention_Cheat_Sheet.html). Read it for parameterized queries (Defense Option 1) and the [allow-list input validation pattern](https://cheatsheetseries.owasp.org/cheatsheets/SQL_Injection_Prevention_Cheat_Sheet.html#defense-option-4-allowlist-input-validation) for dynamic identifiers (Defense Option 4), which has the worked code shapes.
 
-WSO2 rule: use a compiled/prepared statement with bind variables for every *value*. SQL *identifiers* (table names, column names, an `ORDER BY` column, sort direction, offset) **cannot** be bound as parameters; an `ORDER BY` column name in particular is not a legal `PreparedStatement` parameter. Where the query needs a dynamic identifier, restructure the method so it does not accept the raw identifier from the caller; map a fixed set of user-facing keys to real column/table names through a static allow-list and reject anything not in the set. Concatenating an identifier into the query string is injectable even when every other value is bound.
+Choreo Labs rule: use a compiled/prepared statement with bind variables for every *value*. SQL *identifiers* (table names, column names, an `ORDER BY` column, sort direction, offset) **cannot** be bound as parameters; an `ORDER BY` column name in particular is not a legal `PreparedStatement` parameter. Where the query needs a dynamic identifier, restructure the method so it does not accept the raw identifier from the caller; map a fixed set of user-facing keys to real column/table names through a static allow-list and reject anything not in the set. Concatenating an identifier into the query string is injectable even when every other value is bound.
 
 === "Java stack"
 
@@ -708,7 +708,7 @@ WSO2 rule: use a compiled/prepared statement with bind variables for every *valu
 
 External: [OWASP LDAP Injection Prevention Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/LDAP_Injection_Prevention_Cheat_Sheet.html). Read it for the [search-filter character set](https://cheatsheetseries.owasp.org/cheatsheets/LDAP_Injection_Prevention_Cheat_Sheet.html#defenses) that must be escaped (`*`, `(`, `)`, `\`, NUL) and the separate [distinguished-name character set](https://cheatsheetseries.owasp.org/cheatsheets/LDAP_Injection_Prevention_Cheat_Sheet.html#distinguished-name-escaping) (different rules: filter escaping and DN escaping are not interchangeable).
 
-WSO2 rule: every user input appended to an LDAP filter or DN must pass through a proper LDAP encoding function before it reaches the search request. Building a filter with `String.format` / `fmt.Sprintf` / string concatenation on raw input is a security defect even when the input "looks like" a username.
+Choreo Labs rule: every user input appended to an LDAP filter or DN must pass through a proper LDAP encoding function before it reaches the search request. Building a filter with `String.format` / `fmt.Sprintf` / string concatenation on raw input is a security defect even when the input "looks like" a username.
 
 === "Java stack"
 
@@ -738,7 +738,7 @@ WSO2 rule: every user input appended to an LDAP filter or DN must pass through a
 
 External: [OWASP OS Command Injection Defense Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/OS_Command_Injection_Defense_Cheat_Sheet.html).
 
-WSO2 products and applications should not construct OS commands from user input at all. The guideline gives no "safe" sanitization recipe for running a user-derived command: the prescribed control is to avoid it. If a use case genuinely requires execution, pass a fixed program with arguments as an argument array so no shell parses the input. Never the single-string form; never `sh -c "…"` with interpolated input.
+Choreo Labs products and applications should not construct OS commands from user input at all. The guideline gives no "safe" sanitization recipe for running a user-derived command: the prescribed control is to avoid it. If a use case genuinely requires execution, pass a fixed program with arguments as an argument array so no shell parses the input. Never the single-string form; never `sh -c "…"` with interpolated input.
 
 !!! danger "Approval required"
     Any code path that must append user input to an OS command, or interpret user input as an OS command, must have the use case **and** the protective controls reviewed and approved by the Security and Compliance Team before the component is released.
@@ -1016,21 +1016,21 @@ Reject these anti-patterns regardless of stack: trusting client-side file-type c
 
 ## Authentication Failures
 
-The authoritative guideline does not prescribe a fixed set of authentication rules, so this section points at the canonical sources and gives general WSO2 engineering guidance for building against them. Read these for the threat model and the rules; do not reimplement what they specify, implement against them:
+The authoritative guideline does not prescribe a fixed set of authentication rules, so this section points at the canonical sources and gives general Choreo Labs engineering guidance for building against them. Read these for the threat model and the rules; do not reimplement what they specify, implement against them:
 
 * **[NIST SP 800-63B](https://pages.nist.gov/800-63-3/sp800-63b.html)**. Read for memorized-secret (password) length, lifecycle, recovery, and MFA assurance levels, and for which legacy rules it now disallows (mandatory composition, routine forced rotation). Take the actual length floor and breached-password expectations from the current text, not from a number hard-coded here.
 * **[OWASP Authentication Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/Authentication_Cheat_Sheet.html)** and **[Session Management Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/Session_Management_Cheat_Sheet.html)**. Read for the operational rules and the test cases each control must pass.
 * **[RFC 9700: OAuth 2.0 Security BCP](https://datatracker.ietf.org/doc/html/rfc9700)**. Read for the required OAuth posture: PKCE (`S256` only), exact `redirect_uri` matching, refresh-token rotation, public-client constraints, and prohibited grant types.
 * **[OWASP Top 10 A07](https://owasp.org/Top10/A07_2021-Identification_and_Authentication_Failures/)**. Read for the broader threat model and the failure categories to test against.
 
-General WSO2 engineering guidance for building authentication on top of those sources:
+General Choreo Labs engineering guidance for building authentication on top of those sources:
 
 * **Carry tenant identity in the request context** and key every credential, lock-state, and session lookup by it, so one tenant can never observe or affect another tenant's authentication.
 * **Keep policy parameters in configuration, not in code.** Password length floor, hashing parameters, lockout thresholds, and breached-password behavior should be config-as-code so they can be tuned and reviewed without a code change, and the chosen algorithm/parameters stored alongside each hash so they can evolve without breaking verification.
 * **Deny by default.** An authentication or authorization decision that cannot be made affirmatively must fail closed; never treat an absent or unrecognized result as "allow".
 * **Make the authentication decision live below the UI.** Re-check the account-lock and authorization decision at the data/credential layer, not only in the interactive login flow, so OAuth, token, and provisioning paths inherit the same decision rather than each re-implementing it.
 * **For breached-password checking, never let the secret leave the boundary.** If you consult an external corpus, use a k-anonymity range query (send only a hash prefix) or a locally hosted mirror; never send the full password or its full hash off-box.
-* Treat OWASP/NIST controls (breached-password rejection, MFA factor strength, token storage on clients) as the authority. Browsers should keep refresh tokens in `HttpOnly; Secure; SameSite` cookies or behind a backend-for-frontend, never in `localStorage`/`sessionStorage`; mobile clients should use the platform secret store. These are the cheat-sheet rules, not WSO2-specific inventions.
+* Treat OWASP/NIST controls (breached-password rejection, MFA factor strength, token storage on clients) as the authority. Browsers should keep refresh tokens in `HttpOnly; Secure; SameSite` cookies or behind a backend-for-frontend, never in `localStorage`/`sessionStorage`; mobile clients should use the platform secret store. These are the cheat-sheet rules, not Choreo Labs-specific inventions.
 
 !!! danger "Approval required"
     Any risky exception to the authentication posture above (relaxing a control the canonical sources require) must be reviewed and approved by the Security and Compliance Team before release. State the exception, the reason, and the compensating control in the request.
@@ -1079,12 +1079,12 @@ General WSO2 engineering guidance for building authentication on top of those so
 
 ### Session Hijacking
 
-A session is recognized by a token carried in a cookie; in WSO2 products the session ID is a cookie communicated over HTTP headers. Hijacking compromises that token by sniffing it on the wire, a man-in-the-middle, predicting it, or stealing it client-side (XSS). Read the [OWASP Session Management Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/Session_Management_Cheat_Sheet.html) for the full control set.
+A session is recognized by a token carried in a cookie; in Choreo Labs products the session ID is a cookie communicated over HTTP headers. Hijacking compromises that token by sniffing it on the wire, a man-in-the-middle, predicting it, or stealing it client-side (XSS). Read the [OWASP Session Management Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/Session_Management_Cheat_Sheet.html) for the full control set.
 
 What to do:
 
 * **Transport.** Emit HSTS so a conformant browser refuses plain HTTP to the domain (defeats SSLStrip and stops a session cookie leaking over an HTTP link to an HTTPS site). Where certificate pinning is in scope, pin the server key (TOFU) to blunt a compromised-CA MITM. The header values, and how to wire them on Carbon/Tomcat, Go services, the API Gateway, reverse proxies, and ingresses, are in [HTTP Security Headers: Configuration Reference]({{#base_path#}}/security-guidelines/secure-engineering-guidelines/security-related-http-headers/).
-* **Cookie attributes.** Set `HttpOnly; Secure; SameSite` so the session cookie cannot travel over an unencrypted channel or be read by script; see [Securing Cookies](#securing-cookies) for the WSO2 baseline.
+* **Cookie attributes.** Set `HttpOnly; Secure; SameSite` so the session cookie cannot travel over an unencrypted channel or be read by script; see [Securing Cookies](#securing-cookies) for the Choreo Labs baseline.
 * **Unpredictable tokens.** See [Session Prediction](#session-prediction).
 * **Client-side theft.** Defeat the XSS that steals tokens; see [Injection](#injection) output-encoding rules.
 
@@ -1133,7 +1133,7 @@ If the application keeps the same session ID across the authentication boundary,
     session.invalidate();             // not session.removeAttribute(...)
     ```
 
-    **URL rewriting.** Do not call `HttpServletResponse#encodeRedirectURL()` or `encodeURL()`; they append the session ID to the URL, exposing it. WSO2 products depend on cookies, so there is no functional cost to skipping them: build the redirect target directly and call `response.sendRedirect(redirectUrl)`.
+    **URL rewriting.** Do not call `HttpServletResponse#encodeRedirectURL()` or `encodeURL()`; they append the session ID to the URL, exposing it. Choreo Labs products depend on cookies, so there is no functional cost to skipping them: build the redirect target directly and call `response.sendRedirect(redirectUrl)`.
 
 === "Go stack"
 
@@ -1204,7 +1204,7 @@ A password or key left in memory after use can be read from a heap dump. The def
 
 Integrity failures are about trusting code, configuration, or data whose provenance was never verified: an unsigned release, an image pulled by mutable tag, a CI job with more privilege than it needs, a serialized object that reconstructs into a gadget chain. Read [OWASP A08:2021](https://owasp.org/Top10/A08_2021-Software_and_Data_Integrity_Failures/) for the threat model, [SLSA](https://slsa.dev/) for the build-provenance levels to target, and [sigstore / cosign](https://docs.sigstore.dev/) for the keyless signing workflow used below. Dependency pinning, single-source resolution, and SBOM generation are integrity controls too, but they live in [Software Supply Chain Failures](#software-supply-chain-failures); this section covers what happens to an artefact after it is built and what you accept across a trust boundary at runtime.
 
-WSO2-specific operational rules:
+Choreo Labs-specific operational rules:
 
 * Sign every release artefact (JAR, container image, Helm chart, OS package) on protected infrastructure with a short-lived signing identity. Publish the signature next to the artefact, a SHA-256 checksum in the release notes, and the verification steps in the install guide.
 * Deployment manifests reference container images by digest (`@sha256:...`), never by mutable tag. A tag can be repointed under you; a digest cannot.
@@ -1247,7 +1247,7 @@ WSO2-specific operational rules:
 
 ### Insecure Deserialization
 
-Deserialization rebuilds an object from a byte or text stream. When that stream is attacker-controlled, a weak deserializer can be coerced into constructing arbitrary types, the classic route to remote code execution and data tampering. Read the [OWASP Deserialization Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/Deserialization_Cheat_Sheet.html) for the gadget-chain mechanics and the per-language defenses; the controls below are what to apply in WSO2 code.
+Deserialization rebuilds an object from a byte or text stream. When that stream is attacker-controlled, a weak deserializer can be coerced into constructing arbitrary types, the classic route to remote code execution and data tampering. Read the [OWASP Deserialization Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/Deserialization_Cheat_Sheet.html) for the gadget-chain mechanics and the per-language defenses; the controls below are what to apply in Choreo Labs code.
 
 Two rules apply regardless of stack: never hand an untrusted stream to a generic decoder, and treat a deserialization failure as a security event. Add an integrity check (a digital signature or HMAC) over any serialized payload that crosses a trust boundary, and log every deserialization failure: an unexpected type or a thrown exception is a signal worth alerting on, not swallowing.
 
@@ -1255,7 +1255,7 @@ Two rules apply regardless of stack: never hand an untrusted stream to a generic
 
     Prefer JSON or XML with a typed mapper over native Java serialization for any cross-trust-boundary payload. Where Java serialization is unavoidable, allow-list the classes that may be reconstructed and deny by default.
 
-    A serialization filter gives you class allow-listing at the deserializer: `ObjectInputFilter` (JEP 290). The filter is built into every JDK any supported WSO2 product runs on: JEP 290 shipped in Java 9 and was backported to Java 6, 7, and 8, so no supported runtime needs a third-party library for this. Set it globally for the JVM, for example `-Djdk.serialFilter=com.wso2.expected.**;!*`, which permits the expected package tree and rejects everything else. On JDK 17+ you can additionally layer context-specific filters through a filter factory, `ObjectInputFilter.Config.setSerialFilterFactory(...)` (JEP 415), to combine a JVM-wide filter with per-context ones.
+    A serialization filter gives you class allow-listing at the deserializer: `ObjectInputFilter` (JEP 290). The filter is built into every JDK any supported Choreo Labs product runs on: JEP 290 shipped in Java 9 and was backported to Java 6, 7, and 8, so no supported runtime needs a third-party library for this. Set it globally for the JVM, for example `-Djdk.serialFilter=com.wso2.expected.**;!*`, which permits the expected package tree and rejects everything else. On JDK 17+ you can additionally layer context-specific filters through a filter factory, `ObjectInputFilter.Config.setSerialFilterFactory(...)` (JEP 415), to combine a JVM-wide filter with per-context ones.
 
     When filtering must be scoped to a single deserializer rather than the whole JVM, set a per-stream filter in code with `ObjectInputStream.setObjectInputFilter(...)`. As a code-level alternative, subclass `java.io.ObjectInputStream` and override `resolveClass()` to allow-list expected types, throwing `InvalidClassException` for anything else:
 
@@ -1334,15 +1334,15 @@ Two rules apply regardless of stack: never hand an untrusted stream to a generic
 
 Insufficient logging and weak integration with incident response let an attacker pivot and persist for weeks or months before detection, and high-value transactions without tamper-evident trails can be altered or deleted after the fact. The controls below make security-relevant events observable, attributable, and trustworthy.
 
-Read these for the canonical model, then apply the WSO2 rules that follow:
+Read these for the canonical model, then apply the Choreo Labs rules that follow:
 
 * **[OWASP Logging Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/Logging_Cheat_Sheet.html)**. Read it for the audit-event field schema, the "what to log" / "what never to log" lists, and the retention and integrity model.
 * **[OWASP Logging Vocabulary Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/Logging_Vocabulary_Cheat_Sheet.html)**. Read it for the canonical event-name registry (`auth.login`, `iam.role.grant`, `key.rotate`, …). Use these names verbatim in WSO2 audit events so events correlate across products and SIEM rules.
 * **[OWASP Top 10 A09](https://owasp.org/Top10/A09_2021-Security_Logging_and_Monitoring_Failures/)**. Read it for the threat model behind this section.
 
-### What the WSO2 guideline requires
+### What the Choreo Labs guideline requires
 
-These four controls are the load-bearing WSO2 requirements for this section. Everything else below is general engineering guidance layered on top of them.
+These four controls are the load-bearing Choreo Labs requirements for this section. Everything else below is general engineering guidance layered on top of them.
 
 * **Log the security-relevant events.** All login events, access-control failures, and server-side input-validation failures must be *capable* of being logged, with sufficient user context to identify a suspicious or malicious account.
 * **Make logs consumable by centralized log management.** Generate logs in a format a centralized log management solution can ingest directly, never free-text prose a regex has to reconstruct.
@@ -1379,7 +1379,7 @@ Operational logs and audit logs serve different consumers and must not share a s
 
 ### Resolving the client source IP behind proxies
 
-WSO2 products typically sit behind load balancers, gateways, and reverse proxies, so the immediate TCP peer is rarely the real client. Getting the client IP right is standard stack technique plus operator configuration, not a guideline-defined WSO2 control.
+Choreo Labs products typically sit behind load balancers, gateways, and reverse proxies, so the immediate TCP peer is rarely the real client. Getting the client IP right is standard stack technique plus operator configuration, not a guideline-defined Choreo Labs control.
 
 * **Never trust the raw `X-Forwarded-For` header.** It is attacker-controllable and can be spoofed or padded with bogus hops, so a forged value will be attributed to the wrong client and can poison alerting.
 * Resolve the client IP via a proxy-aware extraction against a **trusted-proxy list**: walk the forwarded chain and accept only hops you trust, taking the first untrusted address as the client. This is your framework's or proxy tier's standard capability, not a documented Carbon helper.
@@ -1396,7 +1396,7 @@ Audit events frequently need to reference something sensitive (a token, a key id
 
 ### Integrity and tamper evidence
 
-An audit trail an attacker can rewrite is not evidence. This is the integrity-controls requirement from the WSO2 guideline made concrete.
+An audit trail an attacker can rewrite is not evidence. This is the integrity-controls requirement from the Choreo Labs guideline made concrete.
 
 * Forward audit events to a dedicated, append-only sink separate from operational logs, with retention long enough for security investigation and any applicable compliance horizon.
 * Consider signing or hash-chaining log batches so a removed or altered record is detectable.
@@ -1406,7 +1406,7 @@ An audit trail an attacker can rewrite is not evidence. This is the integrity-co
 
     Use the two-arg `log.error(message, throwable)` form so the full stack is captured for operational debugging; `log.error("..." + e.getMessage())` is lossy and loses the chain. Keep stack traces out of the audit sink; they belong in operational logs.
 
-    For tamper-evident lines, add the Log4j2 UUID conversion character `%u` to the appender's pattern, for example {% raw %}`[%u] [%d] %5p {%c} - %m%ex%n`{% endraw %} in your product's `log4j2.properties`, so each entry carries a UUID a forged line cannot reproduce (`%u{RANDOM}` for a random type-4 UUID, the time-based default otherwise). Current WSO2 products (Identity Server, API Manager, Micro Integrator) ship on Log4j2, where `%u` is the supported token; the legacy `%K` token applies only to products still on the Log4j 1.x stack (Carbon 4.4.3+). Frame it as an operator-enabled hardening option for deployments whose compliance needs call for tamper-evident lines, not a default. See [Injection: Log Injection / Log Forging](#log-injection-log-forging).
+    For tamper-evident lines, add the Log4j2 UUID conversion character `%u` to the appender's pattern, for example {% raw %}`[%u] [%d] %5p {%c} - %m%ex%n`{% endraw %} in your product's `log4j2.properties`, so each entry carries a UUID a forged line cannot reproduce (`%u{RANDOM}` for a random type-4 UUID, the time-based default otherwise). Current Choreo Labs products (Identity Server, API Manager, Micro Integrator) ship on Log4j2, where `%u` is the supported token; the legacy `%K` token applies only to products still on the Log4j 1.x stack (Carbon 4.4.3+). Frame it as an operator-enabled hardening option for deployments whose compliance needs call for tamper-evident lines, not a default. See [Injection: Log Injection / Log Forging](#log-injection-log-forging).
 
 === "Go stack"
 
@@ -1424,7 +1424,7 @@ An audit trail an attacker can rewrite is not evidence. This is the integrity-co
 
 ### Recommended high-signal events to monitor
 
-Beyond the OWASP Logging Cheat Sheet baseline, the following are recommended high-signal events to wire into whatever monitors the deployment. This is general detection guidance (pick the ones your product can actually produce), not an enumerated set of WSO2 product features.
+Beyond the OWASP Logging Cheat Sheet baseline, the following are recommended high-signal events to wire into whatever monitors the deployment. This is general detection guidance (pick the ones your product can actually produce), not an enumerated set of Choreo Labs product features.
 
 * **Cross-tenant deny attempts**: a strong signal of probing or a broken-isolation bug.
 * **Refresh-token reuse, where the deployment detects it**: a strong signal of a stolen token being replayed.
@@ -1432,7 +1432,7 @@ Beyond the OWASP Logging Cheat Sheet baseline, the following are recommended hig
 * **Change to a security-relevant setting**: CORS allow-list, lockout thresholds, JWT issuers, federated IdPs, MFA enforcement.
 * **N authentication failures from one source or one principal within a window**: the lockout-rate / credential-stuffing signal.
 
-An event nobody watches is not monitoring. Wire these into the incident-response pipeline rather than letting them sit in a file; the WSO2 guideline calls out lack of integration with incident response as an anti-pattern.
+An event nobody watches is not monitoring. Wire these into the incident-response pipeline rather than letting them sit in a file; the Choreo Labs guideline calls out lack of integration with incident response as an anti-pattern.
 
 ### Companion configuration
 
@@ -1440,7 +1440,7 @@ The header set your code emits (and which headers feed client-IP resolution at t
 
 !!! danger "Approval required"
 
-    Changing what audit events are emitted, suppressed, or redacted for a security-relevant flow, or relaxing audit-trail integrity or retention below the documented baseline, must be reviewed and approved by the WSO2 Security and Compliance Team before release. Reducing logging on a security-relevant flow removes the evidence a future investigation depends on.
+    Changing what audit events are emitted, suppressed, or redacted for a security-relevant flow, or relaxing audit-trail integrity or retention below the documented baseline, must be reviewed and approved by the Choreo Labs Security and Compliance Team before release. Reducing logging on a security-relevant flow removes the evidence a future investigation depends on.
 
 ---
 
@@ -1454,7 +1454,7 @@ Three rules cut across every stack:
 * **Catch the exception you can handle, not the one you can't.** Catch typed exceptions, not the broad `Exception`/`Throwable` (Java) or a blanket `recover()` (Go). A broad catch hides the unexpected failures (`NullPointerException`, `OutOfMemoryError`, programming bugs) that should surface, not be silently absorbed into a security path.
 * **Sanitize at the boundary.** Internal failure detail (stack traces, file paths, SQL fragments, class names, framework identifiers, host/port reachability) must never reach a client. Map exceptions to a sanitized response at every external boundary, and keep error messages indistinguishable so a response cannot be used as an oracle.
 
-The last rule connects to [SSRF](#server-side-request-forgery-ssrf), the canonical WSO2 example of the *no-oracle* rule: there, strict error handling means returning an *identical* generic error whether a back-channel request failed or returned invalid data, so the response cannot be used as an open/closed-port oracle. The same discipline applies to every error path: distinguishable errors leak structure.
+The last rule connects to [SSRF](#server-side-request-forgery-ssrf), the canonical Choreo Labs example of the *no-oracle* rule: there, strict error handling means returning an *identical* generic error whether a back-channel request failed or returned invalid data, so the response cannot be used as an open/closed-port oracle. The same discipline applies to every error path: distinguishable errors leak structure.
 
 The complement of the no-oracle rule is *log the cause*: the client gets nothing distinguishing, but the server must record why the failure happened. The [Insecure Deserialization](#insecure-deserialization) control to log deserialization exceptions and failures (an incoming type that is not the expected type, or deserialization throwing) is a concrete instance: deny the operation, return a generic error, and log the real cause so the failed attempt is investigable.
 

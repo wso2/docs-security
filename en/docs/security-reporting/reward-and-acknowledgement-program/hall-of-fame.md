@@ -5,13 +5,13 @@ category: security-reporting
 
 # Security Hall of Fame
 
-The researchers and companies listed below have helped make WSO2 products and services safer by responsibly disclosing security vulnerabilities. Each entry represents one or more reports against WSO2 products or services that the reporter worked with WSO2 to resolve.
+The researchers and companies listed below have helped make Choreo Labs products and services safer by responsibly disclosing security vulnerabilities. Each entry represents one or more reports against Choreo Labs products or services that the reporter worked with Choreo Labs to resolve.
 
 For the in-scope products and services, qualifying criteria, and reward terms, see the [Reward and Acknowledgement Program](index.md).
 
 ## 2026
 
-### WSO2 Products and Infrastructure
+### Choreo Labs Products and Infrastructure
 
 |                                                                                                             |
 | :---------------------------------------------------------------------------------------------------------- |
@@ -107,7 +107,7 @@ For the in-scope products and services, qualifying criteria, and reward terms, s
 
 ## 2025
 
-### WSO2 Products and Infrastructure
+### Choreo Labs Products and Infrastructure
 
 |                                                                                |
 | :----------------------------------------------------------------------------- |
@@ -172,7 +172,7 @@ For the in-scope products and services, qualifying criteria, and reward terms, s
 
 ## 2024
 
-### WSO2 Products and Infrastructure
+### Choreo Labs Products and Infrastructure
 
 |                                                                                                          |
 | :------------------------------------------------------------------------------------------------------- |
@@ -185,7 +185,7 @@ For the in-scope products and services, qualifying criteria, and reward terms, s
 
 ## 2023
 
-### WSO2 Products and Infrastructure
+### Choreo Labs Products and Infrastructure
 
 |                                                                                          |
 | :--------------------------------------------------------------------------------------- |
@@ -200,7 +200,7 @@ For the in-scope products and services, qualifying criteria, and reward terms, s
 
 ## Prior to 2023
 
-### WSO2 Products and Infrastructure
+### Choreo Labs Products and Infrastructure
 
 |  |
 | :-- |
@@ -289,4 +289,4 @@ For the in-scope products and services, qualifying criteria, and reward terms, s
 | [Dipak Kumar Das](https://twitter.com/d1pakdas)                             |
 | [Suraj Theekshana](https://www.linkedin.com/in/suraj-theekshana-10171023a/) |
 
-We thank you for helping us keep WSO2 products and services safe!
+We thank you for helping us keep Choreo Labs products and services safe!

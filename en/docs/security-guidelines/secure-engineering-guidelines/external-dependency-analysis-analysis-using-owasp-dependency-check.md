@@ -9,7 +9,7 @@ version: 3.1
 <p class="doc-info">Version: 3.1</p>
 ___
 
-When you build a WSO2 product, wire in the dependency-vulnerability scans described below. Tool-by-tool tutorials are in the tools' own documentation, linked below. This page covers the policy, the CI wiring, and the triage workflow. The supply-chain framing (version pinning, lock files, manifest guards, release signing) is in [Secure Coding Guide: Software Supply Chain Failures]({{#base_path#}}/security-guidelines/secure-engineering-guidelines/secure-coding-guidlines/secure-coding-guide/#software-supply-chain-failures).
+When you build a Choreo Labs product, wire in the dependency-vulnerability scans described below. Tool-by-tool tutorials are in the tools' own documentation, linked below. This page covers the policy, the CI wiring, and the triage workflow. The supply-chain framing (version pinning, lock files, manifest guards, release signing) is in [Secure Coding Guide: Software Supply Chain Failures]({{#base_path#}}/security-guidelines/secure-engineering-guidelines/secure-coding-guidlines/secure-coding-guide/#software-supply-chain-failures).
 
 ## The rule
 
@@ -29,7 +29,7 @@ CI owns the scan; manual runs are for local debugging only.
 
 * **Java (Maven, Ivy, Gradle)**: [OWASP Dependency Check](https://owasp.org/www-project-dependency-check/) ([Maven plugin reference](https://jeremylong.github.io/DependencyCheck/dependency-check-maven/), [releases](https://github.com/jeremylong/DependencyCheck/releases)).
 * **Go**: [`govulncheck`](https://pkg.go.dev/golang.org/x/vuln/cmd/govulncheck) reading the [Go vulnerability database](https://pkg.go.dev/vuln/). Call-path analysis means findings reflect what is actually reachable from product code, not every vulnerable function in the dependency graph.
-* **JavaScript / npm**: [`npm audit`](https://docs.npmjs.com/cli/v10/commands/npm-audit) or [`pnpm audit`](https://pnpm.io/cli/audit) for React portals and admin UIs shipped with WSO2 products.
+* **JavaScript / npm**: [`npm audit`](https://docs.npmjs.com/cli/v10/commands/npm-audit) or [`pnpm audit`](https://pnpm.io/cli/audit) for React portals and admin UIs shipped with Choreo Labs products.
 
 Output format: use **SARIF** wherever the tool supports it. SARIF uploads cleanly to the GitHub Security tab and integrates with the SAST dashboard. See the [SARIF specification](https://docs.oasis-open.org/sarif/sarif/v2.1.0/sarif-v2.1.0.html) and [GitHub's SARIF support](https://docs.github.com/en/code-security/code-scanning/integrating-with-code-scanning/sarif-support-for-code-scanning).
 
@@ -96,7 +96,7 @@ CI fails on any unsuppressed high or critical advisory. The audit allow-list liv
   "frontend": {
     "GHSA-XXXX-XXXX-XXXX": {
       "reason": "Transitive of eslint; dev-only, not shipped to production bundle.",
-      "accepted_by": "security-team@wso2.com",
+      "accepted_by": "security-team@choreolabs.com",
       "review_date": "2026-04-01"
     }
   }

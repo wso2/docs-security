@@ -9,7 +9,7 @@ version: 3.1
 <p class="doc-info">Version: 3.1</p>
 ___
 
-When you build a React 18+ frontend for a WSO2 product, this is the engineering guide for what your code should and shouldn't do. The general "what XSS is", "what `dangerouslySetInnerHTML` does", or "how CSP works" is covered by the community references below, linked rather than restated. Cross-cutting rules (authentication, supply chain, logging, exception handling, cookie defaults) are in the [Secure Coding Guide]({{#base_path#}}/security-guidelines/secure-engineering-guidelines/secure-coding-guidlines/secure-coding-guide/) and not restated here.
+When you build a React 18+ frontend for a Choreo Labs product, this is the engineering guide for what your code should and shouldn't do. The general "what XSS is", "what `dangerouslySetInnerHTML` does", or "how CSP works" is covered by the community references below, linked rather than restated. Cross-cutting rules (authentication, supply chain, logging, exception handling, cookie defaults) are in the [Secure Coding Guide]({{#base_path#}}/security-guidelines/secure-engineering-guidelines/secure-coding-guidlines/secure-coding-guide/) and not restated here.
 
 ## External references
 
@@ -112,9 +112,9 @@ Markdown can carry embedded HTML and `javascript:` links, so it is an XSS vector
 
 `remark` and `rehype` plugins do not sanitize on their own, and some emit raw HTML. If you add plugins, also run [`rehype-sanitize`](https://github.com/rehypejs/rehype-sanitize) (or DOMPurify) over the result, with an explicit allow-list schema of permitted tags and attributes.
 
-## Rules for React in WSO2 products
+## Rules for React in Choreo Labs products
 
-These are the points that are not obvious from the external references, that recur across WSO2 product UIs, or that have a WSO2-specific reason.
+These are the points that are not obvious from the external references, that recur across Choreo Labs product UIs, or that have a Choreo Labs-specific reason.
 
 ### Sanitizer standardization
 
@@ -209,7 +209,7 @@ useEffect(() => {
 
 ### Dependency hygiene
 
-Pin dependencies exactly, commit the lock file, and keep `npm audit` / `pnpm audit` clean on every PR. Onboard new npm packages through WSO2's dependency process. Full guidance, including how WSO2 incidents map to pinning discipline, is in [Dependency Vulnerability Analysis]({{#base_path#}}/security-guidelines/secure-engineering-guidelines/external-dependency-analysis-analysis-using-owasp-dependency-check/) and [Secure Coding Guide, Software Supply Chain Failures]({{#base_path#}}/security-guidelines/secure-engineering-guidelines/secure-coding-guidlines/secure-coding-guide/#software-supply-chain-failures).
+Pin dependencies exactly, commit the lock file, and keep `npm audit` / `pnpm audit` clean on every PR. Onboard new npm packages through Choreo Labs' dependency process. Full guidance, including how Choreo Labs incidents map to pinning discipline, is in [Dependency Vulnerability Analysis]({{#base_path#}}/security-guidelines/secure-engineering-guidelines/external-dependency-analysis-analysis-using-owasp-dependency-check/) and [Secure Coding Guide, Software Supply Chain Failures]({{#base_path#}}/security-guidelines/secure-engineering-guidelines/secure-coding-guidlines/secure-coding-guide/#software-supply-chain-failures).
 
 ### Build hygiene
 
@@ -219,11 +219,11 @@ Pin dependencies exactly, commit the lock file, and keep `npm audit` / `pnpm aud
 
 ### Past incidents
 
-WSO2 [incident clarifications]({{#base_path#}}/security-announcements/incident-clarifications/) (npm package compromise, Shai-Hulud, axios) all document the same pattern: deployments that deviated from the pinned baseline were exposed, while deployments that kept exact pinning and committed lock files were not. Keep that discipline; see [Secure Coding Guide, Software Supply Chain Failures]({{#base_path#}}/security-guidelines/secure-engineering-guidelines/secure-coding-guidlines/secure-coding-guide/#software-supply-chain-failures).
+Choreo Labs [incident clarifications]({{#base_path#}}/security-announcements/incident-clarifications/) (npm package compromise, Shai-Hulud, axios) all document the same pattern: deployments that deviated from the pinned baseline were exposed, while deployments that kept exact pinning and committed lock files were not. Keep that discipline; see [Secure Coding Guide, Software Supply Chain Failures]({{#base_path#}}/security-guidelines/secure-engineering-guidelines/secure-coding-guidlines/secure-coding-guide/#software-supply-chain-failures).
 
 ## Review checklist
 
-When adding a new React-rendered page or component to a WSO2 product:
+When adding a new React-rendered page or component to a Choreo Labs product:
 
 - [ ] No `dangerouslySetInnerHTML` without DOMPurify (or equivalent reviewed sanitizer).
 - [ ] No `eval`, `new Function`, or runtime template compilation on user input.

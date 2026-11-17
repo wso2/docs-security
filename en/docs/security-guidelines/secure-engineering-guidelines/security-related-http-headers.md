@@ -9,7 +9,7 @@ version: 3.4
 <p class="doc-info">Version: 3.4</p>
 ___
 
-When you build a WSO2 product or service that serves HTTP, this is the security header set your code should emit and how to wire it. The companion section in the Secure Coding Guide is [Security Misconfiguration]({{#base_path#}}/security-guidelines/secure-engineering-guidelines/secure-coding-guidlines/secure-coding-guide/#security-misconfiguration); the operator-facing per-product reference is [Security Guidelines for Production Deployment]({{#base_path#}}/security-guidelines/security-guidelines-for-production-deployment/).
+When you build a Choreo Labs product or service that serves HTTP, this is the security header set your code should emit and how to wire it. The companion section in the Secure Coding Guide is [Security Misconfiguration]({{#base_path#}}/security-guidelines/secure-engineering-guidelines/secure-coding-guidlines/secure-coding-guide/#security-misconfiguration); the operator-facing per-product reference is [Security Guidelines for Production Deployment]({{#base_path#}}/security-guidelines/security-guidelines-for-production-deployment/).
 
 ## The header set
 
@@ -279,7 +279,7 @@ Set `Cache-Control: no-store` (and `Pragma: no-cache` for HTTP/1.0 caches still 
 
 * OAuth token endpoint responses.
 * Endpoints returning user PII.
-* Authenticated API responses where intermediary caches (CDN, browser, corporate proxy) are not under WSO2 control.
+* Authenticated API responses where intermediary caches (CDN, browser, corporate proxy) are not under Choreo Labs control.
 
 `no-cache` is not the same as `no-store`: `no-cache` allows storage with revalidation; `no-store` forbids storage entirely.
 

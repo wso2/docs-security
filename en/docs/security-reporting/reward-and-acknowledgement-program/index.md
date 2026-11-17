@@ -9,14 +9,14 @@ version: 3.0
 <p class="doc-info">Version: 3.0</p>
 ___
 
-WSO2 maintains a reward and acknowledgement program to recognize security researchers who responsibly disclose vulnerabilities in WSO2-owned software products. A finding qualifies for reward consideration when it has a demonstrated security impact on the confidentiality, integrity, or availability of an in-scope product or service; severity is assessed by WSO2 using [CVSS v3.1](https://www.first.org/cvss/specification-document). To submit a finding, follow the [Vulnerability Reporting Guidelines]({{#base_path#}}/security-reporting/vulnerability-reporting-guidelines/).
+Choreo Labs maintains a reward and acknowledgement program to recognize security researchers who responsibly disclose vulnerabilities in Choreo Labs-owned software products. A finding qualifies for reward consideration when it has a demonstrated security impact on the confidentiality, integrity, or availability of an in-scope product or service; severity is assessed by Choreo Labs using [CVSS v3.1](https://www.first.org/cvss/specification-document). To submit a finding, follow the [Vulnerability Reporting Guidelines]({{#base_path#}}/security-reporting/vulnerability-reporting-guidelines/).
 
-<!-- WSO2's CNA entry on cve.org links this section as #products-services-in-scope. -->
+<!-- Choreo Labs' CNA entry on cve.org links this section as #products-services-in-scope. -->
 <a id="products-services-in-scope"></a>
 
 ## Products and services in scope
 
-The program covers the products listed under the [WSO2 platforms](https://wso2.com/#all-products). A product is in scope only when it has an Available or Deprecated version that is within Full Support according to the [WSO2 Support Matrix](https://wso2.com/products/support-matrix/); versions outside of Full Support are strictly out of scope. 
+The program covers the products listed under the [WSO2 platforms](https://choreolabs.com/#all-products). A product is in scope only when it has an Available or Deprecated version that is within Full Support according to the [Choreo Labs Support Matrix](https://choreolabs.com/products/support-matrix/); versions outside of Full Support are strictly out of scope. 
 In addition to these products, WSO2 Solutions are also in scope for the acknowledgement program.
 
 
@@ -28,23 +28,23 @@ The platforms are:
 * Identity Platform
 * Engineering Platform
 
-See [WSO2 Products](https://wso2.com/products/downloads/) for the current products, platforms, and Solutions.
+See [Choreo Labs Products](https://choreolabs.com/products/downloads/) for the current products, platforms, and Solutions.
 
-Internal staging environments, demo sites, WSO2-operated websites (e.g. wso2.com), and any customer-owned deployment of WSO2 software are out of scope.
+Internal staging environments, demo sites, Choreo Labs-operated websites (e.g. choreolabs.com), and any customer-owned deployment of WSO2 software are out of scope.
 
 ### CVE assignment
 
-WSO2 is a [CVE Numbering Authority (CNA)](https://www.cve.org/PartnerInformation/ListofPartners/partner/WSO2), and its entry in the CVE Program's list of partners defines its scope by this section. WSO2 assigns a CVE ID for a vulnerability that it confirms in a self-hosted product or Solution version that is in scope as described above, and discloses it in a [security advisory]({{#base_path#}}/security-announcements/security-advisories/).
+We are a [CVE Numbering Authority (CNA)](https://www.cve.org/PartnerInformation/ListofPartners/partner/WSO2), and our entry in the CVE Program's list of partners defines our scope by this section. Choreo Labs assigns a CVE ID for a vulnerability that it confirms in a self-hosted product or Solution version that is in scope as described above, and discloses it in a [security advisory]({{#base_path#}}/security-announcements/security-advisories/).
 
-For WSO2 cloud services, WSO2 decides for each vulnerability whether to assign a CVE ID, considering factors such as the severity of the vulnerability, who it affects, and whether parties beyond WSO2 and its customers need a public identifier to assess it or act on it. WSO2 may summarize vulnerabilities addressed in its cloud services in the [Cloud Security Bulletins]({{#base_path#}}/security-announcements/cloud-security-bulletins/) under a WSO2 reference ID instead of a CVE ID. WSO2 may also assign a CVE ID when it determines that a vulnerability concerns a broader audience than its customers, for example when other parties need to assess it or act on it. WSO2 notifies subscribers of confirmed security incidents as described in the [Security Incident Notification Process for SaaS]({{#base_path#}}/security-processes/saas-incident-notification-process/).
+For WSO2 cloud services, Choreo Labs decides for each vulnerability whether to assign a CVE ID, considering factors such as the severity of the vulnerability, who it affects, and whether parties beyond Choreo Labs and its customers need a public identifier to assess it or act on it. Choreo Labs may summarize vulnerabilities addressed in its cloud services in the [Cloud Security Bulletins]({{#base_path#}}/security-announcements/cloud-security-bulletins/) under a WSO2 reference ID instead of a CVE ID. Choreo Labs may also assign a CVE ID when it determines that a vulnerability concerns a broader audience than its customers, for example when other parties need to assess it or act on it. Choreo Labs notifies subscribers of confirmed security incidents as described in the [Security Incident Notification Process for SaaS]({{#base_path#}}/security-processes/saas-incident-notification-process/).
 
 ## Non-qualifying findings
 
-Reports in the following categories are reviewed but typically do not qualify for a reward under this program. WSO2 may still address these findings as security improvements or hardening work where appropriate; reward eligibility is a separate decision from whether the finding is fixed.
+Reports in the following categories are reviewed but typically do not qualify for a reward under this program. Choreo Labs may still address these findings as security improvements or hardening work where appropriate; reward eligibility is a separate decision from whether the finding is fixed.
 
 **Findings without demonstrated security impact:**
 
-* Network-level or volumetric denial-of-service (DoS / DDoS) attacks against WSO2 services or infrastructure. (Application-level DoS caused by a specific product code path **is** in scope as a product vulnerability; report it with reproduction steps against a self-hosted instance, not against a cloud service.)
+* Network-level or volumetric denial-of-service (DoS / DDoS) attacks against Choreo Labs services or infrastructure. (Application-level DoS caused by a specific product code path **is** in scope as a product vulnerability; report it with reproduction steps against a self-hosted instance, not against a cloud service.)
 * Self-XSS, where the payload can only be triggered by the same user who introduces it.
 * Clickjacking and tabnabbing without a demonstrated security impact.
 * Cross-site request forgery (CSRF) on actions without significant security impact demonstrated.
@@ -59,19 +59,19 @@ Reports in the following categories are reviewed but typically do not qualify fo
 * SSL/TLS configuration weaknesses (cipher-suite preference, protocol versions, HSTS preload, certificate transparency).
 * Missing `Secure`, `HttpOnly`, or `SameSite` flags on cookies that do not carry session or authentication state.
 * Lack of rate limiting or brute-force protection on non-authentication endpoints.
-* DNS or email-authentication misconfiguration (SPF, DKIM, DMARC, NS records) on WSO2 domains, unless it enables practical impersonation.
+* DNS or email-authentication misconfiguration (SPF, DKIM, DMARC, NS records) on Choreo Labs domains, unless it enables practical impersonation.
 
 **Out of scope by policy:**
 
-* Social-engineering or phishing attempts against WSO2 employees, customers, partners, or community members.
-* Physical attacks against WSO2 offices, infrastructure, or personnel.
-* Findings in third-party assets, demos, staging environments, or domains not owned by WSO2.
+* Social-engineering or phishing attempts against Choreo Labs employees, customers, partners, or community members.
+* Physical attacks against Choreo Labs offices, infrastructure, or personnel.
+* Findings in third-party assets, demos, staging environments, or domains not owned by Choreo Labs.
 
 A finding in one of these categories may still qualify for a reward if the demonstrated security impact justifies it.
 
 ## Rewards
 
-Once the reported issue is fixed and announced to customers and the community, and subject to the reporter's consent, WSO2:
+Once the reported issue is fixed and announced to customers and the community, and subject to the reporter's consent, Choreo Labs:
 
 1. Lists the reporter on the [Security Hall of Fame]({{#base_path#}}/security-reporting/reward-and-acknowledgement-program/hall-of-fame/).
 2. Provides a monetary reward, either as an Amazon gift voucher (any Amazon storefront) or a PayPal transfer, at the reporter's choice. The amount depends on the severity of the confirmed finding:
@@ -91,8 +91,8 @@ Disclosure and announcement timing (which determine when the reward is issued) a
 ## Rules
 
 * Rewards are granted only to the **first** person to responsibly disclose a previously unknown issue.
-* WSO2 issues a first response within seven days. A fix may take up to 90 days depending on severity, with additional time required to announce the fix to customers and the community across all affected product versions.
-* Public posts that violate responsible disclosure, or that reflect negatively on the program or the WSO2 brand, disqualify the reporter from reward consideration.
-* Security testing must be carried out against a self-hosted WSO2 product on infrastructure you control, a deployment owned by you, or your own tenant within a WSO2 cloud service. Test only in ways that do not affect other tenants or shared infrastructure. Denial-of-service or resource-exhaustion testing, fuzzing at scale, and attempts to access other tenants' data are not permitted against cloud services. Where a finding in a cloud service can be reproduced against the self-hosted equivalent product, do that before reporting.
+* Choreo Labs issues a first response within seven days. A fix may take up to 90 days depending on severity, with additional time required to announce the fix to customers and the community across all affected product versions.
+* Public posts that violate responsible disclosure, or that reflect negatively on the program or the Choreo Labs brand, disqualify the reporter from reward consideration.
+* Security testing must be carried out against a self-hosted Choreo Labs product on infrastructure you control, a deployment owned by you, or your own tenant within a WSO2 cloud service. Test only in ways that do not affect other tenants or shared infrastructure. Denial-of-service or resource-exhaustion testing, fuzzing at scale, and attempts to access other tenants' data are not permitted against cloud services. Where a finding in a cloud service can be reproduced against the self-hosted equivalent product, do that before reporting.
 * All communications about a report must use the channels documented in [Report Security Issues]({{#base_path#}}/security-reporting/report-security-issues/).
-* The decision to issue a reward and to provide credit is at WSO2's discretion.
+* The decision to issue a reward and to provide credit is at Choreo Labs' discretion.
