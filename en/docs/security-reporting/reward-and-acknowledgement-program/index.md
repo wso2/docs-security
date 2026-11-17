@@ -16,8 +16,8 @@ Choreo Labs maintains a reward and acknowledgement program to recognize security
 
 ## Products and services in scope
 
-The program covers the products listed under the [WSO2 platforms](https://choreolabs.com/#all-products). A product is in scope only when it has an Available or Deprecated version that is within Full Support according to the [Choreo Labs Support Matrix](https://choreolabs.com/products/support-matrix/); versions outside of Full Support are strictly out of scope. 
-In addition to these products, WSO2 Solutions are also in scope for the acknowledgement program.
+The program covers the products listed under the [Choreo Labs platforms](https://choreolabs.com/). A product is in scope only when it has an Available or Deprecated version that is within Full Support according to the [Choreo Labs Support Matrix](https://choreolabs.com/products/support-matrix/); versions outside Full Support are strictly out of scope. 
+In addition to these products, Choreo Labs Solutions are also in scope for the acknowledgement program.
 
 
 The platforms are:
@@ -30,13 +30,13 @@ The platforms are:
 
 See [Choreo Labs Products](https://choreolabs.com/products/downloads/) for the current products, platforms, and Solutions.
 
-Internal staging environments, demo sites, Choreo Labs-operated websites (e.g. choreolabs.com), and any customer-owned deployment of WSO2 software are out of scope.
+Internal staging environments, demo sites, Choreo Labs-operated websites (e.g. choreolabs.com), and any customer-owned deployment of Choreo Labs software are out of scope.
 
 ### CVE assignment
 
 We are a [CVE Numbering Authority (CNA)](https://www.cve.org/PartnerInformation/ListofPartners/partner/WSO2), and our entry in the CVE Program's list of partners defines our scope by this section. Choreo Labs assigns a CVE ID for a vulnerability that it confirms in a self-hosted product or Solution version that is in scope as described above, and discloses it in a [security advisory]({{#base_path#}}/security-announcements/security-advisories/).
 
-For WSO2 cloud services, Choreo Labs decides for each vulnerability whether to assign a CVE ID, considering factors such as the severity of the vulnerability, who it affects, and whether parties beyond Choreo Labs and its customers need a public identifier to assess it or act on it. Choreo Labs may summarize vulnerabilities addressed in its cloud services in the [Cloud Security Bulletins]({{#base_path#}}/security-announcements/cloud-security-bulletins/) under a WSO2 reference ID instead of a CVE ID. Choreo Labs may also assign a CVE ID when it determines that a vulnerability concerns a broader audience than its customers, for example when other parties need to assess it or act on it. Choreo Labs notifies subscribers of confirmed security incidents as described in the [Security Incident Notification Process for SaaS]({{#base_path#}}/security-processes/saas-incident-notification-process/).
+For its cloud services, Choreo Labs decides for each vulnerability whether to assign a CVE ID, considering factors such as the severity of the vulnerability, who it affects, and whether parties beyond Choreo Labs and its customers need a public identifier to assess it or act on it. Choreo Labs may summarize vulnerabilities addressed in its cloud services in the [Cloud Security Bulletins]({{#base_path#}}/security-announcements/cloud-security-bulletins/) under a WSO2 reference ID instead of a CVE ID. Choreo Labs may also assign a CVE ID when it determines that a vulnerability concerns a broader audience than its customers, for example when other parties need to assess it or act on it. Choreo Labs notifies subscribers of confirmed security incidents as described in the [Security Incident Notification Process for SaaS]({{#base_path#}}/security-processes/saas-incident-notification-process/).
 
 ## Non-qualifying findings
 
@@ -93,6 +93,6 @@ Disclosure and announcement timing (which determine when the reward is issued) a
 * Rewards are granted only to the **first** person to responsibly disclose a previously unknown issue.
 * Choreo Labs issues a first response within seven days. A fix may take up to 90 days depending on severity, with additional time required to announce the fix to customers and the community across all affected product versions.
 * Public posts that violate responsible disclosure, or that reflect negatively on the program or the Choreo Labs brand, disqualify the reporter from reward consideration.
-* Security testing must be carried out against a self-hosted Choreo Labs product on infrastructure you control, a deployment owned by you, or your own tenant within a WSO2 cloud service. Test only in ways that do not affect other tenants or shared infrastructure. Denial-of-service or resource-exhaustion testing, fuzzing at scale, and attempts to access other tenants' data are not permitted against cloud services. Where a finding in a cloud service can be reproduced against the self-hosted equivalent product, do that before reporting.
+* Security testing must be carried out against a self-hosted Choreo Labs product on infrastructure you control, a deployment owned by you, or your own tenant within a Choreo Labs cloud service. Test only in ways that do not affect other tenants or shared infrastructure. Denial-of-service or resource-exhaustion testing, fuzzing at scale, and attempts to access other tenants' data are not permitted against cloud services. Where a finding in a cloud service can be reproduced against the self-hosted equivalent product, do that before reporting.
 * All communications about a report must use the channels documented in [Report Security Issues]({{#base_path#}}/security-reporting/report-security-issues/).
 * The decision to issue a reward and to provide credit is at Choreo Labs' discretion.
