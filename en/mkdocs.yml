@@ -1,6 +1,6 @@
-# Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+# Copyright (c) 2020, Choreo Labs LLC (https://www.choreolabs.com) All Rights Reserved.
 #
-# WSO2 Inc. licenses this file to you under the Apache License,
+# Choreo Labs LLC licenses this file to you under the Apache License,
 # Version 2.0 (the "License"); you may not use this file except
 # in compliance with the License.
 # You may obtain a copy of the License at
@@ -15,9 +15,9 @@
 # under the License.
 
 # Project information
-site_name: WSO2 Security and Compliance Documentation
-site_description: WSO2 security advisories, CVE justifications, cloud security bulletins, secure coding and deployment guidelines, and how to report a vulnerability.
-site_author: WSO2
+site_name: Choreo Labs Security and Compliance Documentation
+site_description: Choreo Labs security advisories, CVE justifications, cloud security bulletins, secure coding and deployment guidelines, and how to report a vulnerability.
+site_author: Choreo Labs
 site_url: https://security.docs.wso2.com/en/latest/
 
 # Repository
@@ -26,7 +26,7 @@ repo_url: https://github.com/wso2/docs-security
 edit_uri: https://github.com/wso2/docs-security/edit/main/en/docs/
 
 # Copyright
-copyright: WSO2 Security and Compliance - Documentation
+copyright: Choreo Labs Security and Compliance - Documentation
 
 # Configuration
 theme:
@@ -101,7 +101,7 @@ nav:
     - 'Security Guidelines for Production Deployment': 'security-guidelines/security-guidelines-for-production-deployment.md'
   - 'Security Announcements':
     # The build adds a section for each year folder of advisories (hooks/announcements.py).
-    - 'WSO2 Security Advisories':
+    - 'Security Advisories':
       - '': 'security-announcements/security-advisories/index.md'
     - 'Cloud Security Bulletin':
       - '': 'security-announcements/cloud-security-bulletins/index.md'

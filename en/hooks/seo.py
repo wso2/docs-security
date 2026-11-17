@@ -1,6 +1,6 @@
-# Copyright (c) 2026, WSO2 LLC. (https://www.wso2.com).
+# Copyright (c) 2026, Choreo Labs LLC (https://www.choreolabs.com).
 #
-# WSO2 LLC. licenses this file to you under the Apache License,
+# Choreo Labs LLC licenses this file to you under the Apache License,
 # Version 2.0 (the "License"); you may not use this file except
 # in compliance with the License.
 # You may obtain a copy of the License at
@@ -45,12 +45,12 @@ from security_announcements import formats, listings, text  # noqa: E402
 
 ORGANIZATION = {
     "@type": "Organization",
-    "name": "WSO2",
-    "url": "https://wso2.com/",
+    "name": "Choreo Labs",
+    "url": "https://choreolabs.com/",
 }
 DESCRIPTION_LIMIT = 300
 FEED_FILE = "feed.xml"
-FEED_TITLE = "WSO2 Security Announcements"
+FEED_TITLE = "Choreo Labs Security Announcements"
 FEED_LIMIT = 50
 # llms.txt (https://llmstxt.org): the site's pages for tools that read a site with a language model.
 LLMS_FILE = "llms.txt"
@@ -194,7 +194,7 @@ def on_page_context(context, page, config, nav):
         graph.append({
             "@type": "WebSite",
             "name": config["site_name"],
-            "alternateName": "WSO2 Security Documentation",
+            "alternateName": "Choreo Labs Security Documentation",
             "url": site_url,
             "description": page.meta.get("description") or config.get("site_description"),
             "inLanguage": "en",
@@ -260,7 +260,7 @@ def on_post_build(config):
         link=escape(site_url),
         self=escape(urljoin(site_url, FEED_FILE)),
         description=escape("Security advisories, CVE justifications, incident clarifications, "
-                           "and cloud security bulletins published by WSO2."),
+                           "and cloud security bulletins published by Choreo Labs."),
         # The newest entry's date rather than the build time, so rebuilds are reproducible.
         updated="<lastBuildDate>{}</lastBuildDate>".format(_rfc822(items[0]["published"])) if items else "",
         entries="".join(entries),
@@ -334,7 +334,7 @@ def _advisory(name, meta, markdown, sections):
     if cves:
         lead = text.join(cves[:3]) + (" and Others" if len(cves) > 3 else "")
     else:
-        lead = advisory_id or str(meta.get("title") or "WSO2")
+        lead = advisory_id or str(meta.get("title") or "Choreo Labs")
     if usable:
         title = "{}: {}".format(lead, summary)
     else:
@@ -366,11 +366,11 @@ def _justification(meta, markdown, sections):
     products = text.product_names(sections.get("REPORTED PRODUCTS", ""))
     title = "{}: Impact on {}".format(subject, text.product_phrase(products))
 
-    parts = ["WSO2 analysis of {} in {}.".format(subject, text.product_phrase(products, title_case=False))]
+    parts = ["Choreo Labs analysis of {} in {}.".format(subject, text.product_phrase(products, title_case=False))]
     impacted = text.doc_info(markdown, r"products?\s+impacted")
     action = text.doc_info(markdown, r"actions?\s+required")
     if impacted:
-        parts.append("WSO2 products impacted: {}.".format(impacted))
+        parts.append("Choreo Labs products impacted: {}.".format(impacted))
     if action:
         parts.append("Customer action required: {}.".format(action))
     reported = text.sentence(text.first_paragraph(sections.get("REPORTED VULNERABILITY", "")))
@@ -384,20 +384,20 @@ def _justification(meta, markdown, sections):
 def _listing_description(src, page):
     match = listings.ADVISORY_YEAR_RE.match(src)
     if match:
-        return ("Security advisories WSO2 published in {}, listed by WSO2 advisory ID "
+        return ("Security advisories Choreo Labs published in {}, listed by WSO2 advisory ID "
                 "and CVE ID.".format(match.group(1)))
     match = listings.JUSTIFICATION_YEAR_RE.match(src)
     if match:
-        return ("CVE justifications WSO2 published in {}: analyses of reported CVEs and whether "
-                "they affect WSO2 products.".format(match.group(1)))
+        return ("CVE justifications Choreo Labs published in {}: analyses of reported CVEs and whether "
+                "they affect Choreo Labs products.".format(match.group(1)))
     match = listings.INCIDENT_YEAR_RE.match(src)
     if match:
-        return ("Incident clarifications WSO2 published in {}: the impact of publicly reported "
-                "security incidents on WSO2 products and services.".format(match.group(1)))
+        return ("Incident clarifications Choreo Labs published in {}: the impact of publicly reported "
+                "security incidents on Choreo Labs products and services.".format(match.group(1)))
     match = listings.BULLETIN_YEAR_RE.match(src)
     if match:
         service = page.parent.parent.title if page.parent and page.parent.parent else "WSO2 cloud services"
-        return ("{} security bulletins WSO2 published in {}, summarizing the vulnerabilities "
+        return ("{} security bulletins Choreo Labs published in {}, summarizing the vulnerabilities "
                 "addressed in the service.".format(service, match.group(1)))
     return None
 

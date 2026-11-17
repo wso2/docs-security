@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 #
-# Copyright (c) 2026, WSO2 LLC. (https://www.wso2.com).
+# Copyright (c) 2026, Choreo Labs LLC (https://www.choreolabs.com).
 #
-# WSO2 LLC. licenses this file to you under the Apache License,
+# Choreo Labs LLC licenses this file to you under the Apache License,
 # Version 2.0 (the "License"); you may not use this file except
 # in compliance with the License.
 # You may obtain a copy of the License at
@@ -121,7 +121,7 @@ front matter fields are defined in en/hooks/security_announcements/formats.py
     listing          (incident clarifications) the year folder has no year page
     repeated-heading the page repeats its title as a heading; the build renders it
                      from the title. --fix removes it when it matches       (--fix)
-    repeated-info    the page writes its info lines (Published, WSO2 Products
+    repeated-info    the page writes its info lines (Published, Choreo Labs Products
                      impacted, ...) by hand; the build renders them from front
                      matter. --fix moves them into front matter            (--fix)
     field-format     a required field is missing, a value is not in its form

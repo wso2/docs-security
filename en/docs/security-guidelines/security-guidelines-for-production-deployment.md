@@ -6,11 +6,11 @@ category: security-guidelines
 
 # Security Guidelines for Production Deployment
 
-When configuring WSO2 products securely in production-grade settings, there are guidelines to be followed.
+When configuring Choreo Labs products securely in production-grade settings, there are guidelines to be followed.
 Refer to the listed documentation for each product based on the version that you use:
 
 !!! note
-    If you are using a WSO2 product or a version that is not in this list,
+    If you are using a Choreo Labs product or a version that is not in this list,
     refer to the security guidelines in the documentation for that product version.
 
 * WSO2 API Manager
