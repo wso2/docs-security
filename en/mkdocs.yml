@@ -90,6 +90,7 @@ nav:
         - 'Introduction': 'security-guidelines/secure-engineering-guidelines/secure-coding-guidlines/introduction.md'
         - 'Secure Coding Guide': 'security-guidelines/secure-engineering-guidelines/secure-coding-guidlines/secure-coding-guide.md'
         - 'React': 'security-guidelines/secure-engineering-guidelines/secure-coding-guidlines/general-recommendations-for-react-secure-coding.md'
+        - 'AI and LLM': 'security-guidelines/secure-engineering-guidelines/secure-coding-guidlines/ai-and-llm-secure-coding.md'
         - 'OWASP Top 10 - 2025 Prevention': 'security-guidelines/secure-engineering-guidelines/secure-coding-guidlines/owasp-t10-2025-prevention.md'
         - 'OWASP API Security Top 10 - 2023 Prevention': 'security-guidelines/secure-engineering-guidelines/secure-coding-guidlines/owasp-api-top10-2023-prevention.md'
         - 'Tooling Recommendations for Secure Coding': 'security-guidelines/secure-engineering-guidelines/secure-coding-guidlines/tooling-recommendations-for-secure-coding.md'
