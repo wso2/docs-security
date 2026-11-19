@@ -15,7 +15,7 @@ customer_action_required: "No"
 * {{product_2}}
 
 
-## WSO2 JUSTIFICATION
+## CHOREO LABS JUSTIFICATION
 {{wso2_justification}}
 
 

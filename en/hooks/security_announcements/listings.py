@@ -1,6 +1,6 @@
-# Copyright (c) 2026, WSO2 LLC. (https://www.wso2.com).
+# Copyright (c) 2026, Choreo Labs LLC (https://www.choreolabs.com).
 #
-# WSO2 LLC. licenses this file to you under the Apache License,
+# Choreo Labs LLC licenses this file to you under the Apache License,
 # Version 2.0 (the "License"); you may not use this file except
 # in compliance with the License.
 # You may obtain a copy of the License at
@@ -170,7 +170,7 @@ def advisory_list(docs_dir, year):
 def justification_rows(docs_dir):
     """Every CVE justification, one row per CVE ID, newest CVE first, then the ones without a CVE.
 
-    Each row is (ID, page path, WSO2 products, WSO2 Products impacted, customer action required,
+    Each row is (ID, page path, Choreo Labs products, Choreo Labs Products impacted, customer action required,
     published), taken from the page's title, front matter, and REPORTED PRODUCTS list.
     """
     section = "security-announcements/cve-justifications"
@@ -211,7 +211,7 @@ def justification_entries(docs_dir):
 
 def justification_table(docs_dir):
     """The CVE Justifications page's table of every justification, by CVE ID."""
-    lines = ["| ID | WSO2 products | WSO2 Products impacted | Customer action required | Published |",
+    lines = ["| ID | Choreo Labs products | Choreo Labs Products impacted | Customer action required | Published |",
              "| -- | ------------- | ---------------------- | ------------------------ | --------- |"]
     for vuln_id, path, products, impacted, action, published in justification_rows(docs_dir):
         cells = ["[{}]({{{{#base_path#}}}}/{}/)".format(vuln_id, path), products, impacted, action,

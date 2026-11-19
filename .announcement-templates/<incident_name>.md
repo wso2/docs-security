@@ -13,7 +13,7 @@ customer_action_required: "No"
 {{description}}
 
 
-## IMPACT ON WSO2 PRODUCTS AND DEPLOYMENTS
+## IMPACT ON CHOREO LABS PRODUCTS AND DEPLOYMENTS
 {{impact_info}}
 
 

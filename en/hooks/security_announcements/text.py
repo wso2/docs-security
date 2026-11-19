@@ -1,6 +1,6 @@
-# Copyright (c) 2026, WSO2 LLC. (https://www.wso2.com).
+# Copyright (c) 2026, Choreo Labs LLC (https://www.choreolabs.com).
 #
-# WSO2 LLC. licenses this file to you under the Apache License,
+# Choreo Labs LLC licenses this file to you under the Apache License,
 # Version 2.0 (the "License"); you may not use this file except
 # in compliance with the License.
 # You may obtain a copy of the License at
@@ -104,8 +104,8 @@ def product_phrase(products, title_case=True):
     if len(products) in (1, 2):
         return join(products)
     if products:
-        return "Multiple WSO2 Products" if title_case else "multiple WSO2 products"
-    return "WSO2 Products" if title_case else "WSO2 products"
+        return "Multiple Choreo Labs Products" if title_case else "multiple Choreo Labs products"
+    return "Choreo Labs Products" if title_case else "Choreo Labs products"
 
 
 def product_list(products):

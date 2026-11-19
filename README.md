@@ -1,7 +1,7 @@
-# WSO2 Security & Compliance Documentation
+# Choreo Labs Security & Compliance Documentation
 ---
 
-To see the **latest released documentation** for the WSO2 Security & Compliance Documentation, go to: [https://security.docs.wso2.com/en/latest/](https://security.docs.wso2.com/en/latest/)
+To see the **latest released documentation** for the Choreo Labs Security & Compliance Documentation, go to: [https://security.docs.wso2.com/en/latest/](https://security.docs.wso2.com/en/latest/)
 
 ## Run the project locally
 
@@ -92,7 +92,7 @@ Follow the steps below to clone the Security & Compliance documentation GitHub r
     >
     >    `mkdocs serve --dirtyreload`
   
-5. Open the following URL on a new browser window to view the WSO2 Security & Compliance documentation site locally.
+5. Open the following URL on a new browser window to view the Choreo Labs Security & Compliance documentation site locally.
 
     [http://localhost:8000/](http://localhost:8000/)
 
@@ -175,9 +175,9 @@ A CVE justification and an incident clarification each have their own format. St
 | ----------------------- | -------- | -------- | ------ |
 | `published` | Published | Yes | `Month D, YYYY` |
 | `updated` | Updated | No | `Month D, YYYY`, only when the page is revised: after `published` |
-| `wso2_products_impacted` | WSO2 Products impacted | Yes | `"Yes"`, `"No"`, or `"Limited"` |
-| `severity` | WSO2 Products severity | No | As for advisories |
-| `cvss` | WSO2 Products CVSS score | No | As for advisories |
+| `wso2_products_impacted` | Choreo Labs Products impacted | Yes | `"Yes"`, `"No"`, or `"Limited"` |
+| `severity` | Choreo Labs Products severity | No | As for advisories |
+| `cvss` | Choreo Labs Products CVSS score | No | As for advisories |
 | `customer_action_required` | Customer action required | Yes | `"Yes"` or `"No"` |
 
 | Incident clarification field | Shown as | Required | Values |
