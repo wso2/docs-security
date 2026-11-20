@@ -9,9 +9,11 @@ version: 1.0
 <p class="doc-info">Version: 1.0</p>
 ___
 
-When you build a Choreo Labs feature that calls a large language model (LLM), retrieves content for a model (RAG), exposes tools to a model, or runs an AI agent, follow this guide. The attack classes and general defenses are covered by the OWASP cheat sheets below, linked rather than restated. Cross-cutting rules (injection sinks, access control, logging, supply chain) are in the [Secure Coding Guide]({{#base_path#}}/security-guidelines/secure-engineering-guidelines/secure-coding-guidlines/secure-coding-guide/) and not restated here.
+When you build a Choreo Labs feature that calls a large language model (LLM), retrieves content for a model (RAG), exposes tools to a model, or runs an AI agent, follow this guide. The attack classes and the technical defenses are in the OWASP cheat sheets below. They are requirements, not background reading: a feature must apply the defenses they describe, and this page adds the rules specific to Choreo Labs. They are linked rather than restated. Cross-cutting rules (injection sinks, access control, logging, supply chain) are in the [Secure Coding Guide]({{#base_path#}}/security-guidelines/secure-engineering-guidelines/secure-coding-guidlines/secure-coding-guide/) and not restated here.
 
-## External references
+## Required external references
+
+Apply the prompt injection cheat sheet to every feature that calls an LLM. Apply the AI agent cheat sheet as well when the model calls tools, keeps memory, or works with other agents.
 
 * **Prompt injection.** [OWASP LLM Prompt Injection Prevention Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/LLM_Prompt_Injection_Prevention_Cheat_Sheet.html): direct and indirect injection, encoding and obfuscation, RAG poisoning, system prompt extraction, and layered defenses.
 * **AI agents.** [OWASP AI Agent Security Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/AI_Agent_Security_Cheat_Sheet.html): tool permissions, memory and context security, human-in-the-loop controls, multi-agent trust, monitoring, and adversarial testing.
@@ -59,6 +61,9 @@ A feature that lets a model call tools or act on a user's behalf must be reviewe
 ## Review checklist
 
 When adding a feature that calls an LLM or runs an AI agent in a Choreo Labs product:
+
+- [ ] The feature applies the defenses in the [OWASP LLM Prompt Injection Prevention Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/LLM_Prompt_Injection_Prevention_Cheat_Sheet.html), checked against its Best Practices Checklist.
+- [ ] If the model calls tools, keeps memory, or works with other agents, the feature applies the [OWASP AI Agent Security Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/AI_Agent_Security_Cheat_Sheet.html), checked against its Best Practices and its Do's and Don'ts.
 
 - [ ] Model output reaches SQL, OS commands, HTML, redirects, and outbound requests only through the same validation and encoding as user input.
 - [ ] Every tool and retrieval call runs with the caller's identity and tenant from the request context and the caller's own permissions, with no service-wide credential.
