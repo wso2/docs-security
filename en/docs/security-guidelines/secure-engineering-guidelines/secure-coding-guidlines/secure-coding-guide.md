@@ -18,6 +18,7 @@ When you write code for a Choreo Labs product, follow this guide. Each section o
 * [OWASP Top 10 - 2025 Prevention]({{#base_path#}}/security-guidelines/secure-engineering-guidelines/secure-coding-guidlines/owasp-t10-2025-prevention/): a mapping table to the sections below.
 * [OWASP API Security Top 10 - 2023 Prevention]({{#base_path#}}/security-guidelines/secure-engineering-guidelines/secure-coding-guidlines/owasp-api-top10-2023-prevention/): the API-specific mapping.
 * [General Recommendations for React Secure Coding]({{#base_path#}}/security-guidelines/secure-engineering-guidelines/secure-coding-guidlines/general-recommendations-for-react-secure-coding/): the frontend specifics.
+* [AI and LLM Secure Coding Guide]({{#base_path#}}/security-guidelines/secure-engineering-guidelines/secure-coding-guidlines/ai-and-llm-secure-coding/): the specifics for features that call an LLM or run an AI agent.
 * [Tooling Recommendations for Secure Coding]({{#base_path#}}/security-guidelines/secure-engineering-guidelines/secure-coding-guidlines/tooling-recommendations-for-secure-coding/).
 
 ## Canonical external references
@@ -27,6 +28,7 @@ Read these once; we link back to specific entries throughout this guide instead 
 * General: [OWASP Top 10](https://owasp.org/Top10/), [OWASP API Security Top 10](https://owasp.org/API-Security/), [OWASP ASVS](https://owasp.org/www-project-application-security-verification-standard/), [OWASP Proactive Controls](https://owasp.org/www-project-proactive-controls/), [OWASP Cheat Sheet Series](https://cheatsheetseries.owasp.org/), [CWE Top 25](https://cwe.mitre.org/top25/).
 * Identity and OAuth: [NIST SP 800-63](https://pages.nist.gov/800-63-3/), [RFC 9700: OAuth 2.0 Security BCP](https://datatracker.ietf.org/doc/html/rfc9700), [RFC 7636: PKCE](https://datatracker.ietf.org/doc/html/rfc7636), [RFC 8725: JWT BCP](https://datatracker.ietf.org/doc/html/rfc8725), [OpenID Connect Core](https://openid.net/specs/openid-connect-core-1_0.html).
 * Cryptography and transport: [NIST SP 800-131A](https://csrc.nist.gov/publications/detail/sp/800-131a/rev-2/final), [NIST SP 800-52](https://csrc.nist.gov/publications/detail/sp/800-52/rev-2/final), [NIST SP 800-57](https://csrc.nist.gov/projects/key-management), [Mozilla TLS config generator](https://ssl-config.mozilla.org/).
+* AI and LLM integrations: [OWASP LLM Prompt Injection Prevention Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/LLM_Prompt_Injection_Prevention_Cheat_Sheet.html), [OWASP AI Agent Security Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/AI_Agent_Security_Cheat_Sheet.html).
 * Supply chain: [SLSA](https://slsa.dev/), [OWASP SCVS](https://owasp.org/www-project-software-component-verification-standard/), [OpenSSF Best Practices](https://www.bestpractices.dev/), [CycloneDX](https://cyclonedx.org/), [SPDX](https://spdx.dev/).
 * Choreo Labs internal: [Secure Software Development Process]({{#base_path#}}/security-processes/secure-software-development-process/) · [Vulnerability Management]({{#base_path#}}/security-processes/vulnerability-management-process/) · [Cloud Security Process]({{#base_path#}}/security-processes/cloud-security-process/) · [Security Reporting]({{#base_path#}}/security-reporting/report-security-issues/) · [Incident clarifications]({{#base_path#}}/security-announcements/incident-clarifications/).
 
@@ -855,6 +857,10 @@ Substitute user input only into pre-defined parameters of an already-compiled te
 For test cases and payloads, read [OWASP: Testing for NoSQL Injection](https://owasp.org/www-project-web-security-testing-guide/latest/4-Web_Application_Security_Testing/07-Input_Validation_Testing/05.6-Testing_for_NoSQL_Injection) and [OWASP XPath Injection](https://owasp.org/www-community/attacks/XPATH_Injection) for the operator-injection and predicate-injection shapes specific to each.
 
 Build queries with the driver's structured API (MongoDB filters / BSON documents, an XPath API with bound variables), never by concatenating user input into a query string or by passing raw user input where the driver accepts query operators. Keep every lookup scoped to the caller's tenant/organization identity from the request context, and re-check that scope at the data layer; a missing tenant filter is the same class of defect as a missing `WHERE` clause.
+
+### Prompt injection in LLM features
+
+Features that call an LLM or run an AI agent have their own page: the [AI and LLM Secure Coding Guide]({{#base_path#}}/security-guidelines/secure-engineering-guidelines/secure-coding-guidlines/ai-and-llm-secure-coding/). It covers prompt injection, tool permissions, tenant-scoped memory and retrieval, and release review.
 
 ### Regex denial of service (ReDoS)
 

@@ -19,6 +19,10 @@ The guide is a single document with stack-specific content in tabs. Each section
 
      Secure coding best practices for React frontends.
 
+* [AI and LLM Secure Coding Guide](ai-and-llm-secure-coding.md)
+
+     Secure coding rules for features that call an LLM or run an AI agent.
+
 * [OWASP Top 10 - 2025 Prevention](owasp-t10-2025-prevention.md)
 
      Maps the OWASP Top 10 - 2025 categories to the matching sections in the Java and Go stack guides.

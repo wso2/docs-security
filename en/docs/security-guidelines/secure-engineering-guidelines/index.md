@@ -12,6 +12,7 @@ This section is the entry point to the secure engineering practices Choreo Labs 
 * [Choreo Labs Secure Coding Guidelines]({{#base_path#}}/security-guidelines/secure-engineering-guidelines/secure-coding-guidlines/introduction/): the entry page for the secure coding guides.
 * [Secure Coding Guide]({{#base_path#}}/security-guidelines/secure-engineering-guidelines/secure-coding-guidlines/secure-coding-guide/): the canonical guide, organized by OWASP Top 10 - 2025 categories with stack-specific implementation in content tabs.
 * [React Secure Coding Guide]({{#base_path#}}/security-guidelines/secure-engineering-guidelines/secure-coding-guidlines/general-recommendations-for-react-secure-coding/) covers frontend-specific guidance.
+* [AI and LLM Secure Coding Guide]({{#base_path#}}/security-guidelines/secure-engineering-guidelines/secure-coding-guidlines/ai-and-llm-secure-coding/) covers features that call an LLM or run an AI agent.
 
 ## Configuration references
 
