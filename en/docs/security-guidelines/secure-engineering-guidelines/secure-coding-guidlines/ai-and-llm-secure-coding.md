@@ -56,7 +56,10 @@ Pin and review third-party models, agent frameworks, and tool servers (for examp
 
 ### Release review
 
-A feature that lets a model call tools or act on a user's behalf must be reviewed and approved by the Security and Compliance Team before release, as part of the design review in the [Secure Software Development Process]({{#base_path#}}/security-processes/secure-software-development-process/#design-phase). In the request, list the tools the model can call, the permissions each one runs with, and the actions that need user confirmation. Test the feature with the smoke tests in the prompt injection cheat sheet, including indirect injection through every content source the model reads.
+!!! danger "Approval required"
+    A feature that lets a model call tools or act on a user's behalf must have its use case and controls reviewed and approved by the Security and Compliance Team before release. Raise it in the feature's design review, which the security leads of the product domain attend (see the [Design Phase of the Secure Software Development Process]({{#base_path#}}/security-processes/secure-software-development-process/#design-phase)). State in the request the tools the model can call, the permissions each one runs with, and the actions that need user confirmation.
+
+Test the feature with the smoke tests in the prompt injection cheat sheet, including indirect injection through every content source the model reads.
 
 ## Review checklist
 
