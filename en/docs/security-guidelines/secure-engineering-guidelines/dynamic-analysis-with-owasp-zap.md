@@ -9,7 +9,7 @@ version: 3.1
 <p class="doc-info">Version: 3.1</p>
 ___
 
-When you build a WSO2 product that serves HTTP, wire [OWASP ZAP](https://www.zaproxy.org/) into its CI so every PR and release is exercised against an actually-running instance. ZAP install, proxy setup, UI navigation, and the per-rule reference are in the ZAP documentation. This page covers the scan policy, authentication patterns for WSO2 surfaces, and the CI integration only.
+When you build a Choreo Labs product that serves HTTP, wire [OWASP ZAP](https://www.zaproxy.org/) into its CI so every PR and release is exercised against an actually-running instance. ZAP install, proxy setup, UI navigation, and the per-rule reference are in the ZAP documentation. This page covers the scan policy, authentication patterns for Choreo Labs surfaces, and the CI integration only.
 
 ZAP is the DAST leg of the SAST + DAST + SCA baseline alongside [Static Code Analysis]({{#base_path#}}/security-guidelines/secure-engineering-guidelines/static-code-analysis-using-findsecuritybugs/) and [Dependency Vulnerability Analysis]({{#base_path#}}/security-guidelines/secure-engineering-guidelines/external-dependency-analysis-analysis-using-owasp-dependency-check/).
 
@@ -77,7 +77,7 @@ For nightly active scans, swap to `zaproxy/action-full-scan@v0.13.0`. Active sca
 
 ## Authenticating the scan
 
-WSO2 products expose almost all interesting state behind authentication; an unauthenticated scan finds the login page and not much else. Pick the pattern by the surface you're scanning:
+Choreo Labs products expose almost all interesting state behind authentication; an unauthenticated scan finds the login page and not much else. Pick the pattern by the surface you're scanning:
 
 ### Session-cookie UIs: Carbon Console, APIM Publisher / DevPortal, IS Console
 
@@ -134,9 +134,9 @@ Tune your ZAP policy to **expect the modern header set** ([HTTP Security Headers
 
 The ZAP desktop UI is the right place for triaging a CI finding or exploring a new feature whose paths the baseline doesn't yet exercise. ZAP install, browser proxy configuration, certificate trust, Spider / AJAX Spider, and the Active Scan workflow are covered in the ZAP documentation. Start with the [ZAP Getting Started](https://www.zaproxy.org/getting-started/) guide.
 
-Notes for interactive runs against WSO2 surfaces:
+Notes for interactive runs against Choreo Labs surfaces:
 
 * Set ZAP's mode to **Protected** so only URLs added to the active context are attacked.
-* For SPA-style WSO2 surfaces (Publisher, DevPortal, Console), use the AJAX Spider (executes JavaScript) followed by the Traditional Spider as a second pass.
+* For SPA-style Choreo Labs surfaces (Publisher, DevPortal, Console), use the AJAX Spider (executes JavaScript) followed by the Traditional Spider as a second pass.
 * For multi-step workflows (the API creation wizard, MFA enrollment), supplement the spider with Selenium scripts that drive the UI; run them with ZAP as the proxy.
 * Save the ZAP session (`File → Save Session`) periodically: active scans against a full Carbon product can run for hours and pre-emption loses the work.

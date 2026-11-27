@@ -1,6 +1,6 @@
-# Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+# Copyright (c) 2020, Choreo Labs LLC (https://www.choreolabs.com) All Rights Reserved.
 #
-# WSO2 Inc. licenses this file to you under the Apache License,
+# Choreo Labs LLC licenses this file to you under the Apache License,
 # Version 2.0 (the "License"); you may not use this file except
 # in compliance with the License.
 # You may obtain a copy of the License at
@@ -15,9 +15,9 @@
 # under the License.
 
 # Project information
-site_name: WSO2 Security and Compliance Documentation
-site_description: WSO2 security advisories, CVE justifications, cloud security bulletins, secure coding and deployment guidelines, and how to report a vulnerability.
-site_author: WSO2
+site_name: Choreo Labs Security and Compliance Documentation
+site_description: Choreo Labs security advisories, CVE justifications, cloud security bulletins, secure coding and deployment guidelines, and how to report a vulnerability.
+site_author: Choreo Labs
 site_url: https://security.docs.wso2.com/en/latest/
 
 # Repository
@@ -26,7 +26,7 @@ repo_url: https://github.com/wso2/docs-security
 edit_uri: https://github.com/wso2/docs-security/edit/main/en/docs/
 
 # Copyright
-copyright: WSO2 Security and Compliance - Documentation
+copyright: Choreo Labs Security and Compliance - Documentation
 
 # Configuration
 theme:
@@ -75,10 +75,6 @@ validation:
   absolute_links: ignore
   unrecognized_links: ignore
 
-# CVE justifications are listed by CVE ID on their section page (hooks/announcements.py), not in the nav.
-not_in_nav: |
-  /security-announcements/cve-justifications/*/
-
 # Navigation
 nav:
   - 'Home': 'index.md'
@@ -94,6 +90,7 @@ nav:
         - 'Introduction': 'security-guidelines/secure-engineering-guidelines/secure-coding-guidlines/introduction.md'
         - 'Secure Coding Guide': 'security-guidelines/secure-engineering-guidelines/secure-coding-guidlines/secure-coding-guide.md'
         - 'React': 'security-guidelines/secure-engineering-guidelines/secure-coding-guidlines/general-recommendations-for-react-secure-coding.md'
+        - 'AI and LLM': 'security-guidelines/secure-engineering-guidelines/secure-coding-guidlines/ai-and-llm-secure-coding.md'
         - 'OWASP Top 10 - 2025 Prevention': 'security-guidelines/secure-engineering-guidelines/secure-coding-guidlines/owasp-t10-2025-prevention.md'
         - 'OWASP API Security Top 10 - 2023 Prevention': 'security-guidelines/secure-engineering-guidelines/secure-coding-guidlines/owasp-api-top10-2023-prevention.md'
         - 'Tooling Recommendations for Secure Coding': 'security-guidelines/secure-engineering-guidelines/secure-coding-guidlines/tooling-recommendations-for-secure-coding.md'
@@ -105,7 +102,7 @@ nav:
     - 'Security Guidelines for Production Deployment': 'security-guidelines/security-guidelines-for-production-deployment.md'
   - 'Security Announcements':
     # The build adds a section for each year folder of advisories (hooks/announcements.py).
-    - 'WSO2 Security Advisories':
+    - 'Security Advisories':
       - '': 'security-announcements/security-advisories/index.md'
     - 'Cloud Security Bulletin':
       - '': 'security-announcements/cloud-security-bulletins/index.md'
@@ -132,6 +129,7 @@ nav:
         - '2025':
           - '': 'security-announcements/cloud-security-bulletins/wso2-api-platform/2025/index.md'
           - '2025 H2': 'security-announcements/cloud-security-bulletins/wso2-api-platform/2025/wso2-api-platform-2025-h2.md'
+    # The build lists every CVE justification here by CVE ID (hooks/announcements.py).
     - 'CVE Justifications':
       - '': 'security-announcements/cve-justifications/index.md'
     - 'Incident Clarifications':
@@ -225,12 +223,20 @@ plugins:
         'security-announcements/security-advisories/2026/WSO2-2024-3144.md': 'security-announcements/security-advisories/2025/WSO2-2024-3144.md'
         'security-announcements/security-advisories/2026/WSO2-2024-3149.md': 'security-announcements/security-advisories/2025/WSO2-2024-3149.md'
         'security-announcements/security-advisories/2026/WSO2-2024-3217.md': 'security-announcements/security-advisories/2025/WSO2-2024-3217.md'
+        'security-announcements/security-advisories/2026/WSO2-2024-3254.md': 'security-announcements/security-advisories/2025/WSO2-2024-3254.md'
         'security-announcements/security-advisories/2026/WSO2-2024-3382.md': 'security-announcements/security-advisories/2025/WSO2-2024-3382.md'
         'security-announcements/security-advisories/2026/WSO2-2024-3403.md': 'security-announcements/security-advisories/2025/WSO2-2024-3403.md'
+        'security-announcements/security-advisories/2026/WSO2-2024-3414.md': 'security-announcements/security-advisories/2025/WSO2-2024-3414.md'
         'security-announcements/security-advisories/2026/WSO2-2024-3436.md': 'security-announcements/security-advisories/2025/WSO2-2024-3436.md'
         'security-announcements/security-advisories/2026/WSO2-2024-3465.md': 'security-announcements/security-advisories/2025/WSO2-2024-3465.md'
+        'security-announcements/security-advisories/2026/WSO2-2024-3569.md': 'security-announcements/security-advisories/2025/WSO2-2024-3569.md'
         'security-announcements/security-advisories/2026/WSO2-2024-3606.md': 'security-announcements/security-advisories/2025/WSO2-2024-3606.md'
+        'security-announcements/security-advisories/2026/WSO2-2024-3676.md': 'security-announcements/security-advisories/2025/WSO2-2024-3676.md'
+        'security-announcements/security-advisories/2026/WSO2-2024-3696.md': 'security-announcements/security-advisories/2025/WSO2-2024-3696.md'
+        'security-announcements/security-advisories/2026/WSO2-2024-3805.md': 'security-announcements/security-advisories/2025/WSO2-2024-3805.md'
         'security-announcements/security-advisories/2026/WSO2-2025-3857.md': 'security-announcements/security-advisories/2025/WSO2-2025-3857.md'
+        'security-announcements/security-advisories/2026/WSO2-2025-4010.md': 'security-announcements/security-advisories/2025/WSO2-2025-4010.md'
+        'security-announcements/security-advisories/2026/WSO2-2025-4217.md': 'security-announcements/security-advisories/2025/WSO2-2025-4217.md'
         # Published in both the 2023 and 2024 folders with the same text; the 2024 copy is kept
         'security-announcements/security-advisories/2023/WSO2-2023-2075.md': 'security-announcements/security-advisories/2024/WSO2-2023-2075.md'
         'security-announcements/security-advisories/2023/WSO2-2023-2617.md': 'security-announcements/security-advisories/2024/WSO2-2023-2617.md'

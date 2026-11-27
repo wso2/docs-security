@@ -1,6 +1,6 @@
 ---
 title: Tooling Recommendations for Secure Coding
-description: "Tools WSO2 recommends for secure coding: Find Security Bugs for static analysis, OWASP ZAP for dynamic analysis, and OWASP Dependency Check for dependency vulnerability analysis."
+description: "Tools Choreo Labs recommends for secure coding: Find Security Bugs for static analysis, OWASP ZAP for dynamic analysis, and OWASP Dependency Check for dependency vulnerability analysis."
 category: security-guidelines
 ---
 
@@ -9,21 +9,21 @@ category: security-guidelines
 ## Security Related Static Code Analysis 
 Find Security Bugs[^2], SpotBugs plugin is the recommended tool for performing static security analysis.
 
-!!! tip hint important "WSO2 Document Reference"
-    Further information on using Find Security Bugs with WSO2 recommended security policies are available in the [Engineering Guidelines - Tooling - Static Code Analysis using FindSecurityBugs](../static-code-analysis-using-findsecuritybugs.md) document.
+!!! tip hint important "Choreo Labs Document Reference"
+    Further information on using Find Security Bugs with Choreo Labs recommended security policies are available in the [Engineering Guidelines - Tooling - Static Code Analysis using FindSecurityBugs](../static-code-analysis-using-findsecuritybugs.md) document.
 
 
 ## Security Related Dynamic Analysis
 OWASP Zed Attack Proxy(ZAP)[^1] is the recommended tool for performing dynamic security analysis. 
 
-!!! tip hint important "WSO2 Document Reference"
-    Further information on using OWASP Zed Attack Proxy (ZAP) with WSO2 recommended security policies are available in the [Engineering Guidelines - Tooling - Dynamic Analysis with OWASP ZAP](../dynamic-analysis-with-owasp-zap.md) document.
+!!! tip hint important "Choreo Labs Document Reference"
+    Further information on using OWASP Zed Attack Proxy (ZAP) with Choreo Labs recommended security policies are available in the [Engineering Guidelines - Tooling - Dynamic Analysis with OWASP ZAP](../dynamic-analysis-with-owasp-zap.md) document.
 
 
 ## Dependency Vulnerability Analysis 
 OWASP Dependency Check[^3] is the recommended tool for performing dependency vulnerability analysis.
 
-!!! tip hint important "WSO2 Document Reference"
+!!! tip hint important "Choreo Labs Document Reference"
     Further information on using OWASP Dependency Check is documented at [Engineering Guidelines - External Dependency Analysis using OWASP Dependency Check](../external-dependency-analysis-analysis-using-owasp-dependency-check.md) document.
 
 

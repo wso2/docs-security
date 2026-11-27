@@ -1,16 +1,14 @@
 ---
 title: Security Advisories
-description: "WSO2 security advisories by year. Each advisory gives the WSO2 advisory ID, the CVE ID where one is assigned, the affected products and versions, the severity, and the solution."
+description: "Choreo Labs security advisories by year. Each advisory gives the WSO2 advisory ID, the CVE ID where one is assigned, the affected products and versions, the severity, and the solution."
 summary: Overview of Security Advisories
 category: security-announcements
 ---
 
 # Security Advisories
 
-Following pages list the security advisories that we have released in each year. For information regarding the vulnerability management process that we follow, refer WSO2 Security Vulnerability Management Process page.
+Following pages list the security advisories that we have released in each year. For information regarding the vulnerability management process that we follow, refer Choreo Labs Security Vulnerability Management Process page.
 
-WSO2 is a [CVE Numbering Authority (CNA)](https://www.cve.org/PartnerInformation/ListofPartners/partner/WSO2); its [CVE assignment]({{#base_path#}}/security-reporting/reward-and-acknowledgement-program/#cve-assignment) scope is on the Reward and Acknowledgement Program page. Advisories published before WSO2 became a CNA give a CVE ID only where another CNA, such as MITRE, assigned one.
+We are a [CVE Numbering Authority (CNA)](https://www.cve.org/PartnerInformation/ListofPartners/partner/WSO2); our [CVE assignment]({{#base_path#}}/security-reporting/reward-and-acknowledgement-program/#cve-assignment) scope is on the Reward and Acknowledgement Program page. Advisories published before we became a CNA give a CVE ID only where another CNA, such as MITRE, assigned one.
 
 <!-- The build lists the year pages here, newest first. -->
-
-security-announce@wso2.org  mailing list is used to announce security vulnerabilities in WSO2 products and services. If you wish to subscribe to this mailing list, email to <security-announce-request@wso2.org> with the header '**subscribe**'.

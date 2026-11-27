@@ -256,4 +256,4 @@ Document the bearer-token model in the API specification rather than excluding t
 
 * **REST API authentication / authorization.** See [Secure Coding Guide: Authentication Failures]({{#base_path#}}/security-guidelines/secure-engineering-guidelines/secure-coding-guidlines/secure-coding-guide/#authentication-failures).
 * **Go stack CSRF.** Use `SameSite=Strict` plus a double-submit cookie middleware (e.g., `gorilla/csrf`). See [Secure Coding Guide: Cross-Site Request Forgery (CSRF)]({{#base_path#}}/security-guidelines/secure-engineering-guidelines/secure-coding-guidlines/secure-coding-guide/#cross-site-request-forgery-csrf).
-* **Jaggery applications.** Jaggery is deprecated. New WSO2 features should not ship Jaggery surfaces; existing applications follow the same CSRFGuard shape (replace `web.xml` with equivalent `jaggery.conf` entries) but should plan migration.
+* **Jaggery applications.** Jaggery is deprecated. New Choreo Labs features should not ship Jaggery surfaces; existing applications follow the same CSRFGuard shape (replace `web.xml` with equivalent `jaggery.conf` entries) but should plan migration.

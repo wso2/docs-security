@@ -1,6 +1,6 @@
-# Copyright (c) 2026, WSO2 LLC. (https://www.wso2.com).
+# Copyright (c) 2026, Choreo Labs LLC (https://www.choreolabs.com).
 #
-# WSO2 LLC. licenses this file to you under the Apache License,
+# Choreo Labs LLC licenses this file to you under the Apache License,
 # Version 2.0 (the "License"); you may not use this file except
 # in compliance with the License.
 # You may obtain a copy of the License at
@@ -19,8 +19,8 @@
     Security advisories        the yearly list pages, the year sections of the nav, and the
                                year links on the Security Advisories page
     Incident clarifications    the same, by year of the incident
-    CVE justifications         one table on the CVE Justifications page, by CVE ID; they are
-                               not in the nav
+    CVE justifications         one table on the CVE Justifications page and the entries of
+                               its nav section, by CVE ID
     Home page                  the newest security advisories
 """
 
@@ -53,7 +53,7 @@ YEAR_LINK_RE = re.compile(r"^[*-][ \t]+\[[^\]]*\]\(\{\{#base_path#\}\}/security-
 ENTRY_LINE_RE = re.compile(r"^[*-][ \t]+\[.*\]\(\{\{#base_path#\}\}/security-announcements/(?:security-advisories|"
                            r"cve-justifications|incident-clarifications)/\d{4}/.+\)[ \t]*\n?", re.M)
 # The nav sections the build writes, by their index page, and how each names its year sections.
-# CVE justifications are not in the nav: their section page lists them by CVE ID.
+# CVE justifications have no year sections: their section lists them by CVE ID (fill_nav).
 NAV_SECTIONS = {
     "security-announcements/security-advisories/index.md": "{} Advisories",
     "security-announcements/incident-clarifications/index.md": "{}",
@@ -63,13 +63,14 @@ JUSTIFICATIONS_PAGE = "security-announcements/cve-justifications/index.md"
 JUSTIFICATION_TABLE_MARKER = "<!-- The build lists the CVE justifications here, by CVE ID. -->"
 # How many of the newest advisories the home page lists. The home page is the page search
 # engines crawl most, so a new advisory is found soon after it is published.
-LATEST_ADVISORIES = 10
+LATEST_ADVISORIES = 5
 
 
 def fill_nav(items, docs_dir):
-    """Write the year sections of the advisories and incident clarifications into the nav.
+    """Write the year sections of the advisories and incident clarifications, and the CVE justifications, into the nav.
 
     Each year folder with a year page gets a section listing its pages, as the year page does.
+    The CVE Justifications section lists every justification by CVE ID, as its page does.
     """
     for item in items:
         if not isinstance(item, dict):
@@ -78,6 +79,11 @@ def fill_nav(items, docs_dir):
             if not isinstance(value, list):
                 continue
             landing = nav_index(value)
+            if landing == JUSTIFICATIONS_PAGE:
+                # Entries written by hand are dropped; check_content.py reports them.
+                value[:] = [entry for entry in value if isinstance(entry, dict) and "" in entry]
+                value.extend({label: path + ".md"} for path, label in justification_entries(docs_dir))
+                continue
             if landing not in NAV_SECTIONS:
                 fill_nav(value, docs_dir)
                 continue
@@ -164,7 +170,7 @@ def advisory_list(docs_dir, year):
 def justification_rows(docs_dir):
     """Every CVE justification, one row per CVE ID, newest CVE first, then the ones without a CVE.
 
-    Each row is (ID, page path, WSO2 products, WSO2 Products impacted, customer action required,
+    Each row is (ID, page path, Choreo Labs products, Choreo Labs Products impacted, customer action required,
     published), taken from the page's title, front matter, and REPORTED PRODUCTS list.
     """
     section = "security-announcements/cve-justifications"
@@ -192,9 +198,20 @@ def justification_rows(docs_dir):
     return sorted(rows, key=order)
 
 
+def justification_entries(docs_dir):
+    """Each CVE justification page once, as (page path without .md, label), in the table's order.
+
+    A page with several IDs is labeled with all of them and placed by its first.
+    """
+    entries = {}
+    for vuln_id, path, *_ in justification_rows(docs_dir):
+        entries.setdefault(path, []).append(vuln_id)
+    return [(path, ", ".join(ids)) for path, ids in entries.items()]
+
+
 def justification_table(docs_dir):
     """The CVE Justifications page's table of every justification, by CVE ID."""
-    lines = ["| ID | WSO2 products | WSO2 Products impacted | Customer action required | Published |",
+    lines = ["| ID | Choreo Labs products | Choreo Labs Products impacted | Customer action required | Published |",
              "| -- | ------------- | ---------------------- | ------------------------ | --------- |"]
     for vuln_id, path, products, impacted, action, published in justification_rows(docs_dir):
         cells = ["[{}]({{{{#base_path#}}}}/{}/)".format(vuln_id, path), products, impacted, action,

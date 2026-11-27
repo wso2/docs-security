@@ -1,6 +1,6 @@
-# Copyright (c) 2026, WSO2 LLC. (https://www.wso2.com).
+# Copyright (c) 2026, Choreo Labs LLC (https://www.choreolabs.com).
 #
-# WSO2 LLC. licenses this file to you under the Apache License,
+# Choreo Labs LLC licenses this file to you under the Apache License,
 # Version 2.0 (the "License"); you may not use this file except
 # in compliance with the License.
 # You may obtain a copy of the License at
@@ -40,10 +40,10 @@ YES_NO = r"^(Yes|No)( \(.+\))?$"
 JUSTIFICATION_FIELDS = (
     ("published", "Published", (), True, "date"),
     ("updated", "Updated", ("Last Updated",), False, "date"),
-    ("wso2_products_impacted", "WSO2 Products impacted", ("WSO2 Products Impacted",), True,
+    ("wso2_products_impacted", "Choreo Labs products impacted", ("WSO2 Products Impacted",), True,
      r"^(Yes|No|Limited)( \(.+\))?$"),
-    ("severity", "WSO2 Products severity", ("WSO2 Products Severity",), False, "severity"),
-    ("cvss", "WSO2 Products CVSS score", ("WSO2 Products CVSS Score",), False, "cvss"),
+    ("severity", "Choreo Labs products severity", ("WSO2 Products Severity",), False, "severity"),
+    ("cvss", "Choreo Labs products CVSS score", ("WSO2 Products CVSS Score",), False, "cvss"),
     ("customer_action_required", "Customer action required",
      ("Customer actions required", "Customers actions required", "Customers Actions Required"), True, YES_NO),
 )

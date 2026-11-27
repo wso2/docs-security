@@ -9,7 +9,7 @@ version: 3.1
 <p class="doc-info">Version: 3.1</p>
 ___
 
-When you build a React 18+ frontend for a WSO2 product, this is the engineering guide for what your code should and shouldn't do. The general "what XSS is", "what `dangerouslySetInnerHTML` does", or "how CSP works" is covered by the community references below, linked rather than restated. Cross-cutting rules (authentication, supply chain, logging, exception handling, cookie defaults) are in the [Secure Coding Guide]({{#base_path#}}/security-guidelines/secure-engineering-guidelines/secure-coding-guidlines/secure-coding-guide/) and not restated here.
+When you build a React 18+ frontend for a Choreo Labs product, this is the engineering guide for what your code should and shouldn't do. The general "what XSS is", "what `dangerouslySetInnerHTML` does", or "how CSP works" is covered by the community references below, linked rather than restated. Cross-cutting rules (authentication, supply chain, logging, exception handling, cookie defaults) are in the [Secure Coding Guide]({{#base_path#}}/security-guidelines/secure-engineering-guidelines/secure-coding-guidlines/secure-coding-guide/) and not restated here.
 
 ## External references
 
@@ -112,21 +112,21 @@ Markdown can carry embedded HTML and `javascript:` links, so it is an XSS vector
 
 `remark` and `rehype` plugins do not sanitize on their own, and some emit raw HTML. If you add plugins, also run [`rehype-sanitize`](https://github.com/rehypejs/rehype-sanitize) (or DOMPurify) over the result, with an explicit allow-list schema of permitted tags and attributes.
 
-## Rules for React in WSO2 products
+## Rules for React in Choreo Labs products
 
-These are the points that are not obvious from the external references, that recur across WSO2 product UIs, or that have a WSO2-specific reason.
+These are the points that are not obvious from the external references, that recur across Choreo Labs product UIs, or that have a reason specific to Choreo Labs.
 
 ### Sanitizer standardization
 
-When a WSO2 React surface needs to render rich text or third-party HTML, use **DOMPurify** as the sanitizer (via `dangerouslySetInnerHTML`, ref-based `innerHTML`, or `rehype-sanitize` for Markdown). Consistency matters more than the library: the security team reviews against this baseline. If you need a different sanitizer, raise it with the security team before adoption.
+When a Choreo Labs React surface needs to render rich text or third-party HTML, use **DOMPurify** as the sanitizer (via `dangerouslySetInnerHTML`, ref-based `innerHTML`, or `rehype-sanitize` for Markdown). Consistency matters more than the library: the security team reviews against this baseline. If you need a different sanitizer, raise it with the security team before adoption.
 
 ### URL attribute validation
 
-WSO2 portals routinely render externally-sourced URLs (publisher metadata, IdP endpoints, callback URLs displayed back to the user). For every variable `href` / `src`, parse with `new URL(input, window.location.origin)` and restrict the resulting `url.protocol` to `http:` / `https:` (plus `mailto:` only where deliberately allowed). Reject `javascript:`, `data:`, `vbscript:`, and unknown schemes. Pair `target="_blank"` with `rel="noopener noreferrer"`.
+Choreo Labs portals routinely render externally-sourced URLs (publisher metadata, IdP endpoints, callback URLs displayed back to the user). For every variable `href` / `src`, parse with `new URL(input, window.location.origin)` and restrict the resulting `url.protocol` to `http:` / `https:` (plus `mailto:` only where deliberately allowed). Reject `javascript:`, `data:`, `vbscript:`, and unknown schemes. Pair `target="_blank"` with `rel="noopener noreferrer"`.
 
 ### Token storage with BFF or HttpOnly cookies
 
-WSO2 admin UIs (Carbon Console, APIM Publisher/DevPortal, IS Console) are session-cookie-based; new React SPAs must follow the same pattern. **Never store refresh tokens or long-lived access tokens in `localStorage` / `sessionStorage`.** Two acceptable shapes:
+Choreo Labs admin UIs (Carbon Console, APIM Publisher/DevPortal, IS Console) are session-cookie-based; new React SPAs must follow the same pattern. **Never store refresh tokens or long-lived access tokens in `localStorage` / `sessionStorage`.** Two acceptable shapes:
 
 * **Cookie session** with `HttpOnly; Secure; SameSite=Strict`, set by the WSO2 IdP / API Gateway.
 * **Backend-for-frontend (BFF)** where a small server-side component holds the long-lived credential and the SPA only talks to it via the same-origin cookie.
@@ -135,7 +135,7 @@ OAuth for the SPA itself uses **authorization code with PKCE** (`code_challenge_
 
 ### Open-redirect parameter validation
 
-WSO2 login flows accept a post-authentication redirect parameter (`returnTo`, `next`, `redirect_uri`). The same exact-match rule that WSO2 enforces for OAuth `redirect_uri` applies here:
+Choreo Labs login flows accept a post-authentication redirect parameter (`returnTo`, `next`, `redirect_uri`). The same exact-match rule that Choreo Labs enforces for OAuth `redirect_uri` applies here:
 
 ```jsx
 const ALLOWED_RETURN_PATHS = new Set(['/', '/dashboard', '/settings']);
@@ -148,9 +148,9 @@ function PostLogin({ returnTo }) {
 
 Reject absolute URLs, schemeful URLs, and protocol-relative URLs (`//evil.example/`) up front. The same logic belongs in any WSO2 IdP-issued template that uses a `commonauth`-style return path.
 
-### CSP target for WSO2-served admin UIs
+### CSP target for Choreo Labs admin UIs
 
-CSP is set by the serving component, not by React, but the React build must be compatible with the WSO2 target shape:
+CSP is set by the serving component, not by React, but the React build must be compatible with the Choreo Labs target shape:
 
 ```
 Content-Security-Policy:
@@ -190,9 +190,9 @@ For Next.js / Remix / any SSR setup, raw `JSON.stringify(state)` interpolated in
     </script>
     ```
 
-### `postMessage` for embedded WSO2 surfaces
+### `postMessage` for embedded Choreo Labs surfaces
 
-Where a WSO2 React UI hosts or is hosted by another origin (OAuth popup callbacks, embedded widgets in the Developer Portal), the receiver checks `event.origin` against an allow-list of WSO2 / customer origins before reading `event.data`, and schema-validates the payload. Senders pass an explicit `targetOrigin`, never `'*'`.
+Where a Choreo Labs React UI hosts or is hosted by another origin (OAuth popup callbacks, embedded widgets in the Developer Portal), the receiver checks `event.origin` against an allow-list of Choreo Labs / customer origins before reading `event.data`, and schema-validates the payload. Senders pass an explicit `targetOrigin`, never `'*'`.
 
 ```jsx
 useEffect(() => {
@@ -209,7 +209,7 @@ useEffect(() => {
 
 ### Dependency hygiene
 
-Pin dependencies exactly, commit the lock file, and keep `npm audit` / `pnpm audit` clean on every PR. Onboard new npm packages through WSO2's dependency process. Full guidance, including how WSO2 incidents map to pinning discipline, is in [Dependency Vulnerability Analysis]({{#base_path#}}/security-guidelines/secure-engineering-guidelines/external-dependency-analysis-analysis-using-owasp-dependency-check/) and [Secure Coding Guide, Software Supply Chain Failures]({{#base_path#}}/security-guidelines/secure-engineering-guidelines/secure-coding-guidlines/secure-coding-guide/#software-supply-chain-failures).
+Pin dependencies exactly, commit the lock file, and keep `npm audit` / `pnpm audit` clean on every PR. Onboard new npm packages through Choreo Labs' dependency process. Full guidance, including how Choreo Labs incidents map to pinning discipline, is in [Dependency Vulnerability Analysis]({{#base_path#}}/security-guidelines/secure-engineering-guidelines/external-dependency-analysis-analysis-using-owasp-dependency-check/) and [Secure Coding Guide, Software Supply Chain Failures]({{#base_path#}}/security-guidelines/secure-engineering-guidelines/secure-coding-guidlines/secure-coding-guide/#software-supply-chain-failures).
 
 ### Build hygiene
 
@@ -219,11 +219,11 @@ Pin dependencies exactly, commit the lock file, and keep `npm audit` / `pnpm aud
 
 ### Past incidents
 
-WSO2 [incident clarifications]({{#base_path#}}/security-announcements/incident-clarifications/) (npm package compromise, Shai-Hulud, axios) all document the same pattern: deployments that deviated from the pinned baseline were exposed, while deployments that kept exact pinning and committed lock files were not. Keep that discipline; see [Secure Coding Guide, Software Supply Chain Failures]({{#base_path#}}/security-guidelines/secure-engineering-guidelines/secure-coding-guidlines/secure-coding-guide/#software-supply-chain-failures).
+Choreo Labs [incident clarifications]({{#base_path#}}/security-announcements/incident-clarifications/) (npm package compromise, Shai-Hulud, axios) all document the same pattern: deployments that deviated from the pinned baseline were exposed, while deployments that kept exact pinning and committed lock files were not. Keep that discipline; see [Secure Coding Guide, Software Supply Chain Failures]({{#base_path#}}/security-guidelines/secure-engineering-guidelines/secure-coding-guidlines/secure-coding-guide/#software-supply-chain-failures).
 
 ## Review checklist
 
-When adding a new React-rendered page or component to a WSO2 product:
+When adding a new React-rendered page or component to a Choreo Labs product:
 
 - [ ] No `dangerouslySetInnerHTML` without DOMPurify (or equivalent reviewed sanitizer).
 - [ ] No `eval`, `new Function`, or runtime template compilation on user input.

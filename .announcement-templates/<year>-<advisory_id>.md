@@ -34,7 +34,7 @@ Apply the relevant fixes to your product using the public fix(es) provided below
 * {{pr_link_1}}
 * {{pr_link_2}}
 
-If applying the fix or update is not feasible, migrate to the latest unaffected version of the respective WSO2 product(s).
+If applying the fix or update is not feasible, migrate to the latest unaffected version of the respective Choreo Labs product(s).
 
 
 ### Support Subscription Holders
@@ -42,14 +42,14 @@ If applying the fix or update is not feasible, migrate to the latest unaffected 
 Update your product to the specified update level—or a higher update level—to apply the fix.
 
 !!! info todo
-    **WSO2 Support Subscription Holders may use [WSO2 Updates](https://wso2.com/updates/) in order to apply the fix.**
+    **Choreo Labs Support Subscription Holders may use [Choreo Labs Updates](https://choreolabs.com/updates/) in order to apply the fix.**
 
 | Product Name | Product Version | U2 Update Level |
 | :----------: | :-------------: | :-------------: |
 
 
 ## CREDITS
-WSO2 thanks, **{{reporter}}** for responsibly reporting the identified issue and working with us as we addressed it.
+Choreo Labs thanks **{{reporter}}** for responsibly reporting the identified issue and working with us as we addressed it.
 
 
 ## CHANGE LOG
